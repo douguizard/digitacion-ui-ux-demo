@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Naowee — Demos publicadas en este repo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --azul:#002B5B; --accent:#d74009; --border:#e7e9f3; --text2:#646587; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; min-height:100vh; display:flex; align-items:center; justify-content:center; background:#fff; padding:24px; }
+  .box { max-width:560px; width:100%; }
+  h1 { font-size:26px; font-weight:800; letter-spacing:-.6px; color:var(--azul); margin-bottom:8px; }
+  p { font-size:14px; color:var(--text2); line-height:1.6; margin-bottom:22px; }
+  a.card { display:flex; align-items:center; gap:14px; padding:18px 20px; border:1px solid var(--border); border-radius:14px; text-decoration:none; color:inherit; transition:border-color .15s, transform .15s; margin-bottom:12px; }
+  a.card:hover { border-color:var(--accent); transform:translateY(-2px); }
+  .em { font-size:24px; }
+  .t { font-size:15px; font-weight:700; color:#282834; }
+  .d { font-size:12.5px; color:var(--text2); margin-top:2px; }
+  .arrow { margin-left:auto; color:var(--accent); font-weight:800; }
+  .hub { font-size:12.5px; color:var(--text2); margin-top:18px; }
+  .hub a { color:var(--accent); font-weight:600; }
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>Demos publicadas en este repo</h1>
+  <p>Este GitHub Pages hospeda dos demos de Naowee para el SUID / Ministerio del Deporte:</p>
+  <a class="card" href="./digitacion/">
+    <span class="em">⌨️</span>
+    <span><span class="t">Digitación</span><br><span class="d">Coordinador de eventos + Digitador · 30+ deportes · v2.0.0</span></span>
+    <span class="arrow">→</span>
+  </a>
+  <a class="card" href="./project/">
+    <span class="em">📋</span>
+    <span><span class="t">Project · Convocatorias</span><br><span class="d">Admin → municipio → revisor · 28 pantallas · v2.0.x</span></span>
+    <span class="arrow">→</span>
+  </a>
+  <p class="hub">Catálogo completo: <a href="https://naowee-tech.github.io/naowee-demos-hub/">naowee-demos-hub</a></p>
+</div>
+</body>
+</html>
