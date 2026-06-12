@@ -25,6 +25,28 @@ const LOGIN_URL = (() => {
     : 'https://naowee-tech.github.io/auth-screens-ui/01-login.html';
 })();
 
+/* ─── Roles relevantes para el módulo Digitación ───────────────────────
+   El demo switcher y el "Cambiar a" del header solo muestran ESTOS roles
+   (no los de otros módulos: escenarios, documentación, deportista, etc.),
+   agrupados por la lógica de uso del módulo. */
+const DIGITACION_ROLE_GROUPS = [
+  { label: 'Administración', codes: ['ROOT', 'ADMIN'] },
+  { label: 'Coordinación',   codes: ['EVENT_COORDINATOR'] },
+  { label: 'Digitación',     codes: ['DIGITIZER'] },
+];
+const DIGITACION_ROLE_CODES = DIGITACION_ROLE_GROUPS.flatMap((g) => g.codes);
+
+/* Vista de inicio por rol dentro de la demo standalone. Al cambiar de
+   usuario simulado se navega a la página propia del rol con ?role=, en vez
+   de a perfil.html (que pertenece al host sidebar-shell y daría 404). */
+const DIGITACION_HOME = {
+  ROOT: 'lista.html', ADMIN: 'lista.html',
+  EVENT_COORDINATOR: 'lista.html', DIGITIZER: 'dashboard.html',
+};
+function digitacionRoleHref(code) {
+  return `${DIGITACION_HOME[code] || 'lista.html'}?role=${code}`;
+}
+
 /* Estado del módulo para que navigateToActive pueda re-renderizar
    sin recargar la página (View Transitions hacen morph suave entre estados). */
 const _state = { rootEl: null, role: null, onActiveChange: null };
@@ -275,7 +297,8 @@ export function mountHeader({ headerEl, role }) {
   const otherAssignedRoles = assignedCodes
     .map((code) => ROLES[code])
     .filter(Boolean)
-    .filter((r) => r.code !== role.code);
+    .filter((r) => r.code !== role.code)
+    .filter((r) => DIGITACION_ROLE_CODES.includes(r.code));
 
   const switchSection = otherAssignedRoles.length > 0 ? `
     <div class="profile-dd__sep"></div>
@@ -283,7 +306,7 @@ export function mountHeader({ headerEl, role }) {
     ${otherAssignedRoles.map((r) => {
       const ini = (r.userName || r.label).split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
       return `
-        <a class="profile-dd__item profile-dd__item--role" href="perfil.html?role=${r.code}">
+        <a class="profile-dd__item profile-dd__item--role" href="${digitacionRoleHref(r.code)}">
           <span class="ava-ring" style="width:30px;height:30px;font-size:11px;background:${r.color}22;color:${r.color}">${ini}</span>
           <div class="role-meta">
             <span>${r.label}</span>
@@ -324,21 +347,6 @@ export function mountHeader({ headerEl, role }) {
         </div>
 
         ${switchSection}
-
-        <div class="profile-dd__sep"></div>
-
-        <a class="profile-dd__item" href="#mi-perfil">
-          <span class="profile-dd__icon">${getIcon('user')}</span>
-          <span>Mi perfil</span>
-        </a>
-        <a class="profile-dd__item" href="#configuracion">
-          <span class="profile-dd__icon">${getIcon('gear')}</span>
-          <span>Configuraciones</span>
-        </a>
-        <a class="profile-dd__item" href="#notificaciones">
-          <span class="profile-dd__icon">${getIcon('bell')}</span>
-          <span>Notificaciones</span>
-        </a>
       </div>
     </div>
   `;
@@ -449,14 +457,16 @@ function setupScrollHint(rootEl) {
    (que en producción sería el cambio entre roles asignados al usuario real).
    ─────────────────────────────────────────────────────────────────── */
 export function mountDemoRoleSwitcher({ rootEl, currentRoleCode }) {
-  const roles = Object.values(ROLES);
-  const itemsHtml = roles.map((r) => {
-    const ini = (r.userName || r.label).split(/\s+/).filter(Boolean).slice(0, 2)
-      .map((w) => w[0]).join('').toUpperCase();
-    const isActive = r.code === currentRoleCode;
-    return `
+  const itemsHtml = DIGITACION_ROLE_GROUPS.map((g) => {
+    const rolesHtml = g.codes.map((code) => {
+      const r = ROLES[code];
+      if (!r) return '';
+      const ini = (r.userName || r.label).split(/\s+/).filter(Boolean).slice(0, 2)
+        .map((w) => w[0]).join('').toUpperCase();
+      const isActive = r.code === currentRoleCode;
+      return `
       <a class="demo-role-switcher__item ${isActive ? 'is-active' : ''}"
-         href="perfil.html?role=${r.code}">
+         href="${digitacionRoleHref(r.code)}">
         <span class="demo-role-switcher__avatar"
               style="background:${r.color}22;color:${r.color}">${ini}</span>
         <div class="demo-role-switcher__meta">
@@ -466,6 +476,8 @@ export function mountDemoRoleSwitcher({ rootEl, currentRoleCode }) {
         ${isActive ? `<span class="demo-role-switcher__check">${getIcon('check')}</span>` : ''}
       </a>
     `;
+    }).join('');
+    return `<div class="demo-role-switcher__group">${g.label}</div>${rolesHtml}`;
   }).join('');
 
   rootEl.innerHTML = `
@@ -476,7 +488,7 @@ export function mountDemoRoleSwitcher({ rootEl, currentRoleCode }) {
         <span class="demo-role-switcher__chev">${getIcon('chevron')}</span>
       </button>
       <div class="demo-role-switcher__panel" role="menu">
-        <div class="demo-role-switcher__panel-label">14 usuarios disponibles</div>
+        <div class="demo-role-switcher__panel-label">Perfiles del módulo Digitación</div>
         <div class="demo-role-switcher__list">
           ${itemsHtml}
         </div>

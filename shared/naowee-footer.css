@@ -21,8 +21,8 @@
 }
 
 .naowee-floating-footer__logo {
-  width: 20px;
-  height: 20px;
+  width: auto;
+  height: 26px;
   flex-shrink: 0;
   display: block;
 }
