@@ -561,6 +561,11 @@ a{color:inherit;text-decoration:none}
 .demo-role-switcher__item:hover{background:#f5f6fa;text-decoration:none}
 .demo-role-switcher__item.is-active{background:#fff3e6}
 .demo-role-switcher__item.is-active:hover{background:#ffe4cf}
+.demo-role-switcher__group{
+  font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  color:#9ca0b8;padding:10px 12px 4px;
+}
+.demo-role-switcher__group:first-child{padding-top:2px}
 
 .demo-role-switcher__avatar{
   width:32px;height:32px;border-radius:50%;
