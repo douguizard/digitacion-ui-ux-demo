@@ -137,24 +137,17 @@ function renderItem(item, activeId, options) {
   `;
 }
 
-function renderChildren(children, activeId, options) {
-  /* options.skipDotMorph = true → el dot del activo NO tiene
-     view-transition-name (no morphea slide; entra con la animación CSS
-     subDotIn = scale 0→1). Aplica cuando el cambio de active es entre
-     sub-items de PARENTS distintos (cross-parent). */
-  const skipDotMorph = options && options.skipDotMorph;
+function renderChildren(children, activeId) {
+  /* El activo del subnivel se comunica por el texto en accent + el conector
+     en árbol (sin dot naranja — paridad con el módulo Eventos). */
   return `
     <div class="sub-nav">
       ${children.map((c) => {
         const isActive = c.id === activeId;
-        const dotStyle = (isActive && skipDotMorph)
-          ? ' style="view-transition-name:none"'
-          : '';
         return `
         <div class="sub-row ${isActive ? 'active' : ''}"
              data-id="${c.id}"
              data-route="${c.route || ''}">
-          ${isActive ? `<span class="sub-row__dot" aria-hidden="true"${dotStyle}></span>` : ''}
           <span class="lbl">${c.label}</span>
         </div>
       `;
