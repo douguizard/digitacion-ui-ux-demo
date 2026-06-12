@@ -30,9 +30,8 @@ const LOGIN_URL = (() => {
    (no los de otros módulos: escenarios, documentación, deportista, etc.),
    agrupados por la lógica de uso del módulo. */
 const DIGITACION_ROLE_GROUPS = [
-  { label: 'Administración', codes: ['ROOT', 'ADMIN'] },
-  { label: 'Coordinación',   codes: ['EVENT_COORDINATOR'] },
-  { label: 'Digitación',     codes: ['DIGITIZER'] },
+  { label: 'Coordinación', codes: ['EVENT_COORDINATOR'] },
+  { label: 'Digitación',   codes: ['DIGITIZER'] },
 ];
 const DIGITACION_ROLE_CODES = DIGITACION_ROLE_GROUPS.flatMap((g) => g.codes);
 
