@@ -71,7 +71,9 @@ const ICONS = {
   /* Module — para "Activación de módulos" */
   module:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>',
   /* Map (folded) — para "Mapa de escenarios" */
-  map:         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 8 3 16 6 23 3 23 18 16 21 8 18 1 21 1 6"/><line x1="8" y1="3" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="21"/></svg>'
+  map:         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 8 3 16 6 23 3 23 18 16 21 8 18 1 21 1 6"/><line x1="8" y1="3" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="21"/></svg>',
+  /* Shuffle — para "Sorteo" */
+  sorteo:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>'
 };
 
 export function getIcon(name) {
@@ -99,6 +101,7 @@ const ITEMS = {
                         { id: 'competencias-inicio', label: 'Inicio',    route: '/home/competencias/inicio' },
                         { id: 'competencias-lista',  label: 'Listado',   route: '/home/competencias/lista' }
                       ]},
+  sorteo:           { id: 'sorteo',          label: 'Sorteo',                icon: 'sorteo',   route: '/home/sorteo' },
   cupos:            { id: 'cupos',           label: 'Cupos',                 icon: 'ticket',   route: '/home/quotas' },
   inscripciones:    { id: 'inscripciones',   label: 'Inscripciones',         icon: 'edit',     route: '/home/inscripciones' },
   documentacion:    { id: 'docs',            label: 'Documentación',         icon: 'doc',      route: '/home/docs' },
@@ -161,7 +164,7 @@ export const MENU_BY_ROLE = {
   ROOT: [
     { section: null,                       items: [ITEMS.inicio] },
     { section: 'EVENTOS',                  items: [ITEMS.eventos, ITEMS.cupos] },
-    { section: 'COMPETENCIAS',             items: [ITEMS.competencias] },
+    { section: 'COMPETENCIAS',             items: [ITEMS.competencias, ITEMS.sorteo] },
     { section: 'INSCRIPCIONES',            items: [ITEMS.inscripciones] },
     /* Mi digitación NO aparece para ROOT — esa vista es exclusiva
        del rol DIGITIZER. ROOT supervisa via Digitadores/Coordinadores. */
@@ -180,7 +183,7 @@ export const MENU_BY_ROLE = {
   ADMIN: [
     { section: null,                       items: [ITEMS.inicio] },
     { section: 'EVENTOS',                  items: [ITEMS.eventos, ITEMS.cupos] },
-    { section: 'COMPETENCIAS',             items: [ITEMS.competencias] },
+    { section: 'COMPETENCIAS',             items: [ITEMS.competencias, ITEMS.sorteo] },
     { section: 'INSCRIPCIONES',            items: [ITEMS.inscripciones] },
     /* Mi digitación NO aparece para ADMIN — solo para el rol DIGITIZER. */
     { section: 'DIGITACIÓN',               items: [ITEMS.digitadores, ITEMS.coordinadores] },
@@ -208,7 +211,7 @@ export const MENU_BY_ROLE = {
   EVENT_COORDINATOR: [
     { section: null,                       items: [ITEMS.inicio] },
     { section: 'EVENTOS',                  items: [ITEMS.eventos] },
-    { section: 'COMPETENCIAS',             items: [ITEMS.competencias] },
+    { section: 'COMPETENCIAS',             items: [ITEMS.competencias, ITEMS.sorteo] },
     { section: 'RESULTADOS & RANKING',     items: [ITEMS.resultados] }
   ],
 
