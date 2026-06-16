@@ -214,27 +214,44 @@ function bindSidebarEvents(rootEl) {
    - Dot sub-item:
        · Mismo parent (intra-parent) → slidea entre hermanas
        · Distinto parent (cross-parent) → grow desde 0 (CSS subDotIn) */
+/* ─── Ruteo centralizado del módulo Digitación (preview standalone) ────
+   Cada id de menú → su página real en digitación, PRESERVANDO ?role= para
+   que la página destino monte el menú del MISMO rol (no revierta a su
+   default). Antes esto vivía duplicado en el LEGACY_MAP de cada HTML y
+   perdía el rol al navegar → el coordinador terminaba como ROOT/Digitador
+   o saltaba al shell host. Centralizado aquí: una sola fuente de verdad. */
+const DIGI_ROUTES = {
+  'eventos': 'eventos.html', 'eventos-lista': 'eventos.html', 'eventos-nuevo': 'eventos.html',
+  'competencias': 'lista.html', 'competencias-inicio': 'lista.html', 'competencias-lista': 'lista.html',
+  'sorteo': 'sorteo.html',
+  'mi-digitacion': 'digitador.html',
+  'digitadores': 'digitadores.html', 'coordinadores': 'coordinadores.html',
+  'resultados': 'eventos.html',   // placeholder hasta F3 (vista pública de resultados)
+};
+export function resolveDigiRoute(activeId, roleCode) {
+  let page;
+  if (activeId === 'inicio') page = (roleCode === 'DIGITIZER') ? 'dashboard.html' : 'eventos.html';
+  else page = DIGI_ROUTES[activeId];
+  if (!page) return null;                       // sin página en digitación → host shell
+  return page + '?role=' + encodeURIComponent(roleCode);
+}
+
 function navigateToActive(activeId) {
-  const url = new URL(window.location.href);
-  url.searchParams.set('active', activeId);
-  history.pushState({ activeId }, '', url.toString());
-
   const role = _state.role;
-  const oldActiveId = _state.activeId;
-  const oldParent = role ? findParentOfChild(role.code, oldActiveId) : null;
-  const newParent = role ? findParentOfChild(role.code, activeId) : null;
-  /* skipDotMorph = true cuando NO podemos hacer slide del dot:
-       · uno de los dos no es sub-item (oldParent o newParent es null)
-       · ambos son sub-items pero de parents diferentes */
-  const skipDotMorph = !oldParent || !newParent || oldParent !== newParent;
+  const roleCode = role ? role.code : 'ATHLETE';
+  const currentFile = window.location.pathname.split('/').pop() || '';
+  const url = resolveDigiRoute(activeId, roleCode);
 
-  const update = () => updateActive(activeId, { skipDotMorph });
-
-  if (document.startViewTransition) {
-    document.startViewTransition(update);
-  } else {
-    update();
+  if (url) {
+    if (url.split('?')[0] === currentFile) return;   // ya estás en esa página
+    window.location.href = url;                       // navegación full, rol preservado
+    return;
   }
+  /* Ítem sin página propia en digitación (módulos del roadmap, sobre todo
+     para ROOT/admin) → cae al shell host, llevando rol + active. */
+  const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+  const base = isLocal ? 'http://localhost:5100' : 'https://naowee-tech.github.io/naowee-test-sidebar-shell';
+  window.location.href = `${base}/perfil.html?role=${roleCode}&active=${activeId}`;
 }
 
 function updateActive(activeId, options) {
