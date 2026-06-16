@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Naowee – Sorteo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+<!-- Naowee Design System + shell canónico -->
+<link rel="stylesheet" href="design-system.css"/>
+<link rel="stylesheet" href="shared/tokens.css?v=2.1.0"/>
+<link rel="stylesheet" href="shared/shell.css?v=2.1.0"/>
+
+<!-- Overrides locales -->
+<link rel="stylesheet" href="embed-mode.css"/>
+<link rel="stylesheet" href="naowee-tables.css"/>
+<link rel="stylesheet" href="shared/naowee-footer.css?v=2.1.0"/>
+<script src="embed-mode.js"></script>
+<script src="shared/naowee-footer.js?v=2.1.0" defer></script>
+
+<style>
+:root{
+  --font:'Inter',sans-serif;
+  --green:#1f8923; --green-bg:#e6f4e7; --green-border:#b7dfb9;
+  --blue-info:#1f78d1; --blue-bg:#eef5ff;
+  --orange-bg:#fff3e6;
+  --shadow-card:0 0 2px rgba(145,158,171,.2),0 12px 24px -4px rgba(145,158,171,.12);
+}
+
+/* Page header */
+.sorteo-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:22px}
+.sorteo-title{font-size:24px;font-weight:700;color:var(--text-primary);margin-bottom:4px}
+.sorteo-sub{font-size:13px;color:var(--text-secondary);max-width:560px}
+.sorteo-badge{display:inline-flex;align-items:center;gap:6px;background:var(--orange-bg);color:var(--accent);
+  font-size:11px;font-weight:700;padding:5px 12px;border-radius:var(--radius-full);white-space:nowrap}
+
+/* Wizard card */
+.wz-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);
+  box-shadow:var(--shadow-card);max-width:860px;overflow:hidden}
+
+/* Stepper */
+.wz-steps{display:flex;align-items:center;gap:6px;padding:22px 28px 18px;border-bottom:1px solid var(--border)}
+.wz-step{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.wz-badge{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;flex-shrink:0;transition:background .25s,color .25s;
+  background:var(--bg-soft);color:var(--text-secondary);border:1.5px solid var(--border-dark)}
+.wz-badge svg{width:16px;height:16px}
+.wz-step.active .wz-badge{background:var(--accent);color:#fff;border-color:var(--accent)}
+.wz-step.done .wz-badge{background:var(--green);color:#fff;border-color:var(--green)}
+.wz-lbl{font-size:13px;font-weight:600;color:var(--text-secondary);white-space:nowrap;transition:color .25s}
+.wz-step.active .wz-lbl{color:var(--accent);font-weight:700}
+.wz-step.done .wz-lbl{color:var(--text-primary)}
+.wz-line{flex:1;height:2px;border-radius:2px;background:var(--border-dark);min-width:24px;transition:background .3s}
+.wz-line.done{background:var(--green)}
+
+/* Panels */
+.wz-body{padding:26px 28px}
+.wz-panel{display:none}
+.wz-panel.active{display:block;animation:wzIn .4s cubic-bezier(.32,.72,0,1)}
+@keyframes wzIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.wz-panel-title{font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:3px}
+.wz-panel-hint{font-size:12.5px;color:var(--text-secondary);margin-bottom:20px}
+
+/* Fields */
+.wz-field{margin-bottom:18px}
+.wz-field.hidden{display:none}
+.wz-field>label{display:block;font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:7px}
+.wz-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.wz-select,.wz-num{width:100%;height:44px;padding:0 12px;border:1px solid var(--border-dark);border-radius:var(--radius-md);
+  font-family:var(--font);font-size:14px;color:var(--text-primary);background:var(--surface);transition:border-color .15s,box-shadow .15s}
+.wz-select:focus,.wz-num:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(215,64,9,.15)}
+.wz-select:disabled{background:var(--bg-soft);color:var(--text-muted);cursor:not-allowed}
+
+/* Tipo pills */
+.wz-pills{display:flex;gap:10px;flex-wrap:wrap}
+.wz-pill{display:flex;align-items:center;gap:9px;padding:13px 18px;border:1.5px solid var(--border-dark);
+  border-radius:var(--radius-lg);cursor:pointer;background:var(--surface);transition:all .15s;min-width:180px}
+.wz-pill:hover{border-color:var(--accent);background:#fff8f4}
+.wz-pill.sel{border-color:var(--accent);background:var(--orange-bg)}
+.wz-pill-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:19px;background:var(--bg-soft);flex-shrink:0}
+.wz-pill.sel .wz-pill-ico{background:#ffe4cf}
+.wz-pill-txt b{display:block;font-size:13.5px;font-weight:700;color:var(--text-primary)}
+.wz-pill-txt span{font-size:11.5px;color:var(--text-secondary)}
+
+/* Derived chip */
+.wz-derived{display:flex;align-items:center;gap:10px;background:var(--blue-bg);border:1px solid #cfe1f5;
+  border-radius:var(--radius-md);padding:11px 14px;font-size:13px;color:#1f4e79;margin-top:4px}
+.wz-derived b{color:#0f3a63}
+.wz-derived.warn{background:var(--orange-bg);border-color:#ffbf75;color:#9a4b00}
+
+/* Summary (step 3) */
+.wz-summary{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.wz-sum-hd{display:flex;align-items:center;gap:12px;padding:16px 18px;background:var(--bg-soft);border-bottom:1px solid var(--border)}
+.wz-sum-emoji{font-size:30px;line-height:1}
+.wz-sum-hd b{font-size:16px;font-weight:700;color:var(--text-primary)}
+.wz-sum-hd span{font-size:12.5px;color:var(--text-secondary)}
+.wz-sum-rows{padding:6px 18px}
+.wz-sum-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+.wz-sum-row:last-child{border-bottom:none}
+.wz-sum-row .k{color:var(--text-secondary)}
+.wz-sum-row .v{font-weight:700;color:var(--text-primary)}
+
+/* Done panel (F1 end) */
+.wz-done{text-align:center;padding:10px 0 4px}
+.wz-done-ico{width:60px;height:60px;border-radius:50%;background:var(--green-bg);color:var(--green);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.wz-done-ico svg{width:30px;height:30px}
+.wz-done b{display:block;font-size:17px;font-weight:700;color:var(--text-primary);margin-bottom:6px}
+.wz-done p{font-size:13px;color:var(--text-secondary);max-width:420px;margin:0 auto 4px}
+
+/* Nav */
+.wz-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 28px;border-top:1px solid var(--border);background:var(--bg-soft)}
+.wz-btn{height:44px;padding:0 22px;border-radius:var(--radius-md);font-family:var(--font);font-size:13px;font-weight:700;
+  cursor:pointer;border:none;transition:opacity .15s,transform .1s,background .15s}
+.wz-btn:active{transform:scale(.98)}
+.wz-btn.primary{background:var(--accent);color:#fff}
+.wz-btn.primary:hover{opacity:.9}
+.wz-btn.primary:disabled{background:var(--border-dark);color:#fff;cursor:not-allowed;opacity:.7}
+.wz-btn.ghost{background:var(--surface);color:var(--text-primary);border:1px solid var(--border-dark)}
+.wz-btn.ghost:hover{background:#f5f6fa}
+.wz-btn.hidden{visibility:hidden}
+
+@media(max-width:640px){
+  .wz-row{grid-template-columns:1fr}
+  .wz-lbl{display:none}
+  .wz-steps{padding:16px}
+  .wz-body{padding:20px 16px}
+  .wz-nav{padding:14px 16px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <aside class="sidebar" id="sidebarRoot"></aside>
+
+  <div class="main">
+    <header class="top-header" id="topHeader"></header>
+
+    <main class="page" id="pageContent">
+
+      <div class="sorteo-head">
+        <div>
+          <h1 class="sorteo-title">Sorteo de equipos</h1>
+          <p class="sorteo-sub">Configura una prueba para sortear sus grupos o llaves. Cada prueba (deporte + categoría + sexo) es un sorteo independiente.</p>
+        </div>
+        <span class="sorteo-badge">Paso 1 de 3 · Parametrización</span>
+      </div>
+
+      <div class="wz-card">
+        <!-- Stepper -->
+        <div class="wz-steps">
+          <div class="wz-step active" data-step="1" id="wzStep1">
+            <div class="wz-badge">1</div><span class="wz-lbl">Prueba</span>
+          </div>
+          <div class="wz-line" id="wzLine1"></div>
+          <div class="wz-step" data-step="2" id="wzStep2">
+            <div class="wz-badge">2</div><span class="wz-lbl">Configuración</span>
+          </div>
+          <div class="wz-line" id="wzLine2"></div>
+          <div class="wz-step" data-step="3" id="wzStep3">
+            <div class="wz-badge">3</div><span class="wz-lbl">Confirmar</span>
+          </div>
+        </div>
+
+        <div class="wz-body">
+
+          <!-- ===== PASO 1 · PRUEBA ===== -->
+          <div class="wz-panel active" id="panel1">
+            <div class="wz-panel-title">Selecciona la prueba</div>
+            <div class="wz-panel-hint">Tipo de deporte, disciplina, categoría y sexo.</div>
+
+            <div class="wz-field">
+              <label>Tipo de deporte</label>
+              <div class="wz-pills">
+                <div class="wz-pill" data-tipo="conjunto" onclick="selTipo('conjunto')">
+                  <div class="wz-pill-ico">🤝</div>
+                  <div class="wz-pill-txt"><b>De conjunto</b><span>Equipos · grupos</span></div>
+                </div>
+                <div class="wz-pill" data-tipo="individual" onclick="selTipo('individual')">
+                  <div class="wz-pill-ico">🥋</div>
+                  <div class="wz-pill-txt"><b>Individual</b><span>Deportistas · llaves</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="wz-field hidden" id="fDeporte">
+              <label>Deporte</label>
+              <select class="wz-select" id="selDeporte" onchange="selDeporte(this.value)">
+                <option value="">Selecciona un deporte…</option>
+              </select>
+            </div>
+
+            <div class="wz-row">
+              <div class="wz-field hidden" id="fCategoria">
+                <label>Categoría</label>
+                <select class="wz-select" id="selCategoria" onchange="W.categoria=this.value;refreshStep1()">
+                  <option value="">Categoría…</option>
+                  <option>Sub-14</option><option>Sub-16</option><option>Sub-18</option>
+                  <option>Sub-20</option><option>Mayores</option><option>Masters</option>
+                </select>
+              </div>
+              <div class="wz-field hidden" id="fSexo">
+                <label>Sexo / rama</label>
+                <select class="wz-select" id="selSexo" onchange="W.sexo=this.value;refreshStep1()">
+                  <option value="">Sexo…</option>
+                  <option>Masculino</option><option>Femenino</option><option>Mixto</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== PASO 2 · CONFIGURACIÓN ===== -->
+          <div class="wz-panel" id="panel2">
+            <div class="wz-panel-title">Sistema de competencia</div>
+            <div class="wz-panel-hint">El formato depende de la cantidad de participantes. Ajústalo según los clasificados reales.</div>
+
+            <div class="wz-field">
+              <label>Sistema</label>
+              <div class="wz-derived" id="sistemaChip"><b id="sistemaTxt">—</b></div>
+            </div>
+
+            <!-- Config conjunto -->
+            <div id="cfgConjunto">
+              <div class="wz-row">
+                <div class="wz-field">
+                  <label>N.º de equipos clasificados</label>
+                  <input class="wz-num" type="number" id="numEquipos" min="2" max="32" value="8" oninput="W.nEquipos=+this.value;recalcCfg()"/>
+                </div>
+                <div class="wz-field">
+                  <label>N.º de grupos</label>
+                  <input class="wz-num" type="number" id="numGrupos" min="1" max="8" value="2" oninput="W.nGrupos=+this.value;recalcCfg()"/>
+                </div>
+              </div>
+              <div class="wz-derived" id="repartoChip"><b id="repartoTxt">—</b></div>
+            </div>
+
+            <!-- Config individual -->
+            <div id="cfgIndividual" style="display:none">
+              <div class="wz-field" style="max-width:50%">
+                <label>N.º de participantes</label>
+                <input class="wz-num" type="number" id="numPart" min="2" max="64" value="8" oninput="W.nEquipos=+this.value;recalcCfg()"/>
+              </div>
+              <div class="wz-derived" id="llaveChip"><b id="llaveTxt">—</b></div>
+            </div>
+          </div>
+
+          <!-- ===== PASO 3 · CONFIRMAR ===== -->
+          <div class="wz-panel" id="panel3">
+            <div class="wz-panel-title">Revisa la parametrización</div>
+            <div class="wz-panel-hint">Si todo está correcto, confirma para continuar al sorteo.</div>
+
+            <div class="wz-summary" id="summaryBox"></div>
+
+            <div class="wz-done" id="doneBox" style="display:none">
+              <div class="wz-done-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <b>Parametrización lista</b>
+              <p id="doneMsg">Los parámetros quedaron definidos. El siguiente paso —cargar clasificados y ejecutar la ruleta— llega en la próxima fase del prototipo.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Nav -->
+        <div class="wz-nav">
+          <button class="wz-btn ghost hidden" id="btnBack" onclick="goStep(W.step-1)">← Atrás</button>
+          <button class="wz-btn primary" id="btnNext" onclick="next()" disabled>Siguiente →</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<div id="demoRoleSwitcherRoot"></div>
+
+<script src="shared.js"></script>
+
+<!-- ═══ Wizard de parametrización (lógica) ═══ -->
+<script>
+  const W = { step:1, tipo:'', deporteKey:'', deporteLabel:'', emoji:'', categoria:'', sexo:'', nEquipos:8, nGrupos:2, sistema:'' };
+
+  /* Deportes desde SPORTS_DB, deduplicando alias (misma referencia de objeto). */
+  function deportesPorTipo(tipo){
+    const out=[], seen=new Set();
+    if(typeof SPORTS_DB==='undefined') return out;
+    for(const k in SPORTS_DB){
+      const sp=SPORTS_DB[k];
+      if(!sp||typeof sp!=='object'||!sp.label) continue;
+      if(seen.has(sp)) continue; seen.add(sp);
+      if(tipo && sp.tipo!==tipo) continue;
+      out.push({key:k,label:sp.label,emoji:sp.emoji||'🏅'});
+    }
+    return out.sort((a,b)=>a.label.localeCompare(b.label,'es'));
+  }
+
+  function selTipo(tipo){
+    W.tipo=tipo; W.deporteKey=''; W.deporteLabel=''; W.emoji='';
+    document.querySelectorAll('.wz-pill').forEach(p=>p.classList.toggle('sel',p.dataset.tipo===tipo));
+    const sel=document.getElementById('selDeporte');
+    sel.innerHTML='<option value="">Selecciona un deporte…</option>'+
+      deportesPorTipo(tipo).map(d=>`<option value="${d.key}">${d.emoji}  ${d.label}</option>`).join('');
+    document.getElementById('fDeporte').classList.remove('hidden');
+    document.getElementById('fCategoria').classList.add('hidden');
+    document.getElementById('fSexo').classList.add('hidden');
+    sel.value=''; document.getElementById('selCategoria').value=''; document.getElementById('selSexo').value='';
+    W.categoria=''; W.sexo='';
+    refreshStep1();
+  }
+
+  function selDeporte(key){
+    W.deporteKey=key;
+    const sp=key&&typeof SPORTS_DB!=='undefined'?SPORTS_DB[key]:null;
+    W.deporteLabel=sp?sp.label:''; W.emoji=sp?(sp.emoji||'🏅'):'';
+    const show=!!key;
+    document.getElementById('fCategoria').classList.toggle('hidden',!show);
+    document.getElementById('fSexo').classList.toggle('hidden',!show);
+    refreshStep1();
+  }
+
+  function refreshStep1(){
+    const ok = W.tipo && W.deporteKey && W.categoria && W.sexo;
+    if(W.step===1) document.getElementById('btnNext').disabled=!ok;
+  }
+
+  function recalcCfg(){
+    if(W.tipo==='conjunto'){
+      W.sistema='Fase de grupos · todos contra todos';
+      const n=W.nEquipos||0, g=W.nGrupos||1;
+      const base=Math.floor(n/g), resto=n%g;
+      const repTxt = resto===0
+        ? `${g} grupo(s) de ${base} equipos`
+        : `${resto} grupo(s) de ${base+1} y ${g-resto} de ${base}`;
+      const tag = (n%g!==0) ? ` · incluye descanso (by)` : '';
+      const chip=document.getElementById('repartoChip');
+      chip.classList.toggle('warn', n%g!==0);
+      document.getElementById('repartoTxt').textContent = (n&&g) ? `Reparto: ${repTxt}${tag}` : 'Define equipos y grupos';
+    }else{
+      W.sistema='Eliminación directa · llaves';
+      const n=W.nEquipos||0;
+      const byes = n>1 ? (Math.pow(2,Math.ceil(Math.log2(n)))-n) : 0;
+      document.getElementById('llaveTxt').textContent = n? `Llave de ${n} participante(s)${byes? ` · ${byes} descanso(s)`:''}` : 'Define participantes';
+    }
+    document.getElementById('sistemaTxt').textContent=W.sistema;
+  }
+
+  function buildSummary(){
+    const conj = W.tipo==='conjunto';
+    const reparto = conj ? document.getElementById('repartoTxt').textContent.replace('Reparto: ','') : document.getElementById('llaveTxt').textContent;
+    document.getElementById('summaryBox').innerHTML=`
+      <div class="wz-sum-hd">
+        <div class="wz-sum-emoji">${W.emoji||'🏅'}</div>
+        <div><b>${W.deporteLabel}</b><br/><span>${W.categoria} · ${W.sexo}</span></div>
+      </div>
+      <div class="wz-sum-rows">
+        <div class="wz-sum-row"><span class="k">Tipo</span><span class="v">${conj?'De conjunto':'Individual'}</span></div>
+        <div class="wz-sum-row"><span class="k">Sistema</span><span class="v">${W.sistema}</span></div>
+        <div class="wz-sum-row"><span class="k">${conj?'Equipos':'Participantes'}</span><span class="v">${W.nEquipos}</span></div>
+        ${conj?`<div class="wz-sum-row"><span class="k">Grupos</span><span class="v">${W.nGrupos}</span></div>`:''}
+        <div class="wz-sum-row"><span class="k">${conj?'Reparto':'Llave'}</span><span class="v">${reparto}</span></div>
+      </div>`;
+  }
+
+  function goStep(n){
+    n=Math.max(1,Math.min(3,n)); W.step=n;
+    for(let i=1;i<=3;i++){
+      const st=document.getElementById('wzStep'+i);
+      st.classList.toggle('active',i===n);
+      st.classList.toggle('done',i<n);
+      if(i<n){ st.querySelector('.wz-badge').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'; }
+      else { st.querySelector('.wz-badge').textContent=i; }
+    }
+    document.getElementById('wzLine1').classList.toggle('done',n>1);
+    document.getElementById('wzLine2').classList.toggle('done',n>2);
+    for(let i=1;i<=3;i++) document.getElementById('panel'+i).classList.toggle('active',i===n);
+    document.querySelector('.sorteo-badge').textContent='Paso '+n+' de 3 · Parametrización';
+
+    // Step-specific setup
+    if(n===2){
+      document.getElementById('cfgConjunto').style.display = W.tipo==='conjunto'?'block':'none';
+      document.getElementById('cfgIndividual').style.display = W.tipo==='individual'?'block':'none';
+      recalcCfg();
+    }
+    if(n===3){ buildSummary(); document.getElementById('doneBox').style.display='none'; }
+
+    // Nav buttons
+    document.getElementById('btnBack').classList.toggle('hidden',n===1);
+    const next=document.getElementById('btnNext');
+    next.classList.remove('hidden');
+    if(n===1){ next.textContent='Siguiente →'; refreshStep1(); }
+    else if(n===2){ next.textContent='Siguiente →'; next.disabled=false; }
+    else { next.textContent='Confirmar parametrización'; next.disabled=false; }
+  }
+
+  function next(){
+    if(W.step<3){ goStep(W.step+1); return; }
+    // Paso 3 → confirmar (cierre de F1)
+    document.getElementById('doneBox').style.display='block';
+    document.getElementById('btnNext').disabled=true;
+    document.getElementById('btnNext').textContent='✓ Confirmado';
+    try{ document.getElementById('doneBox').scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){}
+  }
+</script>
+
+<!-- ═══ Shell mount ═══ -->
+<script type="module">
+  import { mountSidebar, mountHeader, mountDemoRoleSwitcher } from './shared/sidebar.js';
+
+  const roleCode = new URLSearchParams(window.location.search).get('role') || 'EVENT_COORDINATOR';
+  const currentFile = window.location.pathname.split('/').pop() || 'sorteo.html';
+
+  const LEGACY_MAP = {
+    'sorteo': 'sorteo.html',
+    'eventos': 'eventos.html', 'eventos-lista': 'eventos.html',
+    'competencias': 'lista.html', 'competencias-lista': 'lista.html', 'competencias-inicio': 'lista.html',
+    'digitadores': 'digitadores.html', 'coordinadores': 'coordinadores.html',
+    'mi-digitacion': 'digitador.html', 'inicio': 'dashboard.html'
+  };
+
+  let booted = false;
+  const { role } = mountSidebar({
+    rootEl: document.getElementById('sidebarRoot'),
+    roleCode,
+    activeId: 'sorteo',
+    onActiveChange: (activeId) => {
+      if (!booted) { booted = true; return; }
+      const target = LEGACY_MAP[activeId];
+      if (target) { if (target === currentFile) return; window.location.href = target; return; }
+      const isLocal = ['localhost','127.0.0.1'].includes(window.location.hostname);
+      const SHELL_BASE = isLocal ? 'http://localhost:5100' : 'https://naowee-tech.github.io/naowee-test-sidebar-shell';
+      window.location.href = `${SHELL_BASE}/perfil.html?role=${roleCode}&active=${activeId}`;
+    }
+  });
+  mountHeader({ headerEl: document.getElementById('topHeader'), role });
+  mountDemoRoleSwitcher({ rootEl: document.getElementById('demoRoleSwitcherRoot'), currentRoleCode: roleCode });
+</script>
+</body>
+</html>
