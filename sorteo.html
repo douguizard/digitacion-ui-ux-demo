@@ -34,7 +34,7 @@
 
 /* Wizard card — centrado, sin shadow */
 .wz-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);
-  max-width:760px;margin:0 auto;overflow:hidden}
+  max-width:760px;margin:0 auto}
 
 /* Stepper (indicador de pasos) */
 .wz-steps{display:flex;align-items:center;gap:6px;padding:22px 28px 18px;border-bottom:1px solid var(--border)}
@@ -103,8 +103,13 @@
 .wz-done p{font-size:13px;color:var(--text-secondary);max-width:420px;margin:0 auto}
 
 /* Nav */
-.wz-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 28px;border-top:1px solid var(--border);background:var(--bg-soft)}
+.wz-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 28px;border-top:1px solid var(--border);background:var(--surface);border-radius:0 0 var(--radius-xl) var(--radius-xl)}
 .wz-nav .is-hidden{visibility:hidden}
+
+/* Ajustes puntuales sobre componentes DS para esta vista */
+.naowee-dropdown__option:hover{ background:#f5f6fa; }   /* hover más claro que el default DS */
+#btnBack{ background:transparent; color:var(--accent); }
+#btnBack:hover{ background:var(--orange-bg); }
 </style>
 </head>
 <body>
@@ -122,7 +127,6 @@
           <h1 class="sorteo-title">Sorteo de equipos</h1>
           <p class="sorteo-sub">Configura una prueba para sortear sus grupos o llaves. Cada prueba (deporte + categoría + sexo) es un sorteo independiente.</p>
         </div>
-        <span class="sorteo-badge">Paso 1 de 3 · Parametrización</span>
       </div>
 
       <div class="wz-card">
@@ -275,7 +279,7 @@
 
         <!-- Nav -->
         <div class="wz-nav">
-          <button class="naowee-btn naowee-btn--quiet is-hidden" id="btnBack" onclick="goStep(W.step-1)">← Atrás</button>
+          <button class="naowee-btn naowee-btn--mute is-hidden" id="btnBack" onclick="goStep(W.step-1)">← Atrás</button>
           <button class="naowee-btn naowee-btn--loud" id="btnNext" onclick="next()" disabled>Siguiente →</button>
         </div>
       </div>
@@ -417,7 +421,6 @@
     document.getElementById('wzLine1').classList.toggle('done',n>1);
     document.getElementById('wzLine2').classList.toggle('done',n>2);
     for(let i=1;i<=3;i++) document.getElementById('panel'+i).classList.toggle('active',i===n);
-    document.querySelector('.sorteo-badge').textContent='Paso '+n+' de 3 · Parametrización';
 
     if(n===2){
       document.getElementById('cfgConjunto').style.display = W.tipo==='conjunto'?'block':'none';
@@ -438,6 +441,33 @@
     document.getElementById('doneBox').style.display='block';
     const b=document.getElementById('btnNext'); b.disabled=true; b.textContent='✓ Confirmado';
     try{ document.getElementById('doneBox').scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){}
+    fireConfetti();
+  }
+
+  /* Confetti ligero (canvas, sin dependencias) — honra prefers-reduced-motion. */
+  function fireConfetti(){
+    try{ if(matchMedia('(prefers-reduced-motion: reduce)').matches) return; }catch(e){}
+    const cv=document.createElement('canvas');
+    cv.style.cssText='position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9999';
+    cv.width=innerWidth; cv.height=innerHeight; document.body.appendChild(cv);
+    const ctx=cv.getContext('2d');
+    const cols=['#FF7500','#d74009','#1f8923','#1f78d1','#7c3aed','#f4c01c'];
+    const card=document.querySelector('.wz-card');
+    const r=card?card.getBoundingClientRect():{left:innerWidth/2,width:0,top:innerHeight*0.4};
+    const ox=r.left+r.width/2, oy=Math.max(90,r.top+140);
+    const P=[];
+    for(let i=0;i<140;i++){ const a=Math.random()*Math.PI*2, s=4+Math.random()*9;
+      P.push({x:ox+(Math.random()-.5)*200,y:oy,vx:Math.cos(a)*s,vy:Math.sin(a)*s-7,g:0.3+Math.random()*0.2,rot:Math.random()*6.28,vr:(Math.random()-.5)*0.5,w:6+Math.random()*7,h:4+Math.random()*5,c:cols[i%cols.length]}); }
+    let t=0;
+    (function frame(){
+      t++; ctx.clearRect(0,0,cv.width,cv.height); let alive=false;
+      for(const p of P){ p.vy+=p.g; p.vx*=0.99; p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr;
+        if(p.y<cv.height+30) alive=true;
+        ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.globalAlpha=Math.max(0,1-t/140);
+        ctx.fillStyle=p.c; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+      }
+      if(alive&&t<150) requestAnimationFrame(frame); else cv.remove();
+    })();
   }
 </script>
 
