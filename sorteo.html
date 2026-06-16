@@ -21,24 +21,22 @@
 <style>
 :root{
   --font:'Inter',sans-serif;
-  --green:#1f8923; --green-bg:#e6f4e7; --green-border:#b7dfb9;
-  --blue-info:#1f78d1; --blue-bg:#eef5ff;
   --orange-bg:#fff3e6;
-  --shadow-card:0 0 2px rgba(145,158,171,.2),0 12px 24px -4px rgba(145,158,171,.12);
 }
 
-/* Page header */
-.sorteo-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:22px}
+/* Columna centrada (cabecera + card alineadas a 760px) */
+.sorteo-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+  max-width:760px;margin:0 auto 22px}
 .sorteo-title{font-size:24px;font-weight:700;color:var(--text-primary);margin-bottom:4px}
-.sorteo-sub{font-size:13px;color:var(--text-secondary);max-width:560px}
+.sorteo-sub{font-size:13px;color:var(--text-secondary);max-width:520px}
 .sorteo-badge{display:inline-flex;align-items:center;gap:6px;background:var(--orange-bg);color:var(--accent);
   font-size:11px;font-weight:700;padding:5px 12px;border-radius:var(--radius-full);white-space:nowrap}
 
-/* Wizard card */
+/* Wizard card — centrado, sin shadow */
 .wz-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);
-  box-shadow:var(--shadow-card);max-width:860px;overflow:hidden}
+  max-width:760px;margin:0 auto;overflow:hidden}
 
-/* Stepper */
+/* Stepper (indicador de pasos) */
 .wz-steps{display:flex;align-items:center;gap:6px;padding:22px 28px 18px;border-bottom:1px solid var(--border)}
 .wz-step{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .wz-badge{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
@@ -46,12 +44,12 @@
   background:var(--bg-soft);color:var(--text-secondary);border:1.5px solid var(--border-dark)}
 .wz-badge svg{width:16px;height:16px}
 .wz-step.active .wz-badge{background:var(--accent);color:#fff;border-color:var(--accent)}
-.wz-step.done .wz-badge{background:var(--green);color:#fff;border-color:var(--green)}
+.wz-step.done .wz-badge{background:var(--green,#1f8923);color:#fff;border-color:var(--green,#1f8923)}
 .wz-lbl{font-size:13px;font-weight:600;color:var(--text-secondary);white-space:nowrap;transition:color .25s}
 .wz-step.active .wz-lbl{color:var(--accent);font-weight:700}
 .wz-step.done .wz-lbl{color:var(--text-primary)}
 .wz-line{flex:1;height:2px;border-radius:2px;background:var(--border-dark);min-width:24px;transition:background .3s}
-.wz-line.done{background:var(--green)}
+.wz-line.done{background:var(--green,#1f8923)}
 
 /* Panels */
 .wz-body{padding:26px 28px}
@@ -61,15 +59,11 @@
 .wz-panel-title{font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:3px}
 .wz-panel-hint{font-size:12.5px;color:var(--text-secondary);margin-bottom:20px}
 
-/* Fields */
+/* Field + label */
 .wz-field{margin-bottom:18px}
 .wz-field.hidden{display:none}
 .wz-field>label{display:block;font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:7px}
 .wz-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.wz-select,.wz-num{width:100%;height:44px;padding:0 12px;border:1px solid var(--border-dark);border-radius:var(--radius-md);
-  font-family:var(--font);font-size:14px;color:var(--text-primary);background:var(--surface);transition:border-color .15s,box-shadow .15s}
-.wz-select:focus,.wz-num:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(215,64,9,.15)}
-.wz-select:disabled{background:var(--bg-soft);color:var(--text-muted);cursor:not-allowed}
 
 /* Tipo pills */
 .wz-pills{display:flex;gap:10px;flex-wrap:wrap}
@@ -84,12 +78,11 @@
 .wz-pill-txt span{font-size:11.5px;color:var(--text-secondary)}
 
 /* Derived chip */
-.wz-derived{display:flex;align-items:center;gap:10px;background:var(--blue-bg);border:1px solid #cfe1f5;
-  border-radius:var(--radius-md);padding:11px 14px;font-size:13px;color:#1f4e79;margin-top:4px}
-.wz-derived b{color:#0f3a63}
+.wz-derived{display:flex;align-items:center;gap:10px;background:var(--blue-bg,#eef5ff);border:1px solid #cfe1f5;
+  border-radius:var(--radius-md);padding:11px 14px;font-size:13px;color:#1f4e79;margin-top:6px}
 .wz-derived.warn{background:var(--orange-bg);border-color:#ffbf75;color:#9a4b00}
 
-/* Summary (step 3) */
+/* Summary (paso 3) */
 .wz-summary{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
 .wz-sum-hd{display:flex;align-items:center;gap:12px;padding:16px 18px;background:var(--bg-soft);border-bottom:1px solid var(--border)}
 .wz-sum-emoji{font-size:30px;line-height:1}
@@ -101,33 +94,17 @@
 .wz-sum-row .k{color:var(--text-secondary)}
 .wz-sum-row .v{font-weight:700;color:var(--text-primary)}
 
-/* Done panel (F1 end) */
-.wz-done{text-align:center;padding:10px 0 4px}
-.wz-done-ico{width:60px;height:60px;border-radius:50%;background:var(--green-bg);color:var(--green);
+/* Done panel */
+.wz-done{text-align:center;padding:14px 0 4px}
+.wz-done-ico{width:60px;height:60px;border-radius:50%;background:var(--green-bg,#e6f4e7);color:var(--green,#1f8923);
   display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
 .wz-done-ico svg{width:30px;height:30px}
 .wz-done b{display:block;font-size:17px;font-weight:700;color:var(--text-primary);margin-bottom:6px}
-.wz-done p{font-size:13px;color:var(--text-secondary);max-width:420px;margin:0 auto 4px}
+.wz-done p{font-size:13px;color:var(--text-secondary);max-width:420px;margin:0 auto}
 
 /* Nav */
 .wz-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 28px;border-top:1px solid var(--border);background:var(--bg-soft)}
-.wz-btn{height:44px;padding:0 22px;border-radius:var(--radius-md);font-family:var(--font);font-size:13px;font-weight:700;
-  cursor:pointer;border:none;transition:opacity .15s,transform .1s,background .15s}
-.wz-btn:active{transform:scale(.98)}
-.wz-btn.primary{background:var(--accent);color:#fff}
-.wz-btn.primary:hover{opacity:.9}
-.wz-btn.primary:disabled{background:var(--border-dark);color:#fff;cursor:not-allowed;opacity:.7}
-.wz-btn.ghost{background:var(--surface);color:var(--text-primary);border:1px solid var(--border-dark)}
-.wz-btn.ghost:hover{background:#f5f6fa}
-.wz-btn.hidden{visibility:hidden}
-
-@media(max-width:640px){
-  .wz-row{grid-template-columns:1fr}
-  .wz-lbl{display:none}
-  .wz-steps{padding:16px}
-  .wz-body{padding:20px 16px}
-  .wz-nav{padding:14px 16px}
-}
+.wz-nav .is-hidden{visibility:hidden}
 </style>
 </head>
 <body>
@@ -151,17 +128,11 @@
       <div class="wz-card">
         <!-- Stepper -->
         <div class="wz-steps">
-          <div class="wz-step active" data-step="1" id="wzStep1">
-            <div class="wz-badge">1</div><span class="wz-lbl">Prueba</span>
-          </div>
+          <div class="wz-step active" data-step="1" id="wzStep1"><div class="wz-badge">1</div><span class="wz-lbl">Prueba</span></div>
           <div class="wz-line" id="wzLine1"></div>
-          <div class="wz-step" data-step="2" id="wzStep2">
-            <div class="wz-badge">2</div><span class="wz-lbl">Configuración</span>
-          </div>
+          <div class="wz-step" data-step="2" id="wzStep2"><div class="wz-badge">2</div><span class="wz-lbl">Configuración</span></div>
           <div class="wz-line" id="wzLine2"></div>
-          <div class="wz-step" data-step="3" id="wzStep3">
-            <div class="wz-badge">3</div><span class="wz-lbl">Confirmar</span>
-          </div>
+          <div class="wz-step" data-step="3" id="wzStep3"><div class="wz-badge">3</div><span class="wz-lbl">Confirmar</span></div>
         </div>
 
         <div class="wz-body">
@@ -187,26 +158,52 @@
 
             <div class="wz-field hidden" id="fDeporte">
               <label>Deporte</label>
-              <select class="wz-select" id="selDeporte" onchange="selDeporte(this.value)">
-                <option value="">Selecciona un deporte…</option>
-              </select>
+              <div class="naowee-dropdown" id="ddDeporte">
+                <button type="button" class="naowee-dropdown__trigger" onclick="ddToggle('ddDeporte')">
+                  <span class="naowee-dropdown__placeholder">Selecciona un deporte…</span>
+                  <span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span></span>
+                </button>
+                <div class="naowee-dropdown__menu" id="ddDeporte-menu"></div>
+              </div>
             </div>
 
             <div class="wz-row">
               <div class="wz-field hidden" id="fCategoria">
                 <label>Categoría</label>
-                <select class="wz-select" id="selCategoria" onchange="W.categoria=this.value;refreshStep1()">
-                  <option value="">Categoría…</option>
-                  <option>Sub-14</option><option>Sub-16</option><option>Sub-18</option>
-                  <option>Sub-20</option><option>Mayores</option><option>Masters</option>
-                </select>
+                <div class="naowee-dropdown" id="ddCategoria">
+                  <button type="button" class="naowee-dropdown__trigger" onclick="ddToggle('ddCategoria')">
+                    <span class="naowee-dropdown__placeholder">Categoría…</span>
+                    <span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span></span>
+                  </button>
+                  <div class="naowee-dropdown__menu">
+                    <div class="naowee-dropdown__option" data-value="Sub-14" onclick="ddPick('ddCategoria',this)">Sub-14</div>
+                    <div class="naowee-dropdown__option" data-value="Sub-16" onclick="ddPick('ddCategoria',this)">Sub-16</div>
+                    <div class="naowee-dropdown__option" data-value="Sub-18" onclick="ddPick('ddCategoria',this)">Sub-18</div>
+                    <div class="naowee-dropdown__option" data-value="Sub-20" onclick="ddPick('ddCategoria',this)">Sub-20</div>
+                    <div class="naowee-dropdown__option" data-value="Mayores" onclick="ddPick('ddCategoria',this)">Mayores</div>
+                    <div class="naowee-dropdown__option" data-value="Masters" onclick="ddPick('ddCategoria',this)">Masters</div>
+                  </div>
+                </div>
               </div>
               <div class="wz-field hidden" id="fSexo">
                 <label>Sexo / rama</label>
-                <select class="wz-select" id="selSexo" onchange="W.sexo=this.value;refreshStep1()">
-                  <option value="">Sexo…</option>
-                  <option>Masculino</option><option>Femenino</option><option>Mixto</option>
-                </select>
+                <div class="naowee-dropdown" id="ddSexo">
+                  <button type="button" class="naowee-dropdown__trigger" onclick="ddToggle('ddSexo')">
+                    <span class="naowee-dropdown__placeholder">Sexo…</span>
+                    <span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span></span>
+                  </button>
+                  <div class="naowee-dropdown__menu">
+                    <div class="naowee-dropdown__option" data-value="Masculino" onclick="ddPick('ddSexo',this)">Masculino</div>
+                    <div class="naowee-dropdown__option" data-value="Femenino" onclick="ddPick('ddSexo',this)">Femenino</div>
+                    <div class="naowee-dropdown__option" data-value="Mixto" onclick="ddPick('ddSexo',this)">Mixto</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -218,29 +215,45 @@
 
             <div class="wz-field">
               <label>Sistema</label>
-              <div class="wz-derived" id="sistemaChip"><b id="sistemaTxt">—</b></div>
+              <div class="wz-derived" style="margin-top:0"><b id="sistemaTxt">—</b></div>
             </div>
 
-            <!-- Config conjunto -->
             <div id="cfgConjunto">
               <div class="wz-row">
                 <div class="wz-field">
                   <label>N.º de equipos clasificados</label>
-                  <input class="wz-num" type="number" id="numEquipos" min="2" max="32" value="8" oninput="W.nEquipos=+this.value;recalcCfg()"/>
+                  <div class="naowee-input-stepper" id="stEquipos">
+                    <div class="naowee-input-stepper__content"><div class="naowee-input-stepper__input">
+                      <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inEquipos',-1,2,32)" aria-label="Restar"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+                      <div class="naowee-input-stepper__value"><input type="number" class="naowee-input-stepper__value-input" id="inEquipos" value="8" min="2" max="32" oninput="W.nEquipos=+this.value||0;recalcCfg()"><span class="naowee-input-stepper__value-comp">equipos</span></div>
+                      <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inEquipos',1,2,32)" aria-label="Sumar"><svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+                    </div></div>
+                  </div>
                 </div>
                 <div class="wz-field">
                   <label>N.º de grupos</label>
-                  <input class="wz-num" type="number" id="numGrupos" min="1" max="8" value="2" oninput="W.nGrupos=+this.value;recalcCfg()"/>
+                  <div class="naowee-input-stepper" id="stGrupos">
+                    <div class="naowee-input-stepper__content"><div class="naowee-input-stepper__input">
+                      <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inGrupos',-1,1,8)" aria-label="Restar"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+                      <div class="naowee-input-stepper__value"><input type="number" class="naowee-input-stepper__value-input" id="inGrupos" value="2" min="1" max="8" oninput="W.nGrupos=+this.value||1;recalcCfg()"><span class="naowee-input-stepper__value-comp">grupos</span></div>
+                      <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inGrupos',1,1,8)" aria-label="Sumar"><svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+                    </div></div>
+                  </div>
                 </div>
               </div>
               <div class="wz-derived" id="repartoChip"><b id="repartoTxt">—</b></div>
             </div>
 
-            <!-- Config individual -->
             <div id="cfgIndividual" style="display:none">
               <div class="wz-field" style="max-width:50%">
                 <label>N.º de participantes</label>
-                <input class="wz-num" type="number" id="numPart" min="2" max="64" value="8" oninput="W.nEquipos=+this.value;recalcCfg()"/>
+                <div class="naowee-input-stepper" id="stPart">
+                  <div class="naowee-input-stepper__content"><div class="naowee-input-stepper__input">
+                    <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inPart',-1,2,64)" aria-label="Restar"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+                    <div class="naowee-input-stepper__value"><input type="number" class="naowee-input-stepper__value-input" id="inPart" value="8" min="2" max="64" oninput="W.nEquipos=+this.value||0;recalcCfg()"><span class="naowee-input-stepper__value-comp">deportistas</span></div>
+                    <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inPart',1,2,64)" aria-label="Sumar"><svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+                  </div></div>
+                </div>
               </div>
               <div class="wz-derived" id="llaveChip"><b id="llaveTxt">—</b></div>
             </div>
@@ -250,13 +263,11 @@
           <div class="wz-panel" id="panel3">
             <div class="wz-panel-title">Revisa la parametrización</div>
             <div class="wz-panel-hint">Si todo está correcto, confirma para continuar al sorteo.</div>
-
             <div class="wz-summary" id="summaryBox"></div>
-
             <div class="wz-done" id="doneBox" style="display:none">
               <div class="wz-done-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
               <b>Parametrización lista</b>
-              <p id="doneMsg">Los parámetros quedaron definidos. El siguiente paso —cargar clasificados y ejecutar la ruleta— llega en la próxima fase del prototipo.</p>
+              <p>Los parámetros quedaron definidos. El siguiente paso —cargar clasificados y ejecutar la ruleta— llega en la próxima fase del prototipo.</p>
             </div>
           </div>
 
@@ -264,8 +275,8 @@
 
         <!-- Nav -->
         <div class="wz-nav">
-          <button class="wz-btn ghost hidden" id="btnBack" onclick="goStep(W.step-1)">← Atrás</button>
-          <button class="wz-btn primary" id="btnNext" onclick="next()" disabled>Siguiente →</button>
+          <button class="naowee-btn naowee-btn--quiet is-hidden" id="btnBack" onclick="goStep(W.step-1)">← Atrás</button>
+          <button class="naowee-btn naowee-btn--loud" id="btnNext" onclick="next()" disabled>Siguiente →</button>
         </div>
       </div>
 
@@ -277,11 +288,10 @@
 
 <script src="shared.js"></script>
 
-<!-- ═══ Wizard de parametrización (lógica) ═══ -->
+<!-- ═══ Wizard de parametrización ═══ -->
 <script>
   const W = { step:1, tipo:'', deporteKey:'', deporteLabel:'', emoji:'', categoria:'', sexo:'', nEquipos:8, nGrupos:2, sistema:'' };
 
-  /* Deportes desde SPORTS_DB, deduplicando alias (misma referencia de objeto). */
   function deportesPorTipo(tipo){
     const out=[], seen=new Set();
     if(typeof SPORTS_DB==='undefined') return out;
@@ -295,24 +305,55 @@
     return out.sort((a,b)=>a.label.localeCompare(b.label,'es'));
   }
 
+  /* ── Dropdowns canónicos DS ── */
+  function ddToggle(id){
+    const w=document.getElementById(id);
+    const open=w.classList.contains('naowee-dropdown--open');
+    document.querySelectorAll('.naowee-dropdown--open').forEach(x=>x.classList.remove('naowee-dropdown--open'));
+    if(!open) w.classList.add('naowee-dropdown--open');
+  }
+  document.addEventListener('click',e=>{
+    if(!e.target.closest('.naowee-dropdown')) document.querySelectorAll('.naowee-dropdown--open').forEach(x=>x.classList.remove('naowee-dropdown--open'));
+  });
+  function ddSetText(id,label){
+    const span=document.querySelector('#'+id+' .naowee-dropdown__placeholder, #'+id+' .naowee-dropdown__value');
+    if(span){ span.textContent=label; span.classList.remove('naowee-dropdown__placeholder'); span.classList.add('naowee-dropdown__value'); }
+  }
+  function ddPick(id,el){
+    const val=el.dataset.value, label=el.textContent.trim();
+    const w=document.getElementById(id);
+    ddSetText(id,label);
+    w.querySelectorAll('.naowee-dropdown__option').forEach(o=>o.classList.toggle('naowee-dropdown__option--selected',o===el));
+    w.classList.remove('naowee-dropdown--open');
+    if(id==='ddDeporte') selDeporte(val);
+    else if(id==='ddCategoria'){ W.categoria=val; refreshStep1(); }
+    else if(id==='ddSexo'){ W.sexo=val; refreshStep1(); }
+  }
+
   function selTipo(tipo){
-    W.tipo=tipo; W.deporteKey=''; W.deporteLabel=''; W.emoji='';
+    W.tipo=tipo; W.deporteKey=''; W.deporteLabel=''; W.emoji=''; W.categoria=''; W.sexo='';
     document.querySelectorAll('.wz-pill').forEach(p=>p.classList.toggle('sel',p.dataset.tipo===tipo));
-    const sel=document.getElementById('selDeporte');
-    sel.innerHTML='<option value="">Selecciona un deporte…</option>'+
-      deportesPorTipo(tipo).map(d=>`<option value="${d.key}">${d.emoji}  ${d.label}</option>`).join('');
+    // poblar menú de deportes
+    document.getElementById('ddDeporte-menu').innerHTML =
+      deportesPorTipo(tipo).map(d=>`<div class="naowee-dropdown__option" data-value="${d.key}" onclick="ddPick('ddDeporte',this)">${d.emoji}&nbsp;&nbsp;${d.label}</div>`).join('');
+    // reset triggers
+    resetDD('ddDeporte','Selecciona un deporte…');
+    resetDD('ddCategoria','Categoría…');
+    resetDD('ddSexo','Sexo…');
     document.getElementById('fDeporte').classList.remove('hidden');
     document.getElementById('fCategoria').classList.add('hidden');
     document.getElementById('fSexo').classList.add('hidden');
-    sel.value=''; document.getElementById('selCategoria').value=''; document.getElementById('selSexo').value='';
-    W.categoria=''; W.sexo='';
     refreshStep1();
+  }
+  function resetDD(id,placeholder){
+    const span=document.querySelector('#'+id+' .naowee-dropdown__placeholder, #'+id+' .naowee-dropdown__value');
+    if(span){ span.textContent=placeholder; span.classList.add('naowee-dropdown__placeholder'); span.classList.remove('naowee-dropdown__value'); }
+    document.querySelectorAll('#'+id+' .naowee-dropdown__option--selected').forEach(o=>o.classList.remove('naowee-dropdown__option--selected'));
   }
 
   function selDeporte(key){
-    W.deporteKey=key;
     const sp=key&&typeof SPORTS_DB!=='undefined'?SPORTS_DB[key]:null;
-    W.deporteLabel=sp?sp.label:''; W.emoji=sp?(sp.emoji||'🏅'):'';
+    W.deporteKey=key; W.deporteLabel=sp?sp.label:''; W.emoji=sp?(sp.emoji||'🏅'):'';
     const show=!!key;
     document.getElementById('fCategoria').classList.toggle('hidden',!show);
     document.getElementById('fSexo').classList.toggle('hidden',!show);
@@ -320,33 +361,35 @@
   }
 
   function refreshStep1(){
-    const ok = W.tipo && W.deporteKey && W.categoria && W.sexo;
+    const ok=W.tipo&&W.deporteKey&&W.categoria&&W.sexo;
     if(W.step===1) document.getElementById('btnNext').disabled=!ok;
+  }
+
+  /* ── Steppers canónicos DS ── */
+  function stepAdjust(inputId,delta,min,max){
+    const el=document.getElementById(inputId);
+    let v=(+el.value||0)+delta; v=Math.max(min,Math.min(max,v)); el.value=v;
+    el.dispatchEvent(new Event('input'));
   }
 
   function recalcCfg(){
     if(W.tipo==='conjunto'){
       W.sistema='Fase de grupos · todos contra todos';
-      const n=W.nEquipos||0, g=W.nGrupos||1;
-      const base=Math.floor(n/g), resto=n%g;
-      const repTxt = resto===0
-        ? `${g} grupo(s) de ${base} equipos`
-        : `${resto} grupo(s) de ${base+1} y ${g-resto} de ${base}`;
-      const tag = (n%g!==0) ? ` · incluye descanso (by)` : '';
-      const chip=document.getElementById('repartoChip');
-      chip.classList.toggle('warn', n%g!==0);
-      document.getElementById('repartoTxt').textContent = (n&&g) ? `Reparto: ${repTxt}${tag}` : 'Define equipos y grupos';
+      const n=W.nEquipos||0, g=W.nGrupos||1, base=Math.floor(n/g), resto=n%g;
+      const rep = resto===0 ? `${g} grupo(s) de ${base} equipos` : `${resto} grupo(s) de ${base+1} y ${g-resto} de ${base}`;
+      const tag = (n%g!==0) ? ' · incluye descanso (by)' : '';
+      document.getElementById('repartoChip').classList.toggle('warn', n%g!==0);
+      document.getElementById('repartoTxt').textContent = (n&&g)?`Reparto: ${rep}${tag}`:'Define equipos y grupos';
     }else{
       W.sistema='Eliminación directa · llaves';
-      const n=W.nEquipos||0;
-      const byes = n>1 ? (Math.pow(2,Math.ceil(Math.log2(n)))-n) : 0;
-      document.getElementById('llaveTxt').textContent = n? `Llave de ${n} participante(s)${byes? ` · ${byes} descanso(s)`:''}` : 'Define participantes';
+      const n=W.nEquipos||0, byes=n>1?(Math.pow(2,Math.ceil(Math.log2(n)))-n):0;
+      document.getElementById('llaveTxt').textContent = n?`Llave de ${n} participante(s)${byes?` · ${byes} descanso(s)`:''}`:'Define participantes';
     }
     document.getElementById('sistemaTxt').textContent=W.sistema;
   }
 
   function buildSummary(){
-    const conj = W.tipo==='conjunto';
+    const conj=W.tipo==='conjunto';
     const reparto = conj ? document.getElementById('repartoTxt').textContent.replace('Reparto: ','') : document.getElementById('llaveTxt').textContent;
     document.getElementById('summaryBox').innerHTML=`
       <div class="wz-sum-hd">
@@ -366,17 +409,16 @@
     n=Math.max(1,Math.min(3,n)); W.step=n;
     for(let i=1;i<=3;i++){
       const st=document.getElementById('wzStep'+i);
-      st.classList.toggle('active',i===n);
-      st.classList.toggle('done',i<n);
-      if(i<n){ st.querySelector('.wz-badge').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'; }
-      else { st.querySelector('.wz-badge').textContent=i; }
+      st.classList.toggle('active',i===n); st.classList.toggle('done',i<n);
+      st.querySelector('.wz-badge').innerHTML = i<n
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+        : String(i);
     }
     document.getElementById('wzLine1').classList.toggle('done',n>1);
     document.getElementById('wzLine2').classList.toggle('done',n>2);
     for(let i=1;i<=3;i++) document.getElementById('panel'+i).classList.toggle('active',i===n);
     document.querySelector('.sorteo-badge').textContent='Paso '+n+' de 3 · Parametrización';
 
-    // Step-specific setup
     if(n===2){
       document.getElementById('cfgConjunto').style.display = W.tipo==='conjunto'?'block':'none';
       document.getElementById('cfgIndividual').style.display = W.tipo==='individual'?'block':'none';
@@ -384,10 +426,8 @@
     }
     if(n===3){ buildSummary(); document.getElementById('doneBox').style.display='none'; }
 
-    // Nav buttons
-    document.getElementById('btnBack').classList.toggle('hidden',n===1);
+    document.getElementById('btnBack').classList.toggle('is-hidden',n===1);
     const next=document.getElementById('btnNext');
-    next.classList.remove('hidden');
     if(n===1){ next.textContent='Siguiente →'; refreshStep1(); }
     else if(n===2){ next.textContent='Siguiente →'; next.disabled=false; }
     else { next.textContent='Confirmar parametrización'; next.disabled=false; }
@@ -395,10 +435,8 @@
 
   function next(){
     if(W.step<3){ goStep(W.step+1); return; }
-    // Paso 3 → confirmar (cierre de F1)
     document.getElementById('doneBox').style.display='block';
-    document.getElementById('btnNext').disabled=true;
-    document.getElementById('btnNext').textContent='✓ Confirmado';
+    const b=document.getElementById('btnNext'); b.disabled=true; b.textContent='✓ Confirmado';
     try{ document.getElementById('doneBox').scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){}
   }
 </script>
@@ -406,31 +444,13 @@
 <!-- ═══ Shell mount ═══ -->
 <script type="module">
   import { mountSidebar, mountHeader, mountDemoRoleSwitcher } from './shared/sidebar.js';
-
   const roleCode = new URLSearchParams(window.location.search).get('role') || 'EVENT_COORDINATOR';
-  const currentFile = window.location.pathname.split('/').pop() || 'sorteo.html';
-
-  const LEGACY_MAP = {
-    'sorteo': 'sorteo.html',
-    'eventos': 'eventos.html', 'eventos-lista': 'eventos.html',
-    'competencias': 'lista.html', 'competencias-lista': 'lista.html', 'competencias-inicio': 'lista.html',
-    'digitadores': 'digitadores.html', 'coordinadores': 'coordinadores.html',
-    'mi-digitacion': 'digitador.html', 'inicio': 'dashboard.html'
-  };
-
   let booted = false;
   const { role } = mountSidebar({
     rootEl: document.getElementById('sidebarRoot'),
     roleCode,
     activeId: 'sorteo',
-    onActiveChange: (activeId) => {
-      if (!booted) { booted = true; return; }
-      const target = LEGACY_MAP[activeId];
-      if (target) { if (target === currentFile) return; window.location.href = target; return; }
-      const isLocal = ['localhost','127.0.0.1'].includes(window.location.hostname);
-      const SHELL_BASE = isLocal ? 'http://localhost:5100' : 'https://naowee-tech.github.io/naowee-test-sidebar-shell';
-      window.location.href = `${SHELL_BASE}/perfil.html?role=${roleCode}&active=${activeId}`;
-    }
+    onActiveChange: () => { if (!booted) { booted = true; } }
   });
   mountHeader({ headerEl: document.getElementById('topHeader'), role });
   mountDemoRoleSwitcher({ rootEl: document.getElementById('demoRoleSwitcherRoot'), currentRoleCode: roleCode });
