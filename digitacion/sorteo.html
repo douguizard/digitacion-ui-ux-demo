@@ -219,10 +219,21 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 /* ═══════════ F2: ruleta + preview ═══════════ */
 .stage{animation:wzIn .35s cubic-bezier(.32,.72,0,1)}
 .ruleta-wrap{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
-.ruleta-reel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:20px 28px;text-align:center;box-shadow:var(--shadow-card)}
-.ruleta-reel-lbl{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--text-secondary)}
-.ruleta-reel-name{font-size:26px;font-weight:800;color:var(--accent);margin-top:4px;min-height:34px;line-height:1.2}
-.ruleta-reel.spin .ruleta-reel-name{opacity:.75}
+.ruleta-carousel{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:20px 0 18px;box-shadow:var(--shadow-card);overflow:hidden}
+.rcar-lbl{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--text-secondary);text-align:center;margin-bottom:14px}
+.rcar-viewport{position:relative;overflow:hidden;height:84px;-webkit-mask:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+.rcar-track{display:flex;gap:12px;height:100%;align-items:center;will-change:transform}
+.rcar-card{flex:0 0 var(--rcar-w,180px);height:72px;display:flex;align-items:center;gap:13px;padding:0 18px;border-radius:var(--radius-lg);border:1.5px solid var(--border);background:var(--bg-soft,#f5f6fa);transition:border-color .2s ease,background .2s ease,transform .2s ease}
+.rcar-ava{width:40px;height:40px;flex:0 0 40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:15px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}
+.rcar-name{font-weight:700;font-size:15.5px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rcar-card.is-winner{border-color:var(--accent);background:var(--orange-bg,#fff3e6);transform:scale(1.04)}
+.rcar-card.is-winner .rcar-name{color:var(--accent)}
+.rcar-marker{position:absolute;left:50%;top:8px;bottom:8px;width:3px;transform:translateX(-50%);background:var(--accent);border-radius:3px;z-index:3;box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 15%,transparent)}
+.rcar-marker::before,.rcar-marker::after{content:"";position:absolute;left:50%;transform:translateX(-50%);width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent}
+.rcar-marker::before{top:-9px;border-top:9px solid var(--accent)}
+.rcar-marker::after{bottom:-9px;border-bottom:9px solid var(--accent)}
+@media(max-width:600px){.rcar-card{--rcar-w:150px;gap:10px;padding:0 14px}.rcar-name{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.rcar-track,.rcar-card{transition:none!important}}
 .ruleta-grupos{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
 .rg-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
 .rg-head{display:flex;align-items:center;gap:8px;padding:11px 16px;font-size:14px;font-weight:700;color:var(--text-primary);background:var(--bg-soft);border-bottom:1px solid var(--border)}
@@ -505,10 +516,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
       </div>
       <div class="clasif-wrap">
         <div class="clasif-card">
-          <div class="clasif-head"><span class="cr-stand-dot"></span><span id="clasifTitle">Equipos clasificados</span><span class="naowee-badge naowee-badge--neutral naowee-badge--quiet" id="clasifCount">0</span><button class="naowee-btn naowee-btn--quiet naowee-btn--small" id="btnAddClasif" onclick="addClasif()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9M2.5 7h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg> Agregar</button></div>
+          <div class="clasif-head"><span class="cr-stand-dot"></span><span id="clasifTitle">Equipos clasificados</span><span class="naowee-badge naowee-badge--neutral naowee-badge--quiet" id="clasifCount">0</span><button class="naowee-btn naowee-btn--mute naowee-btn--small" id="btnAddClasif" onclick="addClasif()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9M2.5 7h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg> Agregar</button></div>
           <div id="clasifList" class="clasif-list"></div>
         </div>
-        <div class="naowee-message naowee-message--informative"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 7.2v3.4M8 5.1v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>El nombre es obligatorio; la delegación/regional es opcional. Estos serán los participantes que entren al sorteo.</span></div>
+        <div class="naowee-message naowee-message--informative"><div class="naowee-message__header"><span class="naowee-message__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7 7h2v4H7z" fill="#fff"/><circle cx="8" cy="5" r="1" fill="#fff"/></svg></span><span class="naowee-message__body">El nombre es obligatorio; la delegación/regional es opcional. Estos serán los participantes que entren al sorteo.</span></div></div>
       </div>
       <div class="wz-nav stage-footer">
         <button class="naowee-btn naowee-btn--mute" onclick="backToWizard()">Atrás</button>
@@ -526,7 +537,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
         <button class="naowee-btn naowee-btn--mute" id="btnSkip" onclick="skipRuleta()">Saltar / Rápido ⏩</button>
       </div>
       <div class="ruleta-wrap">
-        <div class="ruleta-reel"><div class="ruleta-reel-lbl">Sacando…</div><div class="ruleta-reel-name" id="reelName">—</div></div>
+        <div class="ruleta-carousel"><div class="rcar-lbl">Sacando equipo…</div><div class="rcar-viewport"><div class="rcar-track" id="rcarTrack"></div></div><div class="rcar-marker"></div></div>
         <div class="ruleta-grupos" id="ruletaGrupos"></div>
       </div>
       <div class="wz-nav stage-footer" id="ruletaNav" style="display:none">
@@ -721,12 +732,15 @@ function addClasif(){ _clasificados.push({nombre:'',delegacion:''}); renderClasi
 function removeClasif(i){ if(_clasificados.length<=2)return; _clasificados.splice(i,1); renderClasifList(); }
 function validateClasif(){ const ok=_clasificados.length>=2&&_clasificados.every(function(c){return (c.nombre||'').trim();}); const b=document.getElementById('btnClasifNext'); if(b)b.disabled=!ok; return ok; }
 function continueSorteo(){ if(!validateClasif())return; W.nEquipos=_clasificados.length; if(W.modo==='manual') startManual(); else startRuleta(); }
-function startRuleta(){ buildSorteo(); _assign=SorteoEngine.asignarGrupos(_sorteo.participantes,_sorteo.config.nGrupos); _ruletaDone=false; showStage('ruletaStage'); document.getElementById('ruletaSub').textContent='Asignando participantes a los grupos…'; document.getElementById('ruletaNav').style.display='none'; document.getElementById('btnSkip').style.display=''; document.getElementById('reelName').textContent='—'; renderRuletaGrupos(_assign,[]); buildDrawSeq(); runRuletaAnim(0); }
+function startRuleta(){ buildSorteo(); _assign=SorteoEngine.asignarGrupos(_sorteo.participantes,_sorteo.config.nGrupos); _ruletaDone=false; showStage('ruletaStage'); document.getElementById('ruletaSub').textContent='Asignando participantes a los grupos…'; document.getElementById('ruletaNav').style.display='none'; document.getElementById('btnSkip').style.display=''; renderRuletaGrupos(_assign,[]); buildDrawSeq(); runRuletaAnim(0); }
 function buildDrawSeq(){ _drawSeq=[]; const maxLen=Math.max(0,..._assign.map(g=>g.length)); for(let pos=0;pos<maxLen;pos++)for(let g=0;g<_assign.length;g++){ if(_assign[g][pos]!=null)_drawSeq.push({name:_assign[g][pos],g,pos}); } }
 function renderRuletaGrupos(assign,filled){ const set=new Set(filled); const el=document.getElementById('ruletaGrupos'); el.innerHTML=assign.map((teams,gi)=>{ const L=String.fromCharCode(65+gi); const slots=teams.map(t=>{ const on=set.has(t); return `<div class="rg-slot${on?' filled':''}">`+(on?`<span class="rg-ava" style="background:${teamColorLocal(t)}">${teamInitLocal(t)}</span><span class="rg-name">${t}</span>`:`<span class="rg-name" style="color:var(--text-muted)">—</span>`)+`</div>`; }).join(''); return `<div class="rg-card"><div class="rg-head"><span class="rg-dot"></span>Grupo ${L}<span style="margin-left:auto;font-size:12px;font-weight:600;color:var(--text-secondary)">${teams.length} eq</span></div><div class="rg-body">${slots}</div></div>`; }).join(''); }
 function placeOne(item){ const card=document.querySelectorAll('#ruletaGrupos .rg-card')[item.g]; if(!card)return; const slot=card.querySelectorAll('.rg-slot')[item.pos]; if(!slot)return; slot.classList.add('filled'); slot.innerHTML=`<span class="rg-ava" style="background:${teamColorLocal(item.name)}">${teamInitLocal(item.name)}</span><span class="rg-name">${item.name}</span>`; }
-function runRuletaAnim(i){ if(i>=_drawSeq.length){ finishRuleta(); return; } const item=_drawSeq[i]; const reel=document.querySelector('.ruleta-reel'),nameEl=document.getElementById('reelName'); let reduce=false; try{reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){} if(reduce){ nameEl.textContent=item.name; placeOne(item); _ruletaTimers.push(setTimeout(()=>runRuletaAnim(i+1),80)); return; } reel.classList.add('spin'); let ticks=0; const spin=setInterval(()=>{ nameEl.textContent=_NAMES[Math.floor(Math.random()*_NAMES.length)]; if(++ticks>4){ clearInterval(spin); nameEl.textContent=item.name; reel.classList.remove('spin'); placeOne(item); _ruletaTimers.push(setTimeout(()=>runRuletaAnim(i+1),230)); } },45); _ruletaTimers.push(spin); }
-function skipRuleta(){ _ruletaTimers.forEach(t=>{clearTimeout(t);clearInterval(t);}); _ruletaTimers=[]; const all=[]; _assign.forEach(g=>g.forEach(t=>all.push(t))); renderRuletaGrupos(_assign,all); document.getElementById('reelName').textContent='✓'; finishRuleta(); }
+function rcarCard(name){ const nm=name||''; return '<div class="rcar-card"><span class="rcar-ava" style="background:'+teamColorLocal(nm)+'">'+teamInitLocal(nm)+'</span><span class="rcar-name">'+nm+'</span></div>'; }
+function buildCarouselTrack(winnerName){ const track=document.getElementById('rcarTrack'); if(!track)return 0; const winIdx=22,tail=5,cards=[]; for(let k=0;k<winIdx;k++)cards.push(_NAMES[Math.floor(Math.random()*_NAMES.length)]); cards.push(winnerName); for(let k=0;k<tail;k++)cards.push(_NAMES[Math.floor(Math.random()*_NAMES.length)]); track.innerHTML=cards.map(nm=>rcarCard(nm)).join(''); return winIdx; }
+function _rcarCenter(K){ const vp=document.querySelector('.rcar-viewport'),track=document.getElementById('rcarTrack'); if(!vp||!track||!track.children.length)return 0; const c=track.children,cw=c[0].offsetWidth,st=c.length>1?(c[1].offsetLeft-c[0].offsetLeft):cw; return vp.clientWidth/2-(K*st+cw/2); }
+function runRuletaAnim(i){ if(i>=_drawSeq.length){ finishRuleta(); return; } const item=_drawSeq[i]; const winIdx=buildCarouselTrack(item.name); const track=document.getElementById('rcarTrack'); let reduce=false; try{reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){} if(!track){ placeOne(item); _ruletaTimers.push(setTimeout(()=>runRuletaAnim(i+1),120)); return; } if(reduce){ track.style.transition='none'; track.style.transform='translateX('+_rcarCenter(winIdx)+'px)'; const w=track.children[winIdx]; if(w)w.classList.add('is-winner'); placeOne(item); _ruletaTimers.push(setTimeout(()=>runRuletaAnim(i+1),150)); return; } const startK=2+Math.floor(Math.random()*3); track.style.transition='none'; track.style.transform='translateX('+_rcarCenter(startK)+'px)'; void track.offsetWidth; track.style.transition='transform 1150ms cubic-bezier(.12,.78,.28,1)'; track.style.transform='translateX('+_rcarCenter(winIdx)+'px)'; _ruletaTimers.push(setTimeout(()=>{ const w=track.children[winIdx]; if(w)w.classList.add('is-winner'); placeOne(item); _ruletaTimers.push(setTimeout(()=>runRuletaAnim(i+1),300)); },1210)); }
+function skipRuleta(){ _ruletaTimers.forEach(t=>{clearTimeout(t);clearInterval(t);}); _ruletaTimers=[]; const all=[]; _assign.forEach(g=>g.forEach(t=>all.push(t))); renderRuletaGrupos(_assign,all); finishRuleta(); }
 function finishRuleta(){ if(_ruletaDone)return; _ruletaDone=true; document.getElementById('ruletaSub').textContent='Grupos conformados. Continúa para ver el calendario y la fase final.'; document.getElementById('btnSkip').style.display='none'; document.getElementById('ruletaNav').style.display=''; }
 const _PV_TABS=[
   {id:'grupos',label:'Grupos y calendario',icon:'<svg viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 6.5h12M5 1.5v3M11 1.5v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>',render:function(c){return (window.CompRender&&CompRender.renderGrupos)?CompRender.renderGrupos(c):'';}},
