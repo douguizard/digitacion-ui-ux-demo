@@ -286,6 +286,9 @@ tbody tr{animation:fadeInUp .3s ease-out;animation-fill-mode:both}
 .sidebar.collapsed .sb-profile-chip{justify-content:center;padding:8px 0}
 .sidebar.collapsed .sb-profile-meta,.sidebar.collapsed .sb-profile-chev{display:none}
 .sidebar.collapsed .sb-profile-dd{left:6px;width:236px;right:auto}
+.uc-chev{color:var(--text-secondary);transition:transform .2s}
+.profile-switcher.open .profile-dropdown{display:block}
+.profile-switcher.open .uc-chev{transform:rotate(180deg)}
 </style>
 </head>
 <body>
@@ -324,30 +327,31 @@ tbody tr{animation:fadeInUp .3s ease-out;animation-fill-mode:both}
     <div class="nav-row"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 20H5a2 2 0 01-2-2v-2a2 2 0 012-2h16" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M20 17H6" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="7.29" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5"/><ellipse cx="16.72" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5"/><path d="M10.29 7a2.72 2.72 0 013.43 0" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M3 7h1.29M19.72 7H21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Auditoria</span></div>
   </nav>
   <div class="sidebar-bottom">
-    <div class="sb-profile" id="sbProfile">
-      <div class="sb-profile-dd" role="menu">
-        <div class="sb-profile-dd__label">Cambiar perfil</div>
-        <div class="sb-profile-opt active" onclick="switchProfile('coordinador')">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
-          <div><div class="po-name">Coordinador de eventos</div><div class="po-desc">Crear y configurar competencias</div></div>
-        </div>
-        <div class="sb-profile-opt" onclick="switchProfile('digitador')">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h12M2 12h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-          <div><div class="po-name">Digitador</div><div class="po-desc">Digitar enfrentamientos asignados</div></div>
-        </div>
-      </div>
-      <div class="sb-profile-chip" onclick="toggleSbProfile(event)">
-        <div class="sb-profile-ava">CE</div>
-        <div class="sb-profile-meta"><span class="sb-profile-name">Coordinador</span><span class="sb-profile-role">Coordinador de eventos</span></div>
-        <svg class="sb-profile-chev" width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-      </div>
-    </div>
     <div class="nav-row" id="btnLogout"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lbl">Cerrar sesion</span></div>
   </div>
 </aside>
 
 <!-- MAIN -->
 <div class="main">
+  <header class="top-header">
+    <div class="profile-switcher" id="profileSwitcher">
+      <div class="user-chip" onclick="toggleProfileDD(event)">
+        <div class="ava"><div class="ava-ring" style="background:#ffe4cf;color:#d74009">CE</div><div class="ava-dot"></div></div>
+        <div class="user-info"><span class="user-name">Coordinador</span><span class="user-role">Coordinador de eventos</span></div>
+        <svg class="uc-chev" width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </div>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div class="profile-option active" onclick="switchProfile('coordinador')">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
+          <div><div class="po-name">Coordinador de eventos</div><div class="po-desc">Crear y configurar competencias</div></div>
+        </div>
+        <div class="profile-option" onclick="switchProfile('digitador')">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h12M2 12h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <div><div class="po-name">Digitador</div><div class="po-desc">Digitar enfrentamientos asignados</div></div>
+        </div>
+      </div>
+    </div>
+  </header>
   <div class="page">
 
     <!-- Page Header -->
@@ -1338,15 +1342,15 @@ function hideToast(){
 }
 </script>
 <script>
-function toggleSbProfile(e){ if(e) e.stopPropagation(); document.getElementById('sbProfile').classList.toggle('open'); }
+function toggleProfileDD(e){ if(e) e.stopPropagation(); document.getElementById('profileSwitcher').classList.toggle('open'); }
 function fadeAndGo(url){document.body.style.transition='opacity .25s ease';document.body.style.opacity='0';setTimeout(()=>{window.location.href=url},260)}
 function switchProfile(p){
-  document.getElementById('sbProfile')?.classList.remove('open');
+  document.getElementById('profileSwitcher')?.classList.remove('open');
   if(p==='digitador') fadeAndGo('digitador.html');
   if(p==='coordinador') fadeAndGo('eventos.html');
 }
 document.addEventListener('click',function(e){
-  if(!e.target.closest('.sb-profile')) document.getElementById('sbProfile')?.classList.remove('open');
+  if(!e.target.closest('.profile-switcher')) document.getElementById('profileSwitcher')?.classList.remove('open');
 });
 
 document.getElementById('btnLogout')?.addEventListener('click', () => {
