@@ -95,15 +95,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .wz-steps{display:flex;align-items:center;gap:6px;padding:22px 28px 18px;border-bottom:1px solid var(--border)}
 .wz-steps .naowee-stepper{flex:1}
 .naowee-stepper__number svg{width:13px;height:13px}
-.sum2{display:flex;flex-direction:column;gap:14px}
-.sum2-hero{display:flex;align-items:center;gap:16px;padding:18px 20px;background:linear-gradient(120deg,#fff6ef,#fbfcff);border:1px solid var(--border);border-radius:var(--radius-lg)}
-.sum2-emoji{width:54px;height:54px;border-radius:var(--radius-lg);background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;box-shadow:var(--shadow-sm,0 1px 4px rgba(0,0,0,.08))}
+.sum2{display:flex;flex-direction:column;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.sum2-hero{display:flex;align-items:center;gap:16px;padding:18px 20px;background:linear-gradient(120deg,#fff6ef,#fbfcff);border-bottom:1px solid var(--border)}
+.sum2-emoji{width:54px;height:54px;border-radius:var(--radius-lg);background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
 .sum2-title{font-size:19px;font-weight:800;color:var(--text-primary)}
 .sum2-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
 .sum2-chip{font-size:11.5px;font-weight:600;color:var(--text-secondary);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-full);padding:3px 10px}
 .sum2-chip--accent{background:#fff3e6;border-color:var(--orange-border,#ffbf75);color:var(--accent)}
-.sum2-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.sum2-stat{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.sum2-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px}
+.sum2-stat{display:flex;align-items:center;gap:12px;padding:13px 15px;background:var(--bg-soft,#f5f6fa);border-radius:var(--radius-md)}
 .sum2-stat--wide{grid-column:1/-1}
 .sum2-stat-ico{width:38px;height:38px;border-radius:var(--radius-md);background:#fff3e6;color:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .sum2-stat-ico svg{width:18px;height:18px}
@@ -619,7 +619,7 @@ function buildSummary(){ const conj=W.tipo==='conjunto';
         <div class="sum2-emoji">${W.emoji||'🏅'}</div>
         <div class="sum2-hero-txt">
           <div class="sum2-title">${W.deporteLabel}</div>
-          <div class="sum2-chips"><span class="sum2-chip">${W.categoria}</span><span class="sum2-chip">${W.sexo}</span><span class="sum2-chip sum2-chip--accent">${conj?'De conjunto':'Individual'}</span><span class="sum2-chip sum2-chip--accent">${W.modo==='manual'?'Ruleta manual':'Automático'}</span></div>
+          <div class="sum2-chips"><span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--large">${W.categoria}</span><span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--large">${W.sexo}</span><span class="naowee-badge naowee-badge--brand naowee-badge--quiet naowee-badge--large">${conj?'De conjunto':'Individual'}</span><span class="naowee-badge naowee-badge--brand naowee-badge--quiet naowee-badge--large">${W.modo==='manual'?'Ruleta manual':'Automático'}</span></div>
         </div>
       </div>
       <div class="sum2-grid">
