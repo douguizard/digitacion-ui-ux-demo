@@ -256,6 +256,22 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .manual-wheel .ruleta{--rw-size:min(100%, 340px)}
 .manual-progress{font-size:13px;font-weight:600;color:var(--text-secondary)}
 .manual-grupos{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+/* F3a: clasificados editables */
+#clasifStage{flex:1;display:flex;flex-direction:column}
+#clasifStage .sorteo-head{max-width:760px;width:100%}
+.clasif-wrap{max-width:760px;margin:0 auto 28px;width:100%;display:flex;flex-direction:column;gap:14px}
+.clasif-card{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--surface)}
+.clasif-head{display:flex;align-items:center;gap:9px;padding:13px 16px;background:var(--bg-soft,#f5f6fa);border-bottom:1px solid var(--border);font-size:14px;font-weight:700;color:var(--text-primary)}
+.clasif-head .cr-stand-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.clasif-head #btnAddClasif{margin-left:auto}
+.clasif-list{padding:12px 16px 14px;display:flex;flex-direction:column;gap:10px}
+.clasif-row{display:flex;align-items:center;gap:10px}
+.clasif-pos{width:24px;height:24px;border-radius:50%;background:var(--bg-soft,#f5f6fa);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.clasif-tf{flex:1;min-width:0}
+.clasif-tf--sub{flex:.85}
+.clasif-del{flex-shrink:0;color:var(--text-secondary)}
+.clasif-del:hover:not(:disabled){color:var(--accent)}
+@media(max-width:600px){.clasif-row{flex-wrap:wrap;gap:8px}.clasif-tf,.clasif-tf--sub{flex:1 1 calc(100% - 72px)}}
 @media(max-width:760px){.manual-wrap{grid-template-columns:1fr}.manual-wheel-col{position:static}}
 #ruletaStage .ruleta-wrap{width:100%;margin-bottom:28px}
 #previewStage .preview-comp{width:100%;margin-bottom:28px}
@@ -480,6 +496,28 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
     </div>
     </div><!-- /wizardStage -->
 
+    <!-- ═══ CLASIFICADOS (editable) ═══ -->
+    <div id="clasifStage" class="stage" style="display:none">
+      <div class="sorteo-head">
+        <div>
+          <h1 class="sorteo-title">Clasificados</h1>
+          <p class="sorteo-sub">Ingresa los participantes del sorteo. Puedes agregar, editar o quitar antes de sortear.</p>
+        </div>
+        <button class="naowee-btn naowee-btn--mute naowee-btn--large" onclick="backToWizard()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 5h5M11 5h3M2 11h3M9 11h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="5" r="1.8" stroke="currentColor" stroke-width="1.5"/><circle cx="7" cy="11" r="1.8" stroke="currentColor" stroke-width="1.5"/></svg> Parámetros</button>
+      </div>
+      <div class="clasif-wrap">
+        <div class="clasif-card">
+          <div class="clasif-head"><span class="cr-stand-dot"></span><span id="clasifTitle">Equipos clasificados</span><span class="naowee-badge naowee-badge--neutral naowee-badge--quiet" id="clasifCount">0</span><button class="naowee-btn naowee-btn--quiet naowee-btn--small" id="btnAddClasif" onclick="addClasif()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9M2.5 7h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg> Agregar</button></div>
+          <div id="clasifList" class="clasif-list"></div>
+        </div>
+        <div class="naowee-message naowee-message--informative"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 7.2v3.4M8 5.1v.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>El nombre es obligatorio; la delegación/regional es opcional. Estos serán los participantes que entren al sorteo.</span></div>
+      </div>
+      <div class="wz-nav stage-footer">
+        <button class="naowee-btn naowee-btn--mute" onclick="backToWizard()">Atrás</button>
+        <button class="naowee-btn naowee-btn--loud" id="btnClasifNext" onclick="continueSorteo()">Continuar al sorteo</button>
+      </div>
+    </div>
+
     <!-- ═══ RULETA ═══ -->
     <div id="ruletaStage" class="stage" style="display:none">
       <div class="sorteo-head">
@@ -646,7 +684,7 @@ function goStep(n){ n=Math.max(1,Math.min(3,n)); W.step=n;
   else if(n===2){ next.textContent='Siguiente'; next.disabled=false; }
   else { next.textContent='Confirmar parametrización'; next.disabled=false; }
 }
-function next(){ if(W.step<3){ goStep(W.step+1); return; } if(W.modo==='manual') startManual(); else startRuleta(); }
+function next(){ if(W.step<3){ goStep(W.step+1); return; } startClasificados(); }
 function fireConfetti(){
   try{ if(matchMedia('(prefers-reduced-motion: reduce)').matches) return; }catch(e){}
   const cv=document.createElement('canvas'); cv.style.cssText='position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9999';
@@ -670,9 +708,21 @@ const _TC=['#d74009','#1f78d1','#1f8923','#7c3aed','#FF7500','#0891b2','#be185d'
 let _sorteo=null,_assign=null,_drawSeq=[],_ruletaTimers=[],_ruletaDone=false;
 function teamColorLocal(n){ if(window.CompRender&&CompRender.teamColor)return CompRender.teamColor(n); let h=0; for(let i=0;i<n.length;i++)h=n.charCodeAt(i)+((h<<5)-h); return _TC[Math.abs(h)%_TC.length]; }
 function teamInitLocal(n){ if(window.CompRender&&CompRender.teamInit)return CompRender.teamInit(n); return n.split(' ').filter(w=>w.length>1).map(w=>w[0]).join('').substring(0,2).toUpperCase()||n[0]; }
-function showStage(id){ const D={wizardStage:'block',ruletaStage:'flex',manualStage:'flex',previewStage:'flex'}; ['wizardStage','ruletaStage','manualStage','previewStage'].forEach(s=>{const el=document.getElementById(s); if(el)el.style.display=(s===id?(D[s]||'block'):'none');}); try{document.querySelector('.page').scrollTo(0,0);}catch(e){} }
+function showStage(id){ const D={wizardStage:'block',clasifStage:'flex',ruletaStage:'flex',manualStage:'flex',previewStage:'flex'}; ['wizardStage','clasifStage','ruletaStage','manualStage','previewStage'].forEach(s=>{const el=document.getElementById(s); if(el)el.style.display=(s===id?(D[s]||'block'):'none');}); try{document.querySelector('.page').scrollTo(0,0);}catch(e){} }
 function genParticipantes(n,tipo){ const out=[]; for(let i=0;i<n;i++)out.push({nombre:_NAMES[i]||((tipo==='individual'?'Deportista ':'Equipo ')+(i+1))}); return out; }
-function buildSorteo(){ const n=Math.max(2, +W.nEquipos||8); _sorteo={prueba:{deporteLabel:W.deporteLabel||'Deporte',emoji:W.emoji||'🏆',categoria:W.categoria||'General',sexo:W.sexo||'Mixto',tipo:W.tipo||'conjunto'},config:{nGrupos:(W.tipo==='individual'?1:Math.max(1,+W.nGrupos||2))},participantes:genParticipantes(n,W.tipo)}; return _sorteo; }
+function buildSorteo(){ const n=Math.max(2, +W.nEquipos||8); const parts=(_clasificados&&_clasificados.length)?_clasificados.map(c=>({nombre:(c.nombre||'').trim(),delegacion:(c.delegacion||'').trim()})):genParticipantes(n,W.tipo); _sorteo={prueba:{deporteLabel:W.deporteLabel||'Deporte',emoji:W.emoji||'🏆',categoria:W.categoria||'General',sexo:W.sexo||'Mixto',tipo:W.tipo||'conjunto'},config:{nGrupos:(W.tipo==='individual'?1:Math.max(1,+W.nGrupos||2))},participantes:parts}; return _sorteo; }
+/* ── F3a: Clasificados editables ── */
+let _clasificados=[];
+function startClasificados(){ const n=Math.max(2,+W.nEquipos||8); if(!_clasificados.length||_clasificados.length!==n){ _clasificados=genParticipantes(n,W.tipo).map(p=>({nombre:p.nombre,delegacion:''})); } showStage('clasifStage'); document.getElementById('clasifTitle').textContent=(W.tipo==='individual'?'Deportistas clasificados':'Equipos clasificados'); renderClasifList(); }
+function renderClasifList(){ const el=document.getElementById('clasifList'); if(!el)return; const ph=W.tipo==='individual'?'Nombre del deportista':'Nombre del equipo'; el.innerHTML=_clasificados.map(function(c,i){ const nm=(c.nombre||'').replace(/"/g,'&quot;'), dg=(c.delegacion||'').replace(/"/g,'&quot;'); return '<div class="clasif-row"><span class="clasif-pos">'+(i+1)+'</span>'
+  +'<div class="naowee-textfield naowee-textfield--small clasif-tf"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input" value="'+nm+'" placeholder="'+ph+'" oninput="syncClasif('+i+',\'nombre\',this.value)"></div></div>'
+  +'<div class="naowee-textfield naowee-textfield--small clasif-tf clasif-tf--sub"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input" value="'+dg+'" placeholder="Delegación / regional (opcional)" oninput="syncClasif('+i+',\'delegacion\',this.value)"></div></div>'
+  +'<button class="naowee-btn naowee-btn--mute naowee-btn--small clasif-del" title="Quitar" onclick="removeClasif('+i+')"'+(_clasificados.length<=2?' disabled':'')+'><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M6.2 4.5V3.3a1 1 0 011-1h1.6a1 1 0 011 1v1.2M5.2 4.5l.4 8a1 1 0 001 .95h2.8a1 1 0 001-.95l.4-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>'; }).join(''); document.getElementById('clasifCount').textContent=_clasificados.length; validateClasif(); }
+function syncClasif(i,k,v){ if(_clasificados[i]){ _clasificados[i][k]=v; if(k==='nombre') validateClasif(); } }
+function addClasif(){ _clasificados.push({nombre:'',delegacion:''}); renderClasifList(); const rows=document.querySelectorAll('#clasifList .clasif-row'); const last=rows[rows.length-1]; if(last){ const inp=last.querySelector('.naowee-textfield__input'); if(inp) inp.focus(); } }
+function removeClasif(i){ if(_clasificados.length<=2)return; _clasificados.splice(i,1); renderClasifList(); }
+function validateClasif(){ const ok=_clasificados.length>=2&&_clasificados.every(function(c){return (c.nombre||'').trim();}); const b=document.getElementById('btnClasifNext'); if(b)b.disabled=!ok; return ok; }
+function continueSorteo(){ if(!validateClasif())return; W.nEquipos=_clasificados.length; if(W.modo==='manual') startManual(); else startRuleta(); }
 function startRuleta(){ buildSorteo(); _assign=SorteoEngine.asignarGrupos(_sorteo.participantes,_sorteo.config.nGrupos); _ruletaDone=false; showStage('ruletaStage'); document.getElementById('ruletaSub').textContent='Asignando participantes a los grupos…'; document.getElementById('ruletaNav').style.display='none'; document.getElementById('btnSkip').style.display=''; document.getElementById('reelName').textContent='—'; renderRuletaGrupos(_assign,[]); buildDrawSeq(); runRuletaAnim(0); }
 function buildDrawSeq(){ _drawSeq=[]; const maxLen=Math.max(0,..._assign.map(g=>g.length)); for(let pos=0;pos<maxLen;pos++)for(let g=0;g<_assign.length;g++){ if(_assign[g][pos]!=null)_drawSeq.push({name:_assign[g][pos],g,pos}); } }
 function renderRuletaGrupos(assign,filled){ const set=new Set(filled); const el=document.getElementById('ruletaGrupos'); el.innerHTML=assign.map((teams,gi)=>{ const L=String.fromCharCode(65+gi); const slots=teams.map(t=>{ const on=set.has(t); return `<div class="rg-slot${on?' filled':''}">`+(on?`<span class="rg-ava" style="background:${teamColorLocal(t)}">${teamInitLocal(t)}</span><span class="rg-name">${t}</span>`:`<span class="rg-name" style="color:var(--text-muted)">—</span>`)+`</div>`; }).join(''); return `<div class="rg-card"><div class="rg-head"><span class="rg-dot"></span>Grupo ${L}<span style="margin-left:auto;font-size:12px;font-weight:600;color:var(--text-secondary)">${teams.length} eq</span></div><div class="rg-body">${slots}</div></div>`; }).join(''); }
