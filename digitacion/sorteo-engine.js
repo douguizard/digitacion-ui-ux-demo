@@ -126,7 +126,9 @@
   function toComp(sorteo) {
     const cfg = sorteo.config || {};
     const nGrupos = Math.max(1, (cfg.nGrupos | 0) || 1);
-    const reparto = asignarGrupos(sorteo.participantes || [], nGrupos);
+    const reparto = (sorteo.manualGroups && sorteo.manualGroups.length)
+      ? sorteo.manualGroups
+      : asignarGrupos(sorteo.participantes || [], nGrupos);
 
     const grupos = reparto.map((teams, i) => {
       const grupo = {

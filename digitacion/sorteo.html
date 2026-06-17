@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="design-system.css"/>
 <link rel="stylesheet" href="competition-render.css"/>
+<link rel="stylesheet" href="ruleta-wheel.css"/>
 <style>
 :root {
   --naranja:#FF7500; --azul:#002B5B;
@@ -84,6 +85,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 
 /* ═══ WIZARD SORTEO ═══ */
 .sorteo-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;max-width:760px;margin:0 auto 22px}
+#previewStage .sorteo-head{max-width:900px}
+#ruletaStage .sorteo-head{max-width:880px}
 .sorteo-title{font-size:24px;font-weight:700;color:var(--text-primary);margin-bottom:4px}
 .sorteo-sub{font-size:13px;color:var(--text-secondary);max-width:520px}
 .wz-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);max-width:760px;margin:0 auto}
@@ -165,20 +168,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .nav-tooltip.is-visible{opacity:1;transform:translateY(-50%) translateX(0)}
 .nav-tooltip::before{content:'';position:absolute;right:100%;top:50%;transform:translateY(-50%);border:5px solid transparent;border-right-color:var(--text-primary)}
 /* Stepper canónico: distributed + pulse + estados */
-.naowee-stepper--distributed{width:100%}
-.naowee-stepper--distributed .naowee-stepper__step{flex:0 0 auto;min-width:0}
-.naowee-stepper--distributed .naowee-stepper__connector{flex:1 1 auto;min-width:24px}
-.naowee-stepper__step--active .naowee-stepper__number{background:#d74009;color:#fff}
-.naowee-stepper__step--active .naowee-stepper__label{font-weight:600;color:var(--text-primary)}
-.naowee-stepper__step--done .naowee-stepper__number{background:#1f8923;color:#fff}
-.naowee-stepper__step--done .naowee-stepper__label{color:var(--text-primary)}
-.naowee-stepper__connector--done{background:#1f8923}
+/* stepper: estados y layout 100% del DS canónico (connector flex:1 distribuye solo); aquí solo el pulse */
 .naowee-stepper--pulse .naowee-stepper__step--active .naowee-stepper__number{animation:naoweeStepperPulse 2s cubic-bezier(.4,0,.6,1) infinite}
 @keyframes naoweeStepperPulse{0%,100%{box-shadow:0 0 0 0 rgba(215,64,9,.45)}50%{box-shadow:0 0 0 8px rgba(215,64,9,0)}}
 @media(prefers-reduced-motion:reduce){.naowee-stepper--pulse .naowee-stepper__step--active .naowee-stepper__number{animation:none}}
 /* Botón loud: glow naranja canónico (faltante en DS local) */
-.naowee-btn--loud:hover,.naowee-btn--loud:focus-visible{box-shadow:0 6px 16px rgba(215,64,9,.22);outline:none}
-.naowee-btn--loud:active{box-shadow:0 2px 6px rgba(215,64,9,.14)}
+.naowee-btn--loud:hover,.naowee-btn--loud:focus-visible{background:var(--naowee-color-interactive-fill-loud-idle);box-shadow:0 6px 16px rgba(215,64,9,.22);outline:none}
+.naowee-btn--loud:active{background:var(--naowee-color-interactive-fill-loud-idle);box-shadow:0 2px 6px rgba(215,64,9,.14)}
 .naowee-btn--loud:disabled,.naowee-btn--loud[disabled]{box-shadow:none}
 /* Cambio de perfil abajo (sidebar-bottom) */
 .sb-profile{position:relative;margin:0 10px 6px;padding-top:8px;border-top:1px solid var(--border)}
@@ -220,16 +216,29 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .rg-name{font-size:13px;font-weight:600;color:var(--text-primary)}
 @keyframes rgPop{from{opacity:0;transform:scale(.82) translateY(6px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.rg-slot.filled{animation:none}.stage{animation:none}}
-.preview-comp{max-width:900px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);box-shadow:var(--shadow-card);overflow:hidden}
+.preview-comp{max-width:900px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden}
 .preview-comp .naowee-tabs{padding:0 14px}
 .preview-comp #previewPanel{padding:22px 26px}
 @keyframes tabSlideR{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:translateX(0)}}
 @keyframes tabSlideL{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:translateX(0)}}
 /* ═══ F3-refinamiento: tabs preview · footer sticky · header chevron ═══ */
 .page{display:flex;flex-direction:column;padding-bottom:0}
-#ruletaStage,#previewStage{flex:1;display:flex;flex-direction:column}
-#ruletaStage .ruleta-wrap{width:100%;padding-bottom:8px}
-#previewStage .preview-comp{width:100%}
+#ruletaStage,#previewStage,#manualStage{flex:1;display:flex;flex-direction:column}
+.modo-seg{display:inline-flex;border:1px solid var(--border-dark);border-radius:var(--radius-md);overflow:hidden;background:var(--surface)}
+.modo-opt{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;font-size:13px;font-weight:600;font-family:var(--font);color:var(--text-secondary);background:none;border:none;cursor:pointer;transition:background .15s,color .15s}
+.modo-opt svg{width:15px;height:15px}
+.modo-opt+.modo-opt{border-left:1px solid var(--border-dark)}
+.modo-opt:hover{background:#f5f6fa}
+.modo-opt.active{background:#fff3e6;color:var(--accent)}
+.manual-wrap{display:grid;grid-template-columns:minmax(260px,400px) 1fr;gap:30px;align-items:start;max-width:980px;margin:0 auto 28px;width:100%}
+.manual-wheel-col{display:flex;flex-direction:column;align-items:center;gap:16px;position:sticky;top:8px}
+.manual-wheel{width:100%;max-width:380px;margin:0 auto}
+.manual-wheel .ruleta{--rw-size:min(100%, 340px)}
+.manual-progress{font-size:13px;font-weight:600;color:var(--text-secondary)}
+.manual-grupos{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+@media(max-width:760px){.manual-wrap{grid-template-columns:1fr}.manual-wheel-col{position:static}}
+#ruletaStage .ruleta-wrap{width:100%;margin-bottom:28px}
+#previewStage .preview-comp{width:100%;margin-bottom:28px}
 .cr-tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:18px;overflow-x:auto}
 .cr-tab{padding:11px 18px;font-size:13px;font-weight:600;color:var(--text-secondary);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:color .15s,border-color .15s;font-family:var(--font)}
 .cr-tab:hover{color:var(--text-primary)}
@@ -319,7 +328,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 
     <div class="wz-card">
       <div class="wz-steps">
-        <div class="naowee-stepper naowee-stepper--pulse naowee-stepper--distributed">
+        <div class="naowee-stepper naowee-stepper--pulse">
           <div class="naowee-stepper__step naowee-stepper__step--active" id="wzStep1"><span class="naowee-stepper__number">1</span><span class="naowee-stepper__label">Prueba</span></div>
           <div class="naowee-stepper__connector" id="wzLine1"></div>
           <div class="naowee-stepper__step" id="wzStep2"><span class="naowee-stepper__number">2</span><span class="naowee-stepper__label">Configuración</span></div>
@@ -390,6 +399,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
           <div class="wz-panel-title">Sistema de competencia</div>
           <div class="wz-panel-hint">El formato depende de la cantidad de participantes. Ajústalo según los clasificados reales.</div>
           <div class="wz-field"><label>Sistema</label><div class="wz-derived" style="margin-top:0"><b id="sistemaTxt">—</b></div></div>
+          <div class="wz-field"><label>Modo de sorteo</label>
+            <div class="modo-seg">
+              <button type="button" class="modo-opt active" data-modo="auto" onclick="setModo('auto')"><svg viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 4l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Automático</button>
+              <button type="button" class="modo-opt" data-modo="manual" onclick="setModo('manual')"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 2v2M8 12v2M2 8h2M12 8h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/></svg>Manual (ruleta)</button>
+            </div>
+            <div class="wz-panel-hint" style="margin-top:6px" id="modoHint">Automático: el sistema arma los grupos al instante.</div>
+          </div>
           <div id="cfgConjunto">
             <div class="wz-row">
               <div class="wz-field">
@@ -463,6 +479,29 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
       </div>
     </div>
 
+    <!-- ═══ SORTEO MANUAL (ruleta) ═══ -->
+    <div id="manualStage" class="stage" style="display:none">
+      <div class="sorteo-head">
+        <div>
+          <h1 class="sorteo-title">Sorteo manual</h1>
+          <p class="sorteo-sub" id="manualSub">Gira la ruleta: cada giro asigna un equipo a un grupo.</p>
+        </div>
+        <button class="naowee-btn naowee-btn--mute naowee-btn--large" onclick="backToWizard()">← Parámetros</button>
+      </div>
+      <div class="manual-wrap">
+        <div class="manual-wheel-col">
+          <div id="manualWheel" class="manual-wheel"></div>
+          <button class="naowee-btn naowee-btn--loud naowee-btn--large" id="btnGirar" onclick="girarManual()">🎲 Girar la ruleta</button>
+          <div class="manual-progress" id="manualProgress">0 / 0 equipos sorteados</div>
+        </div>
+        <div class="manual-grupos" id="manualGrupos"></div>
+      </div>
+      <div class="wz-nav stage-footer">
+        <button class="naowee-btn naowee-btn--mute" onclick="backToWizard()">← Parámetros</button>
+        <button class="naowee-btn naowee-btn--loud" id="btnManualNext" onclick="showPreviewManual()" disabled>Ver resultado →</button>
+      </div>
+    </div>
+
     <!-- ═══ PREVIEW ═══ -->
     <div id="previewStage" class="stage" style="display:none">
       <div class="sorteo-head">
@@ -470,7 +509,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
           <h1 class="sorteo-title">Resultado del sorteo</h1>
           <p class="sorteo-sub">Grupos, calendario round-robin (con descansos) y fase final de medallas.</p>
         </div>
-        <button class="naowee-btn naowee-btn--mute" onclick="reSortear()">↻ Re-sortear</button>
+        <button class="naowee-btn naowee-btn--mute naowee-btn--large" onclick="reSortear()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.6 8a5.6 5.6 0 11-1.64-3.96M13.6 2.2v3h-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Re-sortear</button>
       </div>
       <div class="preview-comp">
         <div id="previewHead"></div>
@@ -479,7 +518,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
       </div>
       <div class="wz-nav stage-footer">
         <button class="naowee-btn naowee-btn--mute" onclick="backToWizard()">← Parámetros</button>
-        <button class="naowee-btn naowee-btn--loud" id="btnConfirmSorteo" onclick="confirmSorteo()">Confirmar sorteo ✓</button>
+        <button class="naowee-btn naowee-btn--loud" id="btnConfirmSorteo" onclick="confirmSorteo()">Confirmar sorteo</button>
       </div>
     </div>
 
@@ -490,6 +529,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 <script src="shared.js"></script>
 <script src="sorteo-engine.js"></script>
 <script src="competition-render.js"></script>
+<script src="ruleta-wheel.js"></script>
 <script>
 /* ── Chrome (profile switcher + nav) ── */
 function toggleProfileDD(e){ if(e) e.stopPropagation(); document.getElementById('profileSwitcher').classList.toggle('open'); }
@@ -506,7 +546,7 @@ document.getElementById('btnLogout')?.addEventListener('click',()=>{ fadeAndGo('
 (function(){var sb=document.getElementById('sidebar');if(!sb)return;var tip=document.createElement('div');tip.className='nav-tooltip';document.body.appendChild(tip);function show(el,t){if(!sb.classList.contains('collapsed'))return;tip.textContent=t;var r=el.getBoundingClientRect();tip.style.left=(r.right+12)+'px';tip.style.top=(r.top+r.height/2)+'px';tip.classList.add('is-visible');}function hide(){tip.classList.remove('is-visible');}sb.querySelectorAll('.nav-row').forEach(function(row){var l=row.querySelector('.lbl');if(!l)return;row.addEventListener('mouseenter',function(){show(row,l.textContent.trim());});row.addEventListener('mouseleave',hide);});var chip=document.querySelector('.sb-profile-chip');if(chip){chip.addEventListener('mouseenter',function(){show(chip,'Cambiar perfil');});chip.addEventListener('mouseleave',hide);}})();
 
 /* ── Wizard ── */
-const W = { step:1, tipo:'', deporteKey:'', deporteLabel:'', emoji:'', categoria:'', sexo:'', nEquipos:8, nGrupos:2, sistema:'' };
+const W = { step:1, tipo:'', deporteKey:'', deporteLabel:'', emoji:'', categoria:'', sexo:'', nEquipos:8, nGrupos:2, sistema:'', modo:'auto' };
 function deportesPorTipo(tipo){
   const out=[], seen=new Set();
   if(typeof SPORTS_DB==='undefined') return out;
@@ -579,7 +619,7 @@ function goStep(n){ n=Math.max(1,Math.min(3,n)); W.step=n;
   else if(n===2){ next.textContent='Siguiente →'; next.disabled=false; }
   else { next.textContent='Confirmar parametrización'; next.disabled=false; }
 }
-function next(){ if(W.step<3){ goStep(W.step+1); return; } startRuleta(); }
+function next(){ if(W.step<3){ goStep(W.step+1); return; } if(W.modo==='manual') startManual(); else startRuleta(); }
 function fireConfetti(){
   try{ if(matchMedia('(prefers-reduced-motion: reduce)').matches) return; }catch(e){}
   const cv=document.createElement('canvas'); cv.style.cssText='position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9999';
@@ -603,7 +643,7 @@ const _TC=['#d74009','#1f78d1','#1f8923','#7c3aed','#FF7500','#0891b2','#be185d'
 let _sorteo=null,_assign=null,_drawSeq=[],_ruletaTimers=[],_ruletaDone=false;
 function teamColorLocal(n){ if(window.CompRender&&CompRender.teamColor)return CompRender.teamColor(n); let h=0; for(let i=0;i<n.length;i++)h=n.charCodeAt(i)+((h<<5)-h); return _TC[Math.abs(h)%_TC.length]; }
 function teamInitLocal(n){ if(window.CompRender&&CompRender.teamInit)return CompRender.teamInit(n); return n.split(' ').filter(w=>w.length>1).map(w=>w[0]).join('').substring(0,2).toUpperCase()||n[0]; }
-function showStage(id){ const D={wizardStage:'block',ruletaStage:'flex',previewStage:'flex'}; ['wizardStage','ruletaStage','previewStage'].forEach(s=>{const el=document.getElementById(s); if(el)el.style.display=(s===id?(D[s]||'block'):'none');}); try{document.querySelector('.page').scrollTo(0,0);}catch(e){} }
+function showStage(id){ const D={wizardStage:'block',ruletaStage:'flex',manualStage:'flex',previewStage:'flex'}; ['wizardStage','ruletaStage','manualStage','previewStage'].forEach(s=>{const el=document.getElementById(s); if(el)el.style.display=(s===id?(D[s]||'block'):'none');}); try{document.querySelector('.page').scrollTo(0,0);}catch(e){} }
 function genParticipantes(n,tipo){ const out=[]; for(let i=0;i<n;i++)out.push({nombre:_NAMES[i]||((tipo==='individual'?'Deportista ':'Equipo ')+(i+1))}); return out; }
 function buildSorteo(){ const n=Math.max(2, +W.nEquipos||8); _sorteo={prueba:{deporteLabel:W.deporteLabel||'Deporte',emoji:W.emoji||'🏆',categoria:W.categoria||'General',sexo:W.sexo||'Mixto',tipo:W.tipo||'conjunto'},config:{nGrupos:(W.tipo==='individual'?1:Math.max(1,+W.nGrupos||2))},participantes:genParticipantes(n,W.tipo)}; return _sorteo; }
 function startRuleta(){ buildSorteo(); _assign=SorteoEngine.asignarGrupos(_sorteo.participantes,_sorteo.config.nGrupos); _ruletaDone=false; showStage('ruletaStage'); document.getElementById('ruletaSub').textContent='Asignando participantes a los grupos…'; document.getElementById('ruletaNav').style.display='none'; document.getElementById('btnSkip').style.display=''; document.getElementById('reelName').textContent='—'; renderRuletaGrupos(_assign,[]); buildDrawSeq(); runRuletaAnim(0); }
@@ -619,12 +659,33 @@ const _PV_TABS=[
   {id:'final',label:'Fase final',icon:'<svg viewBox="0 0 16 16" fill="none"><path d="M4.5 2.5h7v3a3.5 3.5 0 01-7 0v-3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M4.5 3.5h-2v1a2 2 0 002 2M11.5 3.5h2v1a2 2 0 01-2 2M6.5 13h3M8 9v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>',render:function(c){return c.bracket?(CompRender.renderBracket(c)+CompRender.renderMedalleria(c)):'<p style="color:var(--text-secondary);text-align:center;padding:36px">Un solo grupo: sin fase final cruzada.</p>';}}
 ];
 let _pvComp=null,_pvTab='grupos';
-function showPreview(){ _pvComp=SorteoEngine.toComp(_sorteo); _sorteo.resultado=_pvComp; showStage('previewStage'); const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=false;b.textContent='Confirmar sorteo ✓';} document.getElementById('previewHead').innerHTML='<div class="pv-head"><span class="pv-emoji">'+(_pvComp.emoji||'🏆')+'</span><div><div class="pv-title">'+(_pvComp.nombre||'Sorteo')+'</div><div class="pv-sub">'+(_pvComp.sistema||'')+' · '+(_pvComp.grupos?_pvComp.grupos.length:0)+' grupos · '+(_pvComp.jornadasCount||0)+' jornadas</div></div></div>'; _pvTab='grupos'; renderPvTabs(); }
+function showPreview(){ _pvComp=SorteoEngine.toComp(_sorteo); _sorteo.resultado=_pvComp; showStage('previewStage'); const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=false;b.textContent='Confirmar sorteo';} document.getElementById('previewHead').innerHTML='<div class="pv-head"><span class="pv-emoji">'+(_pvComp.emoji||'🏆')+'</span><div><div class="pv-title">'+(_pvComp.nombre||'Sorteo')+'</div><div class="pv-sub">'+(_pvComp.sistema||'')+' · '+(_pvComp.grupos?_pvComp.grupos.length:0)+' grupos · '+(_pvComp.jornadasCount||0)+' jornadas</div></div></div>'; _pvTab='grupos'; renderPvTabs(); }
 function renderPvTabs(){ const tb=document.getElementById('previewTabs'); if(tb) tb.innerHTML=_PV_TABS.map(function(t){return '<button class="naowee-tab'+(t.id===_pvTab?' naowee-tab--selected':'')+'" onclick="switchPvTab(\''+t.id+'\')">'+(t.icon||'')+'<span>'+t.label+'</span></button>';}).join(''); const tab=_PV_TABS.find(function(t){return t.id===_pvTab;}); const p=document.getElementById('previewPanel'); if(p&&tab) p.innerHTML=tab.render(_pvComp); }
 function switchPvTab(id){ if(id===_pvTab) return; const oi=_PV_TABS.findIndex(function(t){return t.id===_pvTab;}), ni=_PV_TABS.findIndex(function(t){return t.id===id;}); _pvTab=id; renderPvTabs(); const p=document.getElementById('previewPanel'); if(p){ p.style.animation='none'; void p.offsetWidth; p.style.animation=(ni>oi?'tabSlideR':'tabSlideL')+' .28s cubic-bezier(.32,.72,0,1)'; } }
 function backToWizard(){ _ruletaTimers.forEach(t=>{clearTimeout(t);clearInterval(t);}); _ruletaTimers=[]; showStage('wizardStage'); }
 function reSortear(){ startRuleta(); }
-function confirmSorteo(){ const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=true;b.textContent='✓ Sorteo confirmado';} fireConfetti(); }
+function confirmSorteo(){ const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=true;b.textContent='Sorteo confirmado';} fireConfetti(); }
+/* ── Sorteo MANUAL (ruleta giratoria) ── */
+let _manualSeq=[],_manualGroups=[],_manualSizes=[],_manualDrawn=0,_manualSpin=false;
+function setModo(m){ W.modo=m; document.querySelectorAll('.modo-opt').forEach(function(b){b.classList.toggle('active',b.dataset.modo===m);}); const h=document.getElementById('modoHint'); if(h) h.textContent=(m==='manual')?'Manual: gira la ruleta; cada giro asigna un equipo a un grupo (sorteo en vivo).':'Automático: el sistema arma los grupos al instante.'; }
+function startManual(){ buildSorteo(); const n=_sorteo.config.nGrupos; _manualSizes=SorteoEngine.asignarGrupos(_sorteo.participantes,n).map(function(g){return g.length;}); _manualGroups=Array.from({length:n},function(){return [];}); _manualDrawn=0; _manualSpin=false;
+  _manualSeq=[]; var placed=new Array(n).fill(0), rem=_sorteo.participantes.length;
+  while(rem>0){ for(var g=0;g<n;g++){ if(placed[g]<_manualSizes[g]){ _manualSeq.push(g); placed[g]++; rem--; } } }
+  showStage('manualStage'); document.getElementById('manualSub').textContent='Gira la ruleta: cada giro asigna un equipo a un grupo.';
+  var bg=document.getElementById('btnGirar'); bg.style.display=''; bg.disabled=false; bg.innerHTML='🎲 Girar la ruleta'; document.getElementById('btnManualNext').disabled=true;
+  var items=_sorteo.participantes.map(function(p){return {label:p.nombre,color:teamColorLocal(p.nombre)};});
+  if(window.RuletaWheel) RuletaWheel.mount(document.getElementById('manualWheel'), items);
+  renderManualGrupos(); updateManualProgress();
+}
+function renderManualGrupos(){ var el=document.getElementById('manualGrupos'); if(!el)return; el.innerHTML=_manualGroups.map(function(teams,gi){ var L=String.fromCharCode(65+gi); var cap=_manualSizes[gi]||teams.length; var slots=''; for(var i=0;i<cap;i++){ var t=teams[i]; slots += t ? '<div class="rg-slot filled"><span class="rg-ava" style="background:'+teamColorLocal(t)+'">'+teamInitLocal(t)+'</span><span class="rg-name">'+t+'</span></div>' : '<div class="rg-slot"><span class="rg-name" style="color:var(--text-muted)">—</span></div>'; } return '<div class="rg-card"><div class="rg-head"><span class="rg-dot"></span>Grupo '+L+'<span style="margin-left:auto;font-size:12px;font-weight:600;color:var(--text-secondary)">'+teams.length+'/'+cap+'</span></div><div class="rg-body">'+slots+'</div></div>'; }).join(''); }
+function updateManualProgress(){ var total=_sorteo.participantes.length; var p=document.getElementById('manualProgress'); if(p) p.textContent=_manualDrawn+' / '+total+' equipos sorteados'; }
+async function girarManual(){ if(_manualSpin)return; var total=_sorteo.participantes.length; if(_manualDrawn>=total)return; _manualSpin=true; var bg=document.getElementById('btnGirar'); bg.disabled=true; bg.innerHTML='Girando…';
+  var idx=-1; try{ idx=await RuletaWheel.spin(); }catch(e){} _manualSpin=false; bg.disabled=false; bg.innerHTML='🎲 Girar la ruleta';
+  if(idx<0)return; var team=_sorteo.participantes[idx].nombre, g=_manualSeq[_manualDrawn]; _manualGroups[g].push(team); _manualDrawn++;
+  renderManualGrupos(); updateManualProgress();
+  if(_manualDrawn>=total){ bg.style.display='none'; document.getElementById('btnManualNext').disabled=false; document.getElementById('manualSub').textContent='¡Sorteo completo! Continúa para ver el calendario y la fase final.'; }
+}
+function showPreviewManual(){ _sorteo.manualGroups=_manualGroups; showPreview(); }
 </script>
 </body>
 </html>

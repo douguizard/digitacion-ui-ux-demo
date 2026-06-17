@@ -1,0 +1,222 @@
+/* ============================================================================
+   ruleta-wheel.css — Componente de ruleta giratoria reutilizable (vanilla)
+   Pieza estrella del sorteo manual Naowee. Sin dependencias.
+   Animación SOLO con transform/opacity. Honra prefers-reduced-motion.
+   Tokens del host usados: --accent, --surface, --border, --text-primary,
+   --text-secondary, --radius-full. Define fallbacks por si faltan.
+   ============================================================================ */
+
+.ruleta {
+  /* Fallbacks de tokens del host */
+  --rw-accent: var(--accent, #d74009);
+  --rw-surface: var(--surface, #ffffff);
+  --rw-border: var(--border, #e7e9f3);
+  --rw-text: var(--text-primary, #282834);
+  --rw-text-2: var(--text-secondary, #646587);
+  --rw-radius-full: var(--radius-full, 9999px);
+
+  /* Tokens propios del componente */
+  --rw-size: min(78vw, 460px);
+  --rw-spin-dur: 2600ms;
+  --rw-spin-ease: cubic-bezier(.15, .9, .25, 1);
+  --rw-ring: #ffffff;
+  --rw-hub-1: #ffffff;
+  --rw-hub-2: #f3f4fb;
+  --rw-glow: color-mix(in srgb, var(--rw-accent) 55%, transparent);
+
+  position: relative;
+  width: var(--rw-size);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* --- Anillo decorativo exterior (depth/layering) ------------------------- */
+.ruleta__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--rw-radius-full);
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, .9), rgba(255, 255, 255, 0) 45%),
+    conic-gradient(from 0deg,
+      color-mix(in srgb, var(--rw-accent) 18%, var(--rw-surface)),
+      var(--rw-surface) 25%,
+      color-mix(in srgb, var(--rw-accent) 18%, var(--rw-surface)) 50%,
+      var(--rw-surface) 75%,
+      color-mix(in srgb, var(--rw-accent) 18%, var(--rw-surface)));
+  box-shadow:
+    0 18px 48px -12px rgba(20, 22, 60, .35),
+    0 2px 6px rgba(20, 22, 60, .12),
+    inset 0 0 0 2px var(--rw-ring),
+    inset 0 0 0 10px color-mix(in srgb, var(--rw-border) 60%, transparent);
+  pointer-events: none;
+}
+
+/* --- Lienzo SVG que ROTA ------------------------------------------------- */
+.ruleta__svg {
+  position: relative;
+  width: calc(var(--rw-size) - 22px);
+  height: calc(var(--rw-size) - 22px);
+  border-radius: var(--rw-radius-full);
+  display: block;
+  transform: rotate(0deg);
+  transform-origin: 50% 50%;
+  will-change: transform;
+  /* La transición se aplica dinámicamente al girar (clase .is-spinning).
+     En reposo no hay transición para permitir reset instantáneo. */
+}
+
+.ruleta__svg.is-spinning {
+  transition: transform var(--rw-spin-dur) var(--rw-spin-ease);
+}
+
+/* --- Wedges (sectores) --------------------------------------------------- */
+.ruleta__wedge {
+  transition: opacity .35s ease;
+}
+
+.ruleta__wedge-path {
+  stroke: var(--rw-ring);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.ruleta__wedge-label {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  fill: #ffffff;
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, .22);
+  stroke-width: 2.4px;
+  stroke-linejoin: round;
+  letter-spacing: .2px;
+  pointer-events: none;
+}
+
+/* Sector usado: atenuado + check */
+.ruleta__wedge.is-used {
+  opacity: .35;
+}
+
+.ruleta__check {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 800;
+  fill: #ffffff;
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, .25);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(.4);
+  transition: opacity .3s ease, transform .35s cubic-bezier(.4, 0, .2, 1);
+}
+
+.ruleta__wedge.is-used .ruleta__check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Pulso/glow del ganador al aterrizar (solo opacity, en un overlay) */
+.ruleta__winner-glow {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  pointer-events: none;
+}
+
+.ruleta__winner-glow.is-firing {
+  animation: rw-winner-pulse 1100ms ease-out 1;
+}
+
+@keyframes rw-winner-pulse {
+  0% { opacity: 0; }
+  18% { opacity: .85; }
+  100% { opacity: 0; }
+}
+
+/* --- Hub central (no rota; capa por encima del SVG) --------------------- */
+.ruleta__hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: clamp(54px, 19%, 92px);
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  border-radius: var(--rw-radius-full);
+  background: radial-gradient(circle at 38% 32%, var(--rw-hub-1), var(--rw-hub-2) 70%);
+  box-shadow:
+    0 6px 16px -4px rgba(20, 22, 60, .4),
+    inset 0 0 0 3px var(--rw-ring),
+    inset 0 0 0 5px color-mix(in srgb, var(--rw-accent) 30%, transparent);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.ruleta__hub-logo {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(22px, 7vw, 38px);
+  line-height: 1;
+  background: linear-gradient(135deg, var(--rw-accent), color-mix(in srgb, var(--rw-accent) 55%, #ff9d4d));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--rw-accent);
+}
+
+/* --- Puntero superior (12 en punto), triángulo apuntando hacia abajo ---- */
+.ruleta__pointer {
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 17px solid transparent;
+  border-right: 17px solid transparent;
+  border-top: 30px solid var(--rw-accent);
+  filter: drop-shadow(0 4px 5px rgba(20, 22, 60, .38));
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* tope/perno del puntero para look intencional */
+.ruleta__pointer::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -16px;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: var(--rw-radius-full);
+  background: var(--rw-accent);
+  box-shadow: 0 2px 4px rgba(20, 22, 60, .35), inset 0 0 0 2px rgba(255, 255, 255, .65);
+}
+
+/* --- Estado vacío (sin sectores restantes) ----------------------------- */
+.ruleta.is-empty .ruleta__svg { opacity: .55; }
+
+/* ============================================================================
+   Accesibilidad: sin movimiento. El JS detecta reduced-motion y aterriza
+   instantáneo, pero aseguramos que la transición CSS tampoco aplique.
+   ============================================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .ruleta__svg,
+  .ruleta__svg.is-spinning {
+    transition: none !important;
+  }
+  .ruleta__winner-glow.is-firing {
+    animation: none !important;
+  }
+  .ruleta__check {
+    transition: none !important;
+  }
+}
