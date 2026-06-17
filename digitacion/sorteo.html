@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Naowee – Sorteo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="design-system.css"/>
+<style>
+:root {
+  --naranja:#FF7500; --azul:#002B5B;
+  --text-primary:#282834; --text-secondary:#646587; --text-muted:#9ca0b8;
+  --accent:#d74009;
+  --green:#1f8923; --green-bg:#e6f4e7; --green-border:#b7dfb9;
+  --surface:#ffffff; --bg:#ffffff; --bg-soft:#f5f6fa;
+  --border:#e7e9f3; --border-dark:#d0d4e6;
+  --blue-info:#1f78d1; --blue-bg:#eef5ff; --orange-bg:#fff3e6;
+  --sidebar-w:274px; --header-h:88px;
+  --radius-sm:6px; --radius-md:8px; --radius-lg:12px; --radius-xl:20px; --radius-full:9999px;
+  --font:'Inter',sans-serif;
+  --shadow-card:0 0 2px rgba(145,158,171,.2),0 12px 24px -4px rgba(145,158,171,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font-size:14px}
+
+/* SHELL (inline, paridad con páginas estables) */
+.shell{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow-y:auto;transition:width .2s,min-width .2s}
+.sidebar-logo{height:var(--header-h);display:flex;align-items:center;gap:16px;padding:0 24px;border-bottom:1px solid var(--border);flex-shrink:0}
+.burger-btn{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;width:24px;height:24px;flex-shrink:0;border-radius:var(--radius-sm);transition:background .15s,transform .2s}
+.burger-btn:hover{background:rgba(0,0,0,.06)}
+.burger-btn:active{transform:scale(.9)}
+.burger-btn svg{transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.sidebar.collapsed .burger-btn svg{transform:rotate(180deg)}
+.naowee-logo{height:33px;flex-shrink:0}
+.sidebar-nav{flex:1;padding:24px 0 10px;display:flex;flex-direction:column;gap:10px}
+.nav-section{font-size:12px;font-weight:600;color:#b5b9d4;letter-spacing:0;padding:0 12px;line-height:16px}
+.nav-row{display:flex;align-items:center;gap:12px;height:44px;padding:0 20px 0 0;border-radius:var(--radius-sm);cursor:pointer;transition:background .12s;position:relative}
+.nav-row:hover{background:#f5f6fa}
+.nav-row .icon{width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-left:28px}
+.nav-row .lbl{flex:1;font-size:14px;font-weight:600;color:var(--text-primary)}
+.active-bar{position:absolute;left:4px;top:8px;width:4px;height:28px;background:var(--accent);border-radius:25px}
+.nav-row.active{background:transparent}
+.nav-row.active .lbl{color:var(--accent)}
+.sidebar-bottom{padding:8px 0;border-top:1px solid var(--border)}
+.sidebar.collapsed{width:72px;min-width:72px;overflow:hidden}
+.sidebar.collapsed .naowee-logo,.sidebar.collapsed .lbl,.sidebar.collapsed .nav-section,.sidebar.collapsed .sidebar-bottom .lbl{display:none}
+.sidebar.collapsed .sidebar-logo{justify-content:center;padding:0}
+.sidebar.collapsed .nav-row{justify-content:center;padding:0}
+.sidebar.collapsed .nav-row .icon{margin-left:0}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.top-header{height:var(--header-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:flex-end;gap:16px;padding:0 24px;flex-shrink:0}
+.user-chip{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:var(--radius-full);padding:6px 12px 6px 6px;cursor:pointer}
+.ava{position:relative}
+.ava-ring{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.ava-dot{position:absolute;bottom:0;right:0;width:8px;height:8px;background:var(--green);border:2px solid #fff;border-radius:50%}
+.user-info{display:flex;flex-direction:column;gap:1px}
+.user-name{font-size:13px;font-weight:700;color:var(--text-primary)}
+.user-role{font-size:11px;color:var(--text-secondary)}
+.page{flex:1;overflow-y:auto;overflow-x:hidden;padding:28px 32px 40px;animation:fadeInUp .4s ease-out}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+/* PROFILE SWITCHER */
+.profile-switcher{position:relative}
+.profile-current{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--border);border-radius:var(--radius-full);cursor:pointer;font-size:13px;font-weight:600;color:var(--text-primary);transition:all .15s;background:var(--surface)}
+.profile-current:hover{border-color:var(--accent);background:#fff8f4}
+.profile-dropdown{position:absolute;top:calc(100% + 6px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:0 4px 16px rgba(0,0,0,.12);min-width:260px;z-index:100;display:none;overflow:hidden}
+.profile-dropdown.open{display:block}
+.profile-option{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;transition:background .12s;color:var(--text-secondary)}
+.profile-option:hover{background:#f5f6fa}
+.profile-option.active{background:#fff3e6;color:var(--accent)}
+.po-name{font-size:13px;font-weight:600;color:inherit}
+.po-desc{font-size:11px;color:var(--text-secondary);margin-top:1px}
+
+/* ═══ WIZARD SORTEO ═══ */
+.sorteo-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;max-width:760px;margin:0 auto 22px}
+.sorteo-title{font-size:24px;font-weight:700;color:var(--text-primary);margin-bottom:4px}
+.sorteo-sub{font-size:13px;color:var(--text-secondary);max-width:520px}
+.wz-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);max-width:760px;margin:0 auto}
+.wz-steps{display:flex;align-items:center;gap:6px;padding:22px 28px 18px;border-bottom:1px solid var(--border)}
+.wz-step{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.wz-badge{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;transition:background .25s,color .25s;background:var(--bg-soft);color:var(--text-secondary);border:1.5px solid var(--border-dark)}
+.wz-badge svg{width:16px;height:16px}
+.wz-step.active .wz-badge{background:var(--accent);color:#fff;border-color:var(--accent)}
+.wz-step.done .wz-badge{background:var(--green);color:#fff;border-color:var(--green)}
+.wz-lbl{font-size:13px;font-weight:600;color:var(--text-secondary);white-space:nowrap;transition:color .25s}
+.wz-step.active .wz-lbl{color:var(--accent);font-weight:700}
+.wz-step.done .wz-lbl{color:var(--text-primary)}
+.wz-line{flex:1;height:2px;border-radius:2px;background:var(--border-dark);min-width:24px;transition:background .3s}
+.wz-line.done{background:var(--green)}
+.wz-body{padding:26px 28px}
+.wz-panel{display:none}
+.wz-panel.active{display:block;animation:wzIn .4s cubic-bezier(.32,.72,0,1)}
+@keyframes wzIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.wz-panel-title{font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:3px}
+.wz-panel-hint{font-size:12.5px;color:var(--text-secondary);margin-bottom:20px}
+.wz-field{margin-bottom:18px}
+.wz-field.hidden{display:none}
+.wz-field>label{display:block;font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:7px}
+.wz-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.wz-pills{display:flex;gap:10px;flex-wrap:wrap}
+.wz-pill{display:flex;align-items:center;gap:9px;padding:13px 18px;border:1.5px solid var(--border-dark);border-radius:var(--radius-lg);cursor:pointer;background:var(--surface);transition:all .15s;min-width:180px}
+.wz-pill:hover{border-color:var(--accent);background:#fff8f4}
+.wz-pill.sel{border-color:var(--accent);background:var(--orange-bg)}
+.wz-pill-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;background:var(--bg-soft);flex-shrink:0}
+.wz-pill.sel .wz-pill-ico{background:#ffe4cf}
+.wz-pill-txt b{display:block;font-size:13.5px;font-weight:700;color:var(--text-primary)}
+.wz-pill-txt span{font-size:11.5px;color:var(--text-secondary)}
+.wz-derived{display:flex;align-items:center;gap:10px;background:var(--blue-bg);border:1px solid #cfe1f5;border-radius:var(--radius-md);padding:11px 14px;font-size:13px;color:#1f4e79;margin-top:6px}
+.wz-derived.warn{background:var(--orange-bg);border-color:#ffbf75;color:#9a4b00}
+.wz-summary{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.wz-sum-hd{display:flex;align-items:center;gap:12px;padding:16px 18px;background:var(--bg-soft);border-bottom:1px solid var(--border)}
+.wz-sum-emoji{font-size:30px;line-height:1}
+.wz-sum-hd b{font-size:16px;font-weight:700;color:var(--text-primary)}
+.wz-sum-hd span{font-size:12.5px;color:var(--text-secondary)}
+.wz-sum-rows{padding:6px 18px}
+.wz-sum-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+.wz-sum-row:last-child{border-bottom:none}
+.wz-sum-row .k{color:var(--text-secondary)}
+.wz-sum-row .v{font-weight:700;color:var(--text-primary)}
+.wz-done{text-align:center;padding:14px 0 4px}
+.wz-done-ico{width:60px;height:60px;border-radius:50%;background:var(--green-bg);color:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.wz-done-ico svg{width:30px;height:30px}
+.wz-done b{display:block;font-size:17px;font-weight:700;color:var(--text-primary);margin-bottom:6px}
+.wz-done p{font-size:13px;color:var(--text-secondary);max-width:420px;margin:0 auto}
+.wz-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 28px;border-top:1px solid var(--border);background:var(--surface);border-radius:0 0 var(--radius-xl) var(--radius-xl)}
+.wz-nav .is-hidden{visibility:hidden}
+/* Ajustes puntuales sobre componentes DS */
+.naowee-dropdown__option:hover{background:#f5f6fa}
+#btnBack{background:transparent;color:var(--accent)}
+#btnBack:hover{background:var(--orange-bg)}
+@media(max-width:640px){.wz-row{grid-template-columns:1fr}.wz-lbl{display:none}.wz-steps{padding:16px}.wz-body{padding:20px 16px}.wz-nav{padding:14px 16px}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <button class="burger-btn" onclick="document.getElementById('sidebar').classList.toggle('collapsed')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.5 12H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round"/><path d="M5.5 16H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round"/><path d="M5.5 8H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <svg class="naowee-logo" viewBox="0 0 177 33.22" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M28.11 33.21c-1.25 0-2.42-.48-3.31-1.36a4.67 4.67 0 01-1.37-3.29l.02-16.73-5.92 5.91a1.6 1.6 0 01-1.75.35 1.6 1.6 0 01-.99-1.47V1.6c0-.88.72-1.6 1.6-1.6h8.59c4.3 0 7.8 3.48 7.8 7.76v20.8c0 2.56-2.1 4.65-4.67 4.65zm-3.05-26.85c.2 0 .41.04.61.12.6.25.99.83.99 1.48l-.02 20.6c0 .39.15.76.43 1.03.28.28.64.43 1.04.43.8 0 1.46-.65 1.46-1.46V7.76c0-2.52-2.06-4.57-4.59-4.57H18v9.56l5.92-5.92c.31-.31.72-.47 1.14-.47" fill="#F49C1C"/>
+      <path d="M16.39 33.21H7.8C3.5 33.21 0 29.73 0 25.45V4.65C0 2.09 2.1 0 4.67 0c1.25 0 2.42.49 3.31 1.36.88.88 1.37 2.05 1.36 3.29L9.33 21.38l5.92-5.91c.46-.46 1.15-.6 1.75-.35.6.25.99.83.99 1.47v15.02c0 .88-.72 1.6-1.6 1.6M4.67 3.19c-.81 0-1.47.65-1.47 1.46v20.8c0 2.52 2.06 4.57 4.59 4.57h7V20.46l-5.92 5.92c-.46.46-1.15.6-1.75.35a1.6 1.6 0 01-.99-1.47L6.14 4.65c0-.39-.15-.76-.43-1.03a1.45 1.45 0 00-1.04-.43" fill="#FF7500"/>
+      <path d="M71.59 24.93h-.31c-.6.72-1.32 1.34-2.16 1.86-.84.52-1.93.77-3.25.77-3.95 0-7.12-2.37-7.12-6.5 0-4.68 3.49-6.42 7.78-6.42 1.25 0 2.27.1 3.07.29.81.19 1.47.39 1.99.6v-.58c0-1.01-.4-1.84-1.21-2.49-.8-.66-1.8-.99-2.99-.99-1.77 0-3.26.73-4.48 2.21l-3.7-2.52c2.03-2.53 4.79-3.79 8.29-3.79 2.96 0 5.22.69 6.77 2.07 1.56 1.38 2.34 3.42 2.34 6.13v11.88h-5.02v-2.52zm0-5.69c-.6-.28-1.21-.51-1.85-.68-.64-.17-1.33-.25-2.08-.25-1.22 0-2.16.26-2.82.79-.66.53-1 1.18-1 1.95 0 .78.32 1.39.96 1.86.64.47 1.37.7 2.2.7.67 0 1.3-.12 1.87-.37.57-.24 1.06-.57 1.46-.97.4-.4.71-.86.93-1.39.22-.53.33-1.08.33-1.65" fill="#002B5B"/>
+      <path d="M89.28 7.37c5.06 0 10.12 3.57 10.12 10.1 0 6.52-5.06 10.1-10.12 10.1-5.06 0-10.11-3.58-10.11-10.1 0-6.53 5.05-10.1 10.11-10.1zm0 15.51c2.41 0 5.02-1.67 5.02-5.42 0-3.74-2.61-5.42-5.02-5.42s-5.02 1.68-5.02 5.42c0 3.75 2.61 5.42 5.02 5.42z" fill="#002B5B"/>
+      <path d="M101.96 7.37h5.72l3.15 12.65h.27l3.78-12.65h5.25l3.82 12.65h.27l3.11-12.65h5.64l-6.11 20.2h-5.49l-3.81-12.74h-.27l-3.81 12.74h-5.41l-6.11-20.2z" fill="#002B5B"/>
+      <path d="M154.68 22.38c-.88 1.55-2.07 2.8-3.56 3.75-1.49.95-3.31 1.43-5.47 1.43-5.56 0-10.12-4.24-10.12-10.1 0-5.71 4.23-10.1 9.92-10.1 5.53 0 9.53 4.22 9.53 9.94v.93h-14.36c.33 2.43 2.12 4.65 5.17 4.65 2.27 0 3.81-1.38 4.55-2.95l4.24 2.09.1.36zm-4.63-7.35c-.39-1.92-2.17-3.52-4.59-3.52-2.2 0-4.15 1.44-4.67 3.52h9.26z" fill="#002B5B"/>
+      <path d="M176.69 22.38c-.88 1.55-2.07 2.8-3.56 3.75-1.49.95-3.31 1.43-5.47 1.43-5.56 0-10.11-4.24-10.11-10.1 0-5.71 4.22-10.1 9.92-10.1 5.53 0 9.53 4.22 9.53 9.94v.93h-14.36c.33 2.43 2.12 4.65 5.17 4.65 2.27 0 3.81-1.38 4.55-2.95l4.24 2.09.09.36zm-4.63-7.35c-.39-1.92-2.17-3.52-4.59-3.52-2.2 0-4.14 1.44-4.67 3.52h9.26z" fill="#002B5B"/>
+      <path d="M53.69 27.57c-1.38 0-2.5-1.02-2.5-2.29V15.66c0-2.05-1.82-3.72-4.07-3.72-2.24 0-4.07 1.67-4.07 3.72v9.62c0 1.26-1.12 2.29-2.5 2.29s-2.5-1.02-2.5-2.29V15.66c0-4.57 4.07-8.29 9.07-8.29s9.07 3.72 9.07 8.29v9.62c0 1.26-1.12 2.29-2.5 2.29" fill="#002B5B"/>
+    </svg>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">COORDINACIÓN</div>
+    <div class="nav-row" onclick="fadeAndGo('stepper.html')">
+      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 12l9-9 9 9" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="lbl">Inicio</span>
+    </div>
+    <div class="nav-row" onclick="fadeAndGo('lista.html')">
+      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9H4a2 2 0 0 1-2-2V5h4M18 9h2a2 2 0 0 0 2-2V5h-4M6 9a6 6 0 0 0 12 0V3H6zM9 21h6M12 17v4" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="lbl">Competencias</span>
+    </div>
+    <div class="nav-row active" onclick="fadeAndGo('sorteo.html')">
+      <div class="active-bar"></div>
+      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polyline points="16 3 21 3 21 8" stroke="#d74009" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><line x1="4" y1="20" x2="21" y2="3" stroke="#d74009" stroke-width="1.6" stroke-linecap="round"/><polyline points="21 16 21 21 16 21" stroke="#d74009" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><line x1="15" y1="15" x2="21" y2="21" stroke="#d74009" stroke-width="1.6" stroke-linecap="round"/><line x1="4" y1="4" x2="9" y2="9" stroke="#d74009" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <span class="lbl">Sorteo</span>
+    </div>
+    <div class="nav-row" onclick="fadeAndGo('digitadores.html')">
+      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="3.5" stroke="#B5B9D4" stroke-width="1.5"/><path d="M3 21v-2a4 4 0 0 1 4-4h5" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M17.5 11.5a2.121 2.121 0 1 1 3 3L14 21l-4 1 1-4 6.5-6.5z" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="lbl">Digitadores</span>
+    </div>
+    <div class="nav-row" onclick="fadeAndGo('coordinadores.html')">
+      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="3.5" stroke="#B5B9D4" stroke-width="1.5"/><path d="M3 21v-2a4 4 0 0 1 4-4h5" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><polyline points="15 12 17 14 21 10" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="lbl">Coordinadores</span>
+    </div>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="nav-row" id="btnLogout"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lbl">Cerrar sesion</span></div>
+  </div>
+</aside>
+
+<div class="main">
+  <header class="top-header">
+    <div class="profile-switcher" id="profileSwitcher">
+      <div class="profile-current" onclick="toggleProfileDD()">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2a4 4 0 100 8 4 4 0 000-8zM3 16a6 6 0 0112 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <span id="profileLabel">Coordinador de eventos</span>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </div>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div class="profile-option active" onclick="switchProfile('coordinador')">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
+          <div><div class="po-name">Coordinador de eventos</div><div class="po-desc">Crear y configurar competencias</div></div>
+        </div>
+        <div class="profile-option" onclick="switchProfile('digitador')">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h12M2 12h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <div><div class="po-name">Digitador</div><div class="po-desc">Digitar enfrentamientos asignados</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="user-chip">
+      <div class="ava"><div class="ava-ring" style="background:#ffe4cf;color:#d74009">CE</div><div class="ava-dot"></div></div>
+      <div class="user-info"><span class="user-name">Coordinador</span><span class="user-role">Coordinador de eventos</span></div>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="#282834" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </div>
+  </header>
+
+  <div class="page">
+
+    <div class="sorteo-head">
+      <div>
+        <h1 class="sorteo-title">Sorteo de equipos</h1>
+        <p class="sorteo-sub">Configura una prueba para sortear sus grupos o llaves. Cada prueba (deporte + categoría + sexo) es un sorteo independiente.</p>
+      </div>
+    </div>
+
+    <div class="wz-card">
+      <div class="wz-steps">
+        <div class="wz-step active" id="wzStep1"><div class="wz-badge">1</div><span class="wz-lbl">Prueba</span></div>
+        <div class="wz-line" id="wzLine1"></div>
+        <div class="wz-step" id="wzStep2"><div class="wz-badge">2</div><span class="wz-lbl">Configuración</span></div>
+        <div class="wz-line" id="wzLine2"></div>
+        <div class="wz-step" id="wzStep3"><div class="wz-badge">3</div><span class="wz-lbl">Confirmar</span></div>
+      </div>
+
+      <div class="wz-body">
+        <!-- PASO 1 -->
+        <div class="wz-panel active" id="panel1">
+          <div class="wz-panel-title">Selecciona la prueba</div>
+          <div class="wz-panel-hint">Tipo de deporte, disciplina, categoría y sexo.</div>
+          <div class="wz-field">
+            <label>Tipo de deporte</label>
+            <div class="wz-pills">
+              <div class="wz-pill" data-tipo="conjunto" onclick="selTipo('conjunto')"><div class="wz-pill-ico">🤝</div><div class="wz-pill-txt"><b>De conjunto</b><span>Equipos · grupos</span></div></div>
+              <div class="wz-pill" data-tipo="individual" onclick="selTipo('individual')"><div class="wz-pill-ico">🥋</div><div class="wz-pill-txt"><b>Individual</b><span>Deportistas · llaves</span></div></div>
+            </div>
+          </div>
+          <div class="wz-field hidden" id="fDeporte">
+            <label>Deporte</label>
+            <div class="naowee-dropdown" id="ddDeporte">
+              <button type="button" class="naowee-dropdown__trigger" onclick="ddToggle('ddDeporte')">
+                <span class="naowee-dropdown__placeholder">Selecciona un deporte…</span>
+                <span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+              </button>
+              <div class="naowee-dropdown__menu" id="ddDeporte-menu"></div>
+            </div>
+          </div>
+          <div class="wz-row">
+            <div class="wz-field hidden" id="fCategoria">
+              <label>Categoría</label>
+              <div class="naowee-dropdown" id="ddCategoria">
+                <button type="button" class="naowee-dropdown__trigger" onclick="ddToggle('ddCategoria')">
+                  <span class="naowee-dropdown__placeholder">Categoría…</span>
+                  <span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                </button>
+                <div class="naowee-dropdown__menu">
+                  <div class="naowee-dropdown__option" data-value="Sub-14" onclick="ddPick('ddCategoria',this)">Sub-14</div>
+                  <div class="naowee-dropdown__option" data-value="Sub-16" onclick="ddPick('ddCategoria',this)">Sub-16</div>
+                  <div class="naowee-dropdown__option" data-value="Sub-18" onclick="ddPick('ddCategoria',this)">Sub-18</div>
+                  <div class="naowee-dropdown__option" data-value="Sub-20" onclick="ddPick('ddCategoria',this)">Sub-20</div>
+                  <div class="naowee-dropdown__option" data-value="Mayores" onclick="ddPick('ddCategoria',this)">Mayores</div>
+                  <div class="naowee-dropdown__option" data-value="Masters" onclick="ddPick('ddCategoria',this)">Masters</div>
+                </div>
+              </div>
+            </div>
+            <div class="wz-field hidden" id="fSexo">
+              <label>Sexo / rama</label>
+              <div class="naowee-dropdown" id="ddSexo">
+                <button type="button" class="naowee-dropdown__trigger" onclick="ddToggle('ddSexo')">
+                  <span class="naowee-dropdown__placeholder">Sexo…</span>
+                  <span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+                </button>
+                <div class="naowee-dropdown__menu">
+                  <div class="naowee-dropdown__option" data-value="Masculino" onclick="ddPick('ddSexo',this)">Masculino</div>
+                  <div class="naowee-dropdown__option" data-value="Femenino" onclick="ddPick('ddSexo',this)">Femenino</div>
+                  <div class="naowee-dropdown__option" data-value="Mixto" onclick="ddPick('ddSexo',this)">Mixto</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PASO 2 -->
+        <div class="wz-panel" id="panel2">
+          <div class="wz-panel-title">Sistema de competencia</div>
+          <div class="wz-panel-hint">El formato depende de la cantidad de participantes. Ajústalo según los clasificados reales.</div>
+          <div class="wz-field"><label>Sistema</label><div class="wz-derived" style="margin-top:0"><b id="sistemaTxt">—</b></div></div>
+          <div id="cfgConjunto">
+            <div class="wz-row">
+              <div class="wz-field">
+                <label>N.º de equipos clasificados</label>
+                <div class="naowee-input-stepper"><div class="naowee-input-stepper__content"><div class="naowee-input-stepper__input">
+                  <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inEquipos',-1,2,32)"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+                  <div class="naowee-input-stepper__value"><input type="number" class="naowee-input-stepper__value-input" id="inEquipos" value="8" min="2" max="32" oninput="W.nEquipos=+this.value||0;recalcCfg()"><span class="naowee-input-stepper__value-comp">equipos</span></div>
+                  <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inEquipos',1,2,32)"><svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+                </div></div></div>
+              </div>
+              <div class="wz-field">
+                <label>N.º de grupos</label>
+                <div class="naowee-input-stepper"><div class="naowee-input-stepper__content"><div class="naowee-input-stepper__input">
+                  <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inGrupos',-1,1,8)"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+                  <div class="naowee-input-stepper__value"><input type="number" class="naowee-input-stepper__value-input" id="inGrupos" value="2" min="1" max="8" oninput="W.nGrupos=+this.value||1;recalcCfg()"><span class="naowee-input-stepper__value-comp">grupos</span></div>
+                  <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inGrupos',1,1,8)"><svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+                </div></div></div>
+              </div>
+            </div>
+            <div class="wz-derived" id="repartoChip"><b id="repartoTxt">—</b></div>
+          </div>
+          <div id="cfgIndividual" style="display:none">
+            <div class="wz-field" style="max-width:50%">
+              <label>N.º de participantes</label>
+              <div class="naowee-input-stepper"><div class="naowee-input-stepper__content"><div class="naowee-input-stepper__input">
+                <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inPart',-1,2,64)"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+                <div class="naowee-input-stepper__value"><input type="number" class="naowee-input-stepper__value-input" id="inPart" value="8" min="2" max="64" oninput="W.nEquipos=+this.value||0;recalcCfg()"><span class="naowee-input-stepper__value-comp">deportistas</span></div>
+                <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inPart',1,2,64)"><svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+              </div></div></div>
+            </div>
+            <div class="wz-derived" id="llaveChip"><b id="llaveTxt">—</b></div>
+          </div>
+        </div>
+
+        <!-- PASO 3 -->
+        <div class="wz-panel" id="panel3">
+          <div class="wz-panel-title">Revisa la parametrización</div>
+          <div class="wz-panel-hint">Si todo está correcto, confirma para continuar al sorteo.</div>
+          <div class="wz-summary" id="summaryBox"></div>
+          <div class="wz-done" id="doneBox" style="display:none">
+            <div class="wz-done-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <b>Parametrización lista</b>
+            <p>Los parámetros quedaron definidos. El siguiente paso —cargar clasificados y ejecutar la ruleta— llega en la próxima fase del prototipo.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="wz-nav">
+        <button class="naowee-btn naowee-btn--mute is-hidden" id="btnBack" onclick="goStep(W.step-1)">← Atrás</button>
+        <button class="naowee-btn naowee-btn--loud" id="btnNext" onclick="next()" disabled>Siguiente →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+/* ── Chrome (profile switcher + nav) ── */
+function toggleProfileDD(){ document.getElementById('profileDropdown').classList.toggle('open'); }
+function fadeAndGo(url){document.body.style.transition='opacity .25s ease';document.body.style.opacity='0';setTimeout(()=>{window.location.href=url},260)}
+function switchProfile(p){
+  document.getElementById('profileDropdown').classList.remove('open');
+  if(p==='coordinador') fadeAndGo('stepper.html');
+  if(p==='digitador') fadeAndGo('digitador.html');
+}
+document.addEventListener('click',function(e){ if(!e.target.closest('.profile-switcher')) document.getElementById('profileDropdown').classList.remove('open'); });
+document.getElementById('btnLogout')?.addEventListener('click',()=>{ fadeAndGo('../escenarios/escenario-01-login.html'); });
+
+/* ── Wizard ── */
+const W = { step:1, tipo:'', deporteKey:'', deporteLabel:'', emoji:'', categoria:'', sexo:'', nEquipos:8, nGrupos:2, sistema:'' };
+function deportesPorTipo(tipo){
+  const out=[], seen=new Set();
+  if(typeof SPORTS_DB==='undefined') return out;
+  for(const k in SPORTS_DB){ const sp=SPORTS_DB[k];
+    if(!sp||typeof sp!=='object'||!sp.label) continue;
+    if(seen.has(sp)) continue; seen.add(sp);
+    if(tipo && sp.tipo!==tipo) continue;
+    out.push({key:k,label:sp.label,emoji:sp.emoji||'🏅'}); }
+  return out.sort((a,b)=>a.label.localeCompare(b.label,'es'));
+}
+function ddToggle(id){ const w=document.getElementById(id); const open=w.classList.contains('naowee-dropdown--open');
+  document.querySelectorAll('.naowee-dropdown--open').forEach(x=>x.classList.remove('naowee-dropdown--open'));
+  if(!open) w.classList.add('naowee-dropdown--open'); }
+document.addEventListener('click',e=>{ if(!e.target.closest('.naowee-dropdown')) document.querySelectorAll('.naowee-dropdown--open').forEach(x=>x.classList.remove('naowee-dropdown--open')); });
+function ddSetText(id,label){ const s=document.querySelector('#'+id+' .naowee-dropdown__placeholder, #'+id+' .naowee-dropdown__value'); if(s){s.textContent=label;s.classList.remove('naowee-dropdown__placeholder');s.classList.add('naowee-dropdown__value');} }
+function ddPick(id,el){ const val=el.dataset.value; const w=document.getElementById(id);
+  ddSetText(id,el.textContent.trim());
+  w.querySelectorAll('.naowee-dropdown__option').forEach(o=>o.classList.toggle('naowee-dropdown__option--selected',o===el));
+  w.classList.remove('naowee-dropdown--open');
+  if(id==='ddDeporte') selDeporte(val); else if(id==='ddCategoria'){W.categoria=val;refreshStep1();} else if(id==='ddSexo'){W.sexo=val;refreshStep1();} }
+function selTipo(tipo){
+  W.tipo=tipo; W.deporteKey='';W.deporteLabel='';W.emoji='';W.categoria='';W.sexo='';
+  document.querySelectorAll('.wz-pill').forEach(p=>p.classList.toggle('sel',p.dataset.tipo===tipo));
+  document.getElementById('ddDeporte-menu').innerHTML = deportesPorTipo(tipo).map(d=>`<div class="naowee-dropdown__option" data-value="${d.key}" onclick="ddPick('ddDeporte',this)">${d.emoji}&nbsp;&nbsp;${d.label}</div>`).join('');
+  resetDD('ddDeporte','Selecciona un deporte…'); resetDD('ddCategoria','Categoría…'); resetDD('ddSexo','Sexo…');
+  document.getElementById('fDeporte').classList.remove('hidden');
+  document.getElementById('fCategoria').classList.add('hidden'); document.getElementById('fSexo').classList.add('hidden');
+  refreshStep1();
+}
+function resetDD(id,ph){ const s=document.querySelector('#'+id+' .naowee-dropdown__placeholder, #'+id+' .naowee-dropdown__value'); if(s){s.textContent=ph;s.classList.add('naowee-dropdown__placeholder');s.classList.remove('naowee-dropdown__value');} document.querySelectorAll('#'+id+' .naowee-dropdown__option--selected').forEach(o=>o.classList.remove('naowee-dropdown__option--selected')); }
+function selDeporte(key){ const sp=key&&typeof SPORTS_DB!=='undefined'?SPORTS_DB[key]:null;
+  W.deporteKey=key; W.deporteLabel=sp?sp.label:''; W.emoji=sp?(sp.emoji||'🏅'):'';
+  document.getElementById('fCategoria').classList.toggle('hidden',!key); document.getElementById('fSexo').classList.toggle('hidden',!key); refreshStep1(); }
+function refreshStep1(){ const ok=W.tipo&&W.deporteKey&&W.categoria&&W.sexo; if(W.step===1) document.getElementById('btnNext').disabled=!ok; }
+function stepAdjust(id,delta,min,max){ const el=document.getElementById(id); let v=(+el.value||0)+delta; v=Math.max(min,Math.min(max,v)); el.value=v; el.dispatchEvent(new Event('input')); }
+function recalcCfg(){
+  if(W.tipo==='conjunto'){ W.sistema='Fase de grupos · todos contra todos';
+    const n=W.nEquipos||0,g=W.nGrupos||1,base=Math.floor(n/g),resto=n%g;
+    const rep=resto===0?`${g} grupo(s) de ${base} equipos`:`${resto} grupo(s) de ${base+1} y ${g-resto} de ${base}`;
+    document.getElementById('repartoChip').classList.toggle('warn',n%g!==0);
+    document.getElementById('repartoTxt').textContent=(n&&g)?`Reparto: ${rep}${n%g!==0?' · incluye descanso (by)':''}`:'Define equipos y grupos';
+  }else{ W.sistema='Eliminación directa · llaves'; const n=W.nEquipos||0,byes=n>1?(Math.pow(2,Math.ceil(Math.log2(n)))-n):0;
+    document.getElementById('llaveTxt').textContent=n?`Llave de ${n} participante(s)${byes?` · ${byes} descanso(s)`:''}`:'Define participantes'; }
+  document.getElementById('sistemaTxt').textContent=W.sistema;
+}
+function buildSummary(){ const conj=W.tipo==='conjunto';
+  const reparto=conj?document.getElementById('repartoTxt').textContent.replace('Reparto: ',''):document.getElementById('llaveTxt').textContent;
+  document.getElementById('summaryBox').innerHTML=`
+    <div class="wz-sum-hd"><div class="wz-sum-emoji">${W.emoji||'🏅'}</div><div><b>${W.deporteLabel}</b><br/><span>${W.categoria} · ${W.sexo}</span></div></div>
+    <div class="wz-sum-rows">
+      <div class="wz-sum-row"><span class="k">Tipo</span><span class="v">${conj?'De conjunto':'Individual'}</span></div>
+      <div class="wz-sum-row"><span class="k">Sistema</span><span class="v">${W.sistema}</span></div>
+      <div class="wz-sum-row"><span class="k">${conj?'Equipos':'Participantes'}</span><span class="v">${W.nEquipos}</span></div>
+      ${conj?`<div class="wz-sum-row"><span class="k">Grupos</span><span class="v">${W.nGrupos}</span></div>`:''}
+      <div class="wz-sum-row"><span class="k">${conj?'Reparto':'Llave'}</span><span class="v">${reparto}</span></div>
+    </div>`;
+}
+function goStep(n){ n=Math.max(1,Math.min(3,n)); W.step=n;
+  for(let i=1;i<=3;i++){ const st=document.getElementById('wzStep'+i);
+    st.classList.toggle('active',i===n); st.classList.toggle('done',i<n);
+    st.querySelector('.wz-badge').innerHTML = i<n ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : String(i); }
+  document.getElementById('wzLine1').classList.toggle('done',n>1); document.getElementById('wzLine2').classList.toggle('done',n>2);
+  for(let i=1;i<=3;i++) document.getElementById('panel'+i).classList.toggle('active',i===n);
+  if(n===2){ document.getElementById('cfgConjunto').style.display=W.tipo==='conjunto'?'block':'none';
+    document.getElementById('cfgIndividual').style.display=W.tipo==='individual'?'block':'none'; recalcCfg(); }
+  if(n===3){ buildSummary(); document.getElementById('doneBox').style.display='none'; }
+  document.getElementById('btnBack').classList.toggle('is-hidden',n===1);
+  const next=document.getElementById('btnNext');
+  if(n===1){ next.textContent='Siguiente →'; refreshStep1(); }
+  else if(n===2){ next.textContent='Siguiente →'; next.disabled=false; }
+  else { next.textContent='Confirmar parametrización'; next.disabled=false; }
+}
+function next(){ if(W.step<3){ goStep(W.step+1); return; }
+  document.getElementById('doneBox').style.display='block';
+  const b=document.getElementById('btnNext'); b.disabled=true; b.textContent='✓ Confirmado';
+  try{ document.getElementById('doneBox').scrollIntoView({behavior:'smooth',block:'nearest'}); }catch(e){}
+  fireConfetti();
+}
+function fireConfetti(){
+  try{ if(matchMedia('(prefers-reduced-motion: reduce)').matches) return; }catch(e){}
+  const cv=document.createElement('canvas'); cv.style.cssText='position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9999';
+  cv.width=innerWidth; cv.height=innerHeight; document.body.appendChild(cv);
+  const ctx=cv.getContext('2d'); const cols=['#FF7500','#d74009','#1f8923','#1f78d1','#7c3aed','#f4c01c'];
+  const card=document.querySelector('.wz-card'); const r=card?card.getBoundingClientRect():{left:innerWidth/2,width:0,top:innerHeight*0.4};
+  const ox=r.left+r.width/2, oy=Math.max(90,r.top+140); const P=[];
+  for(let i=0;i<140;i++){ const a=Math.random()*Math.PI*2,s=4+Math.random()*9;
+    P.push({x:ox+(Math.random()-.5)*200,y:oy,vx:Math.cos(a)*s,vy:Math.sin(a)*s-7,g:0.3+Math.random()*0.2,rot:Math.random()*6.28,vr:(Math.random()-.5)*0.5,w:6+Math.random()*7,h:4+Math.random()*5,c:cols[i%cols.length]}); }
+  let t=0;
+  (function frame(){ t++; ctx.clearRect(0,0,cv.width,cv.height); let alive=false;
+    for(const p of P){ p.vy+=p.g; p.vx*=0.99; p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr; if(p.y<cv.height+30) alive=true;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.globalAlpha=Math.max(0,1-t/140); ctx.fillStyle=p.c; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore(); }
+    if(alive&&t<150) requestAnimationFrame(frame); else cv.remove();
+  })();
+}
+</script>
+</body>
+</html>
