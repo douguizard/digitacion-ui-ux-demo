@@ -67,7 +67,7 @@
       var posCls = i===0?'':i===1?'pos2':'pos3';
       html += '<tr>'
         + '<td><span class="standings-pos '+posCls+'">'+(i+1)+'</span></td>'
-        + '<td><div class="standings-team"><div class="team-avatar" style="background:'+teamColor(t.equipo)+';color:#fff;width:28px;height:28px;font-size:10px">'+esc(teamInit(t.equipo))+'</div><div><div class="standings-team-name">'+esc(t.equipo)+'</div><div class="standings-team-sub">'+esc(t.equipo)+'</div></div></div></td>'
+        + '<td><div class="standings-team"><div class="team-avatar" style="background:'+teamColor(t.equipo)+';color:#fff;width:28px;height:28px;font-size:10px">'+esc(teamInit(t.equipo))+'</div><div><div class="standings-team-name">'+esc(t.equipo)+'</div></div></div></td>'
         + '<td>'+esc(t.pj)+'</td><td>'+esc(t.pg)+'</td><td>'+esc(t.pp)+'</td><td class="standings-pts">'+esc(t.pts)+'</td>'
         + '</tr>';
     });
@@ -140,8 +140,6 @@
         partidos.forEach(function(m){ html += _matchCard(m); });
       }
 
-      /* Tabla de posiciones del grupo */
-      html += renderStandings(g);
       html += '</div>';
     });
     return html;

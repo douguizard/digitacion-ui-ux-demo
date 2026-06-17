@@ -222,6 +222,23 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 @keyframes rgPop{from{opacity:0;transform:scale(.82) translateY(6px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.rg-slot.filled{animation:none}.stage{animation:none}}
 .preview-comp{max-width:900px;margin:0 auto}
+/* ═══ F3-refinamiento: tabs preview · footer sticky · header chevron ═══ */
+.page{display:flex;flex-direction:column;padding-bottom:0}
+#ruletaStage,#previewStage{flex:1;display:flex;flex-direction:column}
+#ruletaStage .ruleta-wrap,#previewStage .preview-comp{width:100%;padding-bottom:8px}
+.cr-tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:18px;overflow-x:auto}
+.cr-tab{padding:11px 18px;font-size:13px;font-weight:600;color:var(--text-secondary);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:color .15s,border-color .15s;font-family:var(--font)}
+.cr-tab:hover{color:var(--text-primary)}
+.cr-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.cr-tabpanel{animation:wzIn .3s cubic-bezier(.32,.72,0,1)}
+.pv-head{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.pv-emoji{font-size:34px;line-height:1;flex-shrink:0}
+.pv-title{font-size:18px;font-weight:700;color:var(--text-primary)}
+.pv-sub{font-size:13px;color:var(--text-secondary);margin-top:2px}
+.stage-footer{position:sticky;bottom:0;z-index:20;margin:auto -32px 0;padding:14px 32px;border-radius:0;box-shadow:0 -4px 16px rgba(40,40,52,.05)}
+.uc-chev{color:var(--text-secondary);transition:transform .2s}
+.profile-switcher.open .profile-dropdown{display:block}
+.profile-switcher.open .uc-chev{transform:rotate(180deg)}
 </style>
 </head>
 <body>
@@ -262,29 +279,30 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
     <div class="nav-row"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 20H5a2 2 0 01-2-2v-2a2 2 0 012-2h16" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M20 17H6" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="7.29" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5"/><ellipse cx="16.72" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5"/><path d="M10.29 7a2.72 2.72 0 013.43 0" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M3 7h1.29M19.72 7H21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Auditoría</span></div>
   </nav>
   <div class="sidebar-bottom">
-    <div class="sb-profile" id="sbProfile">
-      <div class="sb-profile-dd" role="menu">
-        <div class="sb-profile-dd__label">Cambiar perfil</div>
-        <div class="sb-profile-opt active" onclick="switchProfile('coordinador')">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
-          <div><div class="po-name">Coordinador de eventos</div><div class="po-desc">Crear y configurar competencias</div></div>
-        </div>
-        <div class="sb-profile-opt" onclick="switchProfile('digitador')">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h12M2 12h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-          <div><div class="po-name">Digitador</div><div class="po-desc">Digitar enfrentamientos asignados</div></div>
-        </div>
-      </div>
-      <div class="sb-profile-chip" onclick="toggleSbProfile(event)">
-        <div class="sb-profile-ava">CE</div>
-        <div class="sb-profile-meta"><span class="sb-profile-name">Coordinador</span><span class="sb-profile-role">Coordinador de eventos</span></div>
-        <svg class="sb-profile-chev" width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-      </div>
-    </div>
     <div class="nav-row" id="btnLogout"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lbl">Cerrar sesion</span></div>
   </div>
 </aside>
 
 <div class="main">
+  <header class="top-header">
+    <div class="profile-switcher" id="profileSwitcher">
+      <div class="user-chip" onclick="toggleProfileDD(event)">
+        <div class="ava"><div class="ava-ring" style="background:#ffe4cf;color:#d74009">CE</div><div class="ava-dot"></div></div>
+        <div class="user-info"><span class="user-name">Coordinador</span><span class="user-role">Coordinador de eventos</span></div>
+        <svg class="uc-chev" width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </div>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div class="profile-option active" onclick="switchProfile('coordinador')">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
+          <div><div class="po-name">Coordinador de eventos</div><div class="po-desc">Crear y configurar competencias</div></div>
+        </div>
+        <div class="profile-option" onclick="switchProfile('digitador')">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h12M2 12h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <div><div class="po-name">Digitador</div><div class="po-desc">Digitar enfrentamientos asignados</div></div>
+        </div>
+      </div>
+    </div>
+  </header>
   <div class="page">
 
     <div id="wizardStage" class="stage">
@@ -435,7 +453,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
         <div class="ruleta-reel"><div class="ruleta-reel-lbl">Sacando…</div><div class="ruleta-reel-name" id="reelName">—</div></div>
         <div class="ruleta-grupos" id="ruletaGrupos"></div>
       </div>
-      <div class="wz-nav" id="ruletaNav" style="display:none">
+      <div class="wz-nav stage-footer" id="ruletaNav" style="display:none">
         <button class="naowee-btn naowee-btn--mute" onclick="backToWizard()">← Parámetros</button>
         <button class="naowee-btn naowee-btn--loud" onclick="showPreview()">Ver resultado →</button>
       </div>
@@ -450,8 +468,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
         </div>
         <button class="naowee-btn naowee-btn--mute" onclick="reSortear()">↻ Re-sortear</button>
       </div>
-      <div id="previewComp" class="preview-comp"></div>
-      <div class="wz-nav">
+      <div class="preview-comp">
+        <div id="previewHead"></div>
+        <div class="cr-tabs" id="previewTabs"></div>
+        <div class="cr-tabpanel" id="previewPanel"></div>
+      </div>
+      <div class="wz-nav stage-footer">
         <button class="naowee-btn naowee-btn--mute" onclick="backToWizard()">← Parámetros</button>
         <button class="naowee-btn naowee-btn--loud" id="btnConfirmSorteo" onclick="confirmSorteo()">Confirmar sorteo ✓</button>
       </div>
@@ -466,15 +488,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 <script src="competition-render.js"></script>
 <script>
 /* ── Chrome (profile switcher + nav) ── */
-function toggleSbProfile(e){ if(e) e.stopPropagation(); document.getElementById('sbProfile').classList.toggle('open'); }
+function toggleProfileDD(e){ if(e) e.stopPropagation(); document.getElementById('profileSwitcher').classList.toggle('open'); }
 function fadeAndGo(url){document.body.style.transition='opacity .25s ease';document.body.style.opacity='0';setTimeout(()=>{window.location.href=url},260)}
 function switchProfile(p){
-  document.getElementById('sbProfile')?.classList.remove('open');
+  document.getElementById('profileSwitcher')?.classList.remove('open');
   if(p==='coordinador') fadeAndGo('stepper.html');
   if(p==='digitador') fadeAndGo('digitador.html');
 }
 function toggleCompMenu(){ var nav=document.getElementById('navComp'); var sub=document.getElementById('subnavComp'); if(nav) nav.classList.toggle('expanded'); if(sub) sub.classList.toggle('open'); }
-document.addEventListener('click',function(e){ if(!e.target.closest('.sb-profile')) document.getElementById('sbProfile')?.classList.remove('open'); });
+document.addEventListener('click',function(e){ if(!e.target.closest('.profile-switcher')) document.getElementById('profileSwitcher')?.classList.remove('open'); });
 document.getElementById('btnLogout')?.addEventListener('click',()=>{ fadeAndGo('../escenarios/escenario-01-login.html'); });
 /* Tooltip al colapsar el sidebar */
 (function(){var sb=document.getElementById('sidebar');if(!sb)return;var tip=document.createElement('div');tip.className='nav-tooltip';document.body.appendChild(tip);function show(el,t){if(!sb.classList.contains('collapsed'))return;tip.textContent=t;var r=el.getBoundingClientRect();tip.style.left=(r.right+12)+'px';tip.style.top=(r.top+r.height/2)+'px';tip.classList.add('is-visible');}function hide(){tip.classList.remove('is-visible');}sb.querySelectorAll('.nav-row').forEach(function(row){var l=row.querySelector('.lbl');if(!l)return;row.addEventListener('mouseenter',function(){show(row,l.textContent.trim());});row.addEventListener('mouseleave',hide);});var chip=document.querySelector('.sb-profile-chip');if(chip){chip.addEventListener('mouseenter',function(){show(chip,'Cambiar perfil');});chip.addEventListener('mouseleave',hide);}})();
@@ -577,7 +599,7 @@ const _TC=['#d74009','#1f78d1','#1f8923','#7c3aed','#FF7500','#0891b2','#be185d'
 let _sorteo=null,_assign=null,_drawSeq=[],_ruletaTimers=[],_ruletaDone=false;
 function teamColorLocal(n){ if(window.CompRender&&CompRender.teamColor)return CompRender.teamColor(n); let h=0; for(let i=0;i<n.length;i++)h=n.charCodeAt(i)+((h<<5)-h); return _TC[Math.abs(h)%_TC.length]; }
 function teamInitLocal(n){ if(window.CompRender&&CompRender.teamInit)return CompRender.teamInit(n); return n.split(' ').filter(w=>w.length>1).map(w=>w[0]).join('').substring(0,2).toUpperCase()||n[0]; }
-function showStage(id){ ['wizardStage','ruletaStage','previewStage'].forEach(s=>{const el=document.getElementById(s); if(el)el.style.display=(s===id?'block':'none');}); try{document.querySelector('.page').scrollTo(0,0);}catch(e){} }
+function showStage(id){ const D={wizardStage:'block',ruletaStage:'flex',previewStage:'flex'}; ['wizardStage','ruletaStage','previewStage'].forEach(s=>{const el=document.getElementById(s); if(el)el.style.display=(s===id?(D[s]||'block'):'none');}); try{document.querySelector('.page').scrollTo(0,0);}catch(e){} }
 function genParticipantes(n,tipo){ const out=[]; for(let i=0;i<n;i++)out.push({nombre:_NAMES[i]||((tipo==='individual'?'Deportista ':'Equipo ')+(i+1))}); return out; }
 function buildSorteo(){ const n=Math.max(2, +W.nEquipos||8); _sorteo={prueba:{deporteLabel:W.deporteLabel||'Deporte',emoji:W.emoji||'🏆',categoria:W.categoria||'General',sexo:W.sexo||'Mixto',tipo:W.tipo||'conjunto'},config:{nGrupos:(W.tipo==='individual'?1:Math.max(1,+W.nGrupos||2))},participantes:genParticipantes(n,W.tipo)}; return _sorteo; }
 function startRuleta(){ buildSorteo(); _assign=SorteoEngine.asignarGrupos(_sorteo.participantes,_sorteo.config.nGrupos); _ruletaDone=false; showStage('ruletaStage'); document.getElementById('ruletaSub').textContent='Asignando participantes a los grupos…'; document.getElementById('ruletaNav').style.display='none'; document.getElementById('btnSkip').style.display=''; document.getElementById('reelName').textContent='—'; renderRuletaGrupos(_assign,[]); buildDrawSeq(); runRuletaAnim(0); }
@@ -587,7 +609,15 @@ function placeOne(item){ const card=document.querySelectorAll('#ruletaGrupos .rg
 function runRuletaAnim(i){ if(i>=_drawSeq.length){ finishRuleta(); return; } const item=_drawSeq[i]; const reel=document.querySelector('.ruleta-reel'),nameEl=document.getElementById('reelName'); let reduce=false; try{reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){} if(reduce){ nameEl.textContent=item.name; placeOne(item); _ruletaTimers.push(setTimeout(()=>runRuletaAnim(i+1),80)); return; } reel.classList.add('spin'); let ticks=0; const spin=setInterval(()=>{ nameEl.textContent=_NAMES[Math.floor(Math.random()*_NAMES.length)]; if(++ticks>4){ clearInterval(spin); nameEl.textContent=item.name; reel.classList.remove('spin'); placeOne(item); _ruletaTimers.push(setTimeout(()=>runRuletaAnim(i+1),230)); } },45); _ruletaTimers.push(spin); }
 function skipRuleta(){ _ruletaTimers.forEach(t=>{clearTimeout(t);clearInterval(t);}); _ruletaTimers=[]; const all=[]; _assign.forEach(g=>g.forEach(t=>all.push(t))); renderRuletaGrupos(_assign,all); document.getElementById('reelName').textContent='✓'; finishRuleta(); }
 function finishRuleta(){ if(_ruletaDone)return; _ruletaDone=true; document.getElementById('ruletaSub').textContent='Grupos conformados. Continúa para ver el calendario y la fase final.'; document.getElementById('btnSkip').style.display='none'; document.getElementById('ruletaNav').style.display=''; }
-function showPreview(){ const comp=SorteoEngine.toComp(_sorteo); _sorteo.resultado=comp; showStage('previewStage'); const el=document.getElementById('previewComp'); const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=false;b.textContent='Confirmar sorteo ✓';} if(window.CompRender&&CompRender.renderComp){ CompRender.renderComp(comp,el); } else { el.innerHTML='<p style="color:var(--text-secondary);text-align:center;padding:40px">Renderer de competencia no disponible.</p>'; } }
+const _PV_TABS=[
+  {id:'grupos',label:'Grupos y calendario',render:function(c){return (window.CompRender&&CompRender.renderGrupos)?CompRender.renderGrupos(c):'';}},
+  {id:'posiciones',label:'Posiciones',render:function(c){return (c.grupos||[]).map(function(g){return CompRender.renderStandings(g);}).join('');}},
+  {id:'final',label:'Fase final',render:function(c){return c.bracket?(CompRender.renderBracket(c)+CompRender.renderMedalleria(c)):'<p style="color:var(--text-secondary);text-align:center;padding:36px">Un solo grupo: sin fase final cruzada.</p>';}}
+];
+let _pvComp=null,_pvTab='grupos';
+function showPreview(){ _pvComp=SorteoEngine.toComp(_sorteo); _sorteo.resultado=_pvComp; showStage('previewStage'); const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=false;b.textContent='Confirmar sorteo ✓';} document.getElementById('previewHead').innerHTML='<div class="pv-head"><span class="pv-emoji">'+(_pvComp.emoji||'🏆')+'</span><div><div class="pv-title">'+(_pvComp.nombre||'Sorteo')+'</div><div class="pv-sub">'+(_pvComp.sistema||'')+' · '+(_pvComp.grupos?_pvComp.grupos.length:0)+' grupos · '+(_pvComp.jornadasCount||0)+' jornadas</div></div></div>'; _pvTab='grupos'; renderPvTabs(); }
+function renderPvTabs(){ const tb=document.getElementById('previewTabs'); if(tb) tb.innerHTML=_PV_TABS.map(function(t){return '<button class="cr-tab'+(t.id===_pvTab?' active':'')+'" onclick="switchPvTab(\''+t.id+'\')">'+t.label+'</button>';}).join(''); const tab=_PV_TABS.find(function(t){return t.id===_pvTab;}); const p=document.getElementById('previewPanel'); if(p&&tab) p.innerHTML=tab.render(_pvComp); }
+function switchPvTab(id){ _pvTab=id; renderPvTabs(); }
 function backToWizard(){ _ruletaTimers.forEach(t=>{clearTimeout(t);clearInterval(t);}); _ruletaTimers=[]; showStage('wizardStage'); }
 function reSortear(){ startRuleta(); }
 function confirmSorteo(){ const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=true;b.textContent='✓ Sorteo confirmado';} fireConfetti(); }
