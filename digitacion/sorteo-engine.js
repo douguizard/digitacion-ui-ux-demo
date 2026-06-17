@@ -158,5 +158,162 @@
     };
   }
 
-  global.SorteoEngine = { BYE, asignarGrupos, roundRobin, recalcStandings, faseFinal, toComp };
+  /* ═══════════════════════════════════════════════════════════════
+     F4 — BRACKET de eliminación directa (transcripción manual)
+     ─────────────────────────────────────────────────────────────── */
+
+  /** Orden de siembra estándar de un cuadro de tamaño potencia de 2.
+   *  Devuelve los números de semilla (1..size) en orden de slots, de
+   *  forma que las semillas altas se cruzan tarde (1 vs size, 2 al lado
+   *  opuesto, etc.). Ej. size 4 → [1,4,2,3]; size 8 → [1,8,4,5,2,7,3,6]. */
+  function seedOrder(size) {
+    let pls = [1, 2];
+    while (pls.length < size) {
+      const out = [];
+      const sum = pls.length * 2 + 1;
+      for (let i = 0; i < pls.length; i++) { out.push(pls[i]); out.push(sum - pls[i]); }
+      pls = out;
+    }
+    return pls;
+  }
+
+  /** Nombres de ronda terminando en 'Final' (etiquetas que reconoce
+   *  scoring-modal.js para fase eliminatoria). */
+  function _roundNames(mainRounds) {
+    const map = {
+      1: ['Final'],
+      2: ['Semifinal', 'Final'],
+      3: ['Cuartos', 'Semifinal', 'Final'],
+      4: ['Octavos', 'Cuartos', 'Semifinal', 'Final'],
+      5: ['Dieciseisavos', 'Octavos', 'Cuartos', 'Semifinal', 'Final'],
+      6: ['Treintaidosavos', 'Dieciseisavos', 'Octavos', 'Cuartos', 'Semifinal', 'Final'],
+    };
+    if (map[mainRounds]) return map[mainRounds];
+    const a = [];
+    for (let i = 0; i < mainRounds - 1; i++) a.push('Ronda ' + (i + 1));
+    a.push('Final');
+    return a;
+  }
+
+  function _findMatch(bracket, id) {
+    for (let r = 0; r < bracket.length; r++) {
+      const ms = bracket[r].matches;
+      for (let m = 0; m < ms.length; m++) if (ms[m].id === id) return ms[m];
+    }
+    return null;
+  }
+
+  /** Construye un cuadro de eliminación directa para N participantes.
+   *  Calcula la potencia de 2 superior, reparte BYEs a las semillas
+   *  altas, nombra las rondas, fija punteros de avance (ganador → match
+   *  padre; perdedor de semifinal → Tercer puesto) y auto-resuelve los
+   *  BYEs de 1ª ronda. participantes = [nombre | {nombre}].
+   *  opts.tercerPuesto (default true para >=4). */
+  function buildBracketFromSeeds(participantes, opts) {
+    opts = opts || {};
+    const names = (participantes || [])
+      .map((p) => (typeof p === 'string' ? p : (p && p.nombre) || ''))
+      .filter((x) => x);
+    const n = names.length;
+    if (n < 2) return [];
+    const tercer = opts.tercerPuesto !== false && n >= 4;
+    let size = 1; while (size < n) size *= 2;
+    const mainRounds = Math.round(Math.log2(size));
+    const rnames = _roundNames(mainRounds);
+    const order = seedOrder(size);
+    const seedTeam = (seed) => (seed <= n ? names[seed - 1] : null); // null = BYE
+
+    const rounds = [];
+    for (let r = 0; r < mainRounds; r++) {
+      const cnt = size / Math.pow(2, r + 1);
+      const matches = [];
+      for (let m = 0; m < cnt; m++) {
+        matches.push({ id: 'R' + r + 'M' + m, t1: null, t2: null, s1: null, s2: null, status: 'pending' });
+      }
+      rounds.push({ round: rnames[r], matches });
+    }
+    // punteros de avance del ganador
+    for (let r = 0; r < mainRounds - 1; r++) {
+      rounds[r].matches.forEach((mt, m) => {
+        mt.next = { id: rounds[r + 1].matches[Math.floor(m / 2)].id, slot: m % 2 === 0 ? 1 : 2 };
+      });
+    }
+    // siembra de 1ª ronda
+    rounds[0].matches.forEach((mt, m) => { mt.t1 = seedTeam(order[m * 2]); mt.t2 = seedTeam(order[m * 2 + 1]); });
+
+    let tercerRound = null;
+    if (tercer && mainRounds >= 2) {
+      tercerRound = { round: 'Tercer puesto', matches: [{ id: 'R3P', t1: null, t2: null, s1: null, s2: null, status: 'pending', medal: 'bronce' }] };
+      const semiIdx = mainRounds - 2;
+      rounds[semiIdx].matches.forEach((mt, m) => { mt.loserNext = { id: 'R3P', slot: m % 2 === 0 ? 1 : 2 }; });
+    }
+    rounds[mainRounds - 1].matches[0].medal = 'oro';
+
+    const bracket = rounds.slice();
+    if (tercerRound) bracket.push(tercerRound);
+
+    // auto-resuelve BYEs de 1ª ronda (un competidor presente → avanza)
+    rounds[0].matches.forEach((mt) => {
+      const hasT1 = !!mt.t1, hasT2 = !!mt.t2;
+      if (hasT1 === hasT2) return; // partido real (ambos) o vacío (ninguno)
+      const winName = hasT1 ? mt.t1 : mt.t2;
+      mt.status = 'bye';
+      mt.winner = hasT1 ? 1 : 2;
+      if (mt.next) {
+        const nm = _findMatch(bracket, mt.next.id);
+        if (nm) { if (mt.next.slot === 1) nm.t1 = winName; else nm.t2 = winName; }
+      }
+    });
+    return bracket;
+  }
+
+  /** Marca el ganador de un match (winner 1|2 + status done + score
+   *  opcional) y propaga: ganador → slot del match padre; perdedor de
+   *  semifinal → Tercer puesto. Inmutable: devuelve un comp nuevo. */
+  function advanceWinner(comp, matchId, winner, score) {
+    if (!comp || !comp.bracket) return comp;
+    const c = JSON.parse(JSON.stringify(comp));
+    const mt = _findMatch(c.bracket, matchId);
+    if (!mt || !mt.t1 || !mt.t2) return comp; // no se puede decidir un match incompleto
+    if (score && (score.s1 != null || score.s2 != null)) { mt.s1 = score.s1; mt.s2 = score.s2; }
+    mt.winner = winner;
+    mt.status = 'done';
+    const winName = winner === 1 ? mt.t1 : mt.t2;
+    const loseName = winner === 1 ? mt.t2 : mt.t1;
+    if (mt.next) {
+      const nm = _findMatch(c.bracket, mt.next.id);
+      if (nm) { if (mt.next.slot === 1) nm.t1 = winName; else nm.t2 = winName; }
+    }
+    if (mt.loserNext) {
+      const lm = _findMatch(c.bracket, mt.loserNext.id);
+      if (lm) { if (mt.loserNext.slot === 1) lm.t1 = loseName; else lm.t2 = loseName; }
+    }
+    return c;
+  }
+
+  /** Ensambla un comp 'solo bracket' (sisCls 'elim') desde el sorteo,
+   *  hermano de toComp para no inflarlo. Las semillas = orden de
+   *  participantes (clasificados). */
+  function toCompBracket(sorteo) {
+    const pr = sorteo.prueba || {};
+    const parts = (sorteo.participantes || [])
+      .map((p) => (typeof p === 'string' ? p : (p && p.nombre) || ''))
+      .filter(Boolean);
+    const bracket = buildBracketFromSeeds(parts, { tercerPuesto: parts.length >= 4 });
+    return {
+      sisCls: 'elim',
+      sistema: 'Eliminación directa',
+      nombre: [pr.deporteLabel, pr.categoria, pr.sexo].filter(Boolean).join(' '),
+      deporte: pr.deporteLabel || '',
+      emoji: pr.emoji || '🏆',
+      categoria: pr.categoria || '',
+      genero: pr.sexo || '',
+      grupos: [],
+      bracket,
+      medal: true,
+      jornadasCount: 0,
+    };
+  }
+
+  global.SorteoEngine = { BYE, asignarGrupos, roundRobin, recalcStandings, faseFinal, toComp, seedOrder, buildBracketFromSeeds, advanceWinner, toCompBracket };
 })(typeof window !== 'undefined' ? window : globalThis);
