@@ -61,7 +61,7 @@
     if(!grupo || !grupo.tabla || !grupo.tabla.length){
       return '<div class="cr-empty">Sin tabla de posiciones.</div>';
     }
-    var html = '<div class="standings-title">Tabla — '+esc(grupo.nombre)+'</div>';
+    var html = '<div class="cr-stand-card"><div class="cr-stand-head"><span class="cr-stand-dot"></span>'+esc(grupo.nombre)+'</div>';
     html += '<table class="standings-table"><thead><tr><th>Pos</th><th>Equipo</th><th>PJ</th><th>PG</th><th>PP</th><th>Pts</th></tr></thead><tbody>';
     grupo.tabla.forEach(function(t,i){
       var posCls = i===0?'':i===1?'pos2':'pos3';
@@ -71,7 +71,7 @@
         + '<td>'+esc(t.pj)+'</td><td>'+esc(t.pg)+'</td><td>'+esc(t.pp)+'</td><td class="standings-pts">'+esc(t.pts)+'</td>'
         + '</tr>';
     });
-    html += '</tbody></table>';
+    html += '</tbody></table></div>';
     return html;
   }
 
@@ -292,33 +292,15 @@
      o nombres vacíos → "por definir".
   ─────────────────────────────────────────────── */
   function renderMedalleria(comp){
-    var podium = _resolvePodium(comp);
-    var rows = [
-      {cls:'gold',   icon:'🥇', label:'ORO',    name:podium.oro},
-      {cls:'silver', icon:'🥈', label:'PLATA',  name:podium.plata},
-      {cls:'bronze', icon:'🥉', label:'BRONCE', name:podium.bronce}
-    ];
-    function display(n){ return isPlaceholder(n) ? 'por definir' : esc(n); }
-
-    var html = '<h3 style="font-size:16px;font-weight:600;margin-bottom:16px">Medallería</h3>';
-    html += '<div class="medal-grid">';
-    rows.forEach(function(m){
-      html += '<div class="medal-card '+m.cls+'">'
-        + '<div class="medal-icon">'+m.icon+'</div>'
-        + '<div class="medal-label">'+m.label+'</div>'
-        + '<div class="medal-name">'+display(m.name)+'</div>'
-        + '</div>';
-    });
-    html += '</div>';
-
-    /* 4º puesto como fila informativa (no medalla) */
-    var cuarto = display(podium.cuarto);
-    html += '<div class="ranking-list">';
-    html += '<div class="ranking-row"><div class="ranking-pos p4">4</div>'
-      + '<div class="ranking-info"><div class="ranking-name">'+cuarto+'</div><div class="ranking-city">Cuarto puesto</div></div>'
-      + '<div class="ranking-mark">—</div></div>';
-    html += '</div>';
-    return html;
+    // resolver podio (reusa _resolvePodium si existe); fallback placeholder
+    var oro='Por definir', plata='Por definir', bronce='Por definir';
+    try{ var pod=_resolvePodium(comp); if(pod){ oro=pod.oro&&!isPlaceholder(pod.oro)?pod.oro:'Por definir'; plata=pod.plata&&!isPlaceholder(pod.plata)?pod.plata:'Por definir'; bronce=pod.bronce&&!isPlaceholder(pod.bronce)?pod.bronce:'Por definir'; } }catch(e){}
+    var rows=[{pos:1,dep:oro,org:'Campeón',marca:''},{pos:2,dep:plata,org:'Subcampeón',marca:''},{pos:3,dep:bronce,org:'Tercer lugar',marca:''}];
+    var avColor=function(n){ return n==='Por definir' ? '#cbd5e1' : teamColor(n); };
+    var avInit=function(n){ return n==='Por definir' ? '?' : teamInit(n); };
+    var order=[rows[1],rows[0],rows[2]], cls=['p2','p1','p3'];
+    var items=order.map(function(r,i){ return '<div class="rep-podio__item '+cls[i]+'">'+(cls[i]==='p1'?'<div class="rep-podio__crown">👑</div>':'')+'<div class="rep-podio__avatar" style="background:'+avColor(r.dep)+'">'+esc(avInit(r.dep))+'</div><div class="rep-podio__name">'+esc(r.dep)+'</div><div class="rep-podio__org">'+esc(r.org)+'</div><div class="rep-podio__marca">'+(r.marca||'—')+'</div><div class="rep-podio__block"><span class="rep-podio__pos">'+r.pos+'°</span></div></div>'; }).join('');
+    return '<div class="cr-podio-block"><div class="cr-podio-title">🏅 Podio (medallería)</div><div class="rep-podio">'+items+'</div></div>';
   }
 
   /* ───────────────────────────────────────────────
