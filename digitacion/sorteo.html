@@ -42,6 +42,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .active-bar{position:absolute;left:4px;top:8px;width:4px;height:28px;background:var(--accent);border-radius:25px}
 .nav-row.active{background:transparent}
 .nav-row.active .lbl{color:var(--accent)}
+.nav-row.expanded .nav-arrow{transform:rotate(180deg)}
+.subnav{padding-left:0;overflow:hidden;max-height:0;transition:max-height .25s ease}
+.subnav.open{max-height:200px}
+.sub-row{display:flex;align-items:center;gap:8px;height:36px;padding:0 8px 0 64px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;color:var(--text-secondary);transition:background .12s;text-decoration:none}
+.sub-row:hover{background:#f5f6fa}
+.sub-row .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:transparent}
+.sub-row.active-sub{color:var(--accent);font-weight:600}
+.sub-row.active-sub .dot{background:var(--accent)}
+.sidebar.collapsed .subnav{display:none}
 .sidebar-bottom{padding:8px 0;border-top:1px solid var(--border)}
 .sidebar.collapsed{width:72px;min-width:72px;overflow:hidden}
 .sidebar.collapsed .naowee-logo,.sidebar.collapsed .lbl,.sidebar.collapsed .nav-section,.sidebar.collapsed .sidebar-bottom .lbl{display:none}
@@ -151,28 +160,29 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
     </svg>
   </div>
   <nav class="sidebar-nav">
-    <div class="nav-section">COORDINACIÓN</div>
-    <div class="nav-row" onclick="fadeAndGo('stepper.html')">
-      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 12l9-9 9 9" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="nav-section">DASHBOARD</div>
+    <div class="nav-row" onclick="window.location.href='eventos.html'">
+      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#B5B9D4" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#B5B9D4" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#B5B9D4" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#B5B9D4" stroke-width="1.5"/></svg></div>
       <span class="lbl">Inicio</span>
     </div>
-    <div class="nav-row" onclick="fadeAndGo('lista.html')">
-      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 9H4a2 2 0 0 1-2-2V5h4M18 9h2a2 2 0 0 0 2-2V5h-4M6 9a6 6 0 0 0 12 0V3H6zM9 21h6M12 17v4" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="nav-section">GESTIÓN</div>
+    <div class="nav-row expanded" id="navComp" onclick="toggleCompMenu()">
+      <div class="icon"><svg width="24" height="24" viewBox="0 0 19.5 19.5" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.75.75h8a1 1 0 011 1v6a5 5 0 01-10 0v-6a1 1 0 011-1z" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.17 9.75H4.75a4 4 0 01-4-4v-2a1 1 0 011-1h3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.33 9.75h.42a4 4 0 004-4v-2a1 1 0 00-1-1h-3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M13.42 15.75H6.08a1.25 1.25 0 01-1.18-1.68l.33-1a1.25 1.25 0 011.18-.82h7.33c.54 0 1.02.34 1.18.82l.33 1a1.25 1.25 0 01-1.18 1.68z" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.75 12.75v3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <span class="lbl">Competencias</span>
+      <span class="nav-arrow"><svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M7.33 9.17L11 12.83l3.67-3.67" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </div>
-    <div class="nav-row active" onclick="fadeAndGo('sorteo.html')">
+    <div class="subnav open" id="subnavComp">
+      <a class="sub-row" href="lista.html"><span class="dot"></span>Lista de competencias</a>
+      <a class="sub-row" href="stepper.html"><span class="dot" style="background:transparent"></span>Nueva competencia</a>
+    </div>
+    <div class="nav-row active" onclick="window.location.href='sorteo.html'">
       <div class="active-bar"></div>
-      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polyline points="16 3 21 3 21 8" stroke="#d74009" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><line x1="4" y1="20" x2="21" y2="3" stroke="#d74009" stroke-width="1.6" stroke-linecap="round"/><polyline points="21 16 21 21 16 21" stroke="#d74009" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><line x1="15" y1="15" x2="21" y2="21" stroke="#d74009" stroke-width="1.6" stroke-linecap="round"/><line x1="4" y1="4" x2="9" y2="9" stroke="#d74009" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polyline points="16 3 21 3 21 8" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="4" y1="20" x2="21" y2="3" stroke="#d74009" stroke-width="1.5" stroke-linecap="round"/><polyline points="21 16 21 21 16 21" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="15" y1="15" x2="21" y2="21" stroke="#d74009" stroke-width="1.5" stroke-linecap="round"/><line x1="4" y1="4" x2="9" y2="9" stroke="#d74009" stroke-width="1.5" stroke-linecap="round"/></svg></div>
       <span class="lbl">Sorteo</span>
     </div>
-    <div class="nav-row" onclick="fadeAndGo('digitadores.html')">
-      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="3.5" stroke="#B5B9D4" stroke-width="1.5"/><path d="M3 21v-2a4 4 0 0 1 4-4h5" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M17.5 11.5a2.121 2.121 0 1 1 3 3L14 21l-4 1 1-4 6.5-6.5z" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="lbl">Digitadores</span>
-    </div>
-    <div class="nav-row" onclick="fadeAndGo('coordinadores.html')">
-      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="3.5" stroke="#B5B9D4" stroke-width="1.5"/><path d="M3 21v-2a4 4 0 0 1 4-4h5" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><polyline points="15 12 17 14 21 10" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="lbl">Coordinadores</span>
-    </div>
+    <div class="nav-row" onclick="window.location.href='digitadores.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M16 20v-1a4 4 0 00-4-4H6a4 4 0 00-4 4v1" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="#B5B9D4" stroke-width="1.5"/><path d="M22 20v-1a4 4 0 00-4-4" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M15 3a4 4 0 010 8" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Digitadores</span></div>
+    <div class="nav-row" onclick="window.location.href='coordinadores.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="16.75" cy="17.75" r="4.25" stroke="#B5B9D4" stroke-width="1.5"/><path d="M18.18 16.91l-1.79 1.78-1.07-1.07" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M10 15H7a4 4 0 00-4 4v1" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><circle cx="11" cy="7" r="4" stroke="#B5B9D4" stroke-width="1.5"/></svg></div><span class="lbl">Coordinadores</span></div>
+    <div class="nav-row"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 20H5a2 2 0 01-2-2v-2a2 2 0 012-2h16" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M20 17H6" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="7.29" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5"/><ellipse cx="16.72" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5"/><path d="M10.29 7a2.72 2.72 0 013.43 0" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M3 7h1.29M19.72 7H21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Auditoría</span></div>
   </nav>
   <div class="sidebar-bottom">
     <div class="nav-row" id="btnLogout"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lbl">Cerrar sesion</span></div>
@@ -352,6 +362,7 @@ function switchProfile(p){
   if(p==='coordinador') fadeAndGo('stepper.html');
   if(p==='digitador') fadeAndGo('digitador.html');
 }
+function toggleCompMenu(){ var nav=document.getElementById('navComp'); var sub=document.getElementById('subnavComp'); if(nav) nav.classList.toggle('expanded'); if(sub) sub.classList.toggle('open'); }
 document.addEventListener('click',function(e){ if(!e.target.closest('.profile-switcher')) document.getElementById('profileDropdown').classList.remove('open'); });
 document.getElementById('btnLogout')?.addEventListener('click',()=>{ fadeAndGo('../escenarios/escenario-01-login.html'); });
 
