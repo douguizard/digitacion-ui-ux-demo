@@ -81,8 +81,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;padding-top:28px}
 .page-title{font-size:24px;font-weight:600;color:var(--text-primary);margin-bottom:4px}
 .page-sub{font-size:13px;color:var(--text-secondary)}
-.btn-new{display:flex;align-items:center;gap:8px;height:44px;padding:0 20px;border-radius:var(--radius-md);font-size:14px;font-weight:600;font-family:var(--font);cursor:pointer;border:none;background:var(--accent);color:#fff;white-space:nowrap}
-.btn-new:hover{opacity:.9}
+/* .btn-new → .naowee-btn--loud--large (canónico) */
 
 /* Sport Pills Section */
 .sport-section{background:var(--surface);border-radius:var(--radius-xl);box-shadow:var(--shadow-card);padding:20px 24px;margin-bottom:24px;position:sticky;top:0;z-index:10;transition:border-radius .15s,box-shadow .15s}
@@ -151,7 +150,6 @@ tbody tr:hover{background:#fafbfd}
 .comp-cat{font-size:11px;color:var(--text-secondary)}
 
 /* Badge sistema */
-.badge-sis{display:inline-flex;padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:600;white-space:nowrap;background:#f0f2f5;color:var(--text-secondary)}
 .sis-medal{font-size:11px;color:var(--text-secondary);display:flex;align-items:center;gap:4px;margin-top:3px}
 
 /* Deporte + Modalidad */
@@ -164,13 +162,7 @@ tbody tr:hover{background:#fafbfd}
 .evento-text{font-size:13px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
 .evento-sub{font-size:11px;color:var(--text-secondary)}
 
-/* Badge estado */
-.badge-est{display:inline-flex;padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:600;white-space:nowrap}
-.badge-est.digitacion{background:#fff3e6;color:var(--naranja)}
-.badge-est.pausa{background:#fff0ee;color:#c04020}
-.badge-est.finalizada{background:var(--green-bg);color:var(--green)}
-.badge-est.asignada{background:#e8f4ff;color:#1f78d1}
-.badge-est.creada{background:#f0f2f5;color:var(--text-secondary)}
+/* Badge sistema/estado → componente canónico .naowee-badge (ver render JS) */
 
 /* Digitador */
 .digi-cell{display:flex;align-items:center;gap:8px;white-space:nowrap}
@@ -361,7 +353,7 @@ tbody tr{animation:fadeInUp .3s ease-out;animation-fill-mode:both}
         <h1 class="page-title">Competencia deportiva</h1>
         <p class="page-sub" id="pageSub">0 de 0 competencias</p>
       </div>
-      <button class="btn-new" onclick="window.location.href='stepper.html'">+ Nuevo enfrentamiento</button>
+      <button class="naowee-btn naowee-btn--loud naowee-btn--large" onclick="window.location.href='stepper.html'">+ Nuevo enfrentamiento</button>
     </div>
 
     <!-- Sport Pills -->
@@ -1025,7 +1017,7 @@ function renderTable(){
         <div class="comp-code">${d.code} &nbsp;\u2022&nbsp; <span class="comp-cat">${d.cat}</span></div>
       </td>
       <td>
-        <span class="badge-sis ${d.sisCls}">${d.sis.includes('+')?d.sis.split('+')[0].trim():d.sis}</span>
+        <span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">${d.sis.includes('+')?d.sis.split('+')[0].trim():d.sis}</span>
         <div class="sis-medal">${d.medal?'🥇 Con medallas':'Sin medallas'}</div>
       </td>
       <td>
@@ -1036,7 +1028,7 @@ function renderTable(){
         <div class="evento-text">${d.evento}</div>
         <div class="evento-sub">${d.zona}</div>
       </td>
-      <td><span class="badge-est ${d.estCls}">${d.estado}</span></td>
+      <td><span class="naowee-badge naowee-badge--quiet naowee-badge--small naowee-badge--${({digitacion:'caution',pausa:'neutral',finalizada:'positive',asignada:'informative',creada:'neutral'})[d.estCls]||'neutral'}">${d.estado}</span></td>
       <td>
         ${d.digi
           ? '<div class="digi-cell"><div class="digi-mini" style="background:'+d.digiColor+'">'+d.digiInit+'</div>'+d.digi+'</div>'
