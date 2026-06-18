@@ -136,13 +136,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .wz-field>label{display:block;font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:7px}
 .wz-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .wz-pills{display:flex;gap:10px;flex-wrap:wrap}
-.wz-pill{display:flex;align-items:center;gap:9px;padding:13px 18px;border:1.5px solid var(--border-dark);border-radius:var(--radius-lg);cursor:pointer;background:var(--surface);transition:all .15s;min-width:180px}
+.wz-pill{display:flex;align-items:center;gap:9px;padding:13px 18px;border:1px solid var(--border-dark);border-radius:var(--radius-lg);cursor:pointer;background:var(--surface);transition:all .15s;min-width:180px}
 .wz-pill:hover{border-color:var(--accent);background:#fff8f4}
 .wz-pill.sel{border-color:var(--accent);background:var(--orange-bg)}
 .wz-pill-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;background:var(--bg-soft);flex-shrink:0}
 .wz-pill.sel .wz-pill-ico{background:#ffe4cf}
 .wz-pill-txt b{display:block;font-size:13.5px;font-weight:700;color:var(--text-primary)}
-.wz-pill-txt span{font-size:11.5px;color:var(--text-secondary)}
+.wz-pill-txt>span{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-secondary);margin-top:2px}
+.wz-pill-txt .naowee-badge{flex-shrink:0}
 .wz-derived{display:flex;align-items:center;gap:11px;background:linear-gradient(120deg,#f3f8ff,#fbfdff);border:1px solid #dbe7f7;border-radius:var(--radius-md);padding:11px 13px;font-size:13.5px;color:#1f4e79;margin-top:6px}
 .wz-derived__ico{width:32px;height:32px;flex:0 0 32px;border-radius:9px;background:#e7f1fd;color:#1f78d1;display:grid;place-items:center}
 .wz-derived__ico svg{width:17px;height:17px}
@@ -315,7 +316,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .sorteo-cenefa__inner{width:100%;max-width:none;display:flex;align-items:center;gap:15px;flex-wrap:wrap}
 .sorteo-cenefa__icon{width:36px;height:36px;flex:0 0 36px;border-radius:var(--radius-full);display:grid;place-items:center}
 .sorteo-cenefa__body{flex:1;min-width:180px}
-.sorteo-cenefa__title{font-size:14.5px;font-weight:800;line-height:1.2}
+.sorteo-cenefa__title{font-size:14.5px;font-weight:600;line-height:1.2;color:var(--text-primary)}
 .sorteo-cenefa__msg{font-size:12.5px;line-height:1.4;margin:3px 0 0;opacity:.92;max-width:700px}
 .sorteo-cenefa__actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .sorteo-cenefa--positive{background:var(--green-bg);border-bottom-color:var(--green-border);color:#14571a}
@@ -339,6 +340,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .prog-datepop{position:fixed;z-index:2000;background:var(--surface);border:1px solid var(--border-dark);border-radius:var(--radius-lg);box-shadow:var(--shadow-md)}
 .prog-datepop .naowee-datepicker{width:auto}
 .prog-hora-menu{max-height:236px;overflow-y:auto}
+/* el icono de reloj vive en el slot del chevron: que NO rote al abrir */
+.prog-hora-dd.naowee-dropdown--open .naowee-dropdown__chevron{transform:none}
+/* menú posicionado fixed por JS (escapa el overflow:hidden de .preview-comp) */
+.prog-hora-dd.naowee-dropdown--open .prog-hora-menu{margin-top:0}
 .prog-row{display:grid;grid-template-columns:minmax(0,1.7fr) 152px 112px minmax(0,1.5fr);gap:10px;align-items:center;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface)}
 .prog-match{font-size:13px;font-weight:700;color:var(--text-primary);min-width:0}
 .prog-match small{display:block;font-size:11px;color:var(--text-secondary);font-weight:500;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -502,8 +507,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
           <div class="wz-field">
             <label>Tipo de deporte</label>
             <div class="wz-pills">
-              <div class="wz-pill" data-tipo="conjunto" onclick="selTipo('conjunto')"><div class="wz-pill-ico">🤝</div><div class="wz-pill-txt"><b>De conjunto</b><span>Equipos · grupos</span></div></div>
-              <div class="wz-pill" data-tipo="individual" onclick="selTipo('individual')"><div class="wz-pill-ico">🥋</div><div class="wz-pill-txt"><b>Individual</b><span>Deportistas · llaves</span></div></div>
+              <div class="wz-pill" data-tipo="conjunto" onclick="selTipo('conjunto')"><div class="wz-pill-ico">🤝</div><div class="wz-pill-txt"><b>De conjunto</b><span>Equipos<span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">grupos</span></span></div></div>
+              <div class="wz-pill" data-tipo="individual" onclick="selTipo('individual')"><div class="wz-pill-ico">🥋</div><div class="wz-pill-txt"><b>Individual</b><span>Deportistas<span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">llaves</span></span></div></div>
             </div>
           </div>
           <div class="wz-field hidden" id="fDeporte">
@@ -725,7 +730,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
       </div>
       <div class="preview-comp">
         <div id="previewHead"></div>
-        <div class="naowee-tabs" id="previewTabs"></div>
+        <div class="naowee-tabs naowee-tabs--proportional" id="previewTabs"></div>
         <div class="cr-tabpanel" id="previewPanel"></div>
       </div>
       <div class="wz-nav stage-footer">
@@ -985,7 +990,7 @@ function _dpRender(){ var pop=_dpEnsure(); var m=_findMatchAny(_pvComp,_dpMatchI
   pop.querySelectorAll('.naowee-datepicker__day').forEach(function(b){ b.addEventListener('click',function(e){ e.stopPropagation(); var mm=_findMatchAny(_pvComp,_dpMatchId); if(mm)mm.fecha=b.dataset.iso; dpClose(); progRerender(); }); });
 }
 var _HORAS=(function(){ var a=[]; for(var h=6;h<=22;h++){ var hh=(h<10?'0':'')+h; a.push(hh+':00'); if(h<22)a.push(hh+':30'); } return a; })();
-function progHoraDropdown(id,hora){ var opts=_HORAS.map(function(h){ return '<div class="naowee-dropdown__option'+(hora===h?' naowee-dropdown__option--selected':'')+'" onclick="progSetHora(\''+id+'\',\''+h+'\',event)">'+h+'</div>'; }).join(''); return '<div class="naowee-dropdown naowee-dropdown--small"><button type="button" class="naowee-dropdown__trigger" onclick="tddToggle(this,event)"><span class="naowee-dropdown__'+(hora?'value':'placeholder')+'">'+(hora||'Hora')+'</span><span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg viewBox="0 0 16 16" width="14" height="14" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v3.2l2 1.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button><div class="naowee-dropdown__menu prog-hora-menu">'+opts+'</div></div>'; }
+function progHoraDropdown(id,hora){ var opts=_HORAS.map(function(h){ return '<div class="naowee-dropdown__option'+(hora===h?' naowee-dropdown__option--selected':'')+'" onclick="progSetHora(\''+id+'\',\''+h+'\',event)">'+h+'</div>'; }).join(''); return '<div class="naowee-dropdown naowee-dropdown--small prog-hora-dd"><button type="button" class="naowee-dropdown__trigger" onclick="tddToggle(this,event)"><span class="naowee-dropdown__'+(hora?'value':'placeholder')+'">'+(hora||'Hora')+'</span><span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg viewBox="0 0 16 16" width="14" height="14" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v3.2l2 1.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button><div class="naowee-dropdown__menu prog-hora-menu">'+opts+'</div></div>'; }
 function progSetHora(id,h,e){ if(e)e.stopPropagation(); var m=_findMatchAny(_pvComp,id); if(m)m.hora=h; document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){d.classList.remove('naowee-dropdown--open');}); progRerender(); }
 document.addEventListener('click',function(e){ if(e.target&&e.target.closest&&(e.target.closest('#progDatePop')||e.target.closest('.prog-datefield')))return; dpClose(); });
 window.addEventListener('resize',dpClose);
@@ -1010,7 +1015,7 @@ function copiarEnlace(btn){ var url=_publicoURL(); function ok(){ if(btn){ var t
 var _ICO_OK='<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 9.4l2.6 2.6L13 6" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 var _ICO_BANG='<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 4.4v5.2" stroke="#fff" stroke-width="2.1" stroke-linecap="round"/><circle cx="9" cy="13" r="1.15" fill="#fff"/></svg>';
 function _cenefa(variant,icon,title,msg,actions){ var el=document.getElementById('previewCenefa'); if(!el)return; el.innerHTML='<div class="sorteo-cenefa sorteo-cenefa--'+variant+'" role="status"><div class="sorteo-cenefa__inner"><span class="sorteo-cenefa__icon">'+icon+'</span><div class="sorteo-cenefa__body"><div class="sorteo-cenefa__title">'+title+'</div>'+(msg?'<p class="sorteo-cenefa__msg">'+msg+'</p>':'')+'</div>'+(actions?'<div class="sorteo-cenefa__actions">'+actions+'</div>':'')+'</div></div>'; try{document.querySelector('.page').scrollTo({top:0,behavior:'smooth'});}catch(e){} }
-function showPublishPanel(){ var actions='<button class="naowee-btn naowee-btn--loud naowee-btn--small" onclick="verPublico()"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3.5H3.5A1.5 1.5 0 002 5v7.5A1.5 1.5 0 003.5 14H11a1.5 1.5 0 001.5-1.5V10M9.5 2.5H13.5V6.5M13 3L7.5 8.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Ver vista pública</button><button class="naowee-btn naowee-btn--mute naowee-btn--small" onclick="copiarEnlace(this)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6.5 9.5l3-3M6 4.5l1-1a2.4 2.4 0 013.4 3.4l-1 1M10 11.5l-1 1a2.4 2.4 0 01-3.4-3.4l1-1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Copiar enlace</button><button class="naowee-btn naowee-btn--mute naowee-btn--small" onclick="exportarPDF()"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1.8v6.4M5.3 5.8L8 8.5l2.7-2.7M3 10.5v2a1 1 0 001 1h8a1 1 0 001-1v-2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Exportar PDF</button>'; _cenefa('positive',_ICO_OK,'Sorteo guardado y publicado','Quedó disponible en la pestaña <b>Resultados</b> del evento. Compártelo o expórtalo.',actions); }
+function showPublishPanel(){ var actions='<button class="naowee-btn naowee-btn--loud naowee-btn--small" onclick="verPublico()"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3.5H3.5A1.5 1.5 0 002 5v7.5A1.5 1.5 0 003.5 14H11a1.5 1.5 0 001.5-1.5V10M9.5 2.5H13.5V6.5M13 3L7.5 8.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Ver vista pública</button><button class="naowee-btn naowee-btn--mute naowee-btn--small" onclick="copiarEnlace(this)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="5.5" y="5.5" width="8.5" height="8.5" rx="1.8" stroke="currentColor" stroke-width="1.4"/><path d="M3.4 10.5A1.5 1.5 0 012 9V3.4A1.5 1.5 0 013.4 2H9a1.5 1.5 0 011.5 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Copiar enlace</button><button class="naowee-btn naowee-btn--mute naowee-btn--small" onclick="exportarPDF()"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1.8v6.4M5.3 5.8L8 8.5l2.7-2.7M3 10.5v2a1 1 0 001 1h8a1 1 0 001-1v-2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Exportar PDF</button>'; _cenefa('positive',_ICO_OK,'Sorteo guardado y publicado','Quedó disponible en la pestaña <b>Resultados</b> del evento. Compártelo o expórtalo.',actions); }
 function askAnular(){ var actions='<div class="naowee-textfield naowee-textfield--small" style="flex:1;min-width:190px"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input" id="anularMotivo" placeholder="Motivo de la anulación (opcional)"></div></div><button class="naowee-btn naowee-btn--mute naowee-btn--small" onclick="closeAnular()">Cancelar</button><button class="naowee-btn naowee-btn--loud naowee-btn--small" onclick="doAnular()">Confirmar anulación</button>'; _cenefa('caution',_ICO_BANG,'Anular este sorteo','Quedará registrado como anulado (con motivo y fecha) y podrás volver a sortear.',actions); }
 function closeAnular(){ showPublishPanel(); }
 function doAnular(){ var mi=document.getElementById('anularMotivo'); var motivo=mi?mi.value.trim():''; try{ if(window.SorteoStore&&_sorteo&&_sorteo.sorteoId) SorteoStore.anular(_sorteo.sorteoId,motivo); }catch(e){} var b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=false;b.textContent='Confirmar sorteo';} var ba=document.getElementById('btnAnular'); if(ba)ba.style.display='none'; _cenefa('negative',_ICO_BANG,'Sorteo anulado',(motivo?('Motivo: '+tEsc(motivo)+'. '):'')+'Quedó registrado en el historial. Puedes re-sortear o ajustar parámetros.',''); }
@@ -1064,7 +1069,10 @@ function tGroupDropdown(i){ var cur=_tAssign[i],opts=''; for(var g=0;g<_tGrupos;
 function tCountDropdown(){ var opts=''; for(var g=2;g<=8;g++){ opts+='<div class="naowee-dropdown__option'+(g===_tGrupos?' naowee-dropdown__option--selected':'')+'" onclick="tSetGrupos('+g+',event)">'+g+' grupos</div>'; } return '<div class="naowee-dropdown naowee-dropdown--small" style="display:inline-block;min-width:118px"><button type="button" class="naowee-dropdown__trigger" onclick="tddToggle(this,event)"><span class="naowee-dropdown__value">'+_tGrupos+' grupos</span><span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg viewBox="0 0 16 16" width="14" height="14" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button><div class="naowee-dropdown__menu">'+opts+'</div></div>'; }
 function _tMaxGrupos(){ return Math.max(2,Math.min(8,Math.floor(_clasificados.length/2))); }
 function tCountSegment(){ var maxG=_tMaxGrupos(); var items=''; for(var g=2;g<=maxG;g++){ items+='<button type="button" class="naowee-segment__item'+(g===_tGrupos?' naowee-segment__item--active':'')+'" data-g="'+g+'" onclick="tSetGrupos('+g+')">'+g+'</button>'; } return '<div class="naowee-segment naowee-segment--small" id="tCountSeg"><span class="naowee-segment__pill naowee-segment__pill--no-anim"></span>'+items+'</div>'; }
-function tddToggle(btn,e){ if(e)e.stopPropagation(); var dd=btn.closest('.naowee-dropdown'); var open=dd.classList.contains('naowee-dropdown--open'); document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){d.classList.remove('naowee-dropdown--open');}); if(!open)dd.classList.add('naowee-dropdown--open'); }
+function _positionHoraMenu(trigger,menu){ var r=trigger.getBoundingClientRect(); menu.style.position='fixed'; menu.style.left=Math.round(r.left)+'px'; menu.style.right='auto'; menu.style.width=Math.round(r.width)+'px'; menu.style.minWidth=Math.round(r.width)+'px'; menu.style.zIndex='2100'; var below=window.innerHeight-r.bottom-8; if(below<170 && r.top>below){ menu.style.top='auto'; menu.style.bottom=Math.round(window.innerHeight-r.top+6)+'px'; } else { menu.style.bottom='auto'; menu.style.top=Math.round(r.bottom+6)+'px'; } }
+function tddToggle(btn,e){ if(e)e.stopPropagation(); var dd=btn.closest('.naowee-dropdown'); var open=dd.classList.contains('naowee-dropdown--open'); document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){d.classList.remove('naowee-dropdown--open');}); if(!open){ dd.classList.add('naowee-dropdown--open'); var hm=dd.querySelector('.prog-hora-menu'); if(hm) _positionHoraMenu(btn,hm); } }
+/* el menú de hora es position:fixed → cerrarlo al hacer scroll para que no se despegue del campo */
+document.addEventListener('scroll',function(){ document.querySelectorAll('.prog-hora-dd.naowee-dropdown--open').forEach(function(d){d.classList.remove('naowee-dropdown--open');}); },true);
 function tAssignGrupo(i,g,e){ if(e)e.stopPropagation(); _tAssign[i]=g; document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){d.classList.remove('naowee-dropdown--open');}); renderTBody(); }
 function tSetGrupos(g,e){ if(e)e.stopPropagation(); _tGrupos=g; _tAssign=tDefaultAssign(); document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){d.classList.remove('naowee-dropdown--open');}); renderTBody(); }
 function renderTGrupos(){ var n=_clasificados.length, maxG=_tMaxGrupos(); if(_tGrupos>maxG){ _tGrupos=maxG; _tAssign=tDefaultAssign(); }
