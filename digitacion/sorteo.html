@@ -297,6 +297,20 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .tbk-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 12px;border-top:1px solid var(--border);background:var(--bg-soft,#f5f6fa)}
 .tbk-mid{font-size:10.5px;font-weight:700;letter-spacing:.3px;color:var(--text-secondary)}
 @media(max-width:760px){.tg-grid{grid-template-columns:1fr}}
+/* ── F5: acciones del preview + export PDF (print) ── */
+.sorteo-head-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.pv-print-h{display:none}
+@media print{
+  body{background:#fff!important}
+  .sidebar,.top-header,.wz-nav,.sorteo-head-actions,#previewTabs{display:none!important}
+  .shell,.main,.page{display:block!important;height:auto!important;max-height:none!important;overflow:visible!important}
+  .page{padding:0!important}
+  #previewStage{display:block!important}
+  .preview-comp{box-shadow:none!important;border:none!important}
+  .sorteo-head{margin-bottom:8px!important}
+  .pv-print-h{display:block;font-size:14px;font-weight:800;color:#000;margin:18px 0 10px;border-bottom:1px solid #ddd;padding-bottom:5px}
+  .pv-print-sec{page-break-inside:avoid;margin-bottom:10px}
+}
 .manual-wrap{display:grid;grid-template-columns:minmax(260px,400px) 1fr;gap:30px;align-items:start;max-width:980px;margin:22px auto 28px;width:100%}
 .manual-wheel-col{display:flex;flex-direction:column;align-items:center;gap:16px;position:sticky;top:8px}
 .manual-wheel{width:100%;max-width:380px;margin:0 auto}
@@ -642,7 +656,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
           <h1 class="sorteo-title">Resultado del sorteo</h1>
           <p class="sorteo-sub">Revisa el resultado y confírmalo para publicarlo.</p>
         </div>
-        <button class="naowee-btn naowee-btn--mute naowee-btn--large" onclick="reSortear()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.6 8a5.6 5.6 0 11-1.64-3.96M13.6 2.2v3h-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Re-sortear</button>
+        <div class="sorteo-head-actions">
+          <button class="naowee-btn naowee-btn--mute naowee-btn--large" onclick="exportarPDF()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.8v6.4M5.3 5.8L8 8.5l2.7-2.7M3 10.5v2a1 1 0 001 1h8a1 1 0 001-1v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Exportar</button>
+          <button class="naowee-btn naowee-btn--mute naowee-btn--large" onclick="reSortear()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.6 8a5.6 5.6 0 11-1.64-3.96M13.6 2.2v3h-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Re-sortear</button>
+        </div>
       </div>
       <div class="preview-comp">
         <div id="previewHead"></div>
@@ -661,6 +678,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 
 <script src="shared.js"></script>
 <script src="sorteo-engine.js"></script>
+<script src="sorteo-store.js"></script>
 <script src="competition-render.js"></script>
 <script src="ruleta-wheel.js"></script>
 <script>
@@ -823,7 +841,10 @@ function renderPvTabs(){ const tb=document.getElementById('previewTabs'); if(tb)
 function switchPvTab(id){ if(id===_pvTab) return; const oi=_activeTabs.findIndex(function(t){return t.id===_pvTab;}), ni=_activeTabs.findIndex(function(t){return t.id===id;}); _pvTab=id; renderPvTabs(); const p=document.getElementById('previewPanel'); if(p){ p.style.animation='none'; void p.offsetWidth; p.style.animation=(ni>oi?'tabSlideR':'tabSlideL')+' .28s cubic-bezier(.32,.72,0,1)'; } }
 function backToWizard(){ _ruletaTimers.forEach(t=>{clearTimeout(t);clearInterval(t);}); _ruletaTimers=[]; showStage('wizardStage'); }
 function reSortear(){ if(W.modo==='transcrip') startTranscrip(); else if(W.modo==='manual') startManual(); else startRuleta(); }
-function confirmSorteo(){ const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=true;b.textContent='Sorteo confirmado';} fireConfetti(); }
+function confirmSorteo(){ const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=true;b.textContent='Sorteo confirmado';}
+  try{ if(window.SorteoStore&&_pvComp){ var id=SorteoStore.pruebaId(_sorteo); _sorteo.sorteoId=id; SorteoStore.save({ id:id, prueba:_sorteo.prueba, comp:_pvComp, estado:'PUBLICADO', origen:(W.modo==='transcrip'?'transcripcion':(W.modo==='manual'?'manual':'sorteo')), ts:Date.now() }); } }catch(e){}
+  fireConfetti(); }
+function exportarPDF(){ if(!_pvComp)return; var panel=document.getElementById('previewPanel'); if(!panel)return; var saved=panel.innerHTML; panel.innerHTML=_activeTabs.map(function(t){ return '<section class="pv-print-sec"><h3 class="pv-print-h">'+t.label+'</h3>'+t.render(_pvComp)+'</section>'; }).join(''); document.body.classList.add('printing'); var done=false; var restore=function(){ if(done)return; done=true; document.body.classList.remove('printing'); panel.innerHTML=saved; window.removeEventListener('afterprint',restore); }; window.addEventListener('afterprint',restore); try{ window.print(); }catch(e){} setTimeout(restore,2000); }
 /* ── Sorteo MANUAL (ruleta giratoria) ── */
 let _manualSeq=[],_manualGroups=[],_manualSizes=[],_manualDrawn=0,_manualSpin=false;
 function segmentSync(seg){ if(!seg)return; var pill=seg.querySelector('.naowee-segment__pill'); var a=seg.querySelector('.naowee-segment__item--active')||seg.querySelector('.naowee-segment__item'); if(!pill||!a)return; var sr=seg.getBoundingClientRect(), ar=a.getBoundingClientRect(); var bl=parseFloat(getComputedStyle(seg).borderLeftWidth)||0; pill.style.width=ar.width+'px'; pill.style.setProperty('--segment-pill-x',(ar.left-sr.left-bl)+'px'); }
