@@ -366,6 +366,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 #clasifStage{flex:1;display:flex;flex-direction:column}
 #clasifStage .sorteo-head{max-width:760px;width:100%}
 .clasif-wrap{max-width:760px;margin:0 auto 28px;width:100%;display:flex;flex-direction:column;gap:14px}
+.clasif-derived-rows{display:flex;flex-direction:column;gap:8px}
+.clasif-derived-rows .wz-derived{margin-top:0}
 .clasif-card{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--surface)}
 .clasif-head{display:flex;align-items:center;gap:9px;padding:13px 16px;background:var(--bg-soft,#f5f6fa);border-bottom:1px solid var(--border);font-size:14px;font-weight:700;color:var(--text-primary)}
 .clasif-head .cr-stand-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex-shrink:0}
@@ -630,6 +632,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
           <div class="clasif-head"><span class="cr-stand-dot"></span><span id="clasifTitle">Equipos clasificados</span><span class="naowee-badge naowee-badge--neutral naowee-badge--quiet" id="clasifCount">0</span><button class="naowee-btn naowee-btn--mute naowee-btn--small" id="btnAddClasif" onclick="addClasif()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9M2.5 7h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg> Agregar</button></div>
           <div id="clasifList" class="clasif-list"></div>
         </div>
+        <div id="clasifDerived"></div>
         <div class="naowee-message naowee-message--informative"><div class="naowee-message__header"><span class="naowee-message__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7 7h2v4H7z" fill="#fff"/><circle cx="8" cy="5" r="1" fill="#fff"/></svg></span><span class="naowee-message__title">Datos de los participantes</span></div><p class="naowee-message__text">El nombre es obligatorio y la delegación o regional es opcional. Estos serán los participantes que entren al sorteo.</p></div>
       </div>
       <div class="wz-nav stage-footer">
@@ -846,7 +849,9 @@ function goStep(n){ n=Math.max(1,Math.min(3,n)); W.step=n;
   document.getElementById('wzLine1').classList.toggle('naowee-stepper__connector--done',n>1); document.getElementById('wzLine2').classList.toggle('naowee-stepper__connector--done',n>2);
   for(let i=1;i<=3;i++) document.getElementById('panel'+i).classList.toggle('active',i===n);
   if(n===2){ document.getElementById('cfgConjunto').style.display=W.tipo==='conjunto'?'block':'none';
-    document.getElementById('cfgIndividual').style.display=W.tipo==='individual'?'block':'none'; recalcCfg(); var ms=document.getElementById('modoSeg'); if(ms) segmentSync(ms); }
+    document.getElementById('cfgIndividual').style.display=W.tipo==='individual'?'block':'none';
+    var ie=document.getElementById('inEquipos'); if(ie)ie.value=W.nEquipos; var ig=document.getElementById('inGrupos'); if(ig)ig.value=W.nGrupos; var ip=document.getElementById('inPart'); if(ip)ip.value=W.nEquipos;
+    recalcCfg(); var ms=document.getElementById('modoSeg'); if(ms) segmentSync(ms); }
   if(n===3){ buildSummary(); document.getElementById('doneBox').style.display='none'; }
   document.getElementById('btnBack').classList.toggle('is-hidden',n===1);
   const next=document.getElementById('btnNext');
@@ -887,7 +892,7 @@ function startClasificados(){ const n=Math.max(2,+W.nEquipos||8); if(!_clasifica
 function renderClasifList(){ const el=document.getElementById('clasifList'); if(!el)return; const ph=W.tipo==='individual'?'Nombre del deportista':'Nombre del equipo'; el.innerHTML=_clasificados.map(function(c,i){ const nm=(c.nombre||'').replace(/"/g,'&quot;'), dg=(c.delegacion||'').replace(/"/g,'&quot;'); return '<div class="clasif-row"><span class="clasif-pos">'+(i+1)+'</span>'
   +'<div class="clasif-combo clasif-tf"><div class="naowee-textfield naowee-textfield--small"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input clasif-combo-inp" value="'+nm+'" placeholder="'+ph+'" autocomplete="off" oninput="clasifInput('+i+',this.value)" onfocus="clasifShow('+i+')"><button type="button" class="clasif-combo-chev" onclick="clasifToggle('+i+',event)" tabindex="-1" aria-label="Ver participantes"><svg viewBox="0 0 16 16" width="14" height="14" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div><div class="clasif-combo-menu" id="clasifMenu'+i+'"></div></div>'
   +'<div class="naowee-textfield naowee-textfield--small clasif-tf clasif-tf--sub"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input" value="'+dg+'" placeholder="Delegación / regional (opcional)" oninput="syncClasif('+i+',\'delegacion\',this.value)"></div></div>'
-  +'<button class="naowee-btn naowee-btn--mute naowee-btn--small clasif-del" title="Quitar" onclick="removeClasif('+i+')"'+(_clasificados.length<=2?' disabled':'')+'><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M6.2 4.5V3.3a1 1 0 011-1h1.6a1 1 0 011 1v1.2M5.2 4.5l.4 8a1 1 0 001 .95h2.8a1 1 0 001-.95l.4-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>'; }).join(''); document.getElementById('clasifCount').textContent=_clasificados.length; validateClasif(); }
+  +'<button class="naowee-btn naowee-btn--mute naowee-btn--small clasif-del" title="Quitar" onclick="removeClasif('+i+')"'+(_clasificados.length<=2?' disabled':'')+'><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M6.2 4.5V3.3a1 1 0 011-1h1.6a1 1 0 011 1v1.2M5.2 4.5l.4 8a1 1 0 001 .95h2.8a1 1 0 001-.95l.4-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>'; }).join(''); document.getElementById('clasifCount').textContent=_clasificados.length; validateClasif(); renderClasifDerived(); }
 function syncClasif(i,k,v){ if(_clasificados[i]){ _clasificados[i][k]=v; if(k==='nombre') validateClasif(); } }
 /* ── Combobox de clasificados (desplegable alimentado del evento + editable) ── */
 function _normTxt(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
@@ -904,6 +909,22 @@ window.addEventListener('scroll',_closeClasifCombos,true);
 function addClasif(){ _clasificados.push({nombre:'',delegacion:''}); renderClasifList(); const rows=document.querySelectorAll('#clasifList .clasif-row'); const last=rows[rows.length-1]; if(last){ const inp=last.querySelector('.naowee-textfield__input'); if(inp) inp.focus(); } }
 function removeClasif(i){ if(_clasificados.length<=2)return; _clasificados.splice(i,1); renderClasifList(); }
 function validateClasif(){ const ok=_clasificados.length>=2&&_clasificados.every(function(c){return (c.nombre||'').trim();}); const b=document.getElementById('btnClasifNext'); if(b)b.disabled=!ok; return ok; }
+/* ── Panel derivado de Clasificados (reparto/llave en vivo + alertas, según el conteo real) ── */
+var _CD_ICO={ trofeo:'<svg viewBox="0 0 16 16" fill="none"><path d="M4.5 2.5h7v3a3.5 3.5 0 01-7 0v-3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M4.5 3.5h-2v1a2 2 0 002 2M11.5 3.5h2v1a2 2 0 01-2 2M6.5 13h3M8 9v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>', grid:'<svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="2.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>', bracket:'<svg viewBox="0 0 16 16" fill="none"><path d="M2 3.5h3.5v3H9M2 12.5h3.5v-3M9 5h2.5v3H14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>' };
+function _cdRow(ico,text,warn){ return '<div class="wz-derived'+(warn?' warn':'')+'"><span class="wz-derived__ico">'+ico+'</span><b>'+text+'</b></div>'; }
+function _cdMsg(type,title,text){ var ico=type==='caution'?_TICON.caution:_TICON.info; return '<div class="naowee-message naowee-message--'+type+'" style="width:100%;margin-top:10px"><div class="naowee-message__header"><span class="naowee-message__icon">'+ico+'</span><span class="naowee-message__title">'+title+'</span></div><p class="naowee-message__text">'+text+'</p></div>'; }
+function renderClasifDerived(){ var el=document.getElementById('clasifDerived'); if(!el)return; var n=_clasificados.length, conj=W.tipo!=='individual'; var rows='', alerts='';
+  if(conj){ var g=Math.max(1,+W.nGrupos||2); var base=Math.floor(n/g), resto=n%g; var rep=resto? (resto+' grupo(s) de '+(base+1)+' y '+(g-resto)+' de '+base):(g+' grupo(s) de '+base);
+    rows+=_cdRow(_CD_ICO.trofeo,'Fase de grupos · todos contra todos'); rows+=_cdRow(_CD_ICO.grid,'Reparto: '+rep, resto!==0);
+    var minSize=(g>n)?0:base;
+    if(minSize<2) alerts+=_cdMsg('caution','Revisa la conformación','Con '+n+' equipo(s) repartidos en '+g+' grupo(s), al menos un grupo queda con menos de 2 equipos. Reduce el número de grupos o agrega equipos.');
+    else if(resto!==0) alerts+=_cdMsg('informative','Reparto desigual','Quedan '+resto+' grupo(s) con un equipo más ('+(base+1)+' vs '+base+'). Es válido; los grupos impares tendrán un descanso por jornada.');
+  } else { var byes=n>1?(Math.pow(2,Math.ceil(Math.log2(n)))-n):0;
+    rows+=_cdRow(_CD_ICO.trofeo,'Eliminación directa · llaves'); rows+=_cdRow(_CD_ICO.bracket,'Llave de '+n+' participante(s)'+(byes?(' · '+byes+' descanso(s)'):''), byes>0);
+    if(n<2) alerts+=_cdMsg('caution','Faltan participantes','Se necesitan al menos 2 participantes para armar la llave.');
+    else if(byes>0) alerts+=_cdMsg('informative','Cuadro con descansos',byes+' participante(s) avanzan directo en la primera ronda (descanso/bye) porque '+n+' no es potencia de 2.');
+  }
+  el.innerHTML='<div class="clasif-derived-rows">'+rows+'</div>'+alerts; }
 function continueSorteo(){ if(!validateClasif())return; W.nEquipos=_clasificados.length; if(W.modo==='manual') startManual(); else if(W.modo==='transcrip') startTranscrip(); else startRuleta(); }
 function startRuleta(){ buildSorteo(); _assign=SorteoEngine.asignarGrupos(_sorteo.participantes,_sorteo.config.nGrupos); _ruletaDone=false; showStage('ruletaStage'); document.getElementById('ruletaSub').textContent='Asignando participantes a los grupos…'; document.getElementById('ruletaNav').style.display='none'; document.getElementById('btnSkip').style.display=''; renderRuletaGrupos(_assign,[]); buildDrawSeq(); runRuletaAnim(0); }
 function buildDrawSeq(){ _drawSeq=[]; const maxLen=Math.max(0,..._assign.map(g=>g.length)); for(let pos=0;pos<maxLen;pos++)for(let g=0;g<_assign.length;g++){ if(_assign[g][pos]!=null)_drawSeq.push({name:_assign[g][pos],g,pos}); } }
