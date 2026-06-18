@@ -144,6 +144,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .wz-pill-txt b{display:block;font-size:13.5px;font-weight:700;color:var(--text-primary)}
 .wz-pill-txt>span{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-secondary);margin-top:2px}
 .wz-pill-txt .naowee-badge{flex-shrink:0}
+/* buscador dentro del dropdown de deporte (paridad stepper) */
+.dd-search-wrap{padding:8px 10px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:2}
+.dd-search-input{width:100%;height:34px;padding:0 12px;border:1px solid var(--border-dark);border-radius:var(--radius-md);font-size:13px;font-family:inherit;color:var(--text-primary);outline:none;box-sizing:border-box;transition:border-color .15s,box-shadow .15s}
+.dd-search-input::placeholder{color:var(--text-secondary)}
+.dd-search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(215,64,9,.12)}
+.dd-empty{padding:14px;font-size:13px;color:var(--text-secondary);text-align:center}
 .wz-derived{display:flex;align-items:center;gap:11px;background:linear-gradient(120deg,#f3f8ff,#fbfdff);border:1px solid #dbe7f7;border-radius:var(--radius-md);padding:11px 13px;font-size:13.5px;color:#1f4e79;margin-top:6px}
 .wz-derived__ico{width:32px;height:32px;flex:0 0 32px;border-radius:9px;background:#e7f1fd;color:#1f78d1;display:grid;place-items:center}
 .wz-derived__ico svg{width:17px;height:17px}
@@ -788,14 +794,16 @@ function deportesPorTipo(tipo){
   if(typeof SPORTS_DB==='undefined') return out;
   for(const k in SPORTS_DB){ const sp=SPORTS_DB[k];
     if(!sp||typeof sp!=='object'||!sp.label) continue;
-    if(seen.has(sp)) continue; seen.add(sp);
     if(tipo && sp.tipo!==tipo) continue;
+    const lk=sp.label.toLowerCase(); if(seen.has(lk)) continue; seen.add(lk); /* dedup por nombre: las modalidades (cricket_t20, cricket_odi…) comparten label */
     out.push({key:k,label:sp.label,emoji:sp.emoji||'🏅'}); }
   return out.sort((a,b)=>a.label.localeCompare(b.label,'es'));
 }
+function filterDeporteDD(q){ q=(q||'').trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); const opts=document.querySelectorAll('#ddDeporte-opts .naowee-dropdown__option'); let any=false; opts.forEach(function(o){ const lbl=(o.dataset.label||'').normalize('NFD').replace(/[̀-ͯ]/g,''); const show=!q||lbl.indexOf(q)>=0; o.style.display=show?'':'none'; if(show)any=true; }); const c=document.getElementById('ddDeporte-opts'); let e=document.getElementById('ddDeporte-empty'); if(any){ if(e)e.remove(); } else if(c&&!e){ e=document.createElement('div'); e.id='ddDeporte-empty'; e.className='dd-empty'; e.textContent='Sin coincidencias'; c.appendChild(e); } }
 function ddToggle(id){ const w=document.getElementById(id); const open=w.classList.contains('naowee-dropdown--open');
   document.querySelectorAll('.naowee-dropdown--open').forEach(x=>x.classList.remove('naowee-dropdown--open'));
-  if(!open) w.classList.add('naowee-dropdown--open'); }
+  if(!open){ w.classList.add('naowee-dropdown--open');
+    const si=w.querySelector('.dd-search-input'); if(si){ si.value=''; filterDeporteDD(''); setTimeout(function(){try{si.focus();}catch(e){}},30); } } }
 document.addEventListener('click',e=>{ if(!e.target.closest('.naowee-dropdown')) document.querySelectorAll('.naowee-dropdown--open').forEach(x=>x.classList.remove('naowee-dropdown--open')); });
 function ddSetText(id,label){ const s=document.querySelector('#'+id+' .naowee-dropdown__placeholder, #'+id+' .naowee-dropdown__value'); if(s){s.textContent=label;s.classList.remove('naowee-dropdown__placeholder');s.classList.add('naowee-dropdown__value');} }
 function ddPick(id,el){ const val=el.dataset.value; const w=document.getElementById(id);
@@ -806,7 +814,8 @@ function ddPick(id,el){ const val=el.dataset.value; const w=document.getElementB
 function selTipo(tipo){
   W.tipo=tipo; W.deporteKey='';W.deporteLabel='';W.emoji='';W.categoria='';W.sexo='';
   document.querySelectorAll('.wz-pill').forEach(p=>p.classList.toggle('sel',p.dataset.tipo===tipo));
-  document.getElementById('ddDeporte-menu').innerHTML = deportesPorTipo(tipo).map(d=>`<div class="naowee-dropdown__option" data-value="${d.key}" onclick="ddPick('ddDeporte',this)">${d.emoji}&nbsp;&nbsp;${d.label}</div>`).join('');
+  const _dopts = deportesPorTipo(tipo).map(d=>`<div class="naowee-dropdown__option" data-value="${d.key}" data-label="${d.label.toLowerCase()}" onclick="ddPick('ddDeporte',this)">${d.emoji}&nbsp;&nbsp;${d.label}</div>`).join('');
+  document.getElementById('ddDeporte-menu').innerHTML = `<div class="dd-search-wrap"><input type="text" class="dd-search-input" placeholder="Buscar deporte…" oninput="filterDeporteDD(this.value)" onclick="event.stopPropagation()"></div><div id="ddDeporte-opts">${_dopts}</div>`;
   resetDD('ddDeporte','Selecciona un deporte…'); resetDD('ddCategoria','Categoría…'); resetDD('ddSexo','Sexo…');
   document.getElementById('fDeporte').classList.remove('hidden');
   document.getElementById('fCategoria').classList.add('hidden'); document.getElementById('fSexo').classList.add('hidden');
