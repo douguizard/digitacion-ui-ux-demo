@@ -104,7 +104,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .sum2-chip{font-size:11.5px;font-weight:600;color:var(--text-secondary);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-full);padding:3px 10px}
 .sum2-chip--accent{background:#fff3e6;border-color:var(--orange-border,#ffbf75);color:var(--accent)}
 .sum2-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px}
-.sum2-stat{display:flex;align-items:center;gap:12px;padding:13px 15px;background:var(--bg-soft,#f5f6fa);border-radius:var(--radius-md)}
+.sum2-stat{display:flex;align-items:center;gap:12px;padding:13px 15px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md)}
 .sum2-stat--wide{grid-column:1/-1}
 .sum2-stat-ico{width:38px;height:38px;border-radius:var(--radius-md);background:#fff3e6;color:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .sum2-stat-ico svg{width:18px;height:18px}
@@ -139,9 +139,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .wz-pill.sel .wz-pill-ico{background:#ffe4cf}
 .wz-pill-txt b{display:block;font-size:13.5px;font-weight:700;color:var(--text-primary)}
 .wz-pill-txt span{font-size:11.5px;color:var(--text-secondary)}
-.wz-derived{display:flex;align-items:center;gap:10px;background:var(--blue-bg);border:1px solid #cfe1f5;border-radius:var(--radius-md);padding:11px 14px;font-size:13px;color:#1f4e79;margin-top:6px}
-.wz-derived.warn{background:var(--orange-bg);border-color:#ffbf75;color:#9a4b00}
-.wz-summary{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.wz-derived{display:flex;align-items:center;gap:11px;background:linear-gradient(120deg,#f3f8ff,#fbfdff);border:1px solid #dbe7f7;border-radius:var(--radius-md);padding:11px 13px;font-size:13.5px;color:#1f4e79;margin-top:6px}
+.wz-derived__ico{width:32px;height:32px;flex:0 0 32px;border-radius:9px;background:#e7f1fd;color:#1f78d1;display:grid;place-items:center}
+.wz-derived__ico svg{width:17px;height:17px}
+.wz-derived b{font-weight:800;font-size:14px;color:#163a5c}
+.wz-derived.warn{background:linear-gradient(120deg,#fff6ec,#fffdfa);border-color:#ffd9a8;color:#9a4b00}
+.wz-derived.warn .wz-derived__ico{background:#ffe7cc;color:#c2670a}
+.wz-summary{border-radius:var(--radius-lg);overflow:hidden}
 .wz-sum-hd{display:flex;align-items:center;gap:12px;padding:16px 18px;background:var(--bg-soft);border-bottom:1px solid var(--border)}
 .wz-sum-emoji{font-size:30px;line-height:1}
 .wz-sum-hd b{font-size:16px;font-weight:700;color:var(--text-primary)}
@@ -230,7 +234,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .rcar-name{font-weight:700;font-size:15.5px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rcar-card.is-winner{border-color:var(--accent);background:var(--orange-bg,#fff3e6);transform:scale(1.04)}
 .rcar-card.is-winner .rcar-name{color:var(--accent)}
-.rcar-marker{position:absolute;left:50%;top:8px;bottom:8px;width:3px;transform:translateX(-50%);background:var(--accent);border-radius:3px;z-index:3;box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 15%,transparent)}
+.rcar-stage{position:relative}
+.rcar-marker{position:absolute;left:50%;top:0;bottom:0;width:3px;transform:translateX(-50%);background:var(--accent);border-radius:3px;z-index:3;box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 15%,transparent)}
 .rcar-marker::before,.rcar-marker::after{content:"";position:absolute;left:50%;transform:translateX(-50%);width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent}
 .rcar-marker::before{top:-9px;border-top:9px solid var(--accent)}
 .rcar-marker::after{bottom:-9px;border-bottom:9px solid var(--accent)}
@@ -478,7 +483,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
         <div class="wz-panel" id="panel2">
           <div class="wz-panel-title">Sistema de competencia</div>
           <div class="wz-panel-hint">El formato depende de la cantidad de participantes. Ajústalo según los clasificados reales.</div>
-          <div class="wz-field"><label>Sistema</label><div class="wz-derived" style="margin-top:0"><b id="sistemaTxt">—</b></div></div>
+          <div class="wz-field"><label>Sistema</label><div class="wz-derived" style="margin-top:0"><span class="wz-derived__ico"><svg viewBox="0 0 16 16" fill="none"><path d="M4.5 2.5h7v3a3.5 3.5 0 01-7 0v-3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M4.5 3.5h-2v1a2 2 0 002 2M11.5 3.5h2v1a2 2 0 01-2 2M6.5 13h3M8 9v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b id="sistemaTxt">—</b></div></div>
           <div class="wz-field"><label>Modo de sorteo</label>
             <div class="naowee-segment naowee-segment--proportional naowee-segment--small" id="modoSeg" style="width:100%">
               <span class="naowee-segment__pill naowee-segment__pill--no-anim"></span>
@@ -507,7 +512,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
                 </div></div></div>
               </div>
             </div>
-            <div class="wz-derived" id="repartoChip"><b id="repartoTxt">—</b></div>
+            <div class="wz-derived" id="repartoChip"><span class="wz-derived__ico"><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="2.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg></span><b id="repartoTxt">—</b></div>
           </div>
           <div id="cfgIndividual" style="display:none">
             <div class="wz-field" style="max-width:50%">
@@ -518,7 +523,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
                 <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inPart',1,2,64)"><svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
               </div></div></div>
             </div>
-            <div class="wz-derived" id="llaveChip"><b id="llaveTxt">—</b></div>
+            <div class="wz-derived" id="llaveChip"><span class="wz-derived__ico"><svg viewBox="0 0 16 16" fill="none"><path d="M2 3.5h3.5v3H9M2 12.5h3.5v-3M9 5h2.5v3H14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b id="llaveTxt">—</b></div>
           </div>
         </div>
 
@@ -556,7 +561,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
           <div class="clasif-head"><span class="cr-stand-dot"></span><span id="clasifTitle">Equipos clasificados</span><span class="naowee-badge naowee-badge--neutral naowee-badge--quiet" id="clasifCount">0</span><button class="naowee-btn naowee-btn--mute naowee-btn--small" id="btnAddClasif" onclick="addClasif()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9M2.5 7h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg> Agregar</button></div>
           <div id="clasifList" class="clasif-list"></div>
         </div>
-        <div class="naowee-message naowee-message--informative"><div class="naowee-message__header"><span class="naowee-message__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7 7h2v4H7z" fill="#fff"/><circle cx="8" cy="5" r="1" fill="#fff"/></svg></span><span class="naowee-message__body">El nombre es obligatorio; la delegación/regional es opcional. Estos serán los participantes que entren al sorteo.</span></div></div>
+        <div class="naowee-message naowee-message--informative"><div class="naowee-message__header"><span class="naowee-message__icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7 7h2v4H7z" fill="#fff"/><circle cx="8" cy="5" r="1" fill="#fff"/></svg></span><span class="naowee-message__title">Datos de los participantes</span></div><p class="naowee-message__text">El nombre es obligatorio y la delegación o regional es opcional. Estos serán los participantes que entren al sorteo.</p></div>
       </div>
       <div class="wz-nav stage-footer">
         <button class="naowee-btn naowee-btn--mute" onclick="backToWizard()">Atrás</button>
@@ -571,10 +576,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
           <h1 class="sorteo-title">Sorteo en vivo</h1>
           <p class="sorteo-sub" id="ruletaSub">Asignando participantes a los grupos…</p>
         </div>
-        <button class="naowee-btn naowee-btn--mute" id="btnSkip" onclick="skipRuleta()">Saltar / Rápido ⏩</button>
+        <button class="naowee-btn naowee-btn--mute" id="btnSkip" onclick="skipRuleta()"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 4l4 4-4 4M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Saltar</button>
       </div>
       <div class="ruleta-wrap">
-        <div class="ruleta-carousel"><div class="rcar-lbl">Sacando equipo…</div><div class="rcar-viewport"><div class="rcar-track" id="rcarTrack"></div></div><div class="rcar-marker"></div></div>
+        <div class="ruleta-carousel"><div class="rcar-lbl">Sacando equipo…</div><div class="rcar-stage"><div class="rcar-viewport"><div class="rcar-track" id="rcarTrack"></div></div><div class="rcar-marker"></div></div></div>
         <div class="ruleta-grupos" id="ruletaGrupos"></div>
       </div>
       <div class="wz-nav stage-footer" id="ruletaNav" style="display:none">
@@ -613,7 +618,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
           <h1 class="sorteo-title">Transcripción del sorteo</h1>
           <p class="sorteo-sub" id="transcripSub">El sorteo ya se hizo afuera; regístralo aquí.</p>
         </div>
-        <button class="naowee-btn naowee-btn--mute" onclick="backToWizard()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M9.5 12.5L5.5 8l4-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Parámetros</button>
+        <button class="naowee-btn naowee-btn--mute" onclick="backToWizard()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 5h5M11 5h3M2 11h3M9 11h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="5" r="1.8" stroke="currentColor" stroke-width="1.5"/><circle cx="7" cy="11" r="1.8" stroke="currentColor" stroke-width="1.5"/></svg> Parámetros</button>
       </div>
       <div class="transcrip-wrap">
         <div class="transcrip-fmt">
@@ -823,7 +828,7 @@ function reSortear(){ if(W.modo==='transcrip') startTranscrip(); else if(W.modo=
 function confirmSorteo(){ const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=true;b.textContent='Sorteo confirmado';} fireConfetti(); }
 /* ── Sorteo MANUAL (ruleta giratoria) ── */
 let _manualSeq=[],_manualGroups=[],_manualSizes=[],_manualDrawn=0,_manualSpin=false;
-function segmentSync(seg){ if(!seg)return; var items=[].slice.call(seg.querySelectorAll('.naowee-segment__item')); var pill=seg.querySelector('.naowee-segment__pill'); if(!items.length||!pill)return; var a=seg.querySelector('.naowee-segment__item--active')||items[0]; pill.style.width=a.offsetWidth+'px'; pill.style.setProperty('--segment-pill-x',(a.offsetLeft-items[0].offsetLeft)+'px'); }
+function segmentSync(seg){ if(!seg)return; var pill=seg.querySelector('.naowee-segment__pill'); var a=seg.querySelector('.naowee-segment__item--active')||seg.querySelector('.naowee-segment__item'); if(!pill||!a)return; var sr=seg.getBoundingClientRect(), ar=a.getBoundingClientRect(); var bl=parseFloat(getComputedStyle(seg).borderLeftWidth)||0; pill.style.width=ar.width+'px'; pill.style.setProperty('--segment-pill-x',(ar.left-sr.left-bl)+'px'); }
 function setModo(m){ W.modo=m; var seg=document.getElementById('modoSeg'); if(seg){ var pill=seg.querySelector('.naowee-segment__pill'); if(pill)pill.classList.remove('naowee-segment__pill--no-anim'); [].forEach.call(seg.querySelectorAll('.naowee-segment__item'),function(b){b.classList.toggle('naowee-segment__item--active',b.dataset.modo===m);}); segmentSync(seg); } const h=document.getElementById('modoHint'); if(h) h.textContent=(m==='manual')?'Manual: gira la ruleta; cada giro asigna un equipo a un grupo (sorteo en vivo).':(m==='transcrip')?'Transcripción: el sorteo ya se hizo afuera; aquí registras los grupos o las llaves resultantes.':'Automático: el sistema arma los grupos al instante.'; }
 function startManual(){ buildSorteo(); const n=_sorteo.config.nGrupos; _manualSizes=SorteoEngine.asignarGrupos(_sorteo.participantes,n).map(function(g){return g.length;}); _manualGroups=Array.from({length:n},function(){return [];}); _manualDrawn=0; _manualSpin=false;
   _manualSeq=[]; var placed=new Array(n).fill(0), rem=_sorteo.participantes.length;
@@ -859,7 +864,7 @@ function setTFmt(f){ _tFmt=f; var seg=document.getElementById('tFmtSeg'); if(seg
   else { if(btn)btn.textContent='Conformar grupos'; if(sub)sub.textContent='Asigna cada clasificado a su grupo (puedes reasignar).'; }
   renderTBody(); }
 
-function renderTBody(){ var el=document.getElementById('tBody'); if(!el)return; el.innerHTML=(_tFmt==='bracket')?renderTBracket():renderTGrupos(); }
+function renderTBody(){ var el=document.getElementById('tBody'); if(!el)return; el.innerHTML=(_tFmt==='bracket')?renderTBracket():renderTGrupos(); var cs=el.querySelector('#tCountSeg'); if(cs)segmentSync(cs); }
 
 /* ── Grupos manual ── */
 function tDefaultAssign(){ var n=_clasificados.length,m=_tGrupos,base=Math.floor(n/m),extra=n%m,a=[],g=0,cnt=0,cap=base+(0<extra?1:0); for(var i=0;i<n;i++){ if(cnt>=cap){g++;cnt=0;cap=base+(g<extra?1:0);} a.push(Math.min(g,m-1)); cnt++; } return a; }
@@ -867,6 +872,7 @@ function tBuildGroups(){ var groups=[]; for(var g=0;g<_tGrupos;g++)groups.push([
 function tGroupDropdown(i){ var cur=_tAssign[i],opts=''; for(var g=0;g<_tGrupos;g++){ opts+='<div class="naowee-dropdown__option'+(g===cur?' naowee-dropdown__option--selected':'')+'" onclick="tAssignGrupo('+i+','+g+',event)">Grupo '+String.fromCharCode(65+g)+'</div>'; } var curL=(cur!=null&&cur>=0&&cur<_tGrupos)?('Grupo '+String.fromCharCode(65+cur)):'Selecciona';
   return '<div class="naowee-dropdown naowee-dropdown--small"><button type="button" class="naowee-dropdown__trigger" onclick="tddToggle(this,event)"><span class="naowee-dropdown__value">'+curL+'</span><span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg viewBox="0 0 16 16" width="14" height="14" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button><div class="naowee-dropdown__menu">'+opts+'</div></div>'; }
 function tCountDropdown(){ var opts=''; for(var g=2;g<=8;g++){ opts+='<div class="naowee-dropdown__option'+(g===_tGrupos?' naowee-dropdown__option--selected':'')+'" onclick="tSetGrupos('+g+',event)">'+g+' grupos</div>'; } return '<div class="naowee-dropdown naowee-dropdown--small" style="display:inline-block;min-width:118px"><button type="button" class="naowee-dropdown__trigger" onclick="tddToggle(this,event)"><span class="naowee-dropdown__value">'+_tGrupos+' grupos</span><span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg viewBox="0 0 16 16" width="14" height="14" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button><div class="naowee-dropdown__menu">'+opts+'</div></div>'; }
+function tCountSegment(){ var items=''; for(var g=2;g<=8;g++){ items+='<button type="button" class="naowee-segment__item'+(g===_tGrupos?' naowee-segment__item--active':'')+'" data-g="'+g+'" onclick="tSetGrupos('+g+')">'+g+'</button>'; } return '<div class="naowee-segment naowee-segment--small" id="tCountSeg"><span class="naowee-segment__pill naowee-segment__pill--no-anim"></span>'+items+'</div>'; }
 function tddToggle(btn,e){ if(e)e.stopPropagation(); var dd=btn.closest('.naowee-dropdown'); var open=dd.classList.contains('naowee-dropdown--open'); document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){d.classList.remove('naowee-dropdown--open');}); if(!open)dd.classList.add('naowee-dropdown--open'); }
 function tAssignGrupo(i,g,e){ if(e)e.stopPropagation(); _tAssign[i]=g; document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){d.classList.remove('naowee-dropdown--open');}); renderTBody(); }
 function tSetGrupos(g,e){ if(e)e.stopPropagation(); _tGrupos=g; _tAssign=tDefaultAssign(); document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){d.classList.remove('naowee-dropdown--open');}); renderTBody(); }
@@ -876,7 +882,7 @@ function renderTGrupos(){ var groups=tBuildGroups();
   var bad=groups.some(function(t){return t.length<2;});
   setTimeout(function(){ var b=document.getElementById('btnTranscrip'); if(b)b.disabled=bad; },0);
   var msg=bad?('<div class="naowee-message naowee-message--caution" style="width:100%"><div class="naowee-message__header"><span class="naowee-message__icon">'+_TICON.caution+'</span><span class="naowee-message__body">Cada grupo debe tener al menos 2 participantes. Ajusta la asignación o el número de grupos.</span></div></div>'):'';
-  return '<div class="tg-ctrl">N.º de grupos: '+tCountDropdown()+'</div><div class="tg-grid"><div class="tg-list">'+rows+'</div><div class="tg-preview">'+preview+'</div></div>'+msg; }
+  return '<div class="tg-ctrl">N.º de grupos: '+tCountSegment()+'</div><div class="tg-grid"><div class="tg-list">'+rows+'</div><div class="tg-preview">'+preview+'</div></div>'+msg; }
 
 /* ── Bracket manual + progresión ── */
 function tPick(mid,side){ var m=_findInComp(_tComp,mid); if(!m||!m.t1||!m.t2)return; _tDecisions[mid]=side; tRecompute(); }
