@@ -6,6 +6,7 @@
 <title>Naowee – Detalle de Evento</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="design-system.css"/>
+<script src="sorteo-store.js"></script>
 <style>
 :root {
   --naranja:#FF7500; --azul:#002B5B;
@@ -223,6 +224,17 @@ tbody tr:hover{background:#fafbfd}
 }
 .action-btn a{display:flex;align-items:center;justify-content:center;text-decoration:none;color:inherit}
 .tab-placeholder{padding:48px 24px;text-align:center;color:var(--text-secondary);font-size:14px}
+.res-grid{display:flex;flex-direction:column;gap:12px;padding:16px 24px 24px}
+.res-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--border);border-radius:var(--radius-lg,12px);background:var(--surface,#fff);transition:box-shadow .15s}
+.res-card:hover{box-shadow:var(--shadow-sm,0 1px 4px rgba(0,0,0,.08))}
+.res-card--anu{opacity:.7}
+.res-card-emoji{width:46px;height:46px;flex:0 0 46px;border-radius:10px;background:var(--bg-soft,#f5f6fa);display:grid;place-items:center;font-size:24px}
+.res-card-body{flex:1;min-width:0}
+.res-card-head{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.res-card-title{font-size:15px;font-weight:700;color:var(--text-primary)}
+.res-card-sub{font-size:13px;color:var(--text-secondary);margin-top:3px}
+.res-card-meta{font-size:11.5px;color:var(--text-secondary);margin-top:3px;opacity:.85}
+.res-card>a{flex:0 0 auto;white-space:nowrap}
 .no-data{padding:40px 24px;text-align:center;color:var(--text-secondary);font-size:14px}
 
 /* ANIMATIONS */
@@ -397,6 +409,11 @@ tbody tr:hover{background:#fafbfd}
             <tbody id="compBody"></tbody>
           </table>
         </div>
+      </div>
+
+      <!-- RESULTADOS (sorteos publicados) -->
+      <div id="contentResultados" style="display:none">
+        <div id="resultadosBody"></div>
       </div>
 
       <!-- PLACEHOLDER for other tabs -->
@@ -1108,14 +1125,33 @@ function setActiveTab(tab) {
   activeEl.classList.add('naowee-tab--selected');
   activeEl.setAttribute('aria-selected', 'true');
 
+  var cComp=document.getElementById('contentComp'), cRes=document.getElementById('contentResultados'), cOther=document.getElementById('contentOther');
   if (tab === 'competencias') {
-    document.getElementById('contentComp').style.display = '';
-    document.getElementById('contentOther').style.display = 'none';
+    cComp.style.display=''; cRes.style.display='none'; cOther.style.display='none';
+  } else if (tab === 'resultados') {
+    cComp.style.display='none'; cOther.style.display='none'; cRes.style.display=''; renderResultados();
   } else {
-    document.getElementById('contentComp').style.display = 'none';
-    document.getElementById('contentOther').style.display = '';
+    cComp.style.display='none'; cRes.style.display='none'; cOther.style.display='';
     document.getElementById('placeholderText').textContent = TAB_LABELS[tab] + ' — próximamente disponible';
   }
+}
+function _resEsc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]; }); }
+function renderResultados(){
+  var el=document.getElementById('resultadosBody'); if(!el)return;
+  var list=(window.SorteoStore)?SorteoStore.list():[];
+  if(!list.length){ el.innerHTML='<div class="tab-placeholder">Aún no hay sorteos publicados.<br>Genera uno en el módulo <b>Sorteo</b> y aparecerá aquí.</div>'; return; }
+  var ORIG={sorteo:'Sorteo automático',manual:'Sorteo manual (ruleta)',transcripcion:'Transcripción externa'};
+  el.innerHTML='<div class="res-grid">'+list.map(function(r){
+    var c=r.comp||{}; var anu=r.estado==='ANULADO';
+    var estado=anu?'<span class="naowee-badge naowee-badge--negative naowee-badge--small">Anulado</span>':'<span class="naowee-badge naowee-badge--positive naowee-badge--small">Publicado</span>';
+    var sub=(c.sisCls==='elim')?(c.sistema||'Eliminación directa'):((c.sistema||'')+' · '+((c.grupos||[]).length)+' grupos');
+    var fecha=''; try{ if(r.ts) fecha=new Date(r.ts).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'}); }catch(e){}
+    var meta=(ORIG[r.origen]||'Sorteo')+(fecha?(' · '+fecha):'')+(anu&&r.motivo?(' · Motivo: '+_resEsc(r.motivo)):'');
+    return '<div class="res-card'+(anu?' res-card--anu':'')+'"><div class="res-card-emoji">'+(c.emoji||'🏆')+'</div>'
+      +'<div class="res-card-body"><div class="res-card-head"><span class="res-card-title">'+_resEsc(c.nombre||'Sorteo')+'</span>'+estado+'</div>'
+      +'<div class="res-card-sub">'+_resEsc(sub)+'</div><div class="res-card-meta">'+_resEsc(meta)+'</div></div>'
+      +'<a class="naowee-btn naowee-btn--mute naowee-btn--small" href="sorteo-publico.html?id='+encodeURIComponent(r.id)+'" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3.5H3.5A1.5 1.5 0 002 5v7.5A1.5 1.5 0 003.5 14H11a1.5 1.5 0 001.5-1.5V10M9.5 2.5H13.5V6.5M13 3L7.5 8.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Ver público</a></div>';
+  }).join('')+'</div>';
 }
 
 function toggleSidebar() {
