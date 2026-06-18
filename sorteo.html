@@ -48,6 +48,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .nav-row.active .lbl{color:var(--accent)}
 .nav-row.expanded .nav-arrow{transform:rotate(180deg)}
 .subnav{padding-left:0;overflow:hidden;max-height:0;transition:max-height .25s ease}
+.nav-child{display:flex;align-items:center;height:36px;padding-left:64px;cursor:pointer;position:relative;transition:color .12s}
+.nav-child .lbl{font-size:13px;font-weight:600;color:var(--text-secondary)}
+.nav-child:hover .lbl{color:var(--text-primary)}
+.nav-child.active .lbl{color:var(--accent)}
+.nav-child::before{content:"";position:absolute;left:39px;top:-5px;width:14px;height:23px;border-left:1.5px solid var(--border-dark);border-bottom:1.5px solid var(--border-dark);border-bottom-left-radius:8px}
+.sidebar.collapsed .nav-child{display:none}
 .subnav.open{max-height:200px}
 .sub-row{display:flex;align-items:center;gap:8px;height:36px;padding:0 8px 0 64px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;color:var(--text-secondary);transition:background .12s;text-decoration:none}
 .sub-row:hover{background:#f5f6fa}
@@ -268,6 +274,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .modo-opt.active{background:#fff3e6;color:var(--accent)}
 /* ── F4: Transcripción externa (builder) ── */
 #transcripStage{flex:1;display:flex;flex-direction:column}
+#progEditStage{flex:1;display:flex;flex-direction:column}
+#progEditStage .sorteo-head{max-width:900px;width:100%}
+#progEditWrap{max-width:900px;margin:0 auto;width:100%}
 #transcripStage .sorteo-head{max-width:980px;width:100%}
 .transcrip-wrap{max-width:980px;margin:0 auto 28px;width:100%;display:flex;flex-direction:column;gap:18px}
 .transcrip-fmt{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
@@ -318,6 +327,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .sorteo-cenefa--negative{background:var(--red-bg,#fff0ee);border-bottom-color:var(--red-border,#ffc4bb);color:#a8160c}
 .sorteo-cenefa--negative .sorteo-cenefa__icon{background:#da1630}
 .prog-list{display:flex;flex-direction:column;gap:8px}
+.prog-edit-list{display:flex;flex-direction:column;gap:12px;padding:16px}
+.prog-edit-list .res-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface);transition:box-shadow .15s}
+.prog-edit-list .res-card:hover{box-shadow:var(--shadow-sm)}
+.prog-edit-list .res-card-emoji{width:46px;height:46px;flex:0 0 46px;border-radius:10px;background:var(--bg-soft,#f5f6fa);display:grid;place-items:center;font-size:24px}
+.prog-edit-list .res-card-body{flex:1;min-width:0}
+.prog-edit-list .res-card-title{font-size:15px;font-weight:700;color:var(--text-primary)}
+.prog-edit-list .res-card-sub{font-size:13px;color:var(--text-secondary);margin-top:3px}
+.prog-edit-list .res-card>button{flex:0 0 auto;white-space:nowrap}
 .prog-datefield{position:relative;cursor:pointer}
 .prog-datefield .naowee-textfield__input{cursor:pointer;padding-right:30px}
 .prog-fieldico{position:absolute;right:11px;top:50%;transform:translateY(-50%);color:var(--text-secondary);display:flex;pointer-events:none}
@@ -359,6 +376,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .clasif-row{display:flex;align-items:center;gap:10px}
 .clasif-pos{width:24px;height:24px;border-radius:50%;background:var(--bg-soft,#f5f6fa);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
 .clasif-tf{flex:1;min-width:0}
+.clasif-combo{position:relative}
+.clasif-combo .naowee-textfield__input-wrap{position:relative}
+.clasif-combo .clasif-combo-inp{padding-right:30px}
+.clasif-combo-chev{position:absolute;right:7px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-secondary);display:flex;padding:4px;border-radius:6px;transition:transform .18s,background .15s}
+.clasif-combo-chev:hover{background:var(--bg-soft,#f5f6fa);color:var(--accent)}
+.clasif-combo.open .clasif-combo-chev{transform:translateY(-50%) rotate(180deg)}
+.clasif-combo-menu{display:none;position:fixed;z-index:1200;background:var(--surface);border:1px solid var(--border-dark);border-radius:var(--radius-md);box-shadow:var(--shadow-md);max-height:230px;overflow-y:auto;padding:4px}
+.clasif-combo.open .clasif-combo-menu{display:block}
+.clasif-combo-opt{padding:8px 12px;font-size:13.5px;font-weight:500;color:var(--text-primary);border-radius:6px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clasif-combo-opt:hover{background:var(--orange-bg,#fff3e6);color:var(--accent)}
+.clasif-combo-empty{padding:9px 12px;font-size:12.5px;color:var(--text-secondary)}
 .clasif-tf--sub{flex:.85}
 .clasif-del{flex-shrink:0;color:var(--text-secondary)}
 .clasif-del:hover:not(:disabled){color:var(--accent)}
@@ -414,6 +442,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
       <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polyline points="16 3 21 3 21 8" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="4" y1="20" x2="21" y2="3" stroke="#d74009" stroke-width="1.5" stroke-linecap="round"/><polyline points="21 16 21 21 16 21" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="15" y1="15" x2="21" y2="21" stroke="#d74009" stroke-width="1.5" stroke-linecap="round"/><line x1="4" y1="4" x2="9" y2="9" stroke="#d74009" stroke-width="1.5" stroke-linecap="round"/></svg></div>
       <span class="lbl">Sorteo</span>
     </div>
+    <div class="nav-child" id="navProgEdit" onclick="openProgEdit()"><span class="lbl">Editar programación</span></div>
     <div class="nav-row" onclick="window.location.href='digitadores.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M16 20v-1a4 4 0 00-4-4H6a4 4 0 00-4 4v1" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="#B5B9D4" stroke-width="1.5"/><path d="M22 20v-1a4 4 0 00-4-4" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M15 3a4 4 0 010 8" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Digitadores</span></div>
     <div class="nav-row" onclick="window.location.href='coordinadores.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="16.75" cy="17.75" r="4.25" stroke="#B5B9D4" stroke-width="1.5"/><path d="M18.18 16.91l-1.79 1.78-1.07-1.07" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M10 15H7a4 4 0 00-4 4v1" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><circle cx="11" cy="7" r="4" stroke="#B5B9D4" stroke-width="1.5"/></svg></div><span class="lbl">Coordinadores</span></div>
     <div class="nav-row"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 20H5a2 2 0 01-2-2v-2a2 2 0 012-2h16" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M20 17H6" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="7.29" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5"/><ellipse cx="16.72" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5"/><path d="M10.29 7a2.72 2.72 0 013.43 0" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M3 7h1.29M19.72 7H21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Auditoría</span></div>
@@ -706,6 +735,22 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
       </div>
     </div>
 
+    <!-- ═══ EDITAR PROGRAMACIÓN (F5) ═══ -->
+    <div id="progEditStage" class="stage" style="display:none">
+      <div id="progEditCenefa"></div>
+      <div class="sorteo-head">
+        <div>
+          <h1 class="sorteo-title" id="progEditTitle">Editar programación</h1>
+          <p class="sorteo-sub" id="progEditSub">Selecciona un sorteo publicado para asignar fecha, hora y escenario a sus partidos.</p>
+        </div>
+      </div>
+      <div class="preview-comp" id="progEditWrap"><div id="progEditBody"></div></div>
+      <div class="wz-nav stage-footer">
+        <button class="naowee-btn naowee-btn--mute" id="btnProgBack" onclick="progEditBack()">← Salir</button>
+        <button class="naowee-btn naowee-btn--loud" id="btnGuardarProg" onclick="guardarProg()" style="display:none">Guardar programación</button>
+      </div>
+    </div>
+
   </div>
 </div>
 </div>
@@ -835,17 +880,29 @@ const _TC=['#d74009','#1f78d1','#1f8923','#7c3aed','#FF7500','#0891b2','#be185d'
 let _sorteo=null,_assign=null,_drawSeq=[],_ruletaTimers=[],_ruletaDone=false;
 function teamColorLocal(n){ if(window.CompRender&&CompRender.teamColor)return CompRender.teamColor(n); let h=0; for(let i=0;i<n.length;i++)h=n.charCodeAt(i)+((h<<5)-h); return _TC[Math.abs(h)%_TC.length]; }
 function teamInitLocal(n){ if(window.CompRender&&CompRender.teamInit)return CompRender.teamInit(n); return n.split(' ').filter(w=>w.length>1).map(w=>w[0]).join('').substring(0,2).toUpperCase()||n[0]; }
-function showStage(id){ const D={wizardStage:'block',clasifStage:'flex',ruletaStage:'flex',manualStage:'flex',transcripStage:'flex',previewStage:'flex'}; ['wizardStage','clasifStage','ruletaStage','manualStage','transcripStage','previewStage'].forEach(s=>{const el=document.getElementById(s); if(el)el.style.display=(s===id?(D[s]||'block'):'none');}); try{document.querySelector('.page').scrollTo(0,0);}catch(e){} }
+function showStage(id){ const D={wizardStage:'block',clasifStage:'flex',ruletaStage:'flex',manualStage:'flex',transcripStage:'flex',previewStage:'flex',progEditStage:'flex'}; ['wizardStage','clasifStage','ruletaStage','manualStage','transcripStage','previewStage','progEditStage'].forEach(s=>{const el=document.getElementById(s); if(el)el.style.display=(s===id?(D[s]||'block'):'none');}); try{document.querySelector('.page').scrollTo(0,0);}catch(e){} }
 function genParticipantes(n,tipo){ const out=[]; for(let i=0;i<n;i++)out.push({nombre:_NAMES[i]||((tipo==='individual'?'Deportista ':'Equipo ')+(i+1))}); return out; }
 function buildSorteo(){ const n=Math.max(2, +W.nEquipos||8); const parts=(_clasificados&&_clasificados.length)?_clasificados.map(c=>({nombre:(c.nombre||'').trim(),delegacion:(c.delegacion||'').trim()})):genParticipantes(n,W.tipo); _sorteo={prueba:{deporteLabel:W.deporteLabel||'Deporte',emoji:W.emoji||'🏆',categoria:W.categoria||'General',sexo:W.sexo||'Mixto',tipo:W.tipo||'conjunto'},config:{nGrupos:(W.tipo==='individual'?1:Math.max(1,+W.nGrupos||2))},participantes:parts}; return _sorteo; }
 /* ── F3a: Clasificados editables ── */
 let _clasificados=[];
 function startClasificados(){ const n=Math.max(2,+W.nEquipos||8); if(!_clasificados.length||_clasificados.length!==n){ _clasificados=genParticipantes(n,W.tipo).map(p=>({nombre:p.nombre,delegacion:''})); } showStage('clasifStage'); document.getElementById('clasifTitle').textContent=(W.tipo==='individual'?'Deportistas clasificados':'Equipos clasificados'); renderClasifList(); }
 function renderClasifList(){ const el=document.getElementById('clasifList'); if(!el)return; const ph=W.tipo==='individual'?'Nombre del deportista':'Nombre del equipo'; el.innerHTML=_clasificados.map(function(c,i){ const nm=(c.nombre||'').replace(/"/g,'&quot;'), dg=(c.delegacion||'').replace(/"/g,'&quot;'); return '<div class="clasif-row"><span class="clasif-pos">'+(i+1)+'</span>'
-  +'<div class="naowee-textfield naowee-textfield--small clasif-tf"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input" value="'+nm+'" placeholder="'+ph+'" oninput="syncClasif('+i+',\'nombre\',this.value)"></div></div>'
+  +'<div class="clasif-combo clasif-tf"><div class="naowee-textfield naowee-textfield--small"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input clasif-combo-inp" value="'+nm+'" placeholder="'+ph+'" autocomplete="off" oninput="clasifInput('+i+',this.value)" onfocus="clasifShow('+i+')"><button type="button" class="clasif-combo-chev" onclick="clasifToggle('+i+',event)" tabindex="-1" aria-label="Ver participantes"><svg viewBox="0 0 16 16" width="14" height="14" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div><div class="clasif-combo-menu" id="clasifMenu'+i+'"></div></div>'
   +'<div class="naowee-textfield naowee-textfield--small clasif-tf clasif-tf--sub"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input" value="'+dg+'" placeholder="Delegación / regional (opcional)" oninput="syncClasif('+i+',\'delegacion\',this.value)"></div></div>'
   +'<button class="naowee-btn naowee-btn--mute naowee-btn--small clasif-del" title="Quitar" onclick="removeClasif('+i+')"'+(_clasificados.length<=2?' disabled':'')+'><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M6.2 4.5V3.3a1 1 0 011-1h1.6a1 1 0 011 1v1.2M5.2 4.5l.4 8a1 1 0 001 .95h2.8a1 1 0 001-.95l.4-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>'; }).join(''); document.getElementById('clasifCount').textContent=_clasificados.length; validateClasif(); }
 function syncClasif(i,k,v){ if(_clasificados[i]){ _clasificados[i][k]=v; if(k==='nombre') validateClasif(); } }
+/* ── Combobox de clasificados (desplegable alimentado del evento + editable) ── */
+function _normTxt(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+function clasifMenuHtml(i,q){ var cur=_normTxt(q); var used=_clasificados.map(function(c,j){return j!==i?_normTxt(c.nombre):'';}); var pool=_NAMES.filter(function(n){ var nn=_normTxt(n); if(used.indexOf(nn)>=0)return false; return !cur||nn.indexOf(cur)>=0; }); if(!pool.length) return '<div class="clasif-combo-empty">Sin coincidencias · escribe un nombre personalizado</div>'; return pool.map(function(n){ return '<div class="clasif-combo-opt" onmousedown="clasifPick('+i+',\''+n.replace(/'/g,"\\'")+'\',event)">'+tEsc(n)+'</div>'; }).join(''); }
+function _clasifMenuEl(i){ return document.getElementById('clasifMenu'+i); }
+function clasifRenderMenu(i,q){ var menu=_clasifMenuEl(i); if(!menu)return; var box=menu.closest('.clasif-combo'); var inp=box.querySelector('.clasif-combo-inp'); menu.innerHTML=clasifMenuHtml(i,q); var r=inp.getBoundingClientRect(); menu.style.left=r.left+'px'; menu.style.top=(r.bottom+4)+'px'; menu.style.width=r.width+'px'; box.classList.add('open'); }
+function clasifShow(i){ document.querySelectorAll('.clasif-combo.open').forEach(function(c){c.classList.remove('open');}); clasifRenderMenu(i,''); }
+function clasifToggle(i,e){ if(e){e.preventDefault();e.stopPropagation();} var box=_clasifMenuEl(i).closest('.clasif-combo'); if(box.classList.contains('open')){ box.classList.remove('open'); } else { clasifShow(i); var inp=box.querySelector('.clasif-combo-inp'); if(inp)inp.focus(); } }
+function clasifInput(i,v){ syncClasif(i,'nombre',v); clasifRenderMenu(i,v); }
+function clasifPick(i,name,e){ if(e)e.preventDefault(); if(_clasificados[i])_clasificados[i].nombre=name; var box=_clasifMenuEl(i).closest('.clasif-combo'); if(box){ box.classList.remove('open'); var inp=box.querySelector('.clasif-combo-inp'); if(inp)inp.value=name; } validateClasif(); }
+function _closeClasifCombos(){ document.querySelectorAll('.clasif-combo.open').forEach(function(c){c.classList.remove('open');}); }
+document.addEventListener('click',function(e){ if(!e.target||!e.target.closest||!e.target.closest('.clasif-combo')) _closeClasifCombos(); });
+window.addEventListener('scroll',_closeClasifCombos,true);
 function addClasif(){ _clasificados.push({nombre:'',delegacion:''}); renderClasifList(); const rows=document.querySelectorAll('#clasifList .clasif-row'); const last=rows[rows.length-1]; if(last){ const inp=last.querySelector('.naowee-textfield__input'); if(inp) inp.focus(); } }
 function removeClasif(i){ if(_clasificados.length<=2)return; _clasificados.splice(i,1); renderClasifList(); }
 function validateClasif(){ const ok=_clasificados.length>=2&&_clasificados.every(function(c){return (c.nombre||'').trim();}); const b=document.getElementById('btnClasifNext'); if(b)b.disabled=!ok; return ok; }
@@ -877,15 +934,15 @@ _PV_TABS.push(_PROG_TAB); _PV_TABS_ELIM.push(_PROG_TAB);
 function _progMatches(comp){ var rows=[]; (comp.grupos||[]).forEach(function(g){ (g.partidos||[]).forEach(function(p){ if(p.status!=='bye'&&p.t1&&p.t2&&!/descansa/i.test(String(p.t2))) rows.push({id:p.id,t1:p.t1,t2:p.t2,ctx:g.nombre+' · Jornada '+p.jornada,m:p}); }); }); (comp.bracket||[]).forEach(function(rd){ (rd.matches||[]).forEach(function(m){ if(m.status!=='bye'&&m.t1&&m.t2) rows.push({id:m.id,t1:m.t1,t2:m.t2,ctx:rd.round,m:m}); }); }); return rows; }
 function _findMatchAny(comp,id){ var r=_progMatches(comp).find(function(x){return String(x.id)===String(id);}); return r?r.m:null; }
 function progSet(id,field,val){ var m=_findMatchAny(_pvComp,id); if(m)m[field]=val; var c=document.getElementById('progCount'); if(c)c.textContent=_progMatches(_pvComp).filter(function(x){return x.m.fecha;}).length; }
-function progSetEsc(id,esc,e){ if(e)e.stopPropagation(); var m=_findMatchAny(_pvComp,id); if(m)m.escenario=esc; document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){d.classList.remove('naowee-dropdown--open');}); var p=document.getElementById('previewPanel'); if(p)p.innerHTML=renderPrograma(_pvComp); }
+function progSetEscText(id,v){ var m=_findMatchAny(_pvComp,id); if(m)m.escenario=v; }
 function renderPrograma(comp){ var rows=_progMatches(comp); if(!rows.length) return '<div class="naowee-message naowee-message--informative" style="width:100%"><div class="naowee-message__header"><span class="naowee-message__icon">'+_TICON.info+'</span><span class="naowee-message__body">Aún no hay partidos con ambos competidores definidos para programar.</span></div></div>';
   var done=rows.filter(function(x){return x.m.fecha;}).length;
   var head='<div class="naowee-message naowee-message--informative" style="width:100%;margin-bottom:14px"><div class="naowee-message__header"><span class="naowee-message__icon">'+_TICON.info+'</span><span class="naowee-message__title">Programación de partidos</span></div><p class="naowee-message__text">Asigna fecha, hora y escenario a cada partido. <b><span id="progCount">'+done+'</span> de '+rows.length+'</b> con fecha asignada. Se guarda al confirmar el sorteo.</p></div>';
-  var list=rows.map(function(x){ var m=x.m; var escL=m.escenario||'Escenario'; var opts=ESCENARIOS.map(function(es){ return '<div class="naowee-dropdown__option'+(m.escenario===es?' naowee-dropdown__option--selected':'')+'" onclick="progSetEsc(\''+x.id+'\',\''+es.replace(/'/g,"\\'")+'\',event)">'+tEsc(es)+'</div>'; }).join('');
+  var list=rows.map(function(x){ var m=x.m;
     return '<div class="prog-row"><div class="prog-match">'+tEsc(x.t1)+' <span style="color:var(--text-secondary);font-weight:500">vs</span> '+tEsc(x.t2)+'<small>'+tEsc(x.ctx)+'</small></div>'
       +'<div class="prog-datefield naowee-textfield naowee-textfield--small" onclick="dpOpen(\''+x.id+'\',this)"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input" readonly placeholder="Fecha" value="'+(_fmtFechaHuman(m.fecha))+'"><span class="prog-fieldico"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 6.5h12M5 1.5v3M11 1.5v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span></div></div>'
       +progHoraDropdown(x.id, m.hora)
-      +'<div class="naowee-dropdown naowee-dropdown--small"><button type="button" class="naowee-dropdown__trigger" onclick="tddToggle(this,event)"><span class="naowee-dropdown__value">'+tEsc(escL)+'</span><span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg viewBox="0 0 16 16" width="14" height="14" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button><div class="naowee-dropdown__menu">'+opts+'</div></div>'
+      +'<div class="naowee-textfield naowee-textfield--small"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input" placeholder="Escenario / lugar" value="'+(m.escenario?tEsc(m.escenario):'')+'" oninput="progSetEscText(\''+x.id+'\',this.value)"></div></div>'
       +'</div>'; }).join('');
   return head+'<div class="prog-list">'+list+'</div>'; }
 /* ── F5: datepicker canónico (.naowee-datepicker popover) + timepicker (dropdown de franjas) ── */
@@ -894,7 +951,8 @@ var _DP_WD=['L','M','M','J','V','S','D'];
 var _dpMatchId=null,_dpView={y:0,m:0};
 function _dpToIso(d){ var mm=('0'+(d.getMonth()+1)).slice(-2),dd=('0'+d.getDate()).slice(-2); return d.getFullYear()+'-'+mm+'-'+dd; }
 function _fmtFechaHuman(iso){ if(!iso)return ''; var p=String(iso).split('-'); if(p.length!==3)return iso; return parseInt(p[2],10)+' '+_DP_MONTHS[parseInt(p[1],10)-1].slice(0,3)+' '+p[0]; }
-function progRerender(){ var p=document.getElementById('previewPanel'); if(p)p.innerHTML=renderPrograma(_pvComp); }
+var _progPanelId='previewPanel',_progEditId=null;
+function progRerender(){ var p=document.getElementById(_progPanelId||'previewPanel'); if(p)p.innerHTML=renderPrograma(_pvComp); }
 function _dpEnsure(){ var p=document.getElementById('progDatePop'); if(!p){ p=document.createElement('div'); p.id='progDatePop'; p.className='prog-datepop'; p.style.display='none'; document.body.appendChild(p); } return p; }
 function dpOpen(id,fieldEl){ var m=_findMatchAny(_pvComp,id); if(!m)return; _dpMatchId=id; var base=m.fecha?new Date(m.fecha+'T00:00:00'):new Date(); _dpView={y:base.getFullYear(),m:base.getMonth()}; _dpRender(); var pop=_dpEnsure(); pop.style.display='block'; _dpPosition(fieldEl); }
 function dpClose(){ var p=document.getElementById('progDatePop'); if(p)p.style.display='none'; }
@@ -910,7 +968,13 @@ function progHoraDropdown(id,hora){ var opts=_HORAS.map(function(h){ return '<di
 function progSetHora(id,h,e){ if(e)e.stopPropagation(); var m=_findMatchAny(_pvComp,id); if(m)m.hora=h; document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){d.classList.remove('naowee-dropdown--open');}); progRerender(); }
 document.addEventListener('click',function(e){ if(e.target&&e.target.closest&&(e.target.closest('#progDatePop')||e.target.closest('.prog-datefield')))return; dpClose(); });
 window.addEventListener('resize',dpClose);
-function showPreview(comp){ _pvComp=comp||SorteoEngine.toComp(_sorteo); _sorteo.resultado=_pvComp; showStage('previewStage'); const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=false;b.textContent='Confirmar sorteo';} var _ba=document.getElementById('btnAnular'); if(_ba)_ba.style.display='none'; var _pc=document.getElementById('previewCenefa'); if(_pc)_pc.innerHTML=''; var isElim=_pvComp.sisCls==='elim'; _activeTabs=isElim?_PV_TABS_ELIM:_PV_TABS; var sub=isElim?((_pvComp.sistema||'Eliminación directa')+' · '+((_sorteo&&_sorteo.participantes)?_sorteo.participantes.length:0)+' participantes'):((_pvComp.sistema||'')+' · '+(_pvComp.grupos?_pvComp.grupos.length:0)+' grupos · '+(_pvComp.jornadasCount||0)+' jornadas'); document.getElementById('previewHead').innerHTML='<div class="pv-head"><span class="pv-emoji">'+(_pvComp.emoji||'🏆')+'</span><div><div class="pv-title">'+(_pvComp.nombre||'Sorteo')+'</div><div class="pv-sub">'+sub+'</div></div></div>'; _pvTab=_activeTabs[0].id; renderPvTabs(); }
+/* ── F5: editar programación de un sorteo publicado (desde el menú) ── */
+function openProgEdit(){ _progEditId=null; _progPanelId='previewPanel'; showStage('progEditStage'); var t=document.getElementById('progEditTitle'),s=document.getElementById('progEditSub'); if(t)t.textContent='Editar programación'; if(s)s.textContent='Selecciona un sorteo publicado para asignar fecha, hora y escenario a sus partidos.'; var g=document.getElementById('btnGuardarProg'); if(g)g.style.display='none'; var bk=document.getElementById('btnProgBack'); if(bk)bk.textContent='← Salir'; var c=document.getElementById('progEditCenefa'); if(c)c.innerHTML=''; var nav=document.getElementById('navProgEdit'); if(nav)nav.classList.add('active'); renderProgEditList(); }
+function renderProgEditList(){ var el=document.getElementById('progEditBody'); if(!el)return; var list=(window.SorteoStore)?SorteoStore.list().filter(function(r){return r.estado!=='ANULADO';}):[]; if(!list.length){ el.innerHTML='<div style="padding:48px 24px;text-align:center;color:var(--text-secondary);font-size:14px">Aún no hay sorteos publicados para programar.<br>Confirma un sorteo y aquí podrás asignarle fechas.</div>'; return; } var ORIG={sorteo:'Sorteo automático',manual:'Sorteo manual',transcripcion:'Transcripción'}; el.innerHTML='<div class="prog-edit-list">'+list.map(function(r){ var c=r.comp||{}; var ms=_progMatches(c); var done=ms.filter(function(x){return x.m.fecha;}).length; var sub=(c.sisCls==='elim'?(c.sistema||'Eliminación directa'):((c.sistema||'')+' · '+((c.grupos||[]).length)+' grupos'))+' · <b>'+done+'/'+ms.length+'</b> programados'; return '<div class="res-card"><div class="res-card-emoji">'+(c.emoji||'🏆')+'</div><div class="res-card-body"><div class="res-card-head"><span class="res-card-title">'+tEsc(c.nombre||'Sorteo')+'</span></div><div class="res-card-sub">'+sub+'</div></div><button class="naowee-btn naowee-btn--loud naowee-btn--small" onclick="editProg(\''+r.id+'\')"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 6.5h12M5 1.5v3M11 1.5v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg> Programar</button></div>'; }).join('')+'</div>'; }
+function editProg(id){ var rec=(window.SorteoStore)?SorteoStore.get(id):null; if(!rec||!rec.comp)return; _progEditId=id; _pvComp=rec.comp; _progPanelId='progEditBody'; var t=document.getElementById('progEditTitle'),s=document.getElementById('progEditSub'); if(t)t.textContent=(rec.comp.nombre||'Programación'); if(s)s.textContent='Asigna fecha, hora y escenario; guarda para actualizar el sorteo.'; var g=document.getElementById('btnGuardarProg'); if(g)g.style.display=''; var bk=document.getElementById('btnProgBack'); if(bk)bk.textContent='← Volver a la lista'; var c=document.getElementById('progEditCenefa'); if(c)c.innerHTML=''; document.getElementById('progEditBody').innerHTML=renderPrograma(_pvComp); try{document.querySelector('.page').scrollTo(0,0);}catch(e){} }
+function progEditBack(){ if(_progEditId){ openProgEdit(); } else { var nav=document.getElementById('navProgEdit'); if(nav)nav.classList.remove('active'); showStage('wizardStage'); } }
+function guardarProg(){ if(!_progEditId)return; var rec=(window.SorteoStore)?SorteoStore.get(_progEditId):null; if(rec){ rec.comp=_pvComp; SorteoStore.save(rec); } var c=document.getElementById('progEditCenefa'); if(c){ c.innerHTML='<div class="sorteo-cenefa sorteo-cenefa--positive" role="status"><div class="sorteo-cenefa__inner"><span class="sorteo-cenefa__icon">'+_ICO_OK+'</span><div class="sorteo-cenefa__body"><div class="sorteo-cenefa__title">Programación guardada</div><p class="sorteo-cenefa__msg">Los cambios de fecha, hora y escenario quedaron guardados en este sorteo.</p></div></div></div>'; try{document.querySelector('.page').scrollTo({top:0,behavior:'smooth'});}catch(e){} } }
+function showPreview(comp){ _pvComp=comp||SorteoEngine.toComp(_sorteo); _sorteo.resultado=_pvComp; _progPanelId='previewPanel'; showStage('previewStage'); const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=false;b.textContent='Confirmar sorteo';} var _ba=document.getElementById('btnAnular'); if(_ba)_ba.style.display='none'; var _pc=document.getElementById('previewCenefa'); if(_pc)_pc.innerHTML=''; var isElim=_pvComp.sisCls==='elim'; _activeTabs=isElim?_PV_TABS_ELIM:_PV_TABS; var sub=isElim?((_pvComp.sistema||'Eliminación directa')+' · '+((_sorteo&&_sorteo.participantes)?_sorteo.participantes.length:0)+' participantes'):((_pvComp.sistema||'')+' · '+(_pvComp.grupos?_pvComp.grupos.length:0)+' grupos · '+(_pvComp.jornadasCount||0)+' jornadas'); document.getElementById('previewHead').innerHTML='<div class="pv-head"><span class="pv-emoji">'+(_pvComp.emoji||'🏆')+'</span><div><div class="pv-title">'+(_pvComp.nombre||'Sorteo')+'</div><div class="pv-sub">'+sub+'</div></div></div>'; _pvTab=_activeTabs[0].id; renderPvTabs(); }
 function renderPvTabs(){ const tb=document.getElementById('previewTabs'); if(tb) tb.innerHTML=_activeTabs.map(function(t){return '<button class="naowee-tab'+(t.id===_pvTab?' naowee-tab--selected':'')+'" onclick="switchPvTab(\''+t.id+'\')">'+(t.icon||'')+'<span>'+t.label+'</span></button>';}).join(''); const tab=_activeTabs.find(function(t){return t.id===_pvTab;}); const p=document.getElementById('previewPanel'); if(p&&tab) p.innerHTML=tab.render(_pvComp); }
 function switchPvTab(id){ if(id===_pvTab) return; const oi=_activeTabs.findIndex(function(t){return t.id===_pvTab;}), ni=_activeTabs.findIndex(function(t){return t.id===id;}); _pvTab=id; renderPvTabs(); const p=document.getElementById('previewPanel'); if(p){ p.style.animation='none'; void p.offsetWidth; p.style.animation=(ni>oi?'tabSlideR':'tabSlideL')+' .28s cubic-bezier(.32,.72,0,1)'; } }
 function backToWizard(){ _ruletaTimers.forEach(t=>{clearTimeout(t);clearInterval(t);}); _ruletaTimers=[]; showStage('wizardStage'); }
