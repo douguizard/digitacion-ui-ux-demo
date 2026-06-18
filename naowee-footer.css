@@ -1,0 +1,70 @@
+/* ════════════════════════════════════════════════════════════════
+   Naowee chrome compartido — Digitación
+   ─────────────────────────────────────────────────────────────────
+   1) Pill flotante de versionamiento (bottom-right, footer-aware).
+   2) Override del profile-switcher para igualar el patrón de IVC/Project
+      (chip compacto + chevron tipo botón + dropdown con sombra/animación).
+   Se enlaza DESPUÉS del <style> de cada página para sobre-escribir.
+   Anima solo transform/opacity. Honra prefers-reduced-motion.
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── 1) Pill de versionamiento ───────────────────────────────────── */
+.naowee-floating-footer{
+  position:fixed; bottom:14px; right:20px; z-index:60;
+  display:flex; align-items:center; gap:10px;
+  padding:7px 14px 7px 12px;
+  background:var(--surface,#fff);
+  border:1px solid var(--border,#e7e9f3);
+  border-radius:var(--radius-full,9999px);
+  box-shadow:var(--shadow-sm,0 1px 4px rgba(0,0,0,.08));
+  font-family:var(--font-family,var(--font,'Inter',sans-serif));
+  transition:transform .28s var(--easing-smoothout,cubic-bezier(.32,.72,0,1)),
+             opacity .2s ease, bottom .2s var(--easing-smoothout,cubic-bezier(.32,.72,0,1));
+}
+.naowee-floating-footer__dot{
+  width:18px; height:18px; flex-shrink:0; border-radius:5px;
+  background:linear-gradient(135deg,var(--naranja,#FF7500),var(--accent,#d74009));
+}
+.naowee-floating-footer__copy{
+  font-size:11px; font-weight:500; color:var(--text-secondary,#646587); white-space:nowrap;
+}
+.naowee-floating-footer__ver{
+  font-size:11px; font-weight:700; color:var(--accent,#d74009);
+  text-decoration:none; padding-left:10px;
+  border-left:1px solid var(--border,#e7e9f3); white-space:nowrap;
+}
+.naowee-floating-footer__ver:hover{ text-decoration:underline; }
+.naowee-floating-footer.is-hidden{ transform:translateY(160%); opacity:0; pointer-events:none; }
+
+@media(max-width:640px){
+  .naowee-floating-footer{ bottom:8px; right:8px; padding:6px 12px 6px 10px; }
+  .naowee-floating-footer__copy{ display:none; }
+}
+html[data-embed="1"] .naowee-floating-footer{ display:none !important; }
+@media(prefers-reduced-motion:reduce){
+  .naowee-floating-footer{ transition:opacity .2s ease, bottom .2s ease; }
+  .naowee-floating-footer.is-hidden{ transform:none; }
+}
+
+/* ── 2) Profile switcher — paridad visual con IVC/Project ────────── */
+.user-chip{ padding:6px 8px 6px 6px !important; transition:border-color .15s, box-shadow .15s !important; }
+.user-chip:hover{ box-shadow:0 1px 6px rgba(40,40,52,.08); }
+.user-chip .ava-ring{ width:34px !important; height:34px !important; font-size:12px !important; }
+.user-chip .uc-chev{
+  width:24px; height:24px; padding:5px; box-sizing:border-box;
+  border-radius:6px; margin-left:2px; color:var(--text-secondary,#646587);
+  transition:background .15s, color .15s, transform .2s ease;
+}
+.user-chip:hover .uc-chev{ background:#FFEDC7; color:var(--accent,#d74009); }
+.profile-switcher.open .uc-chev, .profile-switcher.is-open .uc-chev{ transform:rotate(180deg); }
+
+.profile-dropdown{
+  border-radius:12px !important;
+  box-shadow:0 8px 24px rgba(40,40,52,.12) !important;
+  padding:6px !important; min-width:280px !important;
+  border-color:var(--border,#e7e9f3) !important;
+}
+.profile-option{ border-radius:8px; padding:11px 12px; gap:12px; }
+.profile-option:hover{ background:#f5f6fa; }
+.profile-option.active{ background:#fff3e6; }
+.profile-option .po-name{ font-weight:700; color:var(--text-primary,#282834); }
