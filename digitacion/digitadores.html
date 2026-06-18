@@ -273,6 +273,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .profile-switcher.open .profile-dropdown{display:block}
 .profile-switcher.open .uc-chev{transform:rotate(180deg)}
 </style>
+<link rel="stylesheet" href="naowee-footer.css"/>
 </head>
 <body>
 <div class="shell">
@@ -706,5 +707,6 @@ document.getElementById('btnLogout')?.addEventListener('click', () => {
 /* Tooltip al colapsar el sidebar */
 (function(){var sb=document.getElementById('sidebar');if(!sb)return;var tip=document.createElement('div');tip.className='nav-tooltip';document.body.appendChild(tip);function show(el,t){if(!sb.classList.contains('collapsed'))return;tip.textContent=t;var r=el.getBoundingClientRect();tip.style.left=(r.right+12)+'px';tip.style.top=(r.top+r.height/2)+'px';tip.classList.add('is-visible');}function hide(){tip.classList.remove('is-visible');}sb.querySelectorAll('.nav-row').forEach(function(row){var l=row.querySelector('.lbl');if(!l)return;row.addEventListener('mouseenter',function(){show(row,l.textContent.trim());});row.addEventListener('mouseleave',hide);});})();
 </script>
+<script src="naowee-footer.js"></script>
 </body>
 </html>
