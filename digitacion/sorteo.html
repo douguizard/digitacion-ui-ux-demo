@@ -299,6 +299,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 @media(max-width:760px){.tg-grid{grid-template-columns:1fr}}
 /* ── F5: acciones del preview + export PDF (print) ── */
 .sorteo-head-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.anular-row{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
 .prog-list{display:flex;flex-direction:column;gap:8px}
 .prog-row{display:grid;grid-template-columns:minmax(0,1.7fr) 152px 112px minmax(0,1.5fr);gap:10px;align-items:center;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface)}
 .prog-match{font-size:13px;font-weight:700;color:var(--text-primary);min-width:0}
@@ -668,13 +669,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
         </div>
       </div>
       <div class="preview-comp">
+        <div id="anularPanel" style="display:none"></div>
         <div id="previewHead"></div>
         <div class="naowee-tabs" id="previewTabs"></div>
         <div class="cr-tabpanel" id="previewPanel"></div>
       </div>
       <div class="wz-nav stage-footer">
         <button class="naowee-btn naowee-btn--mute" onclick="backToWizard()">← Parámetros</button>
-        <button class="naowee-btn naowee-btn--loud" id="btnConfirmSorteo" onclick="confirmSorteo()">Confirmar sorteo</button>
+        <div style="display:flex;gap:10px;align-items:center">
+          <button class="naowee-btn naowee-btn--mute" id="btnAnular" onclick="askAnular()" style="display:none">Anular sorteo</button>
+          <button class="naowee-btn naowee-btn--loud" id="btnConfirmSorteo" onclick="confirmSorteo()">Confirmar sorteo</button>
+        </div>
       </div>
     </div>
 
@@ -860,14 +865,20 @@ function renderPrograma(comp){ var rows=_progMatches(comp); if(!rows.length) ret
       +'<div class="naowee-dropdown naowee-dropdown--small"><button type="button" class="naowee-dropdown__trigger" onclick="tddToggle(this,event)"><span class="naowee-dropdown__value">'+tEsc(escL)+'</span><span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg viewBox="0 0 16 16" width="14" height="14" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button><div class="naowee-dropdown__menu">'+opts+'</div></div>'
       +'</div>'; }).join('');
   return head+'<div class="prog-list">'+list+'</div>'; }
-function showPreview(comp){ _pvComp=comp||SorteoEngine.toComp(_sorteo); _sorteo.resultado=_pvComp; showStage('previewStage'); const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=false;b.textContent='Confirmar sorteo';} var isElim=_pvComp.sisCls==='elim'; _activeTabs=isElim?_PV_TABS_ELIM:_PV_TABS; var sub=isElim?((_pvComp.sistema||'Eliminación directa')+' · '+((_sorteo&&_sorteo.participantes)?_sorteo.participantes.length:0)+' participantes'):((_pvComp.sistema||'')+' · '+(_pvComp.grupos?_pvComp.grupos.length:0)+' grupos · '+(_pvComp.jornadasCount||0)+' jornadas'); document.getElementById('previewHead').innerHTML='<div class="pv-head"><span class="pv-emoji">'+(_pvComp.emoji||'🏆')+'</span><div><div class="pv-title">'+(_pvComp.nombre||'Sorteo')+'</div><div class="pv-sub">'+sub+'</div></div></div>'; _pvTab=_activeTabs[0].id; renderPvTabs(); }
+function showPreview(comp){ _pvComp=comp||SorteoEngine.toComp(_sorteo); _sorteo.resultado=_pvComp; showStage('previewStage'); const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=false;b.textContent='Confirmar sorteo';} var _ba=document.getElementById('btnAnular'); if(_ba)_ba.style.display='none'; var _ap=document.getElementById('anularPanel'); if(_ap){_ap.style.display='none';_ap.innerHTML='';} var isElim=_pvComp.sisCls==='elim'; _activeTabs=isElim?_PV_TABS_ELIM:_PV_TABS; var sub=isElim?((_pvComp.sistema||'Eliminación directa')+' · '+((_sorteo&&_sorteo.participantes)?_sorteo.participantes.length:0)+' participantes'):((_pvComp.sistema||'')+' · '+(_pvComp.grupos?_pvComp.grupos.length:0)+' grupos · '+(_pvComp.jornadasCount||0)+' jornadas'); document.getElementById('previewHead').innerHTML='<div class="pv-head"><span class="pv-emoji">'+(_pvComp.emoji||'🏆')+'</span><div><div class="pv-title">'+(_pvComp.nombre||'Sorteo')+'</div><div class="pv-sub">'+sub+'</div></div></div>'; _pvTab=_activeTabs[0].id; renderPvTabs(); }
 function renderPvTabs(){ const tb=document.getElementById('previewTabs'); if(tb) tb.innerHTML=_activeTabs.map(function(t){return '<button class="naowee-tab'+(t.id===_pvTab?' naowee-tab--selected':'')+'" onclick="switchPvTab(\''+t.id+'\')">'+(t.icon||'')+'<span>'+t.label+'</span></button>';}).join(''); const tab=_activeTabs.find(function(t){return t.id===_pvTab;}); const p=document.getElementById('previewPanel'); if(p&&tab) p.innerHTML=tab.render(_pvComp); }
 function switchPvTab(id){ if(id===_pvTab) return; const oi=_activeTabs.findIndex(function(t){return t.id===_pvTab;}), ni=_activeTabs.findIndex(function(t){return t.id===id;}); _pvTab=id; renderPvTabs(); const p=document.getElementById('previewPanel'); if(p){ p.style.animation='none'; void p.offsetWidth; p.style.animation=(ni>oi?'tabSlideR':'tabSlideL')+' .28s cubic-bezier(.32,.72,0,1)'; } }
 function backToWizard(){ _ruletaTimers.forEach(t=>{clearTimeout(t);clearInterval(t);}); _ruletaTimers=[]; showStage('wizardStage'); }
 function reSortear(){ if(W.modo==='transcrip') startTranscrip(); else if(W.modo==='manual') startManual(); else startRuleta(); }
 function confirmSorteo(){ const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=true;b.textContent='Sorteo confirmado';}
   try{ if(window.SorteoStore&&_pvComp){ var id=SorteoStore.pruebaId(_sorteo); _sorteo.sorteoId=id; SorteoStore.save({ id:id, prueba:_sorteo.prueba, comp:_pvComp, estado:'PUBLICADO', origen:(W.modo==='transcrip'?'transcripcion':(W.modo==='manual'?'manual':'sorteo')), ts:Date.now() }); } }catch(e){}
-  fireConfetti(); }
+  var ba=document.getElementById('btnAnular'); if(ba)ba.style.display=''; fireConfetti(); }
+function askAnular(){ var el=document.getElementById('anularPanel'); if(!el)return; el.style.display='block'; el.innerHTML='<div class="naowee-message naowee-message--caution" style="width:100%;margin-bottom:14px"><div class="naowee-message__header"><span class="naowee-message__icon">'+_TICON.caution+'</span><span class="naowee-message__title">Anular este sorteo</span></div><p class="naowee-message__text">Quedará registrado como anulado (con motivo y fecha) y podrás volver a sortear.</p><div class="anular-row"><div class="naowee-textfield naowee-textfield--small" style="flex:1;min-width:200px"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input" id="anularMotivo" placeholder="Motivo de la anulación (opcional)"></div></div><button class="naowee-btn naowee-btn--mute naowee-btn--small" onclick="closeAnular()">Cancelar</button><button class="naowee-btn naowee-btn--loud naowee-btn--small" onclick="doAnular()">Confirmar anulación</button></div></div>'; try{el.scrollIntoView({behavior:'smooth',block:'nearest'});}catch(e){} }
+function closeAnular(){ var el=document.getElementById('anularPanel'); if(el){el.style.display='none';el.innerHTML='';} }
+function doAnular(){ var mi=document.getElementById('anularMotivo'); var motivo=mi?mi.value.trim():''; try{ if(window.SorteoStore&&_sorteo&&_sorteo.sorteoId) SorteoStore.anular(_sorteo.sorteoId,motivo); }catch(e){}
+  var b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=false;b.textContent='Confirmar sorteo';}
+  var ba=document.getElementById('btnAnular'); if(ba)ba.style.display='none';
+  var el=document.getElementById('anularPanel'); if(el){ el.style.display='block'; el.innerHTML='<div class="naowee-message naowee-message--negative" style="width:100%;margin-bottom:14px"><div class="naowee-message__header"><span class="naowee-message__icon">'+_TICON.caution+'</span><span class="naowee-message__title">Sorteo anulado</span></div><p class="naowee-message__text">'+(motivo?('Motivo: '+tEsc(motivo)+'. '):'')+'Quedó registrado en el historial. Puedes re-sortear o ajustar parámetros.</p></div>'; } }
 function exportarPDF(){ if(!_pvComp)return; var panel=document.getElementById('previewPanel'); if(!panel)return; var saved=panel.innerHTML; panel.innerHTML=_activeTabs.map(function(t){ return '<section class="pv-print-sec"><h3 class="pv-print-h">'+t.label+'</h3>'+t.render(_pvComp)+'</section>'; }).join(''); document.body.classList.add('printing'); var done=false; var restore=function(){ if(done)return; done=true; document.body.classList.remove('printing'); panel.innerHTML=saved; window.removeEventListener('afterprint',restore); }; window.addEventListener('afterprint',restore); try{ window.print(); }catch(e){} setTimeout(restore,2000); }
 /* ── Sorteo MANUAL (ruleta giratoria) ── */
 let _manualSeq=[],_manualGroups=[],_manualSizes=[],_manualDrawn=0,_manualSpin=false;
