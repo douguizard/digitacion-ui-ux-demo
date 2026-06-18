@@ -227,7 +227,7 @@
     var html = '<div class="bracket-header"><h3>Cuadro de eliminación</h3></div>';
 
     /* Títulos de columna */
-    html += '<div class="bracket-titles">';
+    html += '<div class="bracket-scroll"><div class="bracket-titles">';
     mainRounds.forEach(function(round,ri){
       if(ri>0) html += '<div class="bracket-svg-spacer"></div>';
       html += '<div class="bracket-col-title">'+esc(round.round)+'</div>';
@@ -248,7 +248,7 @@
       (tercerRound.matches||[]).forEach(function(m){ html += _renderBracketNode(m, true, tercerRound.round); });
       html += '</div>';
     }
-    html += '</div>';
+    html += '</div></div>';
     return html;
   }
 
