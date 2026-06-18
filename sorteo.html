@@ -261,6 +261,39 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .modo-opt+.modo-opt{border-left:1px solid var(--border-dark)}
 .modo-opt:hover{background:#f5f6fa}
 .modo-opt.active{background:#fff3e6;color:var(--accent)}
+/* ── F4: Transcripción externa (builder) ── */
+#transcripStage{flex:1;display:flex;flex-direction:column}
+#transcripStage .sorteo-head{max-width:980px;width:100%}
+.transcrip-wrap{max-width:980px;margin:0 auto 28px;width:100%;display:flex;flex-direction:column;gap:18px}
+.transcrip-fmt{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.transcrip-fmt-lbl{font-size:13px;font-weight:700;color:var(--text-secondary)}
+.tg-ctrl{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:6px}
+.tg-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+.tg-list{display:flex;flex-direction:column;gap:8px}
+.tg-row{display:flex;align-items:center;gap:10px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface)}
+.tg-ava{width:30px;height:30px;flex:0 0 30px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:12px}
+.tg-name{flex:1;font-size:14px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tg-row .naowee-dropdown{flex:0 0 132px;min-width:132px}
+.tg-preview{display:flex;flex-direction:column;gap:12px}
+.tbk-scroll{overflow-x:auto;padding-bottom:10px}
+.tbk-cols{display:flex;gap:24px;align-items:flex-start;min-width:min-content}
+.tbk-col{display:flex;flex-direction:column;gap:14px;min-width:212px}
+.tbk-col-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text-secondary);text-align:center}
+.tbk-col--3p{border-left:1px dashed var(--border-dark);padding-left:24px}
+.tbk-match{border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface);overflow:hidden;box-shadow:var(--shadow-sm)}
+.tbk-comp{display:flex;align-items:center;gap:10px;padding:9px 12px;transition:background .15s}
+.tbk-comp+.tbk-comp{border-top:1px solid var(--border)}
+.tbk-comp:not(.is-disabled){cursor:pointer}
+.tbk-comp:not(.is-disabled):hover{background:var(--bg-soft,#f5f6fa)}
+.tbk-comp.is-win{background:var(--orange-bg,#fff3e6)}
+.tbk-comp.is-win .tbk-cn{color:var(--accent);font-weight:800}
+.tbk-comp.is-disabled{cursor:default}
+.tbk-comp .naowee-radio{flex:0 0 auto;pointer-events:none}
+.tbk-ca{width:28px;height:28px;flex:0 0 28px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:11px}
+.tbk-cn{flex:1;font-size:13.5px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbk-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 12px;border-top:1px solid var(--border);background:var(--bg-soft,#f5f6fa)}
+.tbk-mid{font-size:10.5px;font-weight:700;letter-spacing:.3px;color:var(--text-secondary)}
+@media(max-width:760px){.tg-grid{grid-template-columns:1fr}}
 .manual-wrap{display:grid;grid-template-columns:minmax(260px,400px) 1fr;gap:30px;align-items:start;max-width:980px;margin:22px auto 28px;width:100%}
 .manual-wheel-col{display:flex;flex-direction:column;align-items:center;gap:16px;position:sticky;top:8px}
 .manual-wheel{width:100%;max-width:380px;margin:0 auto}
@@ -447,9 +480,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
           <div class="wz-panel-hint">El formato depende de la cantidad de participantes. Ajústalo según los clasificados reales.</div>
           <div class="wz-field"><label>Sistema</label><div class="wz-derived" style="margin-top:0"><b id="sistemaTxt">—</b></div></div>
           <div class="wz-field"><label>Modo de sorteo</label>
-            <div class="modo-seg">
-              <button type="button" class="modo-opt active" data-modo="auto" onclick="setModo('auto')"><svg viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 4l5 4-5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Automático</button>
-              <button type="button" class="modo-opt" data-modo="manual" onclick="setModo('manual')"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 2v2M8 12v2M2 8h2M12 8h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/></svg>Manual (ruleta)</button>
+            <div class="naowee-segment naowee-segment--proportional naowee-segment--small" id="modoSeg" style="width:100%">
+              <span class="naowee-segment__pill naowee-segment__pill--no-anim"></span>
+              <button type="button" class="naowee-segment__item naowee-segment__item--active" data-modo="auto" onclick="setModo('auto')"><svg viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 4l5 4-5 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Automático</button>
+              <button type="button" class="naowee-segment__item" data-modo="manual" onclick="setModo('manual')"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 2v1.4M8 12.6V14M2 8h1.4M12.6 8H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="8" r="1.3" fill="currentColor"/></svg>Manual</button>
+              <button type="button" class="naowee-segment__item" data-modo="transcrip" onclick="setModo('transcrip')"><svg viewBox="0 0 16 16" fill="none"><path d="M5 2.5h6a1 1 0 011 1V13a1 1 0 01-1 1H5a1 1 0 01-1-1V3.5a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M6.4 2.6V2.2a1 1 0 011-1h1.2a1 1 0 011 1v.4M6.3 6.4h3.4M6.3 8.9h3.4M6.3 11.4h2.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Transcripción</button>
             </div>
             <div class="wz-panel-hint" style="margin-top:6px" id="modoHint">Automático: el sistema arma los grupos al instante.</div>
           </div>
@@ -571,12 +606,38 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
       </div>
     </div>
 
+    <!-- ═══ TRANSCRIPCIÓN EXTERNA (F4) ═══ -->
+    <div id="transcripStage" class="stage" style="display:none">
+      <div class="sorteo-head">
+        <div>
+          <h1 class="sorteo-title">Transcripción del sorteo</h1>
+          <p class="sorteo-sub" id="transcripSub">El sorteo ya se hizo afuera; regístralo aquí.</p>
+        </div>
+        <button class="naowee-btn naowee-btn--mute" onclick="backToWizard()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M9.5 12.5L5.5 8l4-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Parámetros</button>
+      </div>
+      <div class="transcrip-wrap">
+        <div class="transcrip-fmt">
+          <span class="transcrip-fmt-lbl">Formato del sorteo</span>
+          <div class="naowee-segment naowee-segment--proportional naowee-segment--small" id="tFmtSeg" style="width:100%;max-width:340px">
+            <span class="naowee-segment__pill naowee-segment__pill--no-anim"></span>
+            <button type="button" class="naowee-segment__item naowee-segment__item--active" data-fmt="grupos" onclick="setTFmt('grupos')"><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="2.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>Grupos</button>
+            <button type="button" class="naowee-segment__item" data-fmt="bracket" onclick="setTFmt('bracket')"><svg viewBox="0 0 16 16" fill="none"><path d="M2 3.5h3.5v3H9M2 12.5h3.5v-3M9 5h2.5v3H14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Llave</button>
+          </div>
+        </div>
+        <div id="tBody"></div>
+      </div>
+      <div class="wz-nav stage-footer">
+        <button class="naowee-btn naowee-btn--mute" onclick="backToWizard()">← Atrás</button>
+        <button class="naowee-btn naowee-btn--loud" id="btnTranscrip" onclick="confirmTranscrip()">Conformar grupos</button>
+      </div>
+    </div>
+
     <!-- ═══ PREVIEW ═══ -->
     <div id="previewStage" class="stage" style="display:none">
       <div class="sorteo-head">
         <div>
           <h1 class="sorteo-title">Resultado del sorteo</h1>
-          <p class="sorteo-sub">Grupos, calendario round-robin (con descansos) y fase final de medallas.</p>
+          <p class="sorteo-sub">Revisa el resultado y confírmalo para publicarlo.</p>
         </div>
         <button class="naowee-btn naowee-btn--mute naowee-btn--large" onclick="reSortear()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.6 8a5.6 5.6 0 11-1.64-3.96M13.6 2.2v3h-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Re-sortear</button>
       </div>
@@ -687,7 +748,7 @@ function goStep(n){ n=Math.max(1,Math.min(3,n)); W.step=n;
   document.getElementById('wzLine1').classList.toggle('naowee-stepper__connector--done',n>1); document.getElementById('wzLine2').classList.toggle('naowee-stepper__connector--done',n>2);
   for(let i=1;i<=3;i++) document.getElementById('panel'+i).classList.toggle('active',i===n);
   if(n===2){ document.getElementById('cfgConjunto').style.display=W.tipo==='conjunto'?'block':'none';
-    document.getElementById('cfgIndividual').style.display=W.tipo==='individual'?'block':'none'; recalcCfg(); }
+    document.getElementById('cfgIndividual').style.display=W.tipo==='individual'?'block':'none'; recalcCfg(); var ms=document.getElementById('modoSeg'); if(ms) segmentSync(ms); }
   if(n===3){ buildSummary(); document.getElementById('doneBox').style.display='none'; }
   document.getElementById('btnBack').classList.toggle('is-hidden',n===1);
   const next=document.getElementById('btnNext');
@@ -719,7 +780,7 @@ const _TC=['#d74009','#1f78d1','#1f8923','#7c3aed','#FF7500','#0891b2','#be185d'
 let _sorteo=null,_assign=null,_drawSeq=[],_ruletaTimers=[],_ruletaDone=false;
 function teamColorLocal(n){ if(window.CompRender&&CompRender.teamColor)return CompRender.teamColor(n); let h=0; for(let i=0;i<n.length;i++)h=n.charCodeAt(i)+((h<<5)-h); return _TC[Math.abs(h)%_TC.length]; }
 function teamInitLocal(n){ if(window.CompRender&&CompRender.teamInit)return CompRender.teamInit(n); return n.split(' ').filter(w=>w.length>1).map(w=>w[0]).join('').substring(0,2).toUpperCase()||n[0]; }
-function showStage(id){ const D={wizardStage:'block',clasifStage:'flex',ruletaStage:'flex',manualStage:'flex',previewStage:'flex'}; ['wizardStage','clasifStage','ruletaStage','manualStage','previewStage'].forEach(s=>{const el=document.getElementById(s); if(el)el.style.display=(s===id?(D[s]||'block'):'none');}); try{document.querySelector('.page').scrollTo(0,0);}catch(e){} }
+function showStage(id){ const D={wizardStage:'block',clasifStage:'flex',ruletaStage:'flex',manualStage:'flex',transcripStage:'flex',previewStage:'flex'}; ['wizardStage','clasifStage','ruletaStage','manualStage','transcripStage','previewStage'].forEach(s=>{const el=document.getElementById(s); if(el)el.style.display=(s===id?(D[s]||'block'):'none');}); try{document.querySelector('.page').scrollTo(0,0);}catch(e){} }
 function genParticipantes(n,tipo){ const out=[]; for(let i=0;i<n;i++)out.push({nombre:_NAMES[i]||((tipo==='individual'?'Deportista ':'Equipo ')+(i+1))}); return out; }
 function buildSorteo(){ const n=Math.max(2, +W.nEquipos||8); const parts=(_clasificados&&_clasificados.length)?_clasificados.map(c=>({nombre:(c.nombre||'').trim(),delegacion:(c.delegacion||'').trim()})):genParticipantes(n,W.tipo); _sorteo={prueba:{deporteLabel:W.deporteLabel||'Deporte',emoji:W.emoji||'🏆',categoria:W.categoria||'General',sexo:W.sexo||'Mixto',tipo:W.tipo||'conjunto'},config:{nGrupos:(W.tipo==='individual'?1:Math.max(1,+W.nGrupos||2))},participantes:parts}; return _sorteo; }
 /* ── F3a: Clasificados editables ── */
@@ -733,7 +794,7 @@ function syncClasif(i,k,v){ if(_clasificados[i]){ _clasificados[i][k]=v; if(k===
 function addClasif(){ _clasificados.push({nombre:'',delegacion:''}); renderClasifList(); const rows=document.querySelectorAll('#clasifList .clasif-row'); const last=rows[rows.length-1]; if(last){ const inp=last.querySelector('.naowee-textfield__input'); if(inp) inp.focus(); } }
 function removeClasif(i){ if(_clasificados.length<=2)return; _clasificados.splice(i,1); renderClasifList(); }
 function validateClasif(){ const ok=_clasificados.length>=2&&_clasificados.every(function(c){return (c.nombre||'').trim();}); const b=document.getElementById('btnClasifNext'); if(b)b.disabled=!ok; return ok; }
-function continueSorteo(){ if(!validateClasif())return; W.nEquipos=_clasificados.length; if(W.modo==='manual') startManual(); else startRuleta(); }
+function continueSorteo(){ if(!validateClasif())return; W.nEquipos=_clasificados.length; if(W.modo==='manual') startManual(); else if(W.modo==='transcrip') startTranscrip(); else startRuleta(); }
 function startRuleta(){ buildSorteo(); _assign=SorteoEngine.asignarGrupos(_sorteo.participantes,_sorteo.config.nGrupos); _ruletaDone=false; showStage('ruletaStage'); document.getElementById('ruletaSub').textContent='Asignando participantes a los grupos…'; document.getElementById('ruletaNav').style.display='none'; document.getElementById('btnSkip').style.display=''; renderRuletaGrupos(_assign,[]); buildDrawSeq(); runRuletaAnim(0); }
 function buildDrawSeq(){ _drawSeq=[]; const maxLen=Math.max(0,..._assign.map(g=>g.length)); for(let pos=0;pos<maxLen;pos++)for(let g=0;g<_assign.length;g++){ if(_assign[g][pos]!=null)_drawSeq.push({name:_assign[g][pos],g,pos}); } }
 function renderRuletaGrupos(assign,filled){ const set=new Set(filled); const el=document.getElementById('ruletaGrupos'); el.innerHTML=assign.map((teams,gi)=>{ const L=String.fromCharCode(65+gi); const slots=teams.map(t=>{ const on=set.has(t); return `<div class="rg-slot${on?' filled':''}">`+(on?`<span class="rg-ava" style="background:${teamColorLocal(t)}">${teamInitLocal(t)}</span><span class="rg-name">${t}</span>`:`<span class="rg-name" style="color:var(--text-muted)">—</span>`)+`</div>`; }).join(''); return `<div class="rg-card"><div class="rg-head"><span class="rg-dot"></span>Grupo ${L}<span style="margin-left:auto;font-size:12px;font-weight:600;color:var(--text-secondary)">${teams.length} eq</span></div><div class="rg-body">${slots}</div></div>`; }).join(''); }
@@ -749,16 +810,21 @@ const _PV_TABS=[
   {id:'posiciones',label:'Posiciones',icon:'<svg viewBox="0 0 16 16" fill="none"><path d="M3 13.5V8M8 13.5V2.5M13 13.5V6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',render:function(c){return (c.grupos||[]).map(function(g){return CompRender.renderStandings(g);}).join('');}},
   {id:'final',label:'Fase final',icon:'<svg viewBox="0 0 16 16" fill="none"><path d="M4.5 2.5h7v3a3.5 3.5 0 01-7 0v-3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M4.5 3.5h-2v1a2 2 0 002 2M11.5 3.5h2v1a2 2 0 01-2 2M6.5 13h3M8 9v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>',render:function(c){return c.bracket?(CompRender.renderBracket(c)+CompRender.renderMedalleria(c)):'<p style="color:var(--text-secondary);text-align:center;padding:36px">Un solo grupo: sin fase final cruzada.</p>';}}
 ];
-let _pvComp=null,_pvTab='grupos';
-function showPreview(){ _pvComp=SorteoEngine.toComp(_sorteo); _sorteo.resultado=_pvComp; showStage('previewStage'); const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=false;b.textContent='Confirmar sorteo';} document.getElementById('previewHead').innerHTML='<div class="pv-head"><span class="pv-emoji">'+(_pvComp.emoji||'🏆')+'</span><div><div class="pv-title">'+(_pvComp.nombre||'Sorteo')+'</div><div class="pv-sub">'+(_pvComp.sistema||'')+' · '+(_pvComp.grupos?_pvComp.grupos.length:0)+' grupos · '+(_pvComp.jornadasCount||0)+' jornadas</div></div></div>'; _pvTab='grupos'; renderPvTabs(); }
-function renderPvTabs(){ const tb=document.getElementById('previewTabs'); if(tb) tb.innerHTML=_PV_TABS.map(function(t){return '<button class="naowee-tab'+(t.id===_pvTab?' naowee-tab--selected':'')+'" onclick="switchPvTab(\''+t.id+'\')">'+(t.icon||'')+'<span>'+t.label+'</span></button>';}).join(''); const tab=_PV_TABS.find(function(t){return t.id===_pvTab;}); const p=document.getElementById('previewPanel'); if(p&&tab) p.innerHTML=tab.render(_pvComp); }
-function switchPvTab(id){ if(id===_pvTab) return; const oi=_PV_TABS.findIndex(function(t){return t.id===_pvTab;}), ni=_PV_TABS.findIndex(function(t){return t.id===id;}); _pvTab=id; renderPvTabs(); const p=document.getElementById('previewPanel'); if(p){ p.style.animation='none'; void p.offsetWidth; p.style.animation=(ni>oi?'tabSlideR':'tabSlideL')+' .28s cubic-bezier(.32,.72,0,1)'; } }
+const _PV_TABS_ELIM=[
+  {id:'llave',label:'Llave de eliminación',icon:'<svg viewBox="0 0 16 16" fill="none"><path d="M2 3.5h3.5v4H9M2 12.5h3.5v-4M9 6.5h2.5v3H14M11.5 8H14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>',render:function(c){return CompRender.renderBracket(c);}},
+  {id:'medalleria',label:'Medallería',icon:'<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="10" r="3.5" stroke="currentColor" stroke-width="1.3"/><path d="M6 6.6L4.5 2h3L9 5.2M10 6.6L11.5 2h-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>',render:function(c){return CompRender.renderMedalleria(c);}}
+];
+let _pvComp=null,_pvTab='grupos',_activeTabs=_PV_TABS;
+function showPreview(comp){ _pvComp=comp||SorteoEngine.toComp(_sorteo); _sorteo.resultado=_pvComp; showStage('previewStage'); const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=false;b.textContent='Confirmar sorteo';} var isElim=_pvComp.sisCls==='elim'; _activeTabs=isElim?_PV_TABS_ELIM:_PV_TABS; var sub=isElim?((_pvComp.sistema||'Eliminación directa')+' · '+((_sorteo&&_sorteo.participantes)?_sorteo.participantes.length:0)+' participantes'):((_pvComp.sistema||'')+' · '+(_pvComp.grupos?_pvComp.grupos.length:0)+' grupos · '+(_pvComp.jornadasCount||0)+' jornadas'); document.getElementById('previewHead').innerHTML='<div class="pv-head"><span class="pv-emoji">'+(_pvComp.emoji||'🏆')+'</span><div><div class="pv-title">'+(_pvComp.nombre||'Sorteo')+'</div><div class="pv-sub">'+sub+'</div></div></div>'; _pvTab=_activeTabs[0].id; renderPvTabs(); }
+function renderPvTabs(){ const tb=document.getElementById('previewTabs'); if(tb) tb.innerHTML=_activeTabs.map(function(t){return '<button class="naowee-tab'+(t.id===_pvTab?' naowee-tab--selected':'')+'" onclick="switchPvTab(\''+t.id+'\')">'+(t.icon||'')+'<span>'+t.label+'</span></button>';}).join(''); const tab=_activeTabs.find(function(t){return t.id===_pvTab;}); const p=document.getElementById('previewPanel'); if(p&&tab) p.innerHTML=tab.render(_pvComp); }
+function switchPvTab(id){ if(id===_pvTab) return; const oi=_activeTabs.findIndex(function(t){return t.id===_pvTab;}), ni=_activeTabs.findIndex(function(t){return t.id===id;}); _pvTab=id; renderPvTabs(); const p=document.getElementById('previewPanel'); if(p){ p.style.animation='none'; void p.offsetWidth; p.style.animation=(ni>oi?'tabSlideR':'tabSlideL')+' .28s cubic-bezier(.32,.72,0,1)'; } }
 function backToWizard(){ _ruletaTimers.forEach(t=>{clearTimeout(t);clearInterval(t);}); _ruletaTimers=[]; showStage('wizardStage'); }
-function reSortear(){ startRuleta(); }
+function reSortear(){ if(W.modo==='transcrip') startTranscrip(); else if(W.modo==='manual') startManual(); else startRuleta(); }
 function confirmSorteo(){ const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=true;b.textContent='Sorteo confirmado';} fireConfetti(); }
 /* ── Sorteo MANUAL (ruleta giratoria) ── */
 let _manualSeq=[],_manualGroups=[],_manualSizes=[],_manualDrawn=0,_manualSpin=false;
-function setModo(m){ W.modo=m; document.querySelectorAll('.modo-opt').forEach(function(b){b.classList.toggle('active',b.dataset.modo===m);}); const h=document.getElementById('modoHint'); if(h) h.textContent=(m==='manual')?'Manual: gira la ruleta; cada giro asigna un equipo a un grupo (sorteo en vivo).':'Automático: el sistema arma los grupos al instante.'; }
+function segmentSync(seg){ if(!seg)return; var items=[].slice.call(seg.querySelectorAll('.naowee-segment__item')); var pill=seg.querySelector('.naowee-segment__pill'); if(!items.length||!pill)return; var a=seg.querySelector('.naowee-segment__item--active')||items[0]; pill.style.width=a.offsetWidth+'px'; pill.style.setProperty('--segment-pill-x',(a.offsetLeft-items[0].offsetLeft)+'px'); }
+function setModo(m){ W.modo=m; var seg=document.getElementById('modoSeg'); if(seg){ var pill=seg.querySelector('.naowee-segment__pill'); if(pill)pill.classList.remove('naowee-segment__pill--no-anim'); [].forEach.call(seg.querySelectorAll('.naowee-segment__item'),function(b){b.classList.toggle('naowee-segment__item--active',b.dataset.modo===m);}); segmentSync(seg); } const h=document.getElementById('modoHint'); if(h) h.textContent=(m==='manual')?'Manual: gira la ruleta; cada giro asigna un equipo a un grupo (sorteo en vivo).':(m==='transcrip')?'Transcripción: el sorteo ya se hizo afuera; aquí registras los grupos o las llaves resultantes.':'Automático: el sistema arma los grupos al instante.'; }
 function startManual(){ buildSorteo(); const n=_sorteo.config.nGrupos; _manualSizes=SorteoEngine.asignarGrupos(_sorteo.participantes,n).map(function(g){return g.length;}); _manualGroups=Array.from({length:n},function(){return [];}); _manualDrawn=0; _manualSpin=false;
   _manualSeq=[]; var placed=new Array(n).fill(0), rem=_sorteo.participantes.length;
   while(rem>0){ for(var g=0;g<n;g++){ if(placed[g]<_manualSizes[g]){ _manualSeq.push(g); placed[g]++; rem--; } } }
@@ -777,6 +843,58 @@ async function girarManual(){ if(_manualSpin)return; var total=_sorteo.participa
   if(_manualDrawn>=total){ bg.style.display='none'; document.getElementById('btnManualNext').disabled=false; document.getElementById('manualSub').textContent='¡Sorteo completo! Continúa para ver el calendario y la fase final.'; }
 }
 function showPreviewManual(){ _sorteo.manualGroups=_manualGroups; showPreview(); }
+
+/* ═══ F4 — TRANSCRIPCIÓN EXTERNA (grupos manual + bracket manual con progresión) ═══ */
+var _tFmt='grupos',_tGrupos=2,_tAssign=[],_tComp=null,_tDecisions={};
+var _TICON={ info:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7 7h2v4H7z" fill="#fff"/><circle cx="8" cy="5" r="1" fill="#fff"/></svg>', caution:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7 5h2v4H7z" fill="#fff"/><circle cx="8" cy="11" r="1" fill="#fff"/></svg>', ok:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 8l1.6 1.6L10.5 6.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' };
+function tEsc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch];}); }
+function _findInComp(comp,id){ if(!comp||!comp.bracket)return null; for(var r=0;r<comp.bracket.length;r++){ var ms=comp.bracket[r].matches; for(var i=0;i<ms.length;i++) if(ms[i].id===id) return ms[i]; } return null; }
+
+function startTranscrip(){ buildSorteo(); _tGrupos=Math.max(2,Math.min(8,+W.nGrupos||2)); _tAssign=tDefaultAssign(); _tDecisions={}; _tFmt=(W.tipo==='individual')?'bracket':'grupos';
+  showStage('transcripStage'); setTFmt(_tFmt); }
+
+function setTFmt(f){ _tFmt=f; var seg=document.getElementById('tFmtSeg'); if(seg){ var pill=seg.querySelector('.naowee-segment__pill'); if(pill)pill.classList.remove('naowee-segment__pill--no-anim'); [].forEach.call(seg.querySelectorAll('.naowee-segment__item'),function(b){b.classList.toggle('naowee-segment__item--active',b.dataset.fmt===f);}); segmentSync(seg); }
+  var btn=document.getElementById('btnTranscrip'), sub=document.getElementById('transcripSub');
+  if(f==='bracket'){ if(btn){btn.textContent='Ver resultado de la llave';btn.disabled=false;} if(sub)sub.textContent='Marca el ganador de cada partido: el avance se propaga ronda a ronda.'; _tComp=SorteoEngine.toCompBracket(_sorteo); _tDecisions={}; }
+  else { if(btn)btn.textContent='Conformar grupos'; if(sub)sub.textContent='Asigna cada clasificado a su grupo (puedes reasignar).'; }
+  renderTBody(); }
+
+function renderTBody(){ var el=document.getElementById('tBody'); if(!el)return; el.innerHTML=(_tFmt==='bracket')?renderTBracket():renderTGrupos(); }
+
+/* ── Grupos manual ── */
+function tDefaultAssign(){ var n=_clasificados.length,m=_tGrupos,base=Math.floor(n/m),extra=n%m,a=[],g=0,cnt=0,cap=base+(0<extra?1:0); for(var i=0;i<n;i++){ if(cnt>=cap){g++;cnt=0;cap=base+(g<extra?1:0);} a.push(Math.min(g,m-1)); cnt++; } return a; }
+function tBuildGroups(){ var groups=[]; for(var g=0;g<_tGrupos;g++)groups.push([]); _clasificados.forEach(function(c,i){ var g=_tAssign[i]; if(g==null||g<0||g>=_tGrupos)g=0; groups[g].push((c.nombre||'').trim()); }); return groups; }
+function tGroupDropdown(i){ var cur=_tAssign[i],opts=''; for(var g=0;g<_tGrupos;g++){ opts+='<div class="naowee-dropdown__option'+(g===cur?' naowee-dropdown__option--selected':'')+'" onclick="tAssignGrupo('+i+','+g+',event)">Grupo '+String.fromCharCode(65+g)+'</div>'; } var curL=(cur!=null&&cur>=0&&cur<_tGrupos)?('Grupo '+String.fromCharCode(65+cur)):'Selecciona';
+  return '<div class="naowee-dropdown naowee-dropdown--small"><button type="button" class="naowee-dropdown__trigger" onclick="tddToggle(this,event)"><span class="naowee-dropdown__value">'+curL+'</span><span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg viewBox="0 0 16 16" width="14" height="14" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button><div class="naowee-dropdown__menu">'+opts+'</div></div>'; }
+function tCountDropdown(){ var opts=''; for(var g=2;g<=8;g++){ opts+='<div class="naowee-dropdown__option'+(g===_tGrupos?' naowee-dropdown__option--selected':'')+'" onclick="tSetGrupos('+g+',event)">'+g+' grupos</div>'; } return '<div class="naowee-dropdown naowee-dropdown--small" style="display:inline-block;min-width:118px"><button type="button" class="naowee-dropdown__trigger" onclick="tddToggle(this,event)"><span class="naowee-dropdown__value">'+_tGrupos+' grupos</span><span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg viewBox="0 0 16 16" width="14" height="14" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button><div class="naowee-dropdown__menu">'+opts+'</div></div>'; }
+function tddToggle(btn,e){ if(e)e.stopPropagation(); var dd=btn.closest('.naowee-dropdown'); var open=dd.classList.contains('naowee-dropdown--open'); document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){d.classList.remove('naowee-dropdown--open');}); if(!open)dd.classList.add('naowee-dropdown--open'); }
+function tAssignGrupo(i,g,e){ if(e)e.stopPropagation(); _tAssign[i]=g; document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){d.classList.remove('naowee-dropdown--open');}); renderTBody(); }
+function tSetGrupos(g,e){ if(e)e.stopPropagation(); _tGrupos=g; _tAssign=tDefaultAssign(); document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){d.classList.remove('naowee-dropdown--open');}); renderTBody(); }
+function renderTGrupos(){ var groups=tBuildGroups();
+  var rows=_clasificados.map(function(c,i){ var nm=(c.nombre||'').trim()||'(sin nombre)'; return '<div class="tg-row"><span class="clasif-pos">'+(i+1)+'</span><span class="tg-ava" style="background:'+teamColorLocal(nm)+'">'+teamInitLocal(nm)+'</span><span class="tg-name">'+tEsc(nm)+'</span>'+tGroupDropdown(i)+'</div>'; }).join('');
+  var preview=groups.map(function(teams,gi){ var L=String.fromCharCode(65+gi); var slots=teams.length?teams.map(function(t){return '<div class="rg-slot filled"><span class="rg-ava" style="background:'+teamColorLocal(t)+'">'+teamInitLocal(t)+'</span><span class="rg-name">'+tEsc(t)+'</span></div>';}).join(''):'<div class="rg-slot"><span class="rg-name" style="color:var(--text-muted)">Sin equipos</span></div>'; return '<div class="rg-card"><div class="rg-head"><span class="rg-dot"></span>Grupo '+L+'<span style="margin-left:auto;font-size:12px;font-weight:600;color:var(--text-secondary)">'+teams.length+' eq</span></div><div class="rg-body">'+slots+'</div></div>'; }).join('');
+  var bad=groups.some(function(t){return t.length<2;});
+  setTimeout(function(){ var b=document.getElementById('btnTranscrip'); if(b)b.disabled=bad; },0);
+  var msg=bad?('<div class="naowee-message naowee-message--caution" style="width:100%"><div class="naowee-message__header"><span class="naowee-message__icon">'+_TICON.caution+'</span><span class="naowee-message__body">Cada grupo debe tener al menos 2 participantes. Ajusta la asignación o el número de grupos.</span></div></div>'):'';
+  return '<div class="tg-ctrl">N.º de grupos: '+tCountDropdown()+'</div><div class="tg-grid"><div class="tg-list">'+rows+'</div><div class="tg-preview">'+preview+'</div></div>'+msg; }
+
+/* ── Bracket manual + progresión ── */
+function tPick(mid,side){ var m=_findInComp(_tComp,mid); if(!m||!m.t1||!m.t2)return; _tDecisions[mid]=side; tRecompute(); }
+function tRecompute(){ var comp=SorteoEngine.toCompBracket(_sorteo); var ids=[]; comp.bracket.forEach(function(rd){rd.matches.forEach(function(m){ids.push(m.id);});}); ids.forEach(function(id){ var m=_findInComp(comp,id); if(m&&_tDecisions[id]&&m.t1&&m.t2&&m.status!=='bye'){ comp=SorteoEngine.advanceWinner(comp,id,_tDecisions[id]); } }); _tComp=comp; renderTBody(); }
+function tCompHtml(m,side,decidable){ var name=side===1?m.t1:m.t2; var has=!!name; var win=m.winner===side; var cls=''; if(win)cls+=' is-win'; if(!decidable)cls+=' is-disabled'; var click=decidable?' onclick="tPick(\''+m.id+'\','+side+')"':''; var ava=has?('<span class="tbk-ca" style="background:'+teamColorLocal(name)+'">'+teamInitLocal(name)+'</span>'):'<span class="tbk-ca" style="background:#cfd3e6">?</span>'; var nm=has?tEsc(name):'<span style="color:var(--text-muted)">Por definir</span>'; var radio='<span class="naowee-radio'+(win?' naowee-radio--selected':'')+'"><span class="naowee-radio__circle"></span></span>'; return '<div class="tbk-comp'+cls+'"'+click+'>'+radio+ava+'<span class="tbk-cn">'+nm+'</span></div>'; }
+function tMatchHtml(m){ var isBye=m.status==='bye'; var decidable=!!m.t1&&!!m.t2&&!isBye; var badge=isBye?'<span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">BYE</span>':(m.status==='done')?'<span class="naowee-badge naowee-badge--positive naowee-badge--small">Definido</span>':decidable?'<span class="naowee-badge naowee-badge--caution naowee-badge--small">Por jugar</span>':'<span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">Pendiente</span>'; var tag=m.medal==='oro'?'🥇 Final':m.medal==='bronce'?'🥉 3.er puesto':''; return '<div class="tbk-match">'+tCompHtml(m,1,decidable)+tCompHtml(m,2,decidable)+'<div class="tbk-foot"><span class="tbk-mid">'+tag+'</span>'+badge+'</div></div>'; }
+function renderTBracket(){ if(!_tComp||!_tComp.bracket||!_tComp.bracket.length) return '<div class="naowee-message naowee-message--informative" style="width:100%"><div class="naowee-message__header"><span class="naowee-message__icon">'+_TICON.info+'</span><span class="naowee-message__body">Se necesitan al menos 2 clasificados para armar una llave.</span></div></div>';
+  var main=_tComp.bracket.filter(function(r){return !/tercer puesto/i.test(r.round);});
+  var ter=_tComp.bracket.filter(function(r){return /tercer puesto/i.test(r.round);});
+  var cols=main.map(function(rd){ return '<div class="tbk-col"><div class="tbk-col-title">'+tEsc(rd.round)+'</div>'+rd.matches.map(tMatchHtml).join('')+'</div>'; }).join('');
+  var t3=ter.length?('<div class="tbk-col tbk-col--3p"><div class="tbk-col-title">'+tEsc(ter[0].round)+'</div>'+ter[0].matches.map(tMatchHtml).join('')+'</div>'):'';
+  var fin=main.length?main[main.length-1].matches[0]:null; var champ=(fin&&fin.winner)?(fin.winner===1?fin.t1:fin.t2):null;
+  var banner=champ?('<div class="naowee-message naowee-message--positive" style="width:100%;margin-bottom:14px"><div class="naowee-message__header"><span class="naowee-message__icon">'+_TICON.ok+'</span><span class="naowee-message__body">🏆 Campeón: <b>'+tEsc(champ)+'</b></span></div></div>'):('<div class="naowee-message naowee-message--informative" style="width:100%;margin-bottom:14px"><div class="naowee-message__header"><span class="naowee-message__icon">'+_TICON.info+'</span><span class="naowee-message__body">Marca el ganador de cada partido tocando al competidor; el avance se propaga ronda a ronda.</span></div></div>');
+  return banner+'<div class="tbk-scroll"><div class="tbk-cols">'+cols+t3+'</div></div>'; }
+
+function confirmTranscrip(){ if(_tFmt==='bracket'){ if(_tComp) showPreview(_tComp); return; } var groups=tBuildGroups(); if(groups.some(function(t){return t.length<2;})){ var b=document.getElementById('btnTranscrip'); if(b){b.classList.add('naowee-shake'); setTimeout(function(){b.classList.remove('naowee-shake');},480);} return; } buildSorteo(); _sorteo.config.nGrupos=_tGrupos; _sorteo.manualGroups=groups; showPreview(); }
+
+document.addEventListener('click',function(e){ if(!e.target||!e.target.closest||!e.target.closest('.naowee-dropdown')) document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){d.classList.remove('naowee-dropdown--open');}); });
 </script>
 </body>
 </html>
