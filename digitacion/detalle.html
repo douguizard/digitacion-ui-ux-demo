@@ -985,8 +985,8 @@ function renderHeader(){
     <div class="detail-top">
       <div class="detail-left">
         <div class="badge-row">
-          <span class="badge-est ${comp.estCls}">${comp.estado}</span>
-          <span class="badge-sis">${comp.sistema}</span>
+          <span class="naowee-badge naowee-badge--quiet naowee-badge--small naowee-badge--${({digitacion:'caution',pausa:'neutral',finalizada:'positive',asignada:'informative',creada:'neutral'})[comp.estCls]||'neutral'}">${comp.estado}</span>
+          <span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">${comp.sistema}</span>
           ${comp.medal?'<span class="badge-medal">🏅 Con Medallas</span>':''}
         </div>
         <div class="detail-title">${comp.nombre}</div>
@@ -1265,7 +1265,7 @@ function renderRobinView(el){
         <div class="match-status">${m.status==='done'?'Finalizado':'Pendiente'}</div>
       </div>
       <div class="match-team right"><div><div class="team-name">${m.t2}</div><div class="team-sub">${m.t2}</div></div><div class="team-avatar" style="background:${c2};color:#fff">${teamInit(m.t2)}</div></div>
-      ${m.status==='pending' && comp.estCls!=='finalizada'?`<div class="match-actions"><button class="btn-digitar" onclick="openDigitar('${m.t1.replace(/'/g,"\\'")}','${m.t2.replace(/'/g,"\\'")}','Jornada ${m.jornada}')">Digitar</button></div>`:''}
+      ${m.status==='pending' && comp.estCls!=='finalizada'?`<div class="match-actions"><button class="naowee-btn naowee-btn--loud naowee-btn--small" onclick="openDigitar('${m.t1.replace(/'/g,"\\'")}','${m.t2.replace(/'/g,"\\'")}','Jornada ${m.jornada}')">Digitar</button></div>`:''}
     </div>`;
   });
   el.innerHTML = html;
@@ -1326,7 +1326,7 @@ function renderFinalView(el){
           <div style="font-size:13px;font-weight:600;color:var(--text-primary)">${m.phase}</div>
           <div style="font-size:12px;color:var(--text-secondary)">${label}</div>
         </div>
-        <button class="btn-digitar" onclick="openDigitarFinal(${m.id})">Digitar</button>
+        <button class="naowee-btn naowee-btn--loud naowee-btn--small" onclick="openDigitarFinal(${m.id})">Digitar</button>
       </div>`;
     });
   }
@@ -1386,7 +1386,7 @@ function renderGruposView(el){
         <div class="match-status">${m.status==='done'?'Finalizado':'Pendiente'}</div>
       </div>
       <div class="match-team right"><div><div class="team-name">${m.t2}</div><div class="team-sub">${m.t2}</div></div><div class="team-avatar" style="background:${c2};color:#fff">${teamInit(m.t2)}</div></div>
-      ${m.status==='pending' && comp.estCls!=='finalizada'?`<div class="match-actions"><button class="btn-digitar" onclick="openDigitar('${m.t1.replace(/'/g,"\\'")}','${m.t2.replace(/'/g,"\\'")}','${grupo.nombre}')">Digitar</button></div>`:''}
+      ${m.status==='pending' && comp.estCls!=='finalizada'?`<div class="match-actions"><button class="naowee-btn naowee-btn--loud naowee-btn--small" onclick="openDigitar('${m.t1.replace(/'/g,"\\'")}','${m.t2.replace(/'/g,"\\'")}','${grupo.nombre}')">Digitar</button></div>`:''}
     </div>`;
   });
   // Standings

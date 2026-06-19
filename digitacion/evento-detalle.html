@@ -105,8 +105,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .event-title{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:6px;display:flex;align-items:center;gap:10px}
 .event-meta{font-size:13px;color:var(--text-secondary)}
 .badge-en-curso{display:inline-flex;align-items:center;padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:700;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
-.btn-nuevo{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:var(--radius-lg);font-size:13px;font-weight:700;font-family:var(--font);cursor:pointer;border:none;background:var(--accent);color:#fff;text-decoration:none;white-space:nowrap;transition:opacity .15s}
-.btn-nuevo:hover{opacity:.88}
+/* .btn-nuevo → .naowee-btn--loud (canónico) */
 
 /* STATS ROW */
 .stats-divider{display:grid;grid-template-columns:repeat(3,1fr);background:#f5f6fa;border-radius:var(--radius-lg);padding:20px 0;margin-top:16px}
@@ -173,7 +172,6 @@ tbody tr:hover{background:#fafbfd}
 .comp-name{font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
 .comp-code{font-size:11px;color:var(--text-secondary);margin-top:1px;display:flex;align-items:center;gap:6px}
 .comp-cat{font-size:11px;color:var(--text-secondary)}
-.badge-sis{display:inline-flex;padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:700;white-space:nowrap;background:#f0f2f5;color:var(--text-secondary)}
 .sis-medal{font-size:11px;color:var(--text-secondary);display:flex;align-items:center;gap:4px;margin-top:3px}
 .deporte-cell{display:flex;align-items:center;gap:6px;white-space:nowrap}
 .deporte-emoji{font-size:14px}
@@ -181,12 +179,7 @@ tbody tr:hover{background:#fafbfd}
 .modalidad-sub{font-size:11px;color:var(--text-secondary);margin-top:1px}
 .evento-text{font-size:13px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
 .evento-sub{font-size:11px;color:var(--text-secondary)}
-.badge-est{display:inline-flex;padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:700;white-space:nowrap}
-.badge-est.digitacion{background:#fff3e6;color:var(--naranja)}
-.badge-est.pausa{background:#fff0ee;color:#c04020}
-.badge-est.finalizada{background:var(--green-bg);color:var(--green)}
-.badge-est.asignada{background:#e8f4ff;color:#1f78d1}
-.badge-est.creada{background:#f0f2f5;color:var(--text-secondary)}
+/* .badge-sis/.badge-est → .naowee-badge (ver render JS) */
 .digi-cell{display:flex;align-items:center;gap:8px;white-space:nowrap}
 .digi-mini{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
 .assign-icon{color:var(--accent);flex-shrink:0}
@@ -961,7 +954,7 @@ function renderEventHeader(){
           <div class="event-meta">${EVENT.deporte} &bull; ${EVENT.categorias.join(', ')} &bull; ${EVENT.fechaInicio} &ndash; ${EVENT.fechaFin}</div>
         </div>
       </div>
-      <a href="stepper.html?eventId=${eventId}&eventoNombre=${encodeURIComponent(EVENT.nombre)}" class="btn-nuevo">
+      <a href="stepper.html?eventId=${eventId}&eventoNombre=${encodeURIComponent(EVENT.nombre)}" class="naowee-btn naowee-btn--loud">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         Nuevo enfrentamiento
       </a>
@@ -1067,7 +1060,7 @@ function renderCompetencias() {
         <div class="comp-code">${c.compCode} &nbsp;\u2022&nbsp; <span class="comp-cat">${EVENT.categoria}</span></div>
       </td>
       <td>
-        <span class="badge-sis ${c.sisKey}">${c.sistemaLabel}</span>
+        <span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">${c.sistemaLabel}</span>
         <div class="sis-medal">Sin medallas</div>
       </td>
       <td>
@@ -1078,7 +1071,7 @@ function renderCompetencias() {
         <div class="evento-text">${EVENT.nombre}</div>
         <div class="evento-sub">${c.zona} \u2022 ${c.fase}</div>
       </td>
-      <td><span class="badge-est ${estCls}">${estLabel}</span></td>
+      <td><span class="naowee-badge naowee-badge--quiet naowee-badge--small naowee-badge--${({digitacion:'caution',pausa:'neutral',finalizada:'positive',asignada:'informative',creada:'neutral'})[estCls]||'neutral'}">${estLabel}</span></td>
       <td>${digiHtml}</td>
       <td><div class="action-btn"><a href="detalle.html?id=${c.compCode}&role=coordinador&sport=${c.sportKey}&sis=${c.sisKey}&deporte=${encodeURIComponent(c.deporte)}&nombre=${encodeURIComponent(c.nombre)}&estado=${encodeURIComponent(estLabel)}&estCls=${c.estado}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" stroke="#d74009" stroke-width="1.5"/><circle cx="12" cy="12" r="3" stroke="#d74009" stroke-width="1.5"/></svg></a></div></td>
     </tr>`;
