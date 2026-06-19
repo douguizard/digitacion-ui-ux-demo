@@ -186,9 +186,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .form-group{display:flex;flex-direction:column;gap:6px}
 .form-group label{font-size:13px;font-weight:600;color:var(--text-primary)}
 .form-group label .req{color:var(--accent)}
-.form-group input,.form-group select{height:42px;border:1px solid var(--border-dark);border-radius:var(--radius-md);font-size:13px;font-family:var(--font);color:var(--text-primary);padding:0 12px;outline:none;transition:border-color .15s}
-.form-group input:focus,.form-group select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(215,64,9,.12)}
-.form-group input::placeholder{color:var(--text-secondary)}
+.form-group input:not(.naowee-textfield__input),.form-group select{height:42px;border:1px solid var(--border-dark);border-radius:var(--radius-md);font-size:13px;font-family:var(--font);color:var(--text-primary);padding:0 12px;outline:none;transition:border-color .15s}
+.form-group input:not(.naowee-textfield__input):focus,.form-group select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(215,64,9,.12)}
+.form-group input:not(.naowee-textfield__input)::placeholder{color:var(--text-secondary)}
+/* inputs del modal → .naowee-textfield (altura 42 del form) */
+.modal-body .naowee-textfield__input-wrap{height:42px}
 .modal-footer{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:18px 28px;border-top:1px solid var(--border)}
 .modal-footer .btn-accent:disabled{opacity:.5;cursor:not-allowed}
 
@@ -427,15 +429,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
     <div class="modal-body">
       <div class="form-group">
         <label>Nombre completo <span class="req">*</span></label>
-        <input type="text" id="formName" placeholder="Ej: Juan David Lopez" oninput="validateForm()"/>
+        <div class="naowee-textfield"><div class="naowee-textfield__input-wrap"><input type="text" class="naowee-textfield__input" id="formName" placeholder="Ej: Juan David Lopez" oninput="validateForm()"/></div></div>
       </div>
       <div class="form-group">
         <label>Correo electr&oacute;nico <span class="req">*</span></label>
-        <input type="email" id="formEmail" placeholder="Ej: juan.lopez@gmail.com" oninput="validateForm()"/>
+        <div class="naowee-textfield"><div class="naowee-textfield__input-wrap"><input type="email" class="naowee-textfield__input" id="formEmail" placeholder="Ej: juan.lopez@gmail.com" oninput="validateForm()"/></div></div>
       </div>
       <div class="form-group">
         <label>Tel&eacute;fono</label>
-        <input type="tel" id="formPhone" placeholder="Ej: 315 092 0923"/>
+        <div class="naowee-textfield"><div class="naowee-textfield__input-wrap"><input type="tel" class="naowee-textfield__input" id="formPhone" placeholder="Ej: 315 092 0923"/></div></div>
       </div>
       <div class="form-group">
         <label>Zona asignada</label>
