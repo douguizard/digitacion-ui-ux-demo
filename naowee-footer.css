@@ -134,12 +134,13 @@ html[data-embed="1"] .demo-role-switcher{ display:none !important; }
 .sidebar:not(.collapsed) .nav-row > *:not(.active-bar){ position:relative; z-index:1; }
 .sidebar:not(.collapsed) .nav-row .active-bar{ z-index:1; } /* mantiene su position:absolute original */
 
-/* ── 5) Botón loud (primario): hover = fondo naranja FIJO + glow (paridad IVC/
-   playground). Garantiza el estado aunque la página no traiga el override. ── */
-.naowee-btn--loud{ transition:background .15s ease, box-shadow .15s ease, transform .12s ease; }
+/* ── 5) Botón loud (primario): hover = fondo naranja que NO oscurece (se queda
+   en el naranja idle) + solo glow naranja (paridad IVC/playground). Anula el
+   oscurecido por defecto del DS y cualquier opacity-fade de las páginas. ── */
+.naowee-btn--loud{ transition:box-shadow .15s ease, transform .12s ease; }
 .naowee-btn--loud:hover,.naowee-btn--loud:focus-visible{
-  background:var(--naowee-color-interactive-fill-loud-hover,#b8350a) !important;
+  background:var(--naowee-color-interactive-fill-loud-idle,#d74009) !important; /* MISMO naranja, sin oscurecer */
   box-shadow:0 6px 16px rgba(215,64,9,.22); opacity:1; outline:none;
 }
-.naowee-btn--loud:active{ background:var(--naowee-color-interactive-fill-loud-active,#9e2e08) !important; box-shadow:0 2px 6px rgba(215,64,9,.14); }
+.naowee-btn--loud:active{ background:var(--naowee-color-interactive-fill-loud-idle,#d74009) !important; box-shadow:0 2px 6px rgba(215,64,9,.14); transform:translateY(.5px); }
 .naowee-btn--loud:disabled,.naowee-btn--loud[disabled]{ box-shadow:none !important; }
