@@ -180,6 +180,16 @@ body{font-family:var(--font);background:var(--surface);color:var(--text-primary)
   width:16px;height:16px;border-radius:50%;background:var(--green);
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
+/* Tipo de deporte → cards .wz-pill (paridad sorteo) */
+.wz-pills{display:flex;gap:10px;flex-wrap:wrap;padding-top:2px}
+.wz-pill{display:flex;align-items:center;gap:9px;padding:13px 18px;border:1px solid var(--border-dark);border-radius:var(--radius-lg);cursor:pointer;background:var(--surface);transition:all .15s;min-width:180px}
+.wz-pill:hover{border-color:var(--accent);background:#fff8f4}
+.wz-pill.sel{border-color:var(--accent);background:var(--orange-bg)}
+.wz-pill-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;background:var(--bg-soft,#f5f6fa);flex-shrink:0}
+.wz-pill.sel .wz-pill-ico{background:#ffe4cf}
+.wz-pill-txt b{display:block;font-size:13.5px;font-weight:700;color:var(--text-primary)}
+.wz-pill-txt>span{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-secondary);margin-top:2px}
+.wz-pill-txt .naowee-badge{flex-shrink:0}
 
 /* ═══ STEP 2 — SISTEMA ════════════════════════════════════ */
 .sistema-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px}
@@ -862,21 +872,21 @@ select option{
           <!-- Tipo de deporte -->
           <div class="field">
             <label class="field-label">Tipo de deporte <span class="req">*</span></label>
-            <div class="modality-group" id="tipoDeporteGroup">
-              <div class="modality-pill" onclick="selectTipoDeporte('conjunto',this)">🏟️ Conjunto</div>
-              <div class="modality-pill" onclick="selectTipoDeporte('individual',this)">🏃 Individual</div>
+            <div class="wz-pills" id="tipoDeporteGroup">
+              <div class="wz-pill" data-tipo="conjunto" onclick="selectTipoDeporte('conjunto',this)"><div class="wz-pill-ico">🤝</div><div class="wz-pill-txt"><b>De conjunto</b><span>Equipos <span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">grupos</span></span></div></div>
+              <div class="wz-pill" data-tipo="individual" onclick="selectTipoDeporte('individual',this)"><div class="wz-pill-ico">🥋</div><div class="wz-pill-txt"><b>Individual</b><span>Deportistas <span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">llaves</span></span></div></div>
             </div>
           </div>
 
           <!-- Deporte (Custom floating dropdown) -->
           <div class="field hidden" id="deporteFieldWrap">
             <label class="field-label">Deporte <span class="req">*</span></label>
-            <div class="custom-select" id="deporteDropdown">
-              <div class="custom-select-trigger" id="deporteTrigger" onclick="toggleDeporteDD()">
-                <span id="deporteDisplayText" style="color:var(--text-secondary)">Seleccionar deporte...</span>
-              </div>
-              <span class="custom-select-arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="#646587" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-              <div class="custom-select-dropdown" id="deporteOptions"></div>
+            <div class="naowee-dropdown" id="deporteDropdown">
+              <button type="button" class="naowee-dropdown__trigger" id="deporteTrigger" onclick="toggleDeporteDD()">
+                <span class="naowee-dropdown__placeholder" id="deporteDisplayText">Seleccionar deporte...</span>
+                <span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+              </button>
+              <div class="naowee-dropdown__menu" id="deporteOptions"></div>
             </div>
           </div>
 
@@ -928,8 +938,8 @@ select option{
 
         </div>
         <div class="form-footer">
-          <button class="btn btn-cancel">Cancelar</button>
-          <button class="btn btn-next" id="nextBtn1" onclick="goStep(2)" disabled>Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+          <button class="naowee-btn naowee-btn--mute">Cancelar</button>
+          <button class="naowee-btn naowee-btn--loud" id="nextBtn1" onclick="goStep(2)" disabled>Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></button>
         </div>
       </div>
     </div>
@@ -973,8 +983,8 @@ select option{
           </div>
         </div>
         <div class="form-footer">
-          <button class="btn btn-cancel" onclick="goStep(1)">← Volver</button>
-          <button class="btn btn-next" id="nextBtn2" onclick="validateStep2()" disabled>Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+          <button class="naowee-btn naowee-btn--mute" onclick="goStep(1)">← Volver</button>
+          <button class="naowee-btn naowee-btn--loud" id="nextBtn2" onclick="validateStep2()" disabled>Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></button>
         </div>
       </div>
     </div>
@@ -1061,8 +1071,8 @@ select option{
 
         </div>
         <div class="form-footer">
-          <button class="btn btn-cancel" onclick="goStep(2)">← Volver</button>
-          <button class="btn btn-next" onclick="goStep(4)">Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+          <button class="naowee-btn naowee-btn--mute" onclick="goStep(2)">← Volver</button>
+          <button class="naowee-btn naowee-btn--loud" onclick="goStep(4)">Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></button>
         </div>
       </div>
     </div>
@@ -1084,8 +1094,8 @@ select option{
 
         </div>
         <div class="form-footer">
-          <button class="btn btn-cancel" onclick="goStep(3)">← Volver</button>
-          <button class="btn btn-next" onclick="goStep(5)">Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+          <button class="naowee-btn naowee-btn--mute" onclick="goStep(3)">← Volver</button>
+          <button class="naowee-btn naowee-btn--loud" onclick="goStep(5)">Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></button>
         </div>
       </div>
     </div>
@@ -1258,8 +1268,8 @@ select option{
           </div>
         </div>
         <div class="form-footer">
-          <button class="btn btn-cancel" onclick="goStep(4)">← Volver</button>
-          <button class="btn btn-next" onclick="registerCompetition()" id="btnRegister">
+          <button class="naowee-btn naowee-btn--mute" onclick="goStep(4)">← Volver</button>
+          <button class="naowee-btn naowee-btn--loud" onclick="registerCompetition()" id="btnRegister">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Registrar enfrentamiento
           </button>
@@ -1328,8 +1338,8 @@ select option{
       </div>
     </div>
     <div class="modal-digi-footer" id="createDigiFooter">
-      <button class="btn btn-cancel" onclick="closeCreateDigiModal()">Cancelar</button>
-      <button class="btn btn-next" id="btnCreateDigi" onclick="submitCreateDigi()">Crear Digitador</button>
+      <button class="naowee-btn naowee-btn--mute" onclick="closeCreateDigiModal()">Cancelar</button>
+      <button class="naowee-btn naowee-btn--loud" id="btnCreateDigi" onclick="submitCreateDigi()">Crear Digitador</button>
     </div>
   </div>
 </div>
@@ -4040,7 +4050,7 @@ function buildDeporteDD(){
   ];
   items.forEach(item=>{
     const opt=document.createElement('div');
-    opt.className='custom-select-option'+(item.val===selectedDeporte?' selected':'');
+    opt.className='naowee-dropdown__option'+(item.val===selectedDeporte?' naowee-dropdown__option--selected':'');
     opt.dataset.label=(item.label||'').toLowerCase();
     opt.innerHTML=item.emoji?`<span class="opt-emoji">${item.emoji}</span>${item.label}`:item.label;
     opt.onclick=(e)=>{e.stopPropagation();selectDeporte(item.val,item.emoji,item.label)};
@@ -4050,7 +4060,7 @@ function buildDeporteDD(){
   const _stripAccents=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   searchInput.addEventListener('input',()=>{
     const q=_stripAccents(searchInput.value.toLowerCase().trim());
-    optsWrap.querySelectorAll('.custom-select-option').forEach(opt=>{
+    optsWrap.querySelectorAll('.naowee-dropdown__option').forEach(opt=>{
       if(!opt.dataset.label) { opt.style.display=q?'none':''; return; }
       opt.style.display=_stripAccents(opt.dataset.label).includes(q)?'':'none';
     });
@@ -4064,10 +4074,7 @@ function getEmoji(key){
 
 function toggleDeporteDD(){
   deporteDDOpen=!deporteDDOpen;
-  const trigger=document.getElementById('deporteTrigger');
-  const dd=document.getElementById('deporteOptions');
-  trigger.classList.toggle('open',deporteDDOpen);
-  dd.classList.toggle('open',deporteDDOpen);
+  document.getElementById('deporteDropdown').classList.toggle('naowee-dropdown--open',deporteDDOpen);
   if(deporteDDOpen) buildDeporteDD();
 }
 
@@ -4075,10 +4082,7 @@ function selectDeporte(val,emoji,label){
   selectedDeporte=val;
   _selectedSportKey=val||'';
   deporteDDOpen=false;
-  const trigger=document.getElementById('deporteTrigger');
-  const dd=document.getElementById('deporteOptions');
-  trigger.classList.remove('open');
-  dd.classList.remove('open');
+  document.getElementById('deporteDropdown').classList.remove('naowee-dropdown--open');
   const display=document.getElementById('deporteDisplayText');
   if(val){
     display.innerHTML=`<span style="font-size:16px">${emoji}</span> ${label}`;
@@ -4094,8 +4098,7 @@ function selectDeporte(val,emoji,label){
 document.addEventListener('click',e=>{
   if(!e.target.closest('#deporteDropdown')&&deporteDDOpen){
     deporteDDOpen=false;
-    document.getElementById('deporteTrigger').classList.remove('open');
-    document.getElementById('deporteOptions').classList.remove('open');
+    document.getElementById('deporteDropdown').classList.remove('naowee-dropdown--open');
   }
   /* Close slot dropdowns on outside click */
   if(!e.target.closest('.slot-dd')){
@@ -4331,12 +4334,8 @@ document.querySelector('.page')?.addEventListener('scroll',closeAllCustomSelects
 ═══════════════════════════════════════════════════════════ */
 function selectTipoDeporte(tipo, el) {
   selectedTipoDeporte = tipo;
-  document.querySelectorAll('#tipoDeporteGroup .modality-pill').forEach(p => {
-    p.classList.remove('selected');
-    p.innerHTML = p.textContent;
-  });
-  el.classList.add('selected');
-  el.innerHTML = `<span class="check"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>${el.textContent}`;
+  document.querySelectorAll('#tipoDeporteGroup .wz-pill').forEach(p => p.classList.remove('sel'));
+  el.classList.add('sel');
 
   // Reset deporte selection
   selectedDeporte = '';
@@ -4677,7 +4676,7 @@ function openCreateDigiModal(){
   document.getElementById('createDigiBody').style.display='';
   document.getElementById('createDigiSuccess').style.display='none';
   const footer=document.getElementById('createDigiFooter');
-  footer.innerHTML=`<button class="btn btn-cancel" onclick="closeCreateDigiModal()">Cancelar</button><button class="btn btn-next" id="btnCreateDigi" onclick="submitCreateDigi()">Crear Digitador</button>`;
+  footer.innerHTML=`<button class="naowee-btn naowee-btn--mute" onclick="closeCreateDigiModal()">Cancelar</button><button class="naowee-btn naowee-btn--loud" id="btnCreateDigi" onclick="submitCreateDigi()">Crear Digitador</button>`;
   ['newDigiNombre','newDigiApellido','newDigiEmail','newDigiTel'].forEach(id=>{
     const el=document.getElementById(id);if(el){el.value='';el.style.borderColor=''}
   });
@@ -4739,7 +4738,7 @@ function submitCreateDigi(){
   document.getElementById('createDigiBody').style.display='none';
   document.getElementById('createDigiSuccess').style.display='block';
   document.getElementById('successEmailMsg').innerHTML=`Se ha enviado un correo a <strong>${email}</strong> con las instrucciones para activar su cuenta. Debe esperar a que el digitador active su cuenta.`;
-  document.getElementById('createDigiFooter').innerHTML=`<button class="btn btn-next" onclick="finishCreateDigi()">Aceptar</button>`;
+  document.getElementById('createDigiFooter').innerHTML=`<button class="naowee-btn naowee-btn--loud" onclick="finishCreateDigi()">Aceptar</button>`;
 
   /* Store new digi data temporarily */
   window._newDigiData={nombre,apellido,zona};
