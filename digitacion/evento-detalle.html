@@ -140,17 +140,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .search-inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(215,64,9,.12)}
 .search-inp::placeholder{color:var(--text-secondary)}
 /* Float dropdown */
-.filter-dd{position:relative}
-.filter-dd-trigger{display:flex;align-items:center;gap:6px;height:38px;padding:0 12px;border:1px solid var(--border-dark);border-radius:var(--radius-md);background:var(--surface);font-size:13px;font-weight:500;color:var(--text-primary);cursor:pointer;transition:all .15s;white-space:nowrap;user-select:none}
-.filter-dd-trigger:hover{border-color:var(--accent)}
-.filter-dd-trigger.open{border-color:var(--accent);box-shadow:0 0 0 3px rgba(215,64,9,.1)}
-.filter-dd-trigger svg{color:var(--text-secondary);transition:transform .2s;flex-shrink:0}
-.filter-dd-trigger.open svg{transform:rotate(180deg);color:var(--accent)}
-.filter-dd-menu{position:absolute;top:calc(100% + 6px);left:0;min-width:100%;max-height:0;overflow:hidden;opacity:0;background:var(--surface);border:1px solid var(--border-dark);border-radius:var(--radius-md);box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:100;transition:max-height .2s cubic-bezier(.4,0,.2,1),opacity .15s ease}
-.filter-dd-menu.open{max-height:280px;opacity:1;overflow-y:auto}
-.filter-dd-opt{padding:9px 14px;font-size:13px;color:var(--text-primary);cursor:pointer;transition:background .1s;white-space:nowrap}
-.filter-dd-opt:hover{background:#f5f6fa}
-.filter-dd-opt.selected{background:var(--orange-bg);color:var(--accent);font-weight:600}
+/* filtro → componente canónico .naowee-dropdown; ancho fijo + altura alineada al toolbar (38px) */
+.comp-toolbar .evt-filter{flex:0 0 auto;width:210px}
+.comp-toolbar .evt-filter .naowee-dropdown__trigger{height:38px;min-height:38px}
 .pag-wrap{display:flex;align-items:center;gap:8px;margin-left:auto}
 .pag-label{font-size:12px;color:var(--text-secondary);white-space:nowrap}
 .pag-btn{width:28px;height:28px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text-secondary);transition:all .15s;font-family:var(--font)}
@@ -355,19 +347,19 @@ tbody tr:hover{background:#fafbfd}
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 10.5l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
             <input class="search-inp" id="compSearchInp" type="text" placeholder="Buscar competencia" oninput="compPage=1;renderCompetencias()"/>
           </div>
-          <div class="filter-dd" id="sistemaDD">
-            <div class="filter-dd-trigger" id="sistemaTrigger" onclick="toggleSistemaDD()">
-              <span id="sistemaLabel">Todos los sistemas</span>
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </div>
-            <div class="filter-dd-menu" id="sistemaMenu">
-              <div class="filter-dd-opt selected" onclick="pickSistema('')">Todos los sistemas</div>
-              <div class="filter-dd-opt" onclick="pickSistema('elim')">Eliminación directa</div>
-              <div class="filter-dd-opt" onclick="pickSistema('robin')">Round robin</div>
-              <div class="filter-dd-opt" onclick="pickSistema('final')">Final directa</div>
-              <div class="filter-dd-opt" onclick="pickSistema('grupos')">Fase de grupos</div>
-              <div class="filter-dd-opt" onclick="pickSistema('doble')">Eliminación doble</div>
-              <div class="filter-dd-opt" onclick="pickSistema('multi')">Multi-sistema</div>
+          <div class="naowee-dropdown evt-filter" id="sistemaDD">
+            <button type="button" class="naowee-dropdown__trigger" id="sistemaTrigger" onclick="toggleSistemaDD()">
+              <span class="naowee-dropdown__value" id="sistemaLabel">Todos los sistemas</span>
+              <span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
+            </button>
+            <div class="naowee-dropdown__menu" id="sistemaMenu">
+              <div class="naowee-dropdown__option naowee-dropdown__option--selected" onclick="pickSistema('')">Todos los sistemas</div>
+              <div class="naowee-dropdown__option" onclick="pickSistema('elim')">Eliminación directa</div>
+              <div class="naowee-dropdown__option" onclick="pickSistema('robin')">Round robin</div>
+              <div class="naowee-dropdown__option" onclick="pickSistema('final')">Final directa</div>
+              <div class="naowee-dropdown__option" onclick="pickSistema('grupos')">Fase de grupos</div>
+              <div class="naowee-dropdown__option" onclick="pickSistema('doble')">Eliminación doble</div>
+              <div class="naowee-dropdown__option" onclick="pickSistema('multi')">Multi-sistema</div>
             </div>
           </div>
           <div class="pag-wrap">
@@ -996,27 +988,23 @@ let _compSistemaFilter = '';
 const SIS_LABELS_MAP = {'':'Todos los sistemas',elim:'Eliminación directa',robin:'Round robin',final:'Final directa',grupos:'Fase de grupos',doble:'Eliminación doble',multi:'Multi-sistema'};
 
 function toggleSistemaDD(){
-  const trigger = document.getElementById('sistemaTrigger');
-  const menu = document.getElementById('sistemaMenu');
-  const isOpen = menu.classList.contains('open');
-  menu.classList.toggle('open');
-  trigger.classList.toggle('open');
+  const dd = document.getElementById('sistemaDD');
+  const isOpen = dd.classList.contains('naowee-dropdown--open');
+  dd.classList.toggle('naowee-dropdown--open');
   if(!isOpen) document.addEventListener('click',_closeSistemaDD);
 }
 function _closeSistemaDD(e){
   if(!e.target.closest('#sistemaDD')){
-    document.getElementById('sistemaMenu').classList.remove('open');
-    document.getElementById('sistemaTrigger').classList.remove('open');
+    document.getElementById('sistemaDD').classList.remove('naowee-dropdown--open');
     document.removeEventListener('click',_closeSistemaDD);
   }
 }
 function pickSistema(val){
   _compSistemaFilter = val;
   document.getElementById('sistemaLabel').textContent = SIS_LABELS_MAP[val]||'Todos los sistemas';
-  document.getElementById('sistemaMenu').classList.remove('open');
-  document.getElementById('sistemaTrigger').classList.remove('open');
-  document.querySelectorAll('#sistemaMenu .filter-dd-opt').forEach(o => o.classList.remove('selected'));
-  event.target.classList.add('selected');
+  document.getElementById('sistemaDD').classList.remove('naowee-dropdown--open');
+  document.querySelectorAll('#sistemaMenu .naowee-dropdown__option').forEach(o => o.classList.remove('naowee-dropdown__option--selected'));
+  event.target.classList.add('naowee-dropdown__option--selected');
   compPage=1;
   renderCompetencias();
 }
