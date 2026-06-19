@@ -119,15 +119,27 @@ html[data-embed="1"] .demo-role-switcher{ display:none !important; }
 .top-header .profile-dropdown{ display:none !important; }                 /* sin desplegable */
 
 /* ── 4) Sidebar nav: hover/activo con INSET (no edge-to-edge) ─────────
-   La barra naranja del activo sigue pegada al borde; el fondo gris del
-   hover (y el tinte del activo) viven en un ::after con margen 12px,
-   igual que el estado colapsado. */
-.sidebar:not(.collapsed) .sidebar-nav .nav-row{ background:transparent !important; }
-.sidebar:not(.collapsed) .sidebar-nav .nav-row::after{
+   Cubre TODOS los .nav-row del sidebar (nav + bottom/Cerrar sesión). El
+   fondo gris del hover (y el tinte del activo) viven en un ::after con
+   margen 12px. La barra naranja (.active-bar) DEBE seguir absolute pegada
+   al borde — por eso se excluye del position:relative. */
+.sidebar:not(.collapsed) .nav-row{ background:transparent !important; }
+.sidebar:not(.collapsed) .nav-row::after{
   content:''; position:absolute; left:12px; right:12px; top:4px; bottom:4px;
   border-radius:var(--radius-md,8px); background:transparent;
   transition:background .14s ease; z-index:0; pointer-events:none;
 }
-.sidebar:not(.collapsed) .sidebar-nav .nav-row:hover::after{ background:var(--bg-soft,#f5f6fa); }
-.sidebar:not(.collapsed) .sidebar-nav .nav-row.active::after{ background:var(--orange-bg,#fff3e6); }
-.sidebar:not(.collapsed) .sidebar-nav .nav-row > *{ position:relative; z-index:1; }
+.sidebar:not(.collapsed) .nav-row:hover::after{ background:var(--bg-soft,#f5f6fa); }
+.sidebar:not(.collapsed) .nav-row.active::after{ background:var(--orange-bg,#fff3e6); }
+.sidebar:not(.collapsed) .nav-row > *:not(.active-bar){ position:relative; z-index:1; }
+.sidebar:not(.collapsed) .nav-row .active-bar{ z-index:1; } /* mantiene su position:absolute original */
+
+/* ── 5) Botón loud (primario): hover = fondo naranja FIJO + glow (paridad IVC/
+   playground). Garantiza el estado aunque la página no traiga el override. ── */
+.naowee-btn--loud{ transition:background .15s ease, box-shadow .15s ease, transform .12s ease; }
+.naowee-btn--loud:hover,.naowee-btn--loud:focus-visible{
+  background:var(--naowee-color-interactive-fill-loud-hover,#b8350a) !important;
+  box-shadow:0 6px 16px rgba(215,64,9,.22); opacity:1; outline:none;
+}
+.naowee-btn--loud:active{ background:var(--naowee-color-interactive-fill-loud-active,#9e2e08) !important; box-shadow:0 2px 6px rgba(215,64,9,.14); }
+.naowee-btn--loud:disabled,.naowee-btn--loud[disabled]{ box-shadow:none !important; }
