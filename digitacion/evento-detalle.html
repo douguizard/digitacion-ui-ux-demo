@@ -134,11 +134,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 /* COMPETENCIAS TABLE CARD */
 .comp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;animation:fadeInUp .4s .2s ease both}
 .comp-toolbar{display:flex;align-items:center;gap:12px;padding:16px 24px;flex-wrap:wrap}
-.search-wrap{position:relative;flex:1;min-width:180px;max-width:300px}
-.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text-secondary)}
-.search-inp{width:100%;height:38px;border:1px solid var(--border-dark);border-radius:var(--radius-md);font-size:13px;font-family:var(--font);color:var(--text-primary);padding:0 12px 0 36px;outline:none;transition:border-color .15s}
-.search-inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(215,64,9,.12)}
-.search-inp::placeholder{color:var(--text-secondary)}
+/* buscador → componente canónico .naowee-textfield */
+.evt-search{flex:1;min-width:180px;max-width:300px}
+.evt-search .naowee-textfield__input-wrap{height:38px}
+.evt-search .tf-ico{color:var(--text-secondary);flex-shrink:0}
 /* Float dropdown */
 /* filtro → componente canónico .naowee-dropdown; ancho fijo + altura alineada al toolbar (38px) */
 .comp-toolbar .evt-filter{flex:0 0 auto;width:210px}
@@ -343,9 +342,11 @@ tbody tr:hover{background:#fafbfd}
       <!-- COMPETENCIAS CONTENT -->
       <div id="contentComp">
         <div class="comp-toolbar">
-          <div class="search-wrap">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 10.5l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-            <input class="search-inp" id="compSearchInp" type="text" placeholder="Buscar competencia" oninput="compPage=1;renderCompetencias()"/>
+          <div class="naowee-textfield evt-search">
+            <div class="naowee-textfield__input-wrap">
+              <svg class="tf-ico" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 10.5l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              <input class="naowee-textfield__input" id="compSearchInp" type="text" placeholder="Buscar competencia" oninput="compPage=1;renderCompetencias()"/>
+            </div>
           </div>
           <div class="naowee-dropdown evt-filter" id="sistemaDD">
             <button type="button" class="naowee-dropdown__trigger" id="sistemaTrigger" onclick="toggleSistemaDD()">
