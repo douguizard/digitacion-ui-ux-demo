@@ -283,8 +283,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 /* ── F4: Transcripción externa (builder) ── */
 #transcripStage{flex:1;display:flex;flex-direction:column}
 #progEditStage{flex:1;display:flex;flex-direction:column}
-#progEditStage .sorteo-head{max-width:900px;width:100%}
-#progEditWrap{max-width:900px;margin:0 auto;width:100%}
+#progEditStage .sorteo-head{max-width:1040px;width:100%}
+#progEditWrap{max-width:1040px;margin:0 auto;width:100%}
 #transcripStage .sorteo-head{max-width:980px;width:100%}
 .transcrip-wrap{max-width:980px;margin:0 auto 28px;width:100%;display:flex;flex-direction:column;gap:18px}
 .transcrip-fmt{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
@@ -340,9 +340,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .prog-tc .naowee-table-card__toolbar-left{flex:1 1 auto;flex-wrap:nowrap;min-width:0;justify-content:flex-start;gap:12px}
 .prog-tc .prog-search{flex:0 1 200px;min-width:150px;max-width:none;width:auto}
 .prog-tc .prog-filter-dd{flex:0 1 200px;min-width:150px;width:auto}
-.prog-tc #btnProgClear{flex:0 0 auto;color:var(--accent);font-weight:700}
-.prog-tc #btnProgClear:hover:not(:disabled){background:var(--orange-bg)!important;color:var(--accent)!important}
-.prog-tc #btnProgClear:disabled{color:var(--text-secondary);opacity:.55}
+.prog-tc #btnProgClear{flex:0 0 auto}
 /* Celda de competencia (emoji + nombre + cat·sexo) dentro de la tabla canónica */
 .prog-comp{display:flex;align-items:center;gap:11px;min-width:0}
 .prog-comp__emoji{width:38px;height:38px;flex:0 0 38px;border-radius:10px;background:var(--bg-soft,#f5f6fa);display:grid;place-items:center;font-size:19px}
@@ -391,8 +389,32 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .prog-vs{display:inline-block;font-size:9px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--text-secondary);background:var(--bg-soft,#f1f2f7);border-radius:4px;padding:1px 5px;margin-right:6px;vertical-align:1px}
 .prog-team--b{margin-top:5px}
 .prog-ctx{display:block;font-size:11px;color:var(--text-secondary);font-weight:500;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* ── Programación: toggle de vista Lista/Tarjetas ── */
+.prog-viewbar{display:flex;justify-content:flex-end;margin:0 0 14px}
+.prog-viewtoggle{display:inline-flex;gap:2px;padding:3px;background:var(--bg-soft,#f1f2f7);border-radius:9999px}
+.prog-vt{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 14px;border:none;background:transparent;border-radius:9999px;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--text-secondary);cursor:pointer;transition:background .15s,color .15s,box-shadow .15s}
+.prog-vt svg{width:15px;height:15px}
+.prog-vt:hover:not(.is-active){color:var(--text-primary)}
+.prog-vt.is-active{background:var(--surface);color:var(--accent);box-shadow:0 1px 3px rgba(40,40,52,.12)}
+/* ── Vista Tarjetas: card por enfrentamiento (plana, head-to-head) ── */
+.prog-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(430px,1fr));gap:14px}
+.prog-card{display:flex;flex-direction:column;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface);overflow:hidden;transition:border-color .15s}
+.prog-card.is-done{border-color:var(--green-border,#b7dfb9)}
+.prog-card__head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border);background:#fafbfd}
+.prog-card__ctx{font-size:11px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prog-card__teams{padding:14px 16px}
+.prog-card__team{display:flex;flex-direction:column;min-width:0}
+.prog-card__vs{display:flex;align-items:center;gap:10px;margin:9px 0}
+.prog-card__vs::before,.prog-card__vs::after{content:"";height:1px;background:var(--border);flex:1}
+.prog-card__vs span{font-size:9px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--text-secondary);background:var(--bg-soft,#f1f2f7);padding:2px 8px;border-radius:9999px}
+.prog-card__fields{display:grid;grid-template-columns:minmax(0,1fr) 116px;gap:12px;padding:14px 16px;border-top:1px solid var(--border)}
+.prog-field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.prog-field--wide{grid-column:1/-1}
+.prog-field__label{font-size:10.5px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:var(--text-secondary)}
+.prog-card .prog-hora-dd{width:100%}
+.prog-card .prog-hora-dd .naowee-dropdown__trigger{width:100%}
 .prog-row .naowee-textfield,.prog-row .naowee-dropdown{min-width:0}
-@media(max-width:820px){.prog-row{grid-template-columns:1fr 1fr;gap:8px}.prog-match{grid-column:1/-1}}
+@media(max-width:820px){.prog-row{grid-template-columns:1fr 1fr;gap:8px}.prog-match{grid-column:1/-1}.prog-cards{grid-template-columns:1fr}}
 .pv-print-h{display:none}
 @media print{
   body{background:#fff!important}
@@ -1008,16 +1030,23 @@ function _findMatchAny(comp,id){ var r=_progMatches(comp).find(function(x){retur
 function progSet(id,field,val){ var m=_findMatchAny(_pvComp,id); if(m)m[field]=val; var c=document.getElementById('progCount'); if(c)c.textContent=_progMatches(_pvComp).filter(function(x){return x.m.fecha;}).length; }
 function progSetEscText(id,v){ var m=_findMatchAny(_pvComp,id); if(m)m.escenario=v; }
 function _progTeam(comp,name,vs){ var meta=(comp&&comp.teamMeta&&comp.teamMeta[name])||''; var pre=vs?'<span class="prog-vs">vs</span>':''; return '<div class="prog-team'+(vs?' prog-team--b':'')+'"><span class="prog-team__name">'+pre+tEsc(name)+'</span>'+(meta?'<span class="prog-team__meta">'+tEsc(meta)+'</span>':'')+'</div>'; }
+var _ICO_CALF='<svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 6.5h12M5 1.5v3M11 1.5v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';
+var _ICO_GRIDV='<svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>';
+var _ICO_LISTV='<svg viewBox="0 0 16 16" fill="none"><path d="M2.5 4h11M2.5 8h11M2.5 12h11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+var _progView=(function(){ try{ return localStorage.getItem('naowee-prog-view')||'cards'; }catch(e){ return 'cards'; } })();
+function setProgView(v){ _progView=v; try{localStorage.setItem('naowee-prog-view',v);}catch(e){} progRerender(); }
+function _progDateFieldHTML(id,m){ return '<div class="prog-datefield naowee-textfield naowee-textfield--small" onclick="dpOpen(\''+id+'\',this)"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input" readonly placeholder="Fecha" value="'+(_fmtFechaHuman(m.fecha))+'"><span class="prog-fieldico">'+_ICO_CALF+'</span></div></div>'; }
+function _progEscFieldHTML(id,m){ return '<div class="naowee-textfield naowee-textfield--small"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input" placeholder="Escenario / lugar" value="'+(m.escenario?tEsc(m.escenario):'')+'" oninput="progSetEscText(\''+id+'\',this.value)"></div></div>'; }
+function _progStatusBadge(m){ if(m.fecha&&m.hora) return '<span class="naowee-badge naowee-badge--positive naowee-badge--quiet naowee-badge--small">Programado</span>'; if(m.fecha) return '<span class="naowee-badge naowee-badge--informative naowee-badge--quiet naowee-badge--small">Con fecha</span>'; return '<span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">Sin programar</span>'; }
+function _progCardTeam(comp,name){ var meta=(comp&&comp.teamMeta&&comp.teamMeta[name])||''; return '<div class="prog-card__team"><span class="prog-team__name">'+tEsc(name)+'</span>'+(meta?'<span class="prog-team__meta">'+tEsc(meta)+'</span>':'')+'</div>'; }
+function _progCard(comp,x){ var m=x.m; return '<div class="prog-card'+(m.fecha?' is-done':'')+'"><div class="prog-card__head"><span class="prog-card__ctx">'+tEsc(x.ctx)+'</span>'+_progStatusBadge(m)+'</div><div class="prog-card__teams">'+_progCardTeam(comp,x.t1)+'<div class="prog-card__vs"><span>vs</span></div>'+_progCardTeam(comp,x.t2)+'</div><div class="prog-card__fields"><div class="prog-field"><span class="prog-field__label">Fecha</span>'+_progDateFieldHTML(x.id,m)+'</div><div class="prog-field"><span class="prog-field__label">Hora</span>'+progHoraDropdown(x.id,m.hora)+'</div><div class="prog-field prog-field--wide"><span class="prog-field__label">Escenario / lugar</span>'+_progEscFieldHTML(x.id,m)+'</div></div></div>'; }
+function _progRowList(comp,x){ var m=x.m; return '<div class="prog-row"><div class="prog-match">'+_progTeam(comp,x.t1)+_progTeam(comp,x.t2,true)+'<small class="prog-ctx">'+tEsc(x.ctx)+'</small></div>'+_progDateFieldHTML(x.id,m)+progHoraDropdown(x.id,m.hora)+_progEscFieldHTML(x.id,m)+'</div>'; }
 function renderPrograma(comp){ var rows=_progMatches(comp); if(!rows.length) return '<div class="naowee-message naowee-message--informative" style="width:100%"><div class="naowee-message__header"><span class="naowee-message__icon">'+_TICON.info+'</span><span class="naowee-message__body">Aún no hay partidos con ambos competidores definidos para programar.</span></div></div>';
   var done=rows.filter(function(x){return x.m.fecha;}).length;
   var head='<div class="naowee-message naowee-message--informative" style="width:100%;margin-bottom:14px"><div class="naowee-message__header"><span class="naowee-message__icon">'+_TICON.info+'</span><span class="naowee-message__title">Programación de partidos</span></div><p class="naowee-message__text">Asigna fecha, hora y escenario a cada partido. <b><span id="progCount">'+done+'</span> de '+rows.length+'</b> con fecha asignada. Se guarda al confirmar el sorteo.</p></div>';
-  var list=rows.map(function(x){ var m=x.m;
-    return '<div class="prog-row"><div class="prog-match">'+_progTeam(comp,x.t1)+_progTeam(comp,x.t2,true)+'<small class="prog-ctx">'+tEsc(x.ctx)+'</small></div>'
-      +'<div class="prog-datefield naowee-textfield naowee-textfield--small" onclick="dpOpen(\''+x.id+'\',this)"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input" readonly placeholder="Fecha" value="'+(_fmtFechaHuman(m.fecha))+'"><span class="prog-fieldico"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 6.5h12M5 1.5v3M11 1.5v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span></div></div>'
-      +progHoraDropdown(x.id, m.hora)
-      +'<div class="naowee-textfield naowee-textfield--small"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input" placeholder="Escenario / lugar" value="'+(m.escenario?tEsc(m.escenario):'')+'" oninput="progSetEscText(\''+x.id+'\',this.value)"></div></div>'
-      +'</div>'; }).join('');
-  return head+'<div class="prog-list">'+list+'</div>'; }
+  var toggle='<div class="prog-viewbar"><div class="prog-viewtoggle" role="group" aria-label="Cambiar vista"><button type="button" class="prog-vt'+(_progView==='cards'?' is-active':'')+'" onclick="setProgView(\'cards\')" aria-pressed="'+(_progView==='cards')+'">'+_ICO_GRIDV+'Tarjetas</button><button type="button" class="prog-vt'+(_progView==='list'?' is-active':'')+'" onclick="setProgView(\'list\')" aria-pressed="'+(_progView==='list')+'">'+_ICO_LISTV+'Lista</button></div></div>';
+  var body=(_progView==='list')?('<div class="prog-list">'+rows.map(function(x){return _progRowList(comp,x);}).join('')+'</div>'):('<div class="prog-cards">'+rows.map(function(x){return _progCard(comp,x);}).join('')+'</div>');
+  return head+toggle+body; }
 /* ── F5: datepicker canónico (.naowee-datepicker popover) + timepicker (dropdown de franjas) ── */
 var _DP_MONTHS=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 var _DP_WD=['L','M','M','J','V','S','D'];
@@ -1095,9 +1124,9 @@ function renderProgEditList(){
   el.innerHTML='<div class="prog-edit-list"><div class="naowee-table-card prog-tc">'
     +'<div class="naowee-table-card__toolbar">'
       +'<div class="naowee-table-card__toolbar-left">'
-        +'<div class="naowee-searchbox naowee-searchbox--small prog-search"><div class="naowee-searchbox__input-wrap"><span class="naowee-searchbox__icon">'+_ICO_PSEARCH+'</span><input class="naowee-searchbox__input" id="progSearchInput" type="text" placeholder="Buscar competencia o deporte…" oninput="progOnSearch(this.value)"><button type="button" class="naowee-searchbox__clear" aria-label="Limpiar búsqueda" onclick="progClearSearch()">'+_ICO_PCLR+'</button></div></div>'
+        +'<div class="naowee-searchbox prog-search"><div class="naowee-searchbox__input-wrap"><span class="naowee-searchbox__icon">'+_ICO_PSEARCH+'</span><input class="naowee-searchbox__input" id="progSearchInput" type="text" placeholder="Buscar competencia o deporte…" oninput="progOnSearch(this.value)"><button type="button" class="naowee-searchbox__clear" aria-label="Limpiar búsqueda" onclick="progClearSearch()">'+_ICO_PCLR+'</button></div></div>'
         +_progFilterDD('ddFRegion','Todas las regiones')+_progFilterDD('ddFDeporte','Todos los deportes')+_progFilterDD('ddFFecha','Todas las fechas')
-        +'<button class="naowee-btn naowee-btn--link naowee-btn--small" id="btnProgClear" onclick="progClearFilters()" disabled>Limpiar</button>'
+        +'<button class="naowee-btn naowee-btn--mute" id="btnProgClear" onclick="progClearFilters()" disabled>Limpiar</button>'
       +'</div>'
     +'</div>'
     +'<div id="progBodyMount"></div>'
