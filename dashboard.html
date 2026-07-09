@@ -186,7 +186,7 @@ a{text-decoration:none}
       <div class="recent-card">
         <div class="recent-header">
           <span class="recent-title">Historial reciente</span>
-          <a class="naowee-btn naowee-btn--mute naowee-btn--small" href="digitador.html"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg> Ver todas</a>
+          <button class="naowee-btn naowee-btn--mute naowee-btn--small" onclick="window.location.href='digitador.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg> Ver todas</button>
         </div>
         <div class="table-wrap">
           <table>
@@ -417,7 +417,7 @@ function renderDashboardTable(){
       <td><span class="badge-sistema ${sistemaClasses[c.sistema]||'grupos'}">${c.sistema}</span></td>
       <td><div style="display:flex;align-items:center"><div style="width:48px;height:4px;background:var(--border);border-radius:var(--radius-full)"><div style="height:100%;width:${pct}%;background:${barColor};border-radius:var(--radius-full)"></div></div></div></td>
       <td><span class="naowee-badge naowee-badge--${estadoVariant[c.status]||'neutral'} naowee-badge--quiet naowee-badge--small">${statusLabels[c.status]}</span></td>
-      <td style="text-align:right"><a class="naowee-btn naowee-btn--mute naowee-btn--small" href="digitador.html?comp=${c.id}">${actionLabels[c.status]}</a></td>
+      <td style="text-align:right"><button class="naowee-btn naowee-btn--mute naowee-btn--small" onclick="window.location.href='digitador.html?comp=${c.id}'">${actionLabels[c.status]}</button></td>
     </tr>`;
   }).join('');
 
