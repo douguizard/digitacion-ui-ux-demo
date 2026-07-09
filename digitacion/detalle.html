@@ -6,6 +6,8 @@
 <title>Naowee – Detalle competencia</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="design-system.css"/>
+<link rel="stylesheet" href="shared/tokens.css?v=2.1.0"/>
+<link rel="stylesheet" href="shared/shell.css?v=2.1.0"/>
 <link rel="stylesheet" href="scoring-modal.css"/>
 <style>
 :root {
@@ -19,7 +21,6 @@
   --orange-bg:#fff3e6; --orange-border:#ffbf75;
   --red-bg:#fff0ee; --red-border:#ffc4bb;
   --purple:#7c3aed; --purple-bg:#f3eeff;
-  --sidebar-w:274px; --header-h:88px;
   --radius-sm:6px; --radius-md:8px; --radius-lg:12px; --radius-xl:20px; --radius-full:9999px;
   --font:'Inter',sans-serif;
   --shadow-sm:0 1px 4px rgba(0,0,0,.08);
@@ -27,66 +28,6 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font);background:var(--surface);color:var(--text-primary);font-size:14px}
-
-/* ═══ SHELL ══════════════════════════════════════════════ */
-.shell{display:flex;height:100vh;overflow:hidden}
-
-/* ═══ SIDEBAR ════════════════════════════════════════════ */
-.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow-y:auto;transition:width .2s,min-width .2s}
-.sidebar-logo{height:var(--header-h);display:flex;align-items:center;gap:16px;padding:0 24px;border-bottom:1px solid var(--border);flex-shrink:0}
-.burger-btn{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;width:24px;height:24px;flex-shrink:0;border-radius:var(--radius-sm);transition:background .15s,transform .2s}
-.burger-btn:hover{background:rgba(0,0,0,.06)}
-.burger-btn:active{transform:scale(.9)}
-.burger-btn svg{transition:transform .3s cubic-bezier(.4,0,.2,1)}
-.sidebar.collapsed .burger-btn svg{transform:rotate(180deg)}
-.naowee-logo{height:33px;flex-shrink:0}
-.sidebar-nav{flex:1;padding:24px 0 10px;display:flex;flex-direction:column;gap:10px}
-.nav-section{font-size:12px;font-weight:500;color:#b5b9d4;letter-spacing:0;padding:0 12px;line-height:16px}
-.nav-row{display:flex;align-items:center;gap:12px;height:44px;padding:0 20px 0 0;border-radius:var(--radius-sm);cursor:pointer;transition:background .12s;position:relative}
-.nav-row:hover{background:#f5f6fa}
-.nav-row .icon{width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-left:28px}
-.nav-row .lbl{flex:1;font-size:14px;font-weight:500;color:var(--text-primary)}
-.nav-row .badge-red{width:7px;height:7px;background:#e52000;border-radius:50%}
-.nav-row .nav-arrow{width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center;opacity:.7}
-.active-bar{position:absolute;left:4px;top:8px;width:4px;height:28px;background:var(--accent);border-radius:25px}
-.subnav{padding-left:0}
-.sub-row{display:flex;align-items:center;gap:8px;height:36px;padding:0 8px 0 64px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;color:var(--text-secondary);transition:background .12s;text-decoration:none}
-.sub-row:hover{background:#f5f6fa}
-.sub-row .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.sub-row.active-sub{color:var(--accent);font-weight:500}
-.sub-row.active-sub .dot{background:var(--accent)}
-.sidebar-bottom{padding:8px 0;border-top:1px solid var(--border)}
-.sidebar.collapsed{width:72px;min-width:72px;overflow:hidden}
-.sidebar.collapsed .naowee-logo,.sidebar.collapsed .lbl,.sidebar.collapsed .nav-arrow,.sidebar.collapsed .nav-section,.sidebar.collapsed .subnav,.sidebar.collapsed .sidebar-bottom .lbl{display:none}
-.sidebar.collapsed .sidebar-logo{justify-content:center;padding:0}
-.sidebar.collapsed .nav-row{justify-content:center;padding:0}
-.sidebar.collapsed .nav-row .icon{margin-left:0}
-
-/* ═══ MAIN ═══════════════════════════════════════════════ */
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-
-/* ═══ TOP HEADER ═════════════════════════════════════════ */
-.top-header{height:var(--header-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:flex-end;padding:0 24px;flex-shrink:0;gap:12px}
-.profile-switcher{position:relative}
-.profile-current{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--border);border-radius:var(--radius-full);cursor:pointer;font-size:13px;font-weight:500;color:var(--text-primary);transition:all .15s;background:var(--surface)}
-.profile-current:hover{border-color:var(--accent);background:#fff8f4}
-.profile-dropdown{position:absolute;top:calc(100% + 6px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);min-width:260px;z-index:100;display:none;overflow:hidden}
-.profile-dropdown.open{display:block}
-.profile-option{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;transition:background .12s;color:var(--text-secondary)}
-.profile-option:hover{background:#f5f6fa}
-.profile-option.active{background:var(--orange-bg);color:var(--accent)}
-.po-name{font-size:13px;font-weight:500;color:inherit}
-.po-desc{font-size:11px;color:var(--text-secondary);margin-top:1px}
-.user-chip{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:var(--radius-full);padding:6px 12px 6px 6px;cursor:pointer}
-.ava{position:relative}
-.ava-ring{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
-.ava-dot{position:absolute;bottom:0;right:0;width:8px;height:8px;background:var(--green);border:2px solid #fff;border-radius:50%}
-.user-info{display:flex;flex-direction:column;gap:1px}
-.user-name{font-size:13px;font-weight:600;color:var(--text-primary)}
-.user-role{font-size:11px;color:var(--text-secondary)}
-
-/* ═══ PAGE CONTENT ════════════════════════════════════════ */
-.page{flex:1;overflow-y:auto;overflow-x:hidden;padding:20px 28px 40px;background:var(--surface)}
 
 /* ═══ BACK LINK ══════════════════════════════════════════ */
 .back-link{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--accent);text-decoration:none;margin-bottom:16px;cursor:pointer;padding:8px 16px;border-radius:var(--radius-md);border:none;background:transparent;transition:all .15s}
@@ -157,8 +98,10 @@ body{font-family:var(--font);background:var(--surface);color:var(--text-primary)
 .digi-dd-ava{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:#fff;flex-shrink:0}
 
 /* ═══ TABS ═══════════════════════════════════════════════ */
-/* tabs → componente canónico .naowee-tabs/.naowee-tab; solo márgenes del contenedor */
-.tab-bar{margin:0 -28px 20px;padding-left:28px}
+.tab-bar{display:flex;gap:0;padding:0;border-bottom:1px solid var(--border);margin:0 -28px 20px;padding-left:28px}
+.tab-btn{padding:10px 20px;font-size:13px;font-weight:500;color:var(--text-secondary);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-1px;display:inline-flex;align-items:center;gap:8px;transition:all .15s;font-family:var(--font)}
+.tab-btn:hover{color:var(--text-primary)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
 
 /* ═══ TAB CONTENT CARD ═══════════════════════════════════ */
 .tab-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:24px 28px;animation:fadeInUp .35s cubic-bezier(.4,0,.2,1) .08s both}
@@ -312,75 +255,27 @@ body{font-family:var(--font);background:var(--surface);color:var(--text-primary)
 
 /* ═══ RESPONSIVE ═════════════════════════════════════════ */
 @media(max-width:900px){
-  .sidebar{width:72px;min-width:72px;overflow:hidden}
-  .sidebar .naowee-logo,.sidebar .lbl,.sidebar .nav-arrow,.sidebar .nav-section,.sidebar .subnav,.sidebar .sidebar-bottom .lbl{display:none}
-  .sidebar .sidebar-logo{justify-content:center;padding:0}
-  .sidebar .nav-row{justify-content:center;padding:0}
-  .sidebar .nav-row .icon{margin-left:0}
   .detail-top{flex-direction:column}
   .detail-right{align-items:flex-start}
   .bracket-wrap{overflow-x:auto}
   .medal-grid{grid-template-columns:1fr}
 }
 </style>
-<link rel="stylesheet" href="naowee-footer.css"/>
+<link rel="stylesheet" href="naowee-tables.css"/>
+<link rel="stylesheet" href="shared/naowee-footer.css?v=2.1.0"/>
+<script src="shared/naowee-footer.js?v=2.1.0" defer></script>
 </head>
 <body>
 <div class="shell">
-  <!-- ═══ SIDEBAR ═══ -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <button class="burger-btn" onclick="toggleSidebar()">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.5 12H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round"/><path d="M5.5 16H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round"/><path d="M5.5 8H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </button>
-      <svg class="naowee-logo" viewBox="0 0 177 33.22" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M28.11 33.21c-1.25 0-2.42-.48-3.31-1.36a4.67 4.67 0 01-1.37-3.29l.02-16.73-5.92 5.91a1.6 1.6 0 01-1.75.35 1.6 1.6 0 01-.99-1.47V1.6c0-.88.72-1.6 1.6-1.6h8.59c4.3 0 7.8 3.48 7.8 7.76v20.8c0 2.56-2.1 4.65-4.67 4.65zm-3.05-26.85c.2 0 .41.04.61.12.6.25.99.83.99 1.48l-.02 20.6c0 .39.15.76.43 1.03.28.28.64.43 1.04.43.8 0 1.46-.65 1.46-1.46V7.76c0-2.52-2.06-4.57-4.59-4.57H18v9.56l5.92-5.92c.31-.31.72-.47 1.14-.47" fill="#F49C1C"/>
-        <path d="M16.39 33.21H7.8C3.5 33.21 0 29.73 0 25.45V4.65C0 2.09 2.1 0 4.67 0c1.25 0 2.42.49 3.31 1.36.88.88 1.37 2.05 1.36 3.29L9.33 21.38l5.92-5.91c.46-.46 1.15-.6 1.75-.35.6.25.99.83.99 1.47v15.02c0 .88-.72 1.6-1.6 1.6M4.67 3.19c-.81 0-1.47.65-1.47 1.46v20.8c0 2.52 2.06 4.57 4.59 4.57h7V20.46l-5.92 5.92c-.46.46-1.15.6-1.75.35a1.6 1.6 0 01-.99-1.47L6.14 4.65c0-.39-.15-.76-.43-1.03a1.45 1.45 0 00-1.04-.43" fill="#FF7500"/>
-        <path d="M71.59 24.93h-.31c-.6.72-1.32 1.34-2.16 1.86-.84.52-1.93.77-3.25.77-3.95 0-7.12-2.37-7.12-6.5 0-4.68 3.49-6.42 7.78-6.42 1.25 0 2.27.1 3.07.29.81.19 1.47.39 1.99.6v-.58c0-1.01-.4-1.84-1.21-2.49-.8-.66-1.8-.99-2.99-.99-1.77 0-3.26.73-4.48 2.21l-3.7-2.52c2.03-2.53 4.79-3.79 8.29-3.79 2.96 0 5.22.69 6.77 2.07 1.56 1.38 2.34 3.42 2.34 6.13v11.88h-5.02v-2.52zm0-5.69c-.6-.28-1.21-.51-1.85-.68-.64-.17-1.33-.25-2.08-.25-1.22 0-2.16.26-2.82.79-.66.53-1 1.18-1 1.95 0 .78.32 1.39.96 1.86.64.47 1.37.7 2.2.7.67 0 1.3-.12 1.87-.37.57-.24 1.06-.57 1.46-.97.4-.4.71-.86.93-1.39.22-.53.33-1.08.33-1.65" fill="#002B5B"/>
-        <path d="M89.28 7.37c5.06 0 10.12 3.57 10.12 10.1 0 6.52-5.06 10.1-10.12 10.1-5.06 0-10.11-3.58-10.11-10.1 0-6.53 5.05-10.1 10.11-10.1zm0 15.51c2.41 0 5.02-1.67 5.02-5.42 0-3.74-2.61-5.42-5.02-5.42s-5.02 1.68-5.02 5.42c0 3.75 2.61 5.42 5.02 5.42z" fill="#002B5B"/>
-        <path d="M101.96 7.37h5.72l3.15 12.65h.27l3.78-12.65h5.25l3.82 12.65h.27l3.11-12.65h5.64l-6.11 20.2h-5.49l-3.81-12.74h-.27l-3.81 12.74h-5.41l-6.11-20.2z" fill="#002B5B"/>
-        <path d="M154.68 22.38c-.88 1.55-2.07 2.8-3.56 3.75-1.49.95-3.31 1.43-5.47 1.43-5.56 0-10.12-4.24-10.12-10.1 0-5.71 4.23-10.1 9.92-10.1 5.53 0 9.53 4.22 9.53 9.94v.93h-14.36c.33 2.43 2.12 4.65 5.17 4.65 2.27 0 3.81-1.38 4.55-2.95l4.24 2.09.1.36zm-4.63-7.35c-.39-1.92-2.17-3.52-4.59-3.52-2.2 0-4.15 1.44-4.67 3.52h9.26z" fill="#002B5B"/>
-        <path d="M176.69 22.38c-.88 1.55-2.07 2.8-3.56 3.75-1.49.95-3.31 1.43-5.47 1.43-5.56 0-10.11-4.24-10.11-10.1 0-5.71 4.22-10.1 9.92-10.1 5.53 0 9.53 4.22 9.53 9.94v.93h-14.36c.33 2.43 2.12 4.65 5.17 4.65 2.27 0 3.81-1.38 4.55-2.95l4.24 2.09.09.36zm-4.63-7.35c-.39-1.92-2.17-3.52-4.59-3.52-2.2 0-4.14 1.44-4.67 3.52h9.26z" fill="#002B5B"/>
-        <path d="M53.69 27.57c-1.38 0-2.5-1.02-2.5-2.29V15.66c0-2.05-1.82-3.72-4.07-3.72-2.24 0-4.07 1.67-4.07 3.72v9.62c0 1.26-1.12 2.29-2.5 2.29s-2.5-1.02-2.5-2.29V15.66c0-4.57 4.07-8.29 9.07-8.29s9.07 3.72 9.07 8.29v9.62c0 1.26-1.12 2.29-2.5 2.29" fill="#002B5B"/>
-      </svg>
-    </div>
-    <nav class="sidebar-nav" id="sidebarNav"></nav>
-    <div class="sidebar-bottom">
-      <div class="nav-row" id="btnLogout">
-        <div class="icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 17l5-5-5-5M18 12H3" stroke="#282834" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <span class="lbl">Cerrar sesion</span>
-      </div>
-    </div>
-  </aside>
+  <!-- Sidebar montado por shared/sidebar.js -->
+  <aside class="sidebar" id="sidebarRoot"></aside>
 
   <!-- ═══ MAIN ═══ -->
   <div class="main">
-    <header class="top-header">
-      <div class="profile-switcher" id="profileSwitcher">
-        <div class="profile-current" onclick="toggleProfileDD()">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.2"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2"/></svg>
-          <span id="profileLabel">Digitador</span>
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-        </div>
-        <div class="profile-dropdown" id="profileDropdown">
-          <div class="profile-option" onclick="switchProfile('coordinador')">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3.5" stroke="currentColor" stroke-width="1.3"/><path d="M3 16c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="1.3"/></svg>
-            <div><div class="po-name">Coordinador de eventos</div><div class="po-desc">Gestión completa de competencias</div></div>
-          </div>
-          <div class="profile-option active" onclick="switchProfile('digitador')">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M7 7h4M7 9.5h4M7 12h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-            <div><div class="po-name">Digitador</div><div class="po-desc">Registro de resultados en vivo</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="user-chip">
-        <div class="ava"><div class="ava-ring" style="background:#b8d4f0;color:#1a3a5c">CL</div><div class="ava-dot"></div></div>
-        <div class="user-info"><span class="user-name" id="userName">Carlos López</span><span class="user-role" id="userRoleLabel">Digitador Deportivo</span></div>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 5l3 3 3-3" stroke="#646587" stroke-width="1.2" stroke-linecap="round"/></svg>
-      </div>
-    </header>
+    <!-- Header montado por shared/sidebar.js (mountHeader) -->
+    <header class="top-header" id="topHeader"></header>
 
-    <div class="page">
+    <main class="page" id="pageContent">
       <a class="back-link" id="backLink" href="lista.html">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span id="backLinkText">Volver a Competencias</span>
@@ -391,12 +286,14 @@ body{font-family:var(--font);background:var(--surface);color:var(--text-primary)
 
       <!-- TABS + CONTENT CARD -->
       <div class="tab-card" id="tabCard">
-        <div class="tab-bar naowee-tabs" id="tabBar"></div>
+        <div class="tab-bar" id="tabBar"></div>
         <div id="tabContent"></div>
       </div>
+    </main>
     </div>
   </div>
 </div>
+<div id="demoRoleSwitcherRoot"></div>
 
 <!-- SCORING MODAL -->
 <div class="modal-overlay" id="scoringModal">
@@ -889,48 +786,6 @@ let currentJornada = 'all';
 let currentGrupo = 0;
 
 /* ═══════════════════════════════════════════════════════════
-   SIDEBAR
-═══════════════════════════════════════════════════════════ */
-function buildSidebar(){
-  const nav = document.getElementById('sidebarNav');
-  const isCoord = role === 'coordinador';
-  nav.innerHTML = `
-    <div class="nav-section">DASHBOARD</div>
-    <div class="nav-row" onclick="window.location.href='${isCoord?'eventos.html':'digitador.html'}'">
-      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#B5B9D4" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#B5B9D4" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#B5B9D4" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#B5B9D4" stroke-width="1.5"/></svg></div>
-      <span class="lbl">Inicio</span>
-    </div>
-    ${!isCoord ? '<div class="nav-row" onclick="window.location.href=\'digitador.html\'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="#B5B9D4" stroke-width="1.5"/><path d="M7 7h10M7 11h10M7 15h6" stroke="#B5B9D4" stroke-width="1.3" stroke-linecap="round"/></svg></div><span class="lbl">Mi Digitación</span></div>' : ''}
-    <div class="nav-section">GESTI&Oacute;N</div>
-    <div class="nav-row active">
-      <div class="active-bar"></div>
-      <div class="icon"><svg width="24" height="24" viewBox="0 0 19.5 19.5" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.75.75h8a1 1 0 011 1v6a5 5 0 01-10 0v-6a1 1 0 011-1z" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.17 9.75H4.75a4 4 0 01-4-4v-2a1 1 0 011-1h3" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.33 9.75h.42a4 4 0 004-4v-2a1 1 0 00-1-1h-3" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M13.42 15.75H6.08a1.25 1.25 0 01-1.18-1.68l.33-1a1.25 1.25 0 011.18-.82h7.33c.54 0 1.02.34 1.18.82l.33 1a1.25 1.25 0 01-1.18 1.68z" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.75 12.75v3" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="lbl">Competencias</span>
-      <span class="nav-arrow"><svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M7.33 12.83L11 9.17l3.67 3.67" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-    </div>
-    <div class="subnav">
-      <a class="sub-row active-sub" href="${isCoord ? 'lista.html' : 'lista.html'}"><span class="dot"></span>Lista de competencias</a>
-      <a class="sub-row" href="stepper.html"><span class="dot" style="background:transparent"></span>Nueva competencia</a>
-    </div>
-    <div class="nav-row" onclick="window.location.href='digitadores.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M16 20v-1a4 4 0 00-4-4H6a4 4 0 00-4 4v1" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="#B5B9D4" stroke-width="1.5"/><path d="M22 20v-1a4 4 0 00-4-4" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M15 3a4 4 0 010 8" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Digitadores</span></div>
-    <div class="nav-row" onclick="window.location.href='coordinadores.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="16.75" cy="17.75" r="4.25" stroke="#B5B9D4" stroke-width="1.5"/><path d="M18.18 16.91l-1.79 1.78-1.07-1.07" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M10 15H7a4 4 0 00-4 4v1" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><circle cx="11" cy="7" r="4" stroke="#B5B9D4" stroke-width="1.5"/></svg></div><span class="lbl">Coordinadores</span></div>
-    <div class="nav-row"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 20H5a2 2 0 01-2-2v-2a2 2 0 012-2h16" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M20 17H6" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="7.29" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5"/><ellipse cx="16.72" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5"/><path d="M10.29 7a2.72 2.72 0 013.43 0" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M3 7h1.29M19.72 7H21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Auditor&iacute;a</span></div>
-  `;
-  // Profile
-  const label = document.getElementById('profileLabel');
-  if(isCoord){
-    label.textContent = 'Coordinador de eventos';
-    document.getElementById('userName').textContent = 'Ana Maria S...';
-    document.getElementById('userRoleLabel').textContent = 'Coordinador d...';
-    document.querySelector('.ava-ring').textContent = 'AS';
-    document.querySelector('.ava-ring').style.background = '#ffb8c1';
-    document.querySelector('.ava-ring').style.color = '#672834';
-    document.querySelectorAll('.profile-option')[0].classList.add('active');
-    document.querySelectorAll('.profile-option')[1].classList.remove('active');
-  }
-}
-
-/* ═══════════════════════════════════════════════════════════
    HEADER
 ═══════════════════════════════════════════════════════════ */
 function renderHeader(){
@@ -984,8 +839,8 @@ function renderHeader(){
     <div class="detail-top">
       <div class="detail-left">
         <div class="badge-row">
-          <span class="naowee-badge naowee-badge--quiet naowee-badge--small naowee-badge--${({digitacion:'caution',pausa:'neutral',finalizada:'positive',asignada:'informative',creada:'neutral'})[comp.estCls]||'neutral'}">${comp.estado}</span>
-          <span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">${comp.sistema}</span>
+          <span class="badge-est ${comp.estCls}">${comp.estado}</span>
+          <span class="badge-sis">${comp.sistema}</span>
           ${comp.medal?'<span class="badge-medal">🏅 Con Medallas</span>':''}
         </div>
         <div class="detail-title">${comp.nombre}</div>
@@ -1040,7 +895,7 @@ function getTabs(){
 function renderTabs(){
   const tabs = getTabs();
   document.getElementById('tabBar').innerHTML = tabs.map(t =>
-    `<button class="naowee-tab${t.id===currentTab?' naowee-tab--selected':''}" onclick="switchTab('${t.id}')">${t.icon} ${t.label}</button>`
+    `<button class="tab-btn${t.id===currentTab?' active':''}" onclick="switchTab('${t.id}')">${t.icon} ${t.label}</button>`
   ).join('');
 }
 
@@ -1264,7 +1119,7 @@ function renderRobinView(el){
         <div class="match-status">${m.status==='done'?'Finalizado':'Pendiente'}</div>
       </div>
       <div class="match-team right"><div><div class="team-name">${m.t2}</div><div class="team-sub">${m.t2}</div></div><div class="team-avatar" style="background:${c2};color:#fff">${teamInit(m.t2)}</div></div>
-      ${m.status==='pending' && comp.estCls!=='finalizada'?`<div class="match-actions"><button class="naowee-btn naowee-btn--loud naowee-btn--small" onclick="openDigitar('${m.t1.replace(/'/g,"\\'")}','${m.t2.replace(/'/g,"\\'")}','Jornada ${m.jornada}')">Digitar</button></div>`:''}
+      ${m.status==='pending' && comp.estCls!=='finalizada'?`<div class="match-actions"><button class="btn-digitar" onclick="openDigitar('${m.t1.replace(/'/g,"\\'")}','${m.t2.replace(/'/g,"\\'")}','Jornada ${m.jornada}')">Digitar</button></div>`:''}
     </div>`;
   });
   el.innerHTML = html;
@@ -1325,7 +1180,7 @@ function renderFinalView(el){
           <div style="font-size:13px;font-weight:600;color:var(--text-primary)">${m.phase}</div>
           <div style="font-size:12px;color:var(--text-secondary)">${label}</div>
         </div>
-        <button class="naowee-btn naowee-btn--loud naowee-btn--small" onclick="openDigitarFinal(${m.id})">Digitar</button>
+        <button class="btn-digitar" onclick="openDigitarFinal(${m.id})">Digitar</button>
       </div>`;
     });
   }
@@ -1385,7 +1240,7 @@ function renderGruposView(el){
         <div class="match-status">${m.status==='done'?'Finalizado':'Pendiente'}</div>
       </div>
       <div class="match-team right"><div><div class="team-name">${m.t2}</div><div class="team-sub">${m.t2}</div></div><div class="team-avatar" style="background:${c2};color:#fff">${teamInit(m.t2)}</div></div>
-      ${m.status==='pending' && comp.estCls!=='finalizada'?`<div class="match-actions"><button class="naowee-btn naowee-btn--loud naowee-btn--small" onclick="openDigitar('${m.t1.replace(/'/g,"\\'")}','${m.t2.replace(/'/g,"\\'")}','${grupo.nombre}')">Digitar</button></div>`:''}
+      ${m.status==='pending' && comp.estCls!=='finalizada'?`<div class="match-actions"><button class="btn-digitar" onclick="openDigitar('${m.t1.replace(/'/g,"\\'")}','${m.t2.replace(/'/g,"\\'")}','${grupo.nombre}')">Digitar</button></div>`:''}
     </div>`;
   });
   // Standings
@@ -1879,25 +1734,9 @@ function openDigitarFinal(matchId){
 }
 
 /* ═══════════════════════════════════════════════════════════
-   PROFILE
-═══════════════════════════════════════════════════════════ */
-function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('collapsed'); }
-function toggleProfileDD(){ document.getElementById('profileDropdown').classList.toggle('open'); }
-function fadeAndGo(url){document.body.style.transition='opacity .25s ease';document.body.style.opacity='0';setTimeout(()=>{window.location.href=url},260)}
-function switchProfile(profile){
-  document.getElementById('profileDropdown').classList.remove('open');
-  if(profile === 'coordinador') fadeAndGo('eventos.html');
-  else if(profile === 'digitador') fadeAndGo('digitador.html');
-}
-document.addEventListener('click',e=>{
-  if(!e.target.closest('#profileSwitcher')) document.getElementById('profileDropdown')?.classList.remove('open');
-});
-
-/* ═══════════════════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════════════════ */
 window.onload = function(){
-  buildSidebar();
   renderHeader();
 
   // Show finalized banner for digitador
@@ -2247,10 +2086,37 @@ function hideReabrirToast(){
   document.getElementById('reabrirToast').classList.remove('show');
 }
 
-document.getElementById('btnLogout')?.addEventListener('click', () => {
-  fadeAndGo('../escenarios/escenario-01-login.html');
-});
 </script>
-<script src="naowee-footer.js"></script>
+<script type="module">
+  import { mountSidebar, mountHeader, mountDemoRoleSwitcher } from './shared/sidebar.js';
+  const roleCode = new URLSearchParams(window.location.search).get('role') || 'ROOT';
+  const currentFile = window.location.pathname.split('/').pop() || 'detalle.html';
+  const LEGACY_MAP = {
+    'sorteo': 'sorteo.html',
+    'eventos': 'eventos.html', 'eventos-lista': 'eventos.html',
+    'competencias': 'lista.html', 'competencias-lista': 'lista.html',
+    'competencias-inicio': 'lista.html',
+    'digitadores': 'digitadores.html', 'coordinadores': 'coordinadores.html',
+    'mi-digitacion': 'digitador.html', 'audit-logs': 'auditoria.html'
+  };
+  let sidebarMounted = false;
+  const { role } = mountSidebar({
+    rootEl: document.getElementById('sidebarRoot'),
+    roleCode,
+    activeId: 'competencias-lista',
+    onActiveChange: (activeId) => {
+      const target = LEGACY_MAP[activeId];
+      /* detalle.html es sub-página de competencias-lista; el activeId 'competencias-lista'
+         no debe redirigir mientras estemos en detalle — solo si el usuario navega explícitamente */
+      if (target) { if (target === currentFile) return; if (!sidebarMounted && target === 'lista.html') return; window.location.href = target; return; }
+      const isLocal = ['localhost','127.0.0.1'].includes(window.location.hostname);
+      const SHELL_BASE = isLocal ? 'http://localhost:5100' : 'https://naowee-tech.github.io/naowee-test-sidebar-shell';
+      window.location.href = `${SHELL_BASE}/perfil.html?role=${roleCode}&active=${activeId}`;
+    }
+  });
+  sidebarMounted = true;
+  mountHeader({ headerEl: document.getElementById('topHeader'), role });
+  mountDemoRoleSwitcher({ rootEl: document.getElementById('demoRoleSwitcherRoot'), currentRoleCode: roleCode });
+</script>
 </body>
 </html>

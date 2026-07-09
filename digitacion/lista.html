@@ -6,6 +6,11 @@
 <title>Naowee – Competencia deportiva</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="design-system.css"/>
+<link rel="stylesheet" href="shared/tokens.css?v=2.1.0"/>
+<link rel="stylesheet" href="shared/shell.css?v=2.1.0"/>
+<link rel="stylesheet" href="naowee-tables.css"/>
+<link rel="stylesheet" href="shared/naowee-footer.css?v=2.1.0"/>
+<script src="shared/naowee-footer.js?v=2.1.0" defer></script>
 <style>
 :root {
   --naranja:#FF7500; --azul:#002B5B;
@@ -16,72 +21,16 @@
   --border:#e7e9f3; --border-dark:#d0d4e6;
   --blue-info:#1f78d1; --blue-bg:#eef5ff;
   --orange-bg:#fff3e6; --orange-border:#ffbf75;
-  --sidebar-w:274px; --header-h:88px;
-  --radius-sm:6px; --radius-md:8px; --radius-lg:12px; --radius-xl:20px; --radius-full:9999px;
   --font:'Inter',sans-serif;
   --shadow-card:0 0 2px rgba(145,158,171,.2),0 12px 24px -4px rgba(145,158,171,.12);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font-size:14px}
-
-/* SHELL */
-.shell{display:flex;height:100vh;overflow:hidden}
-
-/* SIDEBAR */
-.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow-y:auto;transition:width .2s,min-width .2s}
-.sidebar-logo{height:var(--header-h);display:flex;align-items:center;gap:16px;padding:0 24px;border-bottom:1px solid var(--border);flex-shrink:0}
-.burger-btn{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;width:24px;height:24px;flex-shrink:0;border-radius:var(--radius-sm);transition:background .15s,transform .2s}
-.burger-btn:hover{background:rgba(0,0,0,.06)}
-.burger-btn:active{transform:scale(.9)}
-.burger-btn svg{transition:transform .3s cubic-bezier(.4,0,.2,1)}
-.sidebar.collapsed .burger-btn svg{transform:rotate(180deg)}
-.naowee-logo{height:33px;flex-shrink:0}
-.sidebar-nav{flex:1;padding:24px 0 10px;display:flex;flex-direction:column;gap:10px}
-.nav-section{font-size:12px;font-weight:500;color:#b5b9d4;letter-spacing:0;padding:0 12px;line-height:16px}
-.nav-row{display:flex;align-items:center;gap:12px;height:44px;padding:0 20px 0 0;border-radius:var(--radius-sm);cursor:pointer;transition:background .12s;position:relative}
-.nav-row:hover{background:#f5f6fa}
-.nav-row .icon{width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-left:28px}
-.nav-row .lbl{flex:1;font-size:14px;font-weight:500;color:var(--text-primary)}
-.nav-row .badge-red{width:7px;height:7px;background:#e52000;border-radius:50%}
-.nav-row .nav-arrow{width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center;opacity:.7}
-.active-bar{position:absolute;left:4px;top:8px;width:4px;height:28px;background:var(--accent);border-radius:25px}
-.nav-row.active{background:transparent}
-.nav-row.active:hover{background:transparent}
-.nav-row.active .lbl{color:var(--accent)}
-.subnav{padding-left:0}
-.sub-row{display:flex;align-items:center;gap:8px;height:36px;padding:0 8px 0 64px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;color:var(--text-secondary);transition:background .12s;text-decoration:none}
-.sub-row:hover{background:#f5f6fa}
-.sub-row .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.sub-row.active-sub{color:var(--accent);font-weight:500}
-.sub-row.active-sub .dot{background:var(--accent)}
-.sidebar-bottom{padding:8px 0;border-top:1px solid var(--border)}
-.sidebar.collapsed{width:72px;min-width:72px;overflow:hidden}
-.sidebar.collapsed .naowee-logo,.sidebar.collapsed .lbl,.sidebar.collapsed .nav-arrow,.sidebar.collapsed .nav-section,.sidebar.collapsed .subnav,.sidebar.collapsed .sidebar-bottom .lbl{display:none}
-.sidebar.collapsed .sidebar-logo{justify-content:center;padding:0}
-.sidebar.collapsed .nav-row{justify-content:center;padding:0}
-.sidebar.collapsed .nav-row .icon{margin-left:0}
-
-/* MAIN */
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-
-/* TOP HEADER */
-.top-header{height:var(--header-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:flex-end;gap:16px;padding:0 24px;flex-shrink:0}
-.user-chip{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:var(--radius-full);padding:6px 12px 6px 6px;cursor:pointer}
-.ava{position:relative}
-.ava-ring{width:34px;height:34px;border-radius:50%;background:#ffb8c1;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#672834}
-.ava-dot{position:absolute;bottom:0;right:0;width:8px;height:8px;background:var(--green);border:2px solid #fff;border-radius:50%}
-.user-info{display:flex;flex-direction:column;gap:1px}
-.user-name{font-size:13px;font-weight:600;color:var(--text-primary)}
-.user-role{font-size:11px;color:var(--text-secondary)}
-
-/* PAGE */
-.page{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 32px 40px}
 
 /* Page Header */
 .page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;padding-top:28px}
 .page-title{font-size:24px;font-weight:600;color:var(--text-primary);margin-bottom:4px}
 .page-sub{font-size:13px;color:var(--text-secondary)}
-/* .btn-new → .naowee-btn--loud--large (canónico) */
+.btn-new{display:flex;align-items:center;gap:8px;height:44px;padding:0 20px;border-radius:var(--radius-md);font-size:14px;font-weight:600;font-family:var(--font);cursor:pointer;border:none;background:var(--accent);color:#fff;white-space:nowrap}
+.btn-new:hover{opacity:.9}
 
 /* Sport Pills Section */
 .sport-section{background:var(--surface);border-radius:var(--radius-xl);box-shadow:var(--shadow-card);padding:20px 24px;margin-bottom:24px;position:sticky;top:0;z-index:10;transition:border-radius .15s,box-shadow .15s}
@@ -111,12 +60,20 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 
 /* Filters Row */
 .filters-row{display:flex;align-items:center;gap:10px;padding:16px 20px}
-/* buscador → componente canónico .naowee-textfield; ancho + altura del toolbar */
-.lista-search{flex:1;max-width:340px}
-.lista-search .naowee-textfield__input-wrap{height:40px}
-.lista-search .tf-ico{color:var(--text-secondary);flex-shrink:0}
-/* filtros → componente canónico .naowee-dropdown; ancho fijo en la fila flex (la DS es width:100%) */
-.filters-row .lista-filter{flex:0 0 auto;width:200px}
+.search-input{flex:1;max-width:340px;height:40px;padding:0 12px 0 36px;border:1px solid var(--border-dark);border-radius:var(--radius-md);font-family:var(--font);font-size:13px;color:var(--text-primary);outline:none;background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Ccircle cx='7' cy='7' r='5' stroke='%23646587' stroke-width='1.3'/%3E%3Cpath d='M11 11l3.5 3.5' stroke='%23646587' stroke-width='1.3' stroke-linecap='round'/%3E%3C/svg%3E") 10px center no-repeat;transition:border-color .15s}
+.search-input:focus{border-color:var(--accent)}
+.search-input::placeholder{color:var(--text-secondary)}
+.filter-dd{position:relative}
+.filter-dd-trigger{display:flex;align-items:center;gap:6px;height:40px;padding:0 12px;border:1px solid var(--border-dark);border-radius:var(--radius-md);background:var(--surface);font-size:13px;font-weight:500;color:var(--text-primary);cursor:pointer;transition:all .15s;white-space:nowrap;user-select:none}
+.filter-dd-trigger:hover{border-color:var(--accent)}
+.filter-dd-trigger.open{border-color:var(--accent);box-shadow:0 0 0 3px rgba(215,64,9,.1)}
+.filter-dd-trigger svg{color:var(--text-secondary);transition:transform .2s;flex-shrink:0}
+.filter-dd-trigger.open svg{transform:rotate(180deg);color:var(--accent)}
+.filter-dd-menu{position:absolute;top:calc(100% + 6px);left:0;min-width:100%;max-height:0;overflow:hidden;opacity:0;background:var(--surface);border:1px solid var(--border-dark);border-radius:var(--radius-md);box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:100;transition:max-height .2s cubic-bezier(.4,0,.2,1),opacity .15s ease}
+.filter-dd-menu.open{max-height:280px;opacity:1;overflow-y:auto}
+.filter-dd-opt{padding:9px 14px;font-size:13px;color:var(--text-primary);cursor:pointer;transition:background .1s;white-space:nowrap}
+.filter-dd-opt:hover{background:#f5f6fa}
+.filter-dd-opt.selected{background:var(--orange-bg);color:var(--accent);font-weight:500}
 
 /* Pagination */
 .pagination{display:flex;align-items:center;gap:6px;margin-left:auto;font-size:13px;color:var(--text-secondary)}
@@ -142,6 +99,7 @@ tbody tr:hover{background:#fafbfd}
 .comp-cat{font-size:11px;color:var(--text-secondary)}
 
 /* Badge sistema */
+.badge-sis{display:inline-flex;padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:600;white-space:nowrap;background:#f0f2f5;color:var(--text-secondary)}
 .sis-medal{font-size:11px;color:var(--text-secondary);display:flex;align-items:center;gap:4px;margin-top:3px}
 
 /* Deporte + Modalidad */
@@ -154,7 +112,13 @@ tbody tr:hover{background:#fafbfd}
 .evento-text{font-size:13px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
 .evento-sub{font-size:11px;color:var(--text-secondary)}
 
-/* Badge sistema/estado → componente canónico .naowee-badge (ver render JS) */
+/* Badge estado */
+.badge-est{display:inline-flex;padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:600;white-space:nowrap}
+.badge-est.digitacion{background:#fff3e6;color:var(--naranja)}
+.badge-est.pausa{background:#fff0ee;color:#c04020}
+.badge-est.finalizada{background:var(--green-bg);color:var(--green)}
+.badge-est.asignada{background:#e8f4ff;color:#1f78d1}
+.badge-est.creada{background:#f0f2f5;color:var(--text-secondary)}
 
 /* Digitador */
 .digi-cell{display:flex;align-items:center;gap:8px;white-space:nowrap}
@@ -214,130 +178,19 @@ tbody tr:hover{background:#fafbfd}
 .sport-pill{transition:all .2s cubic-bezier(.4,0,.2,1)}
 .sport-pill:active{transform:scale(.95)}
 tbody tr{animation:fadeInUp .3s ease-out;animation-fill-mode:both}
-/* PROFILE SWITCHER */
-.profile-switcher{position:relative}
-.profile-current{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--border);border-radius:var(--radius-full);cursor:pointer;font-size:13px;font-weight:500;color:var(--text-primary);transition:all .15s;background:var(--surface)}
-.profile-current:hover{border-color:var(--accent);background:#fff8f4}
-.profile-dropdown{position:absolute;top:calc(100% + 6px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:0 4px 16px rgba(0,0,0,.12);min-width:260px;z-index:100;display:none;overflow:hidden}
-.profile-dropdown.open{display:block}
-.profile-option{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;transition:background .12s;color:var(--text-secondary)}
-.profile-option:hover{background:#f5f6fa}
-.profile-option.active{background:#fff3e6;color:var(--accent)}
-.po-name{font-size:13px;font-weight:500;color:inherit}
-.po-desc{font-size:11px;color:var(--text-secondary);margin-top:1px}
-/* ═══════════ CANÓNICO (paridad Project/IVC + host shell) ═══════════ */
-.sidebar-logo{gap:12px;padding:0 18px}
-.sb-logo-img{height:42px;width:auto;display:block;flex-shrink:0;object-fit:contain}
-.sb-logo-img:first-of-type{margin-left:auto}
-.sb-logo-img:last-of-type{margin-right:auto}
-.logo-sep{width:1px;height:34px;background:var(--border);flex-shrink:0}
-.sidebar{transition:width .36s cubic-bezier(.32,.72,0,1),min-width .36s cubic-bezier(.32,.72,0,1)}
-.sidebar.collapsed .sb-logo-img,.sidebar.collapsed .logo-sep{display:none}
-.sidebar.collapsed .nav-arrow{max-width:0;opacity:0;pointer-events:none;margin:0;overflow:hidden}
-.sidebar.collapsed .nav-row{justify-content:center;padding:0;gap:0}
-.sidebar.collapsed .nav-row .icon{margin-left:0;position:relative;z-index:1}
-.sidebar.collapsed .nav-row .active-bar{display:none}
-.sidebar.collapsed .nav-row:hover{background:transparent}
-.sidebar.collapsed .nav-row.active{background:transparent}
-.sidebar.collapsed .nav-row::before{content:'';position:absolute;left:50%;top:50%;width:40px;height:40px;border-radius:8px;transform:translate(-50%,-50%);background:transparent;pointer-events:none;transition:background .2s cubic-bezier(.32,.72,0,1);z-index:0}
-.sidebar.collapsed .nav-row:hover::before{background:#f5f6fa}
-.sidebar.collapsed .nav-row.active::before{background:#fff3e6}
-.sidebar.collapsed .nav-row.active:hover::before{background:#ffe4cf}
-.nav-tooltip{position:fixed;background:var(--text-primary);color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;font-weight:500;white-space:nowrap;pointer-events:none;z-index:2000;box-shadow:0 4px 14px rgba(40,40,52,.18);opacity:0;transform:translateY(-50%) translateX(-4px);transition:opacity .15s ease,transform .15s ease}
-.nav-tooltip.is-visible{opacity:1;transform:translateY(-50%) translateX(0)}
-.nav-tooltip::before{content:'';position:absolute;right:100%;top:50%;transform:translateY(-50%);border:5px solid transparent;border-right-color:var(--text-primary)}
-.naowee-btn--loud:hover,.naowee-btn--loud:focus-visible{box-shadow:0 6px 16px rgba(215,64,9,.22);outline:none}
-.naowee-btn--loud:active{box-shadow:0 2px 6px rgba(215,64,9,.14)}
-.naowee-btn--loud:disabled,.naowee-btn--loud[disabled]{box-shadow:none}
-.sb-profile{position:relative;margin:0 10px 6px;padding-top:8px;border-top:1px solid var(--border)}
-.sb-profile-chip{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-lg);cursor:pointer;transition:background .15s}
-.sb-profile-chip:hover{background:#f5f6fa}
-.sb-profile-ava{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:#ffe4cf;color:#d74009;flex-shrink:0}
-.sb-profile-meta{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
-.sb-profile-name{font-size:13px;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-profile-role{font-size:11px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-profile-chev{flex-shrink:0;color:var(--text-secondary);transition:transform .2s}
-.sb-profile.open .sb-profile-chev{transform:rotate(180deg)}
-.sb-profile-dd{position:absolute;left:10px;right:10px;bottom:calc(100% + 6px);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:0 -8px 24px rgba(40,40,52,.16);overflow:hidden;opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .2s,transform .2s;z-index:120}
-.sb-profile.open .sb-profile-dd{opacity:1;transform:translateY(0);pointer-events:auto}
-.sb-profile-dd__label{font-size:10px;font-weight:700;letter-spacing:.4px;color:var(--text-secondary);padding:10px 14px 4px;text-transform:uppercase}
-.sb-profile-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;transition:background .12s;color:var(--text-secondary)}
-.sb-profile-opt:hover{background:#f5f6fa}
-.sb-profile-opt.active{background:#fff3e6;color:var(--accent)}
-.sb-profile-opt .po-name{font-size:13px;font-weight:600;color:inherit}
-.sb-profile-opt .po-desc{font-size:11px;color:var(--text-secondary);margin-top:1px}
-.sidebar.collapsed .sb-profile{margin:0;border-top:none}
-.sidebar.collapsed .sb-profile-chip{justify-content:center;padding:8px 0}
-.sidebar.collapsed .sb-profile-meta,.sidebar.collapsed .sb-profile-chev{display:none}
-.sidebar.collapsed .sb-profile-dd{left:6px;width:236px;right:auto}
-.uc-chev{color:var(--text-secondary);transition:transform .2s}
-.profile-switcher.open .profile-dropdown{display:block}
-.profile-switcher.open .uc-chev{transform:rotate(180deg)}
 </style>
-<link rel="stylesheet" href="naowee-footer.css"/>
 </head>
 <body>
 <div class="shell">
 
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">
-    <button class="burger-btn" onclick="document.getElementById('sidebar').classList.toggle('collapsed')">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.5 12H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round"/><path d="M5.5 16H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round"/><path d="M5.5 8H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </button>
-    <img src="logos/ministerio.svg" alt="Ministerio del Deporte" class="sb-logo-img"/>
-      <div class="logo-sep"></div>
-      <img src="logos/suid.png" alt="SUID" class="sb-logo-img"/>
-  </div>
-  <nav class="sidebar-nav">
-    <div class="nav-section">DASHBOARD</div>
-    <div class="nav-row" onclick="window.location.href='eventos.html'">
-      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#B5B9D4" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#B5B9D4" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#B5B9D4" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#B5B9D4" stroke-width="1.5"/></svg></div>
-      <span class="lbl">Inicio</span>
-    </div>
-    <div class="nav-section">GESTI&Oacute;N</div>
-    <div class="nav-row active">
-      <div class="active-bar"></div>
-      <div class="icon"><svg width="24" height="24" viewBox="0 0 19.5 19.5" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.75.75h8a1 1 0 011 1v6a5 5 0 01-10 0v-6a1 1 0 011-1z" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.17 9.75H4.75a4 4 0 01-4-4v-2a1 1 0 011-1h3" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.33 9.75h.42a4 4 0 004-4v-2a1 1 0 00-1-1h-3" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M13.42 15.75H6.08a1.25 1.25 0 01-1.18-1.68l.33-1a1.25 1.25 0 011.18-.82h7.33c.54 0 1.02.34 1.18.82l.33 1a1.25 1.25 0 01-1.18 1.68z" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.75 12.75v3" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="lbl">Competencias</span>
-      <span class="nav-arrow"><svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M7.33 12.83L11 9.17l3.67 3.67" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-    </div>
-    <div class="subnav">
-      <div class="sub-row active-sub"><span class="dot"></span>Lista de competencias</div>
-      <div class="sub-row" onclick="window.location.href='stepper.html'"><span class="dot" style="background:transparent"></span>Nueva competencia</div>
-    </div>
-    <div class="nav-row" onclick="window.location.href='sorteo.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polyline points="16 3 21 3 21 8" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="4" y1="20" x2="21" y2="3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><polyline points="21 16 21 21 16 21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="15" y1="15" x2="21" y2="21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><line x1="4" y1="4" x2="9" y2="9" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Sorteo</span></div>
-    <div class="nav-row" onclick="window.location.href='digitadores.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M16 20v-1a4 4 0 00-4-4H6a4 4 0 00-4 4v1" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="#B5B9D4" stroke-width="1.5"/><path d="M22 20v-1a4 4 0 00-4-4" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M15 3a4 4 0 010 8" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Digitadores</span></div>
-    <div class="nav-row" onclick="window.location.href='coordinadores.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="16.75" cy="17.75" r="4.25" stroke="#B5B9D4" stroke-width="1.5"/><path d="M18.18 16.91l-1.79 1.78-1.07-1.07" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M10 15H7a4 4 0 00-4 4v1" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><circle cx="11" cy="7" r="4" stroke="#B5B9D4" stroke-width="1.5"/></svg></div><span class="lbl">Coordinadores</span></div>
-    <div class="nav-row"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 20H5a2 2 0 01-2-2v-2a2 2 0 012-2h16" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M20 17H6" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="7.29" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5"/><ellipse cx="16.72" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5"/><path d="M10.29 7a2.72 2.72 0 013.43 0" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M3 7h1.29M19.72 7H21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Auditoria</span></div>
-  </nav>
-  <div class="sidebar-bottom">
-    <div class="nav-row" id="btnLogout"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lbl">Cerrar sesion</span></div>
-  </div>
-</aside>
+  <!-- Sidebar montado por shared/sidebar.js -->
+  <aside class="sidebar" id="sidebarRoot"></aside>
 
-<!-- MAIN -->
-<div class="main">
-  <header class="top-header">
-    <div class="profile-switcher" id="profileSwitcher">
-      <div class="user-chip" onclick="toggleProfileDD(event)">
-        <div class="ava"><div class="ava-ring" style="background:#ffe4cf;color:#d74009">CE</div><div class="ava-dot"></div></div>
-        <div class="user-info"><span class="user-name">Coordinador</span><span class="user-role">Coordinador de eventos</span></div>
-        <svg class="uc-chev" width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-      </div>
-      <div class="profile-dropdown" id="profileDropdown">
-        <div class="profile-option active" onclick="switchProfile('coordinador')">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
-          <div><div class="po-name">Coordinador de eventos</div><div class="po-desc">Crear y configurar competencias</div></div>
-        </div>
-        <div class="profile-option" onclick="switchProfile('digitador')">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h12M2 12h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-          <div><div class="po-name">Digitador</div><div class="po-desc">Digitar enfrentamientos asignados</div></div>
-        </div>
-      </div>
-    </div>
-  </header>
-  <div class="page">
+  <div class="main">
+    <!-- Header montado por shared/sidebar.js (mountHeader) -->
+    <header class="top-header" id="topHeader"></header>
+
+    <main class="page" id="pageContent">
 
     <!-- Page Header -->
     <div class="page-header">
@@ -345,7 +198,7 @@ tbody tr{animation:fadeInUp .3s ease-out;animation-fill-mode:both}
         <h1 class="page-title">Competencia deportiva</h1>
         <p class="page-sub" id="pageSub">0 de 0 competencias</p>
       </div>
-      <button class="naowee-btn naowee-btn--loud naowee-btn--large" onclick="window.location.href='stepper.html'">+ Nuevo enfrentamiento</button>
+      <button class="btn-new" onclick="window.location.href='stepper.html'">+ Nuevo enfrentamiento</button>
     </div>
 
     <!-- Sport Pills -->
@@ -365,30 +218,42 @@ tbody tr{animation:fadeInUp .3s ease-out;animation-fill-mode:both}
     <div class="table-card">
       <!-- Filters + Pagination -->
       <div class="filters-row">
-        <div class="naowee-textfield lista-search">
-          <div class="naowee-textfield__input-wrap">
-            <svg class="tf-ico" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-            <input class="naowee-textfield__input" id="searchInput" type="text" placeholder="Buscar por nombre, codigo, deporte, prue..."/>
+        <div class="search-pill" id="searchPill" data-filled="false">
+          <svg class="search-pill__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <input class="search-pill__input" id="searchInput" type="text" placeholder="Buscar por nombre, código, deporte, prueba..."/>
+          <button class="search-pill__clear" type="button" onclick="clearSearch()" aria-label="Limpiar búsqueda">
+            <svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="filter-dd" id="sistemaDD">
+          <div class="filter-dd-trigger" onclick="toggleFilterDD('sistemaDD')">
+            <span class="filter-dd-label" id="sistemaLabel">Todos los sistemas</span>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </div>
+          <div class="filter-dd-menu" id="sistemaMenu"></div>
         </div>
-        <div class="naowee-dropdown lista-filter" id="sistemaDD">
-          <button type="button" class="naowee-dropdown__trigger" onclick="toggleFilterDD('sistemaDD')">
-            <span class="naowee-dropdown__value" id="sistemaLabel">Todos los sistemas</span>
-            <span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
-          </button>
-          <div class="naowee-dropdown__menu" id="sistemaMenu"></div>
+        <div class="filter-dd" id="eventoDD">
+          <div class="filter-dd-trigger" onclick="toggleFilterDD('eventoDD')">
+            <span class="filter-dd-label" id="eventoLabel">Evento</span>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="filter-dd-menu" id="eventoMenu"></div>
         </div>
-        <div class="naowee-dropdown lista-filter" id="eventoDD">
-          <button type="button" class="naowee-dropdown__trigger" onclick="toggleFilterDD('eventoDD')">
-            <span class="naowee-dropdown__value" id="eventoLabel">Evento</span>
-            <span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
-          </button>
-          <div class="naowee-dropdown__menu" id="eventoMenu"></div>
-        </div>
-        <div class="pagination">
-          P&aacute;gina <input class="page-input" value="1"/> de <span id="totalCount">0</span>
-          <button class="page-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L4 6l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
-          <button class="page-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4 2l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+        <!-- Paginación DS oficial (naowee-pagination--small) -->
+        <div class="naowee-pagination naowee-pagination--small" style="margin-left:auto" role="navigation" aria-label="Paginación de competencias">
+          <div class="naowee-pagination__pages">
+            <span class="naowee-pagination__label">P&aacute;gina</span>
+            <input class="naowee-pagination__input" id="pageInput" value="1" aria-label="Página actual"/>
+            <span class="naowee-pagination__total">de <strong id="totalCount">0</strong></span>
+          </div>
+          <div class="naowee-pagination__controls">
+            <button class="naowee-pagination__btn" type="button" aria-label="P&aacute;gina anterior">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="naowee-pagination__btn" type="button" aria-label="P&aacute;gina siguiente">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
         </div>
       </div>
       <div class="table-wrap">
@@ -410,10 +275,12 @@ tbody tr{animation:fadeInUp .3s ease-out;animation-fill-mode:both}
       </div>
     </div>
 
+    </main>
   </div>
 </div>
 
-</div>
+<!-- Demo role switcher (footer flotante — solo sandbox) -->
+<div id="demoRoleSwitcherRoot"></div>
 
 <script>
 const SPORTS_FILTER = [
@@ -957,19 +824,30 @@ function populateDropdowns(){
   const eventos = ['', ...new Set(DATA.map(d => d.evento))].sort((a,b)=>a?a.localeCompare(b):-1);
 
   document.getElementById('sistemaMenu').innerHTML = sistemas.map(s =>
-    '<div class="naowee-dropdown__option'+(s===sistemaFilter?' naowee-dropdown__option--selected':'')+'" onclick="pickFilterDD(\'sistema\',\''+s.replace(/'/g,"\\'")+'\')">'+( s||'Todos los sistemas')+'</div>'
+    '<div class="filter-dd-opt'+(s===sistemaFilter?' selected':'')+'" onclick="pickFilterDD(\'sistema\',\''+s.replace(/'/g,"\\'")+'\')">'+( s||'Todos los sistemas')+'</div>'
   ).join('');
 
   document.getElementById('eventoMenu').innerHTML = eventos.map(e =>
-    '<div class="naowee-dropdown__option'+(e===eventoFilter?' naowee-dropdown__option--selected':'')+'" onclick="pickFilterDD(\'evento\',\''+e.replace(/'/g,"\\'")+'\')">'+( e||'Evento')+'</div>'
+    '<div class="filter-dd-opt'+(e===eventoFilter?' selected':'')+'" onclick="pickFilterDD(\'evento\',\''+e.replace(/'/g,"\\'")+'\')">'+( e||'Evento')+'</div>'
   ).join('');
 }
 
 function toggleFilterDD(id){
   const dd = document.getElementById(id);
-  const isOpen = dd.classList.contains('naowee-dropdown--open');
-  document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){ d.classList.remove('naowee-dropdown--open'); });
-  if(!isOpen) dd.classList.add('naowee-dropdown--open');
+  const trigger = dd.querySelector('.filter-dd-trigger');
+  const menu = dd.querySelector('.filter-dd-menu');
+  const isOpen = menu.classList.contains('open');
+
+  // Close all others
+  document.querySelectorAll('.filter-dd-menu.open').forEach(function(m){
+    m.classList.remove('open');
+    m.closest('.filter-dd').querySelector('.filter-dd-trigger').classList.remove('open');
+  });
+
+  if(!isOpen){
+    trigger.classList.add('open');
+    menu.classList.add('open');
+  }
 }
 
 function pickFilterDD(type, val){
@@ -981,7 +859,10 @@ function pickFilterDD(type, val){
     document.getElementById('eventoLabel').textContent = val || 'Evento';
   }
   // Close all menus
-  document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){ d.classList.remove('naowee-dropdown--open'); });
+  document.querySelectorAll('.filter-dd-menu.open').forEach(function(m){
+    m.classList.remove('open');
+    m.closest('.filter-dd').querySelector('.filter-dd-trigger').classList.remove('open');
+  });
   populateDropdowns();
   renderTable();
 }
@@ -1000,7 +881,7 @@ function renderTable(){
         <div class="comp-code">${d.code} &nbsp;\u2022&nbsp; <span class="comp-cat">${d.cat}</span></div>
       </td>
       <td>
-        <span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">${d.sis.includes('+')?d.sis.split('+')[0].trim():d.sis}</span>
+        <span class="badge-sis ${d.sisCls}">${d.sis.includes('+')?d.sis.split('+')[0].trim():d.sis}</span>
         <div class="sis-medal">${d.medal?'🥇 Con medallas':'Sin medallas'}</div>
       </td>
       <td>
@@ -1011,7 +892,7 @@ function renderTable(){
         <div class="evento-text">${d.evento}</div>
         <div class="evento-sub">${d.zona}</div>
       </td>
-      <td><span class="naowee-badge naowee-badge--quiet naowee-badge--small naowee-badge--${({digitacion:'caution',pausa:'neutral',finalizada:'positive',asignada:'informative',creada:'neutral'})[d.estCls]||'neutral'}">${d.estado}</span></td>
+      <td><span class="badge-est ${d.estCls}">${d.estado}</span></td>
       <td>
         ${d.digi
           ? '<div class="digi-cell"><div class="digi-mini" style="background:'+d.digiColor+'">'+d.digiInit+'</div>'+d.digi+'</div>'
@@ -1028,15 +909,30 @@ function renderTable(){
 }
 
 // Event listeners
+// Search input — actualiza filtro + toggle del clear button del pill wrapper
 document.getElementById('searchInput').addEventListener('input', function(){
   searchQuery = this.value;
+  document.getElementById('searchPill').setAttribute('data-filled', this.value.length > 0 ? 'true' : 'false');
   renderTable();
 });
 
+// Clear button del search pill — limpia input + redispara filtro
+function clearSearch(){
+  const input = document.getElementById('searchInput');
+  input.value = '';
+  searchQuery = '';
+  document.getElementById('searchPill').setAttribute('data-filled', 'false');
+  renderTable();
+  input.focus();
+}
+
 // Close filter dropdowns on outside click
 document.addEventListener('click', function(e){
-  if(!e.target.closest('.naowee-dropdown')){
-    document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){ d.classList.remove('naowee-dropdown--open'); });
+  if(!e.target.closest('.filter-dd')){
+    document.querySelectorAll('.filter-dd-menu.open').forEach(function(m){
+      m.classList.remove('open');
+      m.closest('.filter-dd').querySelector('.filter-dd-trigger').classList.remove('open');
+    });
   }
 });
 
@@ -1314,24 +1210,32 @@ function hideToast(){
   document.getElementById('toastNotif').classList.remove('show');
 }
 </script>
-<script>
-function toggleProfileDD(e){ if(e) e.stopPropagation(); document.getElementById('profileSwitcher').classList.toggle('open'); }
-function fadeAndGo(url){document.body.style.transition='opacity .25s ease';document.body.style.opacity='0';setTimeout(()=>{window.location.href=url},260)}
-function switchProfile(p){
-  document.getElementById('profileSwitcher')?.classList.remove('open');
-  if(p==='digitador') fadeAndGo('digitador.html');
-  if(p==='coordinador') fadeAndGo('eventos.html');
-}
-document.addEventListener('click',function(e){
-  if(!e.target.closest('.profile-switcher')) document.getElementById('profileSwitcher')?.classList.remove('open');
-});
-
-document.getElementById('btnLogout')?.addEventListener('click', () => {
-  fadeAndGo('../escenarios/escenario-01-login.html');
-});
-/* Tooltip al colapsar el sidebar */
-(function(){var sb=document.getElementById('sidebar');if(!sb)return;var tip=document.createElement('div');tip.className='nav-tooltip';document.body.appendChild(tip);function show(el,t){if(!sb.classList.contains('collapsed'))return;tip.textContent=t;var r=el.getBoundingClientRect();tip.style.left=(r.right+12)+'px';tip.style.top=(r.top+r.height/2)+'px';tip.classList.add('is-visible');}function hide(){tip.classList.remove('is-visible');}sb.querySelectorAll('.nav-row').forEach(function(row){var l=row.querySelector('.lbl');if(!l)return;row.addEventListener('mouseenter',function(){show(row,l.textContent.trim());});row.addEventListener('mouseleave',hide);});var chip=document.querySelector('.sb-profile-chip');if(chip){chip.addEventListener('mouseenter',function(){show(chip,'Cambiar perfil');});chip.addEventListener('mouseleave',hide);}})();
+<script type="module">
+  import { mountSidebar, mountHeader, mountDemoRoleSwitcher } from './shared/sidebar.js';
+  const roleCode = new URLSearchParams(window.location.search).get('role') || 'ROOT';
+  const currentFile = window.location.pathname.split('/').pop() || 'lista.html';
+  const LEGACY_MAP = {
+    'sorteo': 'sorteo.html',
+    'eventos': 'eventos.html', 'eventos-lista': 'eventos.html',
+    'competencias': 'lista.html', 'competencias-lista': 'lista.html',
+    'competencias-inicio': 'lista.html',
+    'digitadores': 'digitadores.html', 'coordinadores': 'coordinadores.html',
+    'mi-digitacion': 'digitador.html', 'audit-logs': 'auditoria.html'
+  };
+  const { role } = mountSidebar({
+    rootEl: document.getElementById('sidebarRoot'),
+    roleCode,
+    activeId: 'competencias-lista',
+    onActiveChange: (activeId) => {
+      const target = LEGACY_MAP[activeId];
+      if (target) { if (target === currentFile) return; window.location.href = target; return; }
+      const isLocal = ['localhost','127.0.0.1'].includes(window.location.hostname);
+      const SHELL_BASE = isLocal ? 'http://localhost:5100' : 'https://naowee-tech.github.io/naowee-test-sidebar-shell';
+      window.location.href = `${SHELL_BASE}/perfil.html?role=${roleCode}&active=${activeId}`;
+    }
+  });
+  mountHeader({ headerEl: document.getElementById('topHeader'), role });
+  mountDemoRoleSwitcher({ rootEl: document.getElementById('demoRoleSwitcherRoot'), currentRoleCode: roleCode });
 </script>
-<script src="naowee-footer.js"></script>
 </body>
 </html>

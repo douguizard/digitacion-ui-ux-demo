@@ -6,6 +6,8 @@
 <title>Naowee – Nueva competencia</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="design-system.css"/>
+<link rel="stylesheet" href="shared/tokens.css?v=2.1.0"/>
+<link rel="stylesheet" href="shared/shell.css?v=2.1.0"/>
 <style>
 /* ═══════════════════════════════════════════════════════════
    DESIGN TOKENS — Naowee + Andes DS (from Figma)
@@ -30,71 +32,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font);background:var(--surface);color:var(--text-primary);font-size:14px}
 
-/* ═══ SHELL ══════════════════════════════════════════════ */
-.shell{display:flex;height:100vh;overflow:hidden}
-
-/* ═══ SIDEBAR ════════════════════════════════════════════ */
-.sidebar{
-  width:var(--sidebar-w);min-width:var(--sidebar-w);
-  background:var(--surface);border-right:1px solid var(--border);
-  display:flex;flex-direction:column;height:100vh;overflow-y:auto;transition:width .2s,min-width .2s;
-}
-.sidebar-logo{
-  height:var(--header-h);display:flex;align-items:center;gap:16px;
-  padding:0 24px;border-bottom:1px solid var(--border);flex-shrink:0;
-}
-.burger-btn{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;width:24px;height:24px;flex-shrink:0;border-radius:var(--radius-sm);transition:background .15s,transform .2s}
-.burger-btn:hover{background:rgba(0,0,0,.06)}
-.burger-btn:active{transform:scale(.9)}
-.burger-btn svg{transition:transform .3s cubic-bezier(.4,0,.2,1)}
-.sidebar.collapsed .burger-btn svg{transform:rotate(180deg)}
-.naowee-logo{height:33px;flex-shrink:0}
-.sidebar-nav{flex:1;padding:24px 0 10px;display:flex;flex-direction:column;gap:10px}
-.nav-section{font-size:12px;font-weight:500;color:#b5b9d4;letter-spacing:0;padding:0 12px;line-height:16px}
-.nav-row{display:flex;align-items:center;gap:12px;height:44px;padding:0 20px 0 0;border-radius:var(--radius-sm);cursor:pointer;transition:background .12s;position:relative}
-.nav-row:hover{background:#f5f6fa}
-.nav-row .icon{width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-left:28px}
-.nav-row .lbl{flex:1;font-size:14px;font-weight:500;color:var(--text-primary)}
-.nav-row .lbl.light{font-weight:500;color:var(--text-primary)}
-.nav-row .badge-red{width:7px;height:7px;background:#e52000;border-radius:50%}
-.nav-row .nav-arrow{width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center;opacity:.7}
-.active-bar{position:absolute;left:4px;top:8px;width:4px;height:28px;background:var(--accent);border-radius:25px}
-.nav-row.active{background:transparent}
-.nav-row.active:hover{background:transparent}
-.nav-row.active .lbl{color:var(--accent)}
-.subnav{padding-left:0}
-.sub-row{display:flex;align-items:center;gap:8px;height:36px;padding:0 8px 0 64px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;color:var(--text-secondary);transition:background .12s;text-decoration:none}
-.sub-row:hover{background:#f5f6fa}
-.sub-row .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.sub-row.active-sub{color:var(--accent);font-weight:500}
-.sub-row.active-sub .dot{background:var(--accent)}
-.sidebar-bottom{padding:8px 0;border-top:1px solid var(--border)}
-
-/* ═══ MAIN ═══════════════════════════════════════════════ */
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-
-/* ═══ TOP HEADER ═════════════════════════════════════════ */
-.top-header{
-  height:var(--header-h);background:var(--surface);border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:flex-end;gap:16px;padding:0 24px;flex-shrink:0;
-}
-.user-chip{
-  display:flex;align-items:center;gap:8px;
-  border:1px solid var(--border);border-radius:var(--radius-full);padding:6px 12px 6px 6px;cursor:pointer;
-}
-.ava{position:relative}
-.ava-ring{
-  width:34px;height:34px;border-radius:50%;
-  background:#ffb8c1;display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:600;color:#672834;
-}
-.ava-dot{position:absolute;bottom:0;right:0;width:8px;height:8px;background:var(--green);border:2px solid #fff;border-radius:50%}
-.user-info{display:flex;flex-direction:column;gap:1px}
-.user-name{font-size:13px;font-weight:600;color:var(--text-primary)}
-.user-role{font-size:11px;color:var(--text-secondary)}
-
 /* ═══ PAGE CONTENT ════════════════════════════════════════ */
-.page{flex:1;overflow-y:auto;overflow-x:hidden;padding:20px 28px 40px}
 
 .breadcrumb{display:flex;align-items:center;gap:4px;margin-bottom:10px;max-width:860px;margin-left:auto;margin-right:auto}
 .breadcrumb a{font-size:13px;font-weight:500;color:var(--accent);text-decoration:none;padding:4px 8px;border-radius:var(--radius-sm);transition:background .15s}
@@ -180,16 +118,6 @@ body{font-family:var(--font);background:var(--surface);color:var(--text-primary)
   width:16px;height:16px;border-radius:50%;background:var(--green);
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
-/* Tipo de deporte → cards .wz-pill (paridad sorteo) */
-.wz-pills{display:flex;gap:10px;flex-wrap:wrap;padding-top:2px}
-.wz-pill{display:flex;align-items:center;gap:9px;padding:13px 18px;border:1px solid var(--border-dark);border-radius:var(--radius-lg);cursor:pointer;background:var(--surface);transition:all .15s;min-width:180px}
-.wz-pill:hover{border-color:var(--accent);background:#fff8f4}
-.wz-pill.sel{border-color:var(--accent);background:var(--orange-bg)}
-.wz-pill-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;background:var(--bg-soft,#f5f6fa);flex-shrink:0}
-.wz-pill.sel .wz-pill-ico{background:#ffe4cf}
-.wz-pill-txt b{display:block;font-size:13.5px;font-weight:700;color:var(--text-primary)}
-.wz-pill-txt>span{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text-secondary);margin-top:2px}
-.wz-pill-txt .naowee-badge{flex-shrink:0}
 
 /* ═══ STEP 2 — SISTEMA ════════════════════════════════════ */
 .sistema-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px}
@@ -472,27 +400,6 @@ select option{
 }
 
 /* ═══ SIDEBAR COLLAPSED ════════════════════════════════════ */
-.sidebar.collapsed{
-  width:72px;min-width:72px;
-  overflow:hidden;
-}
-.sidebar.collapsed .naowee-logo,
-.sidebar.collapsed .lbl,
-.sidebar.collapsed .nav-arrow,
-.sidebar.collapsed .nav-section,
-.sidebar.collapsed .subnav,
-.sidebar.collapsed .sidebar-bottom .lbl{
-  display:none;
-}
-.sidebar.collapsed .sidebar-logo{
-  justify-content:center;padding:0;
-}
-.sidebar.collapsed .nav-row{
-  justify-content:center;padding:0;
-}
-.sidebar.collapsed .nav-row .icon{
-  margin-left:0;
-}
 
 /* ═══ STEPPER PROGRESS BAR (gradient fill) ═══════════════ */
 .step-line{
@@ -697,137 +604,22 @@ select option{
 .radio-circle.active{border-color:var(--accent)}
 .radio-circle.active::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--accent)}
 
-/* ═══ PROFILE SWITCHER ═══════════════════════════════════ */
-.profile-switcher{position:relative}
-.profile-current{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--border);border-radius:var(--radius-full);cursor:pointer;font-size:13px;font-weight:500;color:var(--text-primary);transition:all .15s;background:var(--surface)}
-.profile-current:hover{border-color:var(--accent);background:#fff8f4}
-.profile-dropdown{position:absolute;top:calc(100% + 6px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);min-width:260px;z-index:100;display:none;overflow:hidden}
-.profile-dropdown.open{display:block}
-.profile-option{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;transition:background .12s;color:var(--text-secondary)}
-.profile-option:hover{background:#f5f6fa}
-.profile-option.active{background:var(--orange-bg);color:var(--accent)}
-.po-name{font-size:13px;font-weight:500;color:inherit}
-.po-desc{font-size:11px;color:var(--text-secondary);margin-top:1px}
-/* ═══════════ CANÓNICO (paridad Project/IVC + host shell) ═══════════ */
-.sidebar-logo{gap:12px;padding:0 18px}
-.sb-logo-img{height:42px;width:auto;display:block;flex-shrink:0;object-fit:contain}
-.sb-logo-img:first-of-type{margin-left:auto}
-.sb-logo-img:last-of-type{margin-right:auto}
-.logo-sep{width:1px;height:34px;background:var(--border);flex-shrink:0}
-.sidebar{transition:width .36s cubic-bezier(.32,.72,0,1),min-width .36s cubic-bezier(.32,.72,0,1)}
-.sidebar.collapsed .sb-logo-img,.sidebar.collapsed .logo-sep{display:none}
-.sidebar.collapsed .nav-arrow{max-width:0;opacity:0;pointer-events:none;margin:0;overflow:hidden}
-.sidebar.collapsed .nav-row{justify-content:center;padding:0;gap:0}
-.sidebar.collapsed .nav-row .icon{margin-left:0;position:relative;z-index:1}
-.sidebar.collapsed .nav-row .active-bar{display:none}
-.sidebar.collapsed .nav-row:hover{background:transparent}
-.sidebar.collapsed .nav-row.active{background:transparent}
-.sidebar.collapsed .nav-row::before{content:'';position:absolute;left:50%;top:50%;width:40px;height:40px;border-radius:8px;transform:translate(-50%,-50%);background:transparent;pointer-events:none;transition:background .2s cubic-bezier(.32,.72,0,1);z-index:0}
-.sidebar.collapsed .nav-row:hover::before{background:#f5f6fa}
-.sidebar.collapsed .nav-row.active::before{background:#fff3e6}
-.sidebar.collapsed .nav-row.active:hover::before{background:#ffe4cf}
-.nav-tooltip{position:fixed;background:var(--text-primary);color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;font-weight:500;white-space:nowrap;pointer-events:none;z-index:2000;box-shadow:0 4px 14px rgba(40,40,52,.18);opacity:0;transform:translateY(-50%) translateX(-4px);transition:opacity .15s ease,transform .15s ease}
-.nav-tooltip.is-visible{opacity:1;transform:translateY(-50%) translateX(0)}
-.nav-tooltip::before{content:'';position:absolute;right:100%;top:50%;transform:translateY(-50%);border:5px solid transparent;border-right-color:var(--text-primary)}
-.naowee-btn--loud:hover,.naowee-btn--loud:focus-visible{box-shadow:0 6px 16px rgba(215,64,9,.22);outline:none}
-.naowee-btn--loud:active{box-shadow:0 2px 6px rgba(215,64,9,.14)}
-.naowee-btn--loud:disabled,.naowee-btn--loud[disabled]{box-shadow:none}
-.sb-profile{position:relative;margin:0 10px 6px;padding-top:8px;border-top:1px solid var(--border)}
-.sb-profile-chip{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-lg);cursor:pointer;transition:background .15s}
-.sb-profile-chip:hover{background:#f5f6fa}
-.sb-profile-ava{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:#ffe4cf;color:#d74009;flex-shrink:0}
-.sb-profile-meta{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
-.sb-profile-name{font-size:13px;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-profile-role{font-size:11px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-profile-chev{flex-shrink:0;color:var(--text-secondary);transition:transform .2s}
-.sb-profile.open .sb-profile-chev{transform:rotate(180deg)}
-.sb-profile-dd{position:absolute;left:10px;right:10px;bottom:calc(100% + 6px);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:0 -8px 24px rgba(40,40,52,.16);overflow:hidden;opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .2s,transform .2s;z-index:120}
-.sb-profile.open .sb-profile-dd{opacity:1;transform:translateY(0);pointer-events:auto}
-.sb-profile-dd__label{font-size:10px;font-weight:700;letter-spacing:.4px;color:var(--text-secondary);padding:10px 14px 4px;text-transform:uppercase}
-.sb-profile-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;transition:background .12s;color:var(--text-secondary)}
-.sb-profile-opt:hover{background:#f5f6fa}
-.sb-profile-opt.active{background:#fff3e6;color:var(--accent)}
-.sb-profile-opt .po-name{font-size:13px;font-weight:600;color:inherit}
-.sb-profile-opt .po-desc{font-size:11px;color:var(--text-secondary);margin-top:1px}
-.sidebar.collapsed .sb-profile{margin:0;border-top:none}
-.sidebar.collapsed .sb-profile-chip{justify-content:center;padding:8px 0}
-.sidebar.collapsed .sb-profile-meta,.sidebar.collapsed .sb-profile-chev{display:none}
-.sidebar.collapsed .sb-profile-dd{left:6px;width:236px;right:auto}
-.uc-chev{color:var(--text-secondary);transition:transform .2s}
-.profile-switcher.open .profile-dropdown{display:block}
-.profile-switcher.open .uc-chev{transform:rotate(180deg)}
 </style>
-<link rel="stylesheet" href="naowee-footer.css"/>
+<link rel="stylesheet" href="naowee-tables.css"/>
+<link rel="stylesheet" href="shared/naowee-footer.css?v=2.1.0"/>
+<script src="shared/naowee-footer.js?v=2.1.0" defer></script>
 </head>
 <body>
 <div class="shell">
 
 <!-- ════════════ SIDEBAR ════════════ -->
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">
-    <button class="burger-btn" onclick="toggleSidebar()">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.5 12H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 16H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 8H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-<img src="logos/ministerio.svg" alt="Ministerio del Deporte" class="sb-logo-img"/>
-      <div class="logo-sep"></div>
-      <img src="logos/suid.png" alt="SUID" class="sb-logo-img"/>
-  </div>
-  <nav class="sidebar-nav">
-    <div class="nav-section">DASHBOARD</div>
-    <div class="nav-row" id="navInicio" onclick="window.location.href='eventos.html'">
-      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#8788AB" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#8788AB" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#8788AB" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#8788AB" stroke-width="1.5"/></svg></div>
-      <span class="lbl">Inicio</span>
-      <span class="badge-red"></span>
-      <span class="nav-arrow"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M7.33 9.17L11 12.83l3.67-3.67" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-    </div>
-    <div class="nav-section">GESTIÓN</div>
-    <div class="nav-row active">
-      <div class="active-bar"></div>
-      <div class="icon"><svg width="24" height="24" viewBox="0 0 19.5 19.5" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.75.75h8a1 1 0 011 1v6a5 5 0 01-10 0v-6a1 1 0 011-1z" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.17 9.75H4.75a4 4 0 01-4-4v-2a1 1 0 011-1h3" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.33 9.75h.42a4 4 0 004-4v-2a1 1 0 00-1-1h-3" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M13.42 15.75H6.08a1.25 1.25 0 01-1.18-1.68l.33-1a1.25 1.25 0 011.18-.82h7.33c.54 0 1.02.34 1.18.82l.33 1a1.25 1.25 0 01-1.18 1.68z" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.75 12.75v3" stroke="#d74009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="lbl">Competencias</span>
-      <span class="nav-arrow"><svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M7.33 12.83L11 9.17l3.67 3.67" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-    </div>
-    <div class="subnav">
-      <div class="sub-row" onclick="window.location.href='lista.html'"><span class="dot" style="background:transparent"></span>Lista de competencias</div>
-      <div class="sub-row active-sub"><span class="dot"></span>Nueva competencia</div>
-    </div>
-    <div class="nav-row" onclick="window.location.href='sorteo.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polyline points="16 3 21 3 21 8" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="4" y1="20" x2="21" y2="3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><polyline points="21 16 21 21 16 21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="15" y1="15" x2="21" y2="21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><line x1="4" y1="4" x2="9" y2="9" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Sorteo</span></div>
-    <div class="nav-row" onclick="window.location.href='digitadores.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M16 20v-1a4 4 0 00-4-4H6a4 4 0 00-4 4v1" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 20v-1a4 4 0 00-4-4v0" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 3a4 4 0 010 8" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lbl">Digitadores</span></div>
-    <div class="nav-row" onclick="window.location.href='coordinadores.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="16.75" cy="17.75" r="4.25" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.18 16.91l-1.79 1.78-1.07-1.07" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 15H7a4 4 0 00-4 4v1" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="7" r="4" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lbl">Coordinadores</span></div>
-    <div class="nav-row"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 20H5a2 2 0 01-2-2v-2a2 2 0 012-2h16" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 17H6" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="7.29" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><ellipse cx="16.72" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.29 7a2.72 2.72 0 013.43 0" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 7h1.29M19.72 7H21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lbl">Auditoria</span></div>
-  </nav>
-  <div class="sidebar-bottom">
-    <div class="nav-row" id="btnLogout"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lbl">Cerrar sesion</span></div>
-  </div>
-</aside>
+<aside class="sidebar" id="sidebarRoot"></aside>
 
 <!-- ════════════ MAIN ════════════ -->
 <div class="main">
-  <header class="top-header">
-    <div class="profile-switcher" id="profileSwitcher">
-      <div class="user-chip" onclick="toggleProfileDD(event)">
-        <div class="ava"><div class="ava-ring" style="background:#ffe4cf;color:#d74009">CE</div><div class="ava-dot"></div></div>
-        <div class="user-info"><span class="user-name">Coordinador</span><span class="user-role">Coordinador de eventos</span></div>
-        <svg class="uc-chev" width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-      </div>
-      <div class="profile-dropdown" id="profileDropdown">
-        <div class="profile-option active" onclick="switchProfile('coordinador')">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
-          <div><div class="po-name">Coordinador de eventos</div><div class="po-desc">Crear y configurar competencias</div></div>
-        </div>
-        <div class="profile-option" onclick="switchProfile('digitador')">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h12M2 12h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-          <div><div class="po-name">Digitador</div><div class="po-desc">Digitar enfrentamientos asignados</div></div>
-        </div>
-      </div>
-    </div>
-  </header>
-  <div class="page">
-    <div class="breadcrumb">
-      <a href="#"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="vertical-align:-1px;margin-right:2px"><path d="M8 10L4 6l4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>Volver a competencias</a>
-    </div>
-    <h1 class="page-title" id="pageTitle">Nuevo enfrentamiento</h1>
-    <p class="page-sub">Complete la información para registrar una nueva competencia deportiva</p>
+  <header class="top-header" id="topHeader"></header>
+
+  <main class="page" id="pageContent">
 
     <!-- STEPPER -->
     <div class="stepper" id="stepper">
@@ -872,21 +664,21 @@ select option{
           <!-- Tipo de deporte -->
           <div class="field">
             <label class="field-label">Tipo de deporte <span class="req">*</span></label>
-            <div class="wz-pills" id="tipoDeporteGroup">
-              <div class="wz-pill" data-tipo="conjunto" onclick="selectTipoDeporte('conjunto',this)"><div class="wz-pill-ico">🤝</div><div class="wz-pill-txt"><b>De conjunto</b><span>Equipos <span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">grupos</span></span></div></div>
-              <div class="wz-pill" data-tipo="individual" onclick="selectTipoDeporte('individual',this)"><div class="wz-pill-ico">🥋</div><div class="wz-pill-txt"><b>Individual</b><span>Deportistas <span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">llaves</span></span></div></div>
+            <div class="modality-group" id="tipoDeporteGroup">
+              <div class="modality-pill" onclick="selectTipoDeporte('conjunto',this)">🏟️ Conjunto</div>
+              <div class="modality-pill" onclick="selectTipoDeporte('individual',this)">🏃 Individual</div>
             </div>
           </div>
 
           <!-- Deporte (Custom floating dropdown) -->
           <div class="field hidden" id="deporteFieldWrap">
             <label class="field-label">Deporte <span class="req">*</span></label>
-            <div class="naowee-dropdown" id="deporteDropdown">
-              <button type="button" class="naowee-dropdown__trigger" id="deporteTrigger" onclick="toggleDeporteDD()">
-                <span class="naowee-dropdown__placeholder" id="deporteDisplayText">Seleccionar deporte...</span>
-                <span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
-              </button>
-              <div class="naowee-dropdown__menu" id="deporteOptions"></div>
+            <div class="custom-select" id="deporteDropdown">
+              <div class="custom-select-trigger" id="deporteTrigger" onclick="toggleDeporteDD()">
+                <span id="deporteDisplayText" style="color:var(--text-secondary)">Seleccionar deporte...</span>
+              </div>
+              <span class="custom-select-arrow"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="#646587" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+              <div class="custom-select-dropdown" id="deporteOptions"></div>
             </div>
           </div>
 
@@ -938,8 +730,8 @@ select option{
 
         </div>
         <div class="form-footer">
-          <button class="naowee-btn naowee-btn--mute">Cancelar</button>
-          <button class="naowee-btn naowee-btn--loud" id="nextBtn1" onclick="goStep(2)" disabled>Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+          <button class="btn btn-cancel">Cancelar</button>
+          <button class="btn btn-next" id="nextBtn1" onclick="goStep(2)" disabled>Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></button>
         </div>
       </div>
     </div>
@@ -983,8 +775,8 @@ select option{
           </div>
         </div>
         <div class="form-footer">
-          <button class="naowee-btn naowee-btn--mute" onclick="goStep(1)">← Volver</button>
-          <button class="naowee-btn naowee-btn--loud" id="nextBtn2" onclick="validateStep2()" disabled>Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+          <button class="btn btn-cancel" onclick="goStep(1)">← Volver</button>
+          <button class="btn btn-next" id="nextBtn2" onclick="validateStep2()" disabled>Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></button>
         </div>
       </div>
     </div>
@@ -1071,8 +863,8 @@ select option{
 
         </div>
         <div class="form-footer">
-          <button class="naowee-btn naowee-btn--mute" onclick="goStep(2)">← Volver</button>
-          <button class="naowee-btn naowee-btn--loud" onclick="goStep(4)">Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+          <button class="btn btn-cancel" onclick="goStep(2)">← Volver</button>
+          <button class="btn btn-next" onclick="goStep(4)">Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></button>
         </div>
       </div>
     </div>
@@ -1094,8 +886,8 @@ select option{
 
         </div>
         <div class="form-footer">
-          <button class="naowee-btn naowee-btn--mute" onclick="goStep(3)">← Volver</button>
-          <button class="naowee-btn naowee-btn--loud" onclick="goStep(5)">Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+          <button class="btn btn-cancel" onclick="goStep(3)">← Volver</button>
+          <button class="btn btn-next" onclick="goStep(5)">Siguiente <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg></button>
         </div>
       </div>
     </div>
@@ -1169,7 +961,7 @@ select option{
 
       /* Create digitador button */
       .btn-create-digi{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;border:1.5px solid var(--accent);border-radius:var(--radius-md);background:transparent;color:var(--accent);font:600 13px var(--font);cursor:pointer;transition:all .15s;white-space:nowrap}
-      .btn-create-digi:hover{background:var(--orange-bg,#fff3e6);color:var(--accent)}
+      .btn-create-digi:hover{background:var(--accent);color:#fff}
       .btn-create-digi:active{transform:scale(.96)}
 
       /* Modal: Crear Digitador */
@@ -1268,8 +1060,8 @@ select option{
           </div>
         </div>
         <div class="form-footer">
-          <button class="naowee-btn naowee-btn--mute" onclick="goStep(4)">← Volver</button>
-          <button class="naowee-btn naowee-btn--loud" onclick="registerCompetition()" id="btnRegister">
+          <button class="btn btn-cancel" onclick="goStep(4)">← Volver</button>
+          <button class="btn btn-next" onclick="registerCompetition()" id="btnRegister">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Registrar enfrentamiento
           </button>
@@ -1277,9 +1069,11 @@ select option{
       </div>
     </div>
 
-  </div><!-- /page -->
+  </main><!-- /pageContent -->
 </div><!-- /main -->
 </div><!-- /shell -->
+
+<div id="demoRoleSwitcherRoot"></div>
 
 <!-- ════ MODAL: CREAR DIGITADOR ════ -->
 <div class="modal-overlay" id="createDigiOverlay" onclick="if(event.target===this)closeCreateDigiModal()">
@@ -1338,8 +1132,8 @@ select option{
       </div>
     </div>
     <div class="modal-digi-footer" id="createDigiFooter">
-      <button class="naowee-btn naowee-btn--mute" onclick="closeCreateDigiModal()">Cancelar</button>
-      <button class="naowee-btn naowee-btn--loud" id="btnCreateDigi" onclick="submitCreateDigi()">Crear Digitador</button>
+      <button class="btn btn-cancel" onclick="closeCreateDigiModal()">Cancelar</button>
+      <button class="btn btn-next" id="btnCreateDigi" onclick="submitCreateDigi()">Crear Digitador</button>
     </div>
   </div>
 </div>
@@ -4009,12 +3803,6 @@ function toggleChk(el){
   box.classList.toggle('checked');
 }
 
-/* ═══════════════════════════════════════════════════════════
-   SIDEBAR TOGGLE
-═══════════════════════════════════════════════════════════ */
-function toggleSidebar(){
-  document.getElementById('sidebar').classList.toggle('collapsed');
-}
 
 /* ═══════════════════════════════════════════════════════════
    CUSTOM DEPORTE DROPDOWN
@@ -4050,7 +3838,7 @@ function buildDeporteDD(){
   ];
   items.forEach(item=>{
     const opt=document.createElement('div');
-    opt.className='naowee-dropdown__option'+(item.val===selectedDeporte?' naowee-dropdown__option--selected':'');
+    opt.className='custom-select-option'+(item.val===selectedDeporte?' selected':'');
     opt.dataset.label=(item.label||'').toLowerCase();
     opt.innerHTML=item.emoji?`<span class="opt-emoji">${item.emoji}</span>${item.label}`:item.label;
     opt.onclick=(e)=>{e.stopPropagation();selectDeporte(item.val,item.emoji,item.label)};
@@ -4060,7 +3848,7 @@ function buildDeporteDD(){
   const _stripAccents=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   searchInput.addEventListener('input',()=>{
     const q=_stripAccents(searchInput.value.toLowerCase().trim());
-    optsWrap.querySelectorAll('.naowee-dropdown__option').forEach(opt=>{
+    optsWrap.querySelectorAll('.custom-select-option').forEach(opt=>{
       if(!opt.dataset.label) { opt.style.display=q?'none':''; return; }
       opt.style.display=_stripAccents(opt.dataset.label).includes(q)?'':'none';
     });
@@ -4074,7 +3862,10 @@ function getEmoji(key){
 
 function toggleDeporteDD(){
   deporteDDOpen=!deporteDDOpen;
-  document.getElementById('deporteDropdown').classList.toggle('naowee-dropdown--open',deporteDDOpen);
+  const trigger=document.getElementById('deporteTrigger');
+  const dd=document.getElementById('deporteOptions');
+  trigger.classList.toggle('open',deporteDDOpen);
+  dd.classList.toggle('open',deporteDDOpen);
   if(deporteDDOpen) buildDeporteDD();
 }
 
@@ -4082,7 +3873,10 @@ function selectDeporte(val,emoji,label){
   selectedDeporte=val;
   _selectedSportKey=val||'';
   deporteDDOpen=false;
-  document.getElementById('deporteDropdown').classList.remove('naowee-dropdown--open');
+  const trigger=document.getElementById('deporteTrigger');
+  const dd=document.getElementById('deporteOptions');
+  trigger.classList.remove('open');
+  dd.classList.remove('open');
   const display=document.getElementById('deporteDisplayText');
   if(val){
     display.innerHTML=`<span style="font-size:16px">${emoji}</span> ${label}`;
@@ -4098,7 +3892,8 @@ function selectDeporte(val,emoji,label){
 document.addEventListener('click',e=>{
   if(!e.target.closest('#deporteDropdown')&&deporteDDOpen){
     deporteDDOpen=false;
-    document.getElementById('deporteDropdown').classList.remove('naowee-dropdown--open');
+    document.getElementById('deporteTrigger').classList.remove('open');
+    document.getElementById('deporteOptions').classList.remove('open');
   }
   /* Close slot dropdowns on outside click */
   if(!e.target.closest('.slot-dd')){
@@ -4334,8 +4129,12 @@ document.querySelector('.page')?.addEventListener('scroll',closeAllCustomSelects
 ═══════════════════════════════════════════════════════════ */
 function selectTipoDeporte(tipo, el) {
   selectedTipoDeporte = tipo;
-  document.querySelectorAll('#tipoDeporteGroup .wz-pill').forEach(p => p.classList.remove('sel'));
-  el.classList.add('sel');
+  document.querySelectorAll('#tipoDeporteGroup .modality-pill').forEach(p => {
+    p.classList.remove('selected');
+    p.innerHTML = p.textContent;
+  });
+  el.classList.add('selected');
+  el.innerHTML = `<span class="check"><svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3l2 2 4-4" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>${el.textContent}`;
 
   // Reset deporte selection
   selectedDeporte = '';
@@ -4351,22 +4150,6 @@ function selectTipoDeporte(tipo, el) {
   buildDeporteDD();
 }
 
-/* ═══════════════════════════════════════════════════════════
-   PROFILE SWITCHER
-═══════════════════════════════════════════════════════════ */
-function toggleProfileDD(e){ if(e) e.stopPropagation(); document.getElementById('profileSwitcher').classList.toggle('open'); }
-function fadeAndGo(url){document.body.style.transition='opacity .25s ease';document.body.style.opacity='0';setTimeout(()=>{window.location.href=url},260)}
-function switchProfile(profile){
-  document.getElementById('profileSwitcher')?.classList.remove('open');
-  if(profile==='digitador'){
-    fadeAndGo('digitador.html');
-  } else {
-    document.querySelectorAll('.profile-option').forEach((o,i)=>{o.classList.toggle('active',i===0)});
-  }
-}
-document.addEventListener('click',e=>{
-  if(!e.target.closest('.profile-switcher')) document.getElementById('profileSwitcher')?.classList.remove('open');
-});
 
 /* ═══════════════════════════════════════════════════════════
    STEP 5 — ASSIGN DIGITADOR
@@ -4676,7 +4459,7 @@ function openCreateDigiModal(){
   document.getElementById('createDigiBody').style.display='';
   document.getElementById('createDigiSuccess').style.display='none';
   const footer=document.getElementById('createDigiFooter');
-  footer.innerHTML=`<button class="naowee-btn naowee-btn--mute" onclick="closeCreateDigiModal()">Cancelar</button><button class="naowee-btn naowee-btn--loud" id="btnCreateDigi" onclick="submitCreateDigi()">Crear Digitador</button>`;
+  footer.innerHTML=`<button class="btn btn-cancel" onclick="closeCreateDigiModal()">Cancelar</button><button class="btn btn-next" id="btnCreateDigi" onclick="submitCreateDigi()">Crear Digitador</button>`;
   ['newDigiNombre','newDigiApellido','newDigiEmail','newDigiTel'].forEach(id=>{
     const el=document.getElementById(id);if(el){el.value='';el.style.borderColor=''}
   });
@@ -4738,7 +4521,7 @@ function submitCreateDigi(){
   document.getElementById('createDigiBody').style.display='none';
   document.getElementById('createDigiSuccess').style.display='block';
   document.getElementById('successEmailMsg').innerHTML=`Se ha enviado un correo a <strong>${email}</strong> con las instrucciones para activar su cuenta. Debe esperar a que el digitador active su cuenta.`;
-  document.getElementById('createDigiFooter').innerHTML=`<button class="naowee-btn naowee-btn--loud" onclick="finishCreateDigi()">Aceptar</button>`;
+  document.getElementById('createDigiFooter').innerHTML=`<button class="btn btn-next" onclick="finishCreateDigi()">Aceptar</button>`;
 
   /* Store new digi data temporarily */
   window._newDigiData={nombre,apellido,zona};
@@ -4770,13 +4553,41 @@ window.addEventListener('load', function(){
   document.querySelectorAll('.select-wrap .select-arrow').forEach(a => a.remove());
 });
 
-document.getElementById('btnLogout')?.addEventListener('click', () => {
-  fadeAndGo('../escenarios/escenario-01-login.html');
-});
-
-/* Tooltip al colapsar el sidebar */
-(function(){var sb=document.getElementById('sidebar');if(!sb)return;var tip=document.createElement('div');tip.className='nav-tooltip';document.body.appendChild(tip);function show(el,t){if(!sb.classList.contains('collapsed'))return;tip.textContent=t;var r=el.getBoundingClientRect();tip.style.left=(r.right+12)+'px';tip.style.top=(r.top+r.height/2)+'px';tip.classList.add('is-visible');}function hide(){tip.classList.remove('is-visible');}sb.querySelectorAll('.nav-row').forEach(function(row){var l=row.querySelector('.lbl');if(!l)return;row.addEventListener('mouseenter',function(){show(row,l.textContent.trim());});row.addEventListener('mouseleave',hide);});var chip=document.querySelector('.sb-profile-chip');if(chip){chip.addEventListener('mouseenter',function(){show(chip,'Cambiar perfil');});chip.addEventListener('mouseleave',hide);}})();
 </script>
-<script src="naowee-footer.js"></script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHELL MOUNT — paridad de chrome (sidebar + header + role switcher)
+     con el shell canónico de naowee-test-sidebar-shell.
+     Rol natural de esta vista: ROOT (wizard crear competencia).
+     ═══════════════════════════════════════════════════════════ -->
+<script type="module">
+  import { mountSidebar, mountHeader, mountDemoRoleSwitcher } from './shared/sidebar.js';
+  const roleCode = new URLSearchParams(window.location.search).get('role') || 'ROOT';
+  const currentFile = window.location.pathname.split('/').pop() || 'stepper.html';
+  const LEGACY_MAP = {
+    'sorteo': 'sorteo.html',
+    'eventos': 'eventos.html', 'eventos-lista': 'eventos.html',
+    'competencias': 'lista.html', 'competencias-lista': 'lista.html',
+    'competencias-inicio': 'lista.html',
+    'digitadores': 'digitadores.html', 'coordinadores': 'coordinadores.html',
+    'mi-digitacion': 'digitador.html', 'audit-logs': 'auditoria.html'
+  };
+  let booted = false;
+  const { role } = mountSidebar({
+    rootEl: document.getElementById('sidebarRoot'),
+    roleCode,
+    activeId: 'competencias-lista',
+    onActiveChange: (activeId) => {
+      if (!booted) { booted = true; return; }
+      const target = LEGACY_MAP[activeId];
+      if (target) { if (target === currentFile) return; window.location.href = target; return; }
+      const isLocal = ['localhost','127.0.0.1'].includes(window.location.hostname);
+      const SHELL_BASE = isLocal ? 'http://localhost:5100' : 'https://naowee-tech.github.io/naowee-test-sidebar-shell';
+      window.location.href = `${SHELL_BASE}/perfil.html?role=${roleCode}&active=${activeId}`;
+    }
+  });
+  mountHeader({ headerEl: document.getElementById('topHeader'), role });
+  mountDemoRoleSwitcher({ rootEl: document.getElementById('demoRoleSwitcherRoot'), currentRoleCode: roleCode });
+</script>
 </body>
 </html>

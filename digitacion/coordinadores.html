@@ -6,6 +6,8 @@
 <title>Naowee – Coordinadores</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="design-system.css"/>
+<link rel="stylesheet" href="shared/tokens.css?v=2.1.0"/>
+<link rel="stylesheet" href="shared/shell.css?v=2.1.0"/>
 <style>
 :root {
   --naranja:#FF7500; --azul:#002B5B;
@@ -28,72 +30,6 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font-size:14px}
 
-/* SHELL */
-.shell{display:flex;height:100vh;overflow:hidden}
-
-/* SIDEBAR */
-.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow-y:auto;transition:width .2s,min-width .2s}
-.sidebar-logo{height:var(--header-h);display:flex;align-items:center;gap:16px;padding:0 24px;border-bottom:1px solid var(--border);flex-shrink:0}
-.burger-btn{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;width:24px;height:24px;flex-shrink:0;border-radius:var(--radius-sm);transition:background .15s,transform .2s}
-.burger-btn:hover{background:rgba(0,0,0,.06)}
-.burger-btn:active{transform:scale(.9)}
-.burger-btn svg{transition:transform .3s cubic-bezier(.4,0,.2,1)}
-.sidebar.collapsed .burger-btn svg{transform:rotate(180deg)}
-.naowee-logo{height:33px;flex-shrink:0}
-.sidebar-nav{flex:1;padding:24px 0 10px;display:flex;flex-direction:column;gap:10px}
-.nav-section{font-size:12px;font-weight:600;color:#b5b9d4;letter-spacing:0;padding:0 12px;line-height:16px}
-.nav-row{display:flex;align-items:center;gap:12px;height:44px;padding:0 20px 0 0;border-radius:var(--radius-sm);cursor:pointer;transition:background .12s;position:relative;text-decoration:none}
-.nav-row:hover{background:#f5f6fa}
-.nav-row .icon{width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-left:28px}
-.nav-row .lbl{flex:1;font-size:14px;font-weight:600;color:var(--text-primary)}
-.nav-row .nav-arrow{width:22px;height:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center;opacity:.7;transition:transform .2s}
-.nav-row.expanded .nav-arrow{transform:rotate(180deg)}
-.active-bar{position:absolute;left:4px;top:8px;width:4px;height:28px;background:var(--accent);border-radius:25px}
-.nav-row.active{background:transparent}
-.nav-row.active:hover{background:transparent}
-.nav-row.active .lbl{color:var(--accent)}
-.subnav{padding-left:0;overflow:hidden;max-height:0;transition:max-height .25s ease}
-.subnav.open{max-height:200px}
-.sub-row{display:flex;align-items:center;gap:8px;height:36px;padding:0 8px 0 64px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;color:var(--text-secondary);transition:background .12s;text-decoration:none}
-.sub-row:hover{background:#f5f6fa}
-.sub-row .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:transparent}
-.sub-row.active-sub{color:var(--accent);font-weight:600}
-.sub-row.active-sub .dot{background:var(--accent)}
-.sidebar-bottom{padding:8px 0;border-top:1px solid var(--border)}
-.sidebar.collapsed{width:72px;min-width:72px;overflow:hidden}
-.sidebar.collapsed .naowee-logo,.sidebar.collapsed .lbl,.sidebar.collapsed .nav-arrow,.sidebar.collapsed .nav-section,.sidebar.collapsed .subnav,.sidebar.collapsed .sidebar-bottom .lbl{display:none}
-.sidebar.collapsed .sidebar-logo{justify-content:center;padding:0}
-.sidebar.collapsed .nav-row{justify-content:center;padding:0}
-.sidebar.collapsed .nav-row .icon{margin-left:0}
-
-/* MAIN */
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-
-/* TOP HEADER */
-.top-header{height:var(--header-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:flex-end;gap:16px;padding:0 32px;flex-shrink:0}
-.user-chip{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:var(--radius-full);padding:8px 12px 8px 8px;cursor:pointer;max-width:200px}
-.ava{position:relative}
-.ava-ring{width:40px;height:40px;border-radius:50%;background:#ffb8c1;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#672834}
-.ava-dot{position:absolute;bottom:0;right:0;width:8px;height:8px;background:var(--green);border:2px solid #fff;border-radius:50%}
-.user-info{display:flex;flex-direction:column;gap:2px;min-width:0}
-.user-name{font-size:14px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.user-role{font-size:12px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-/* PAGE */
-.page{flex:1;overflow-y:auto;overflow-x:hidden;padding:28px 32px 40px}
-
-/* PROFILE SWITCHER */
-.profile-switcher{position:relative}
-.profile-current{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--border);border-radius:var(--radius-full);cursor:pointer;font-size:13px;font-weight:600;color:var(--text-primary);transition:all .15s;background:var(--surface)}
-.profile-current:hover{border-color:var(--accent);background:#fff8f4}
-.profile-dropdown{position:absolute;top:calc(100% + 6px);right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:0 4px 16px rgba(0,0,0,.12);min-width:260px;z-index:100;display:none;overflow:hidden}
-.profile-dropdown.open{display:block}
-.profile-option{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;transition:background .12s;color:var(--text-secondary)}
-.profile-option:hover{background:#f5f6fa}
-.profile-option.active{background:#fff3e6;color:var(--accent)}
-.po-name{font-size:13px;font-weight:600;color:inherit}
-.po-desc{font-size:11px;color:var(--text-secondary);margin-top:1px}
-
 /* PAGE HEADER */
 .page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:16px}
 .page-title{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:4px}
@@ -109,10 +45,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 
 /* SEARCH BAR */
 .search-bar{margin-bottom:24px}
-/* buscador → componente canónico .naowee-textfield */
-.coord-search{max-width:360px}
-.coord-search .naowee-textfield__input-wrap{height:42px}
-.coord-search .tf-ico{color:var(--text-secondary);flex-shrink:0}
+.search-input{
+  width:100%;max-width:360px;height:42px;padding:0 14px 0 38px;border:1px solid var(--border-dark);
+  border-radius:var(--radius-md);font-family:var(--font);font-size:13px;color:var(--text-primary);
+  background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 16 16'%3E%3Ccircle cx='7' cy='7' r='5' stroke='%23646587' stroke-width='1.3'/%3E%3Cpath d='M11 11l3 3' stroke='%23646587' stroke-width='1.3' stroke-linecap='round'/%3E%3C/svg%3E") 12px center no-repeat;
+  outline:none;transition:border-color .15s;
+}
+.search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(215,64,9,.1)}
 
 /* COORDINADORES GRID */
 .coord-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
@@ -185,8 +124,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .form-group:last-child{margin-bottom:0}
 .form-label{display:block;font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:6px}
 .form-label .req{color:var(--accent)}
-/* inputs del modal → componente canónico .naowee-textfield (altura 42 del form) */
-.modal-body .naowee-textfield__input-wrap{height:42px}
+.form-input{
+  width:100%;height:42px;padding:0 12px;border:1px solid var(--border-dark);
+  border-radius:var(--radius-md);font-family:var(--font);font-size:13px;
+  color:var(--text-primary);outline:none;transition:border-color .15s;
+}
+.form-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(215,64,9,.1)}
 .modal-footer{
   display:flex;align-items:center;justify-content:flex-end;gap:12px;
   padding:18px 28px;border-top:1px solid var(--border);flex-shrink:0;
@@ -236,165 +179,48 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 }
 @media(max-width:900px){
   .coord-grid{grid-template-columns:1fr}
-  .sidebar{width:72px;min-width:72px}
-  .sidebar .naowee-logo,.sidebar .lbl,.sidebar .nav-arrow,.sidebar .nav-section,.sidebar .subnav{display:none}
-  .sidebar .sidebar-logo{justify-content:center;padding:0}
-  .sidebar .nav-row{justify-content:center;padding:0}
-  .sidebar .nav-row .icon{margin-left:0}
   .page{padding:20px 16px 40px}
   .page-header{flex-direction:column}
 }
-
-/* ═══════════ CANÓNICO (paridad Project/IVC + host shell) ═══════════ */
-.sidebar-logo{gap:12px;padding:0 18px}
-.sb-logo-img{height:42px;width:auto;display:block;flex-shrink:0;object-fit:contain}
-.sb-logo-img:first-of-type{margin-left:auto}
-.sb-logo-img:last-of-type{margin-right:auto}
-.logo-sep{width:1px;height:34px;background:var(--border);flex-shrink:0}
-.sidebar{transition:width .36s cubic-bezier(.32,.72,0,1),min-width .36s cubic-bezier(.32,.72,0,1)}
-.sidebar.collapsed .sb-logo-img,.sidebar.collapsed .logo-sep{display:none}
-.sidebar.collapsed .nav-arrow{max-width:0;opacity:0;pointer-events:none;margin:0;overflow:hidden}
-.sidebar.collapsed .nav-row{justify-content:center;padding:0;gap:0}
-.sidebar.collapsed .nav-row .icon{margin-left:0;position:relative;z-index:1}
-.sidebar.collapsed .nav-row .active-bar{display:none}
-.sidebar.collapsed .nav-row:hover{background:transparent}
-.sidebar.collapsed .nav-row.active{background:transparent}
-.sidebar.collapsed .nav-row::before{content:'';position:absolute;left:50%;top:50%;width:40px;height:40px;border-radius:8px;transform:translate(-50%,-50%);background:transparent;pointer-events:none;transition:background .2s cubic-bezier(.32,.72,0,1);z-index:0}
-.sidebar.collapsed .nav-row:hover::before{background:#f5f6fa}
-.sidebar.collapsed .nav-row.active::before{background:#fff3e6}
-.sidebar.collapsed .nav-row.active:hover::before{background:#ffe4cf}
-.nav-tooltip{position:fixed;background:var(--text-primary);color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;font-weight:500;white-space:nowrap;pointer-events:none;z-index:2000;box-shadow:0 4px 14px rgba(40,40,52,.18);opacity:0;transform:translateY(-50%) translateX(-4px);transition:opacity .15s ease,transform .15s ease}
-.nav-tooltip.is-visible{opacity:1;transform:translateY(-50%) translateX(0)}
-.nav-tooltip::before{content:'';position:absolute;right:100%;top:50%;transform:translateY(-50%);border:5px solid transparent;border-right-color:var(--text-primary)}
-.naowee-btn--loud:hover,.naowee-btn--loud:focus-visible{box-shadow:0 6px 16px rgba(215,64,9,.22);outline:none}
-.naowee-btn--loud:active{box-shadow:0 2px 6px rgba(215,64,9,.14)}
-.naowee-btn--loud:disabled,.naowee-btn--loud[disabled]{box-shadow:none}
-.sb-profile{position:relative;margin:0 10px 6px;padding-top:8px;border-top:1px solid var(--border)}
-.sb-profile-chip{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-lg);cursor:pointer;transition:background .15s}
-.sb-profile-chip:hover{background:#f5f6fa}
-.sb-profile-ava{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:#ffe4cf;color:#d74009;flex-shrink:0}
-.sb-profile-meta{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
-.sb-profile-name{font-size:13px;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-profile-role{font-size:11px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-profile-chev{flex-shrink:0;color:var(--text-secondary);transition:transform .2s}
-.sb-profile.open .sb-profile-chev{transform:rotate(180deg)}
-.sb-profile-dd{position:absolute;left:10px;right:10px;bottom:calc(100% + 6px);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:0 -8px 24px rgba(40,40,52,.16);overflow:hidden;opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .2s,transform .2s;z-index:120}
-.sb-profile.open .sb-profile-dd{opacity:1;transform:translateY(0);pointer-events:auto}
-.sb-profile-dd__label{font-size:10px;font-weight:700;letter-spacing:.4px;color:var(--text-secondary);padding:10px 14px 4px;text-transform:uppercase}
-.sb-profile-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;transition:background .12s;color:var(--text-secondary)}
-.sb-profile-opt:hover{background:#f5f6fa}
-.sb-profile-opt.active{background:#fff3e6;color:var(--accent)}
-.sb-profile-opt .po-name{font-size:13px;font-weight:600;color:inherit}
-.sb-profile-opt .po-desc{font-size:11px;color:var(--text-secondary);margin-top:1px}
-.sidebar.collapsed .sb-profile{margin:0;border-top:none}
-.sidebar.collapsed .sb-profile-chip{justify-content:center;padding:8px 0}
-.sidebar.collapsed .sb-profile-meta,.sidebar.collapsed .sb-profile-chev{display:none}
-.sidebar.collapsed .sb-profile-dd{left:6px;width:236px;right:auto}
-.uc-chev{color:var(--text-secondary);transition:transform .2s}
-.profile-switcher.open .profile-dropdown{display:block}
-.profile-switcher.open .uc-chev{transform:rotate(180deg)}
 </style>
-<link rel="stylesheet" href="naowee-footer.css"/>
+<link rel="stylesheet" href="naowee-tables.css"/>
+<link rel="stylesheet" href="shared/naowee-footer.css?v=2.1.0"/>
+<script src="shared/naowee-footer.js?v=2.1.0" defer></script>
 </head>
 <body>
 <div class="shell">
+  <aside class="sidebar" id="sidebarRoot"></aside>
+  <div class="main">
+    <header class="top-header" id="topHeader"></header>
+    <main class="page" id="pageContent">
 
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">
-    <button class="burger-btn" onclick="toggleSidebar()">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.5 12H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round"/><path d="M5.5 16H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round"/><path d="M5.5 8H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </button>
-<img src="logos/ministerio.svg" alt="Ministerio del Deporte" class="sb-logo-img"/>
-      <div class="logo-sep"></div>
-      <img src="logos/suid.png" alt="SUID" class="sb-logo-img"/>
-  </div>
-  <nav class="sidebar-nav">
-    <div class="nav-section">DASHBOARD</div>
-    <div class="nav-row" onclick="window.location.href='eventos.html'">
-      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="#B5B9D4" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="#B5B9D4" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="#B5B9D4" stroke-width="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="#B5B9D4" stroke-width="1.5"/></svg></div>
-      <span class="lbl">Inicio</span>
-    </div>
-    <div class="nav-section">GESTI&Oacute;N</div>
-    <div class="nav-row expanded" id="navComp" onclick="toggleCompMenu()">
-      <div class="icon"><svg width="24" height="24" viewBox="0 0 19.5 19.5" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.75.75h8a1 1 0 011 1v6a5 5 0 01-10 0v-6a1 1 0 011-1z" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.17 9.75H4.75a4 4 0 01-4-4v-2a1 1 0 011-1h3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.33 9.75h.42a4 4 0 004-4v-2a1 1 0 00-1-1h-3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path fill-rule="evenodd" clip-rule="evenodd" d="M13.42 15.75H6.08a1.25 1.25 0 01-1.18-1.68l.33-1a1.25 1.25 0 011.18-.82h7.33c.54 0 1.02.34 1.18.82l.33 1a1.25 1.25 0 01-1.18 1.68z" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.75 12.75v3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <span class="lbl">Competencias</span>
-      <span class="nav-arrow"><svg width="20" height="20" viewBox="0 0 22 22" fill="none"><path d="M7.33 9.17L11 12.83l3.67-3.67" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-    </div>
-    <div class="subnav open" id="subnavComp">
-      <a class="sub-row" href="lista.html"><span class="dot"></span>Lista de competencias</a>
-      <a class="sub-row" href="stepper.html"><span class="dot" style="background:transparent"></span>Nueva competencia</a>
-    </div>
-    <div class="nav-row" onclick="window.location.href='sorteo.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polyline points="16 3 21 3 21 8" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="4" y1="20" x2="21" y2="3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><polyline points="21 16 21 21 16 21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="15" y1="15" x2="21" y2="21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><line x1="4" y1="4" x2="9" y2="9" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Sorteo</span></div>
-    <div class="nav-row" onclick="window.location.href='digitadores.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M16 20v-1a4 4 0 00-4-4H6a4 4 0 00-4 4v1" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="#B5B9D4" stroke-width="1.5"/><path d="M22 20v-1a4 4 0 00-4-4" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M15 3a4 4 0 010 8" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Digitadores</span></div>
-    <div class="nav-row active">
-      <div class="active-bar"></div>
-      <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="16.75" cy="17.75" r="4.25" stroke="#d74009" stroke-width="1.5"/><path d="M18.18 16.91l-1.79 1.78-1.07-1.07" stroke="#d74009" stroke-width="1.5" stroke-linecap="round"/><path d="M10 15H7a4 4 0 00-4 4v1" stroke="#d74009" stroke-width="1.5" stroke-linecap="round"/><circle cx="11" cy="7" r="4" stroke="#d74009" stroke-width="1.5"/></svg></div>
-      <span class="lbl">Coordinadores</span>
-    </div>
-    <div class="nav-row"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 20H5a2 2 0 01-2-2v-2a2 2 0 012-2h16" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M20 17H6" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="7.29" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5"/><ellipse cx="16.72" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5"/><path d="M10.29 7a2.72 2.72 0 013.43 0" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M3 7h1.29M19.72 7H21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Auditor&iacute;a</span></div>
-  </nav>
-  <div class="sidebar-bottom">
-    <div class="nav-row" id="btnLogout"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="lbl">Cerrar sesi&oacute;n</span></div>
-  </div>
-</aside>
-
-<!-- MAIN -->
-<div class="main">
-  <header class="top-header">
-    <div class="profile-switcher" id="profileSwitcher">
-      <div class="user-chip" onclick="toggleProfileDD(event)">
-        <div class="ava"><div class="ava-ring" style="background:#ffe4cf;color:#d74009">CE</div><div class="ava-dot"></div></div>
-        <div class="user-info"><span class="user-name">Coordinador</span><span class="user-role">Coordinador de eventos</span></div>
-        <svg class="uc-chev" width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-      </div>
-      <div class="profile-dropdown" id="profileDropdown">
-        <div class="profile-option active" onclick="switchProfile('coordinador')">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
-          <div><div class="po-name">Coordinador de eventos</div><div class="po-desc">Crear y configurar competencias</div></div>
+      <!-- PAGE HEADER -->
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Coordinadores de eventos</h1>
+          <p class="page-sub" id="coordCount">2 coordinadores registrados</p>
         </div>
-        <div class="profile-option" onclick="switchProfile('digitador')">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h12M2 12h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-          <div><div class="po-name">Digitador</div><div class="po-desc">Digitar enfrentamientos asignados</div></div>
-        </div>
+        <button class="btn btn-accent" onclick="openModal()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+          Crear coordinador
+        </button>
       </div>
-    </div>
-  </header>
-  <div class="page">
 
-    <!-- PAGE HEADER -->
-    <div class="page-header">
-      <div>
-        <h1 class="page-title">Coordinadores de eventos</h1>
-        <p class="page-sub" id="coordCount">2 coordinadores registrados</p>
+      <!-- SEARCH BAR -->
+      <div class="search-bar">
+        <input type="text" class="search-input" id="searchInput" placeholder="Buscar coordinador" oninput="filterCards()">
       </div>
-      <button class="naowee-btn naowee-btn--loud" onclick="openModal()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-        Crear coordinador
-      </button>
-    </div>
 
-    <!-- SEARCH BAR -->
-    <div class="search-bar">
-      <div class="naowee-textfield coord-search">
-        <div class="naowee-textfield__input-wrap">
-          <svg class="tf-ico" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-          <input type="text" class="naowee-textfield__input" id="searchInput" placeholder="Buscar coordinador" oninput="filterCards()">
-        </div>
+      <!-- COORDINADORES GRID -->
+      <div class="coord-grid" id="coordGrid"></div>
+
+      <!-- NO RESULTS -->
+      <div class="no-results" id="noResults">
+        No se encontraron coordinadores con ese criterio de b&uacute;squeda.
       </div>
-    </div>
 
-    <!-- COORDINADORES GRID -->
-    <div class="coord-grid" id="coordGrid"></div>
-
-    <!-- NO RESULTS -->
-    <div class="no-results" id="noResults">
-      No se encontraron coordinadores con ese criterio de b&uacute;squeda.
-    </div>
-
+    </main>
   </div>
-</div>
-
 </div><!-- /shell -->
 
 <!-- MODAL: CREAR COORDINADOR -->
@@ -409,20 +235,20 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
     <div class="modal-body">
       <div class="form-group">
         <label class="form-label">Nombre completo <span class="req">*</span></label>
-        <div class="naowee-textfield"><div class="naowee-textfield__input-wrap"><input type="text" class="naowee-textfield__input" id="inputName" placeholder="Ej: Juan Carlos Ramirez" oninput="validateForm()"></div></div>
+        <input type="text" class="form-input" id="inputName" placeholder="Ej: Juan Carlos Ramirez" oninput="validateForm()">
       </div>
       <div class="form-group">
         <label class="form-label">Correo electr&oacute;nico <span class="req">*</span></label>
-        <div class="naowee-textfield"><div class="naowee-textfield__input-wrap"><input type="email" class="naowee-textfield__input" id="inputEmail" placeholder="Ej: juan@correo.com" oninput="validateForm()"></div></div>
+        <input type="email" class="form-input" id="inputEmail" placeholder="Ej: juan@correo.com" oninput="validateForm()">
       </div>
       <div class="form-group">
         <label class="form-label">Tel&eacute;fono</label>
-        <div class="naowee-textfield"><div class="naowee-textfield__input-wrap"><input type="tel" class="naowee-textfield__input" id="inputPhone" placeholder="Ej: 315 092 0923"></div></div>
+        <input type="tel" class="form-input" id="inputPhone" placeholder="Ej: 315 092 0923">
       </div>
     </div>
     <div class="modal-footer">
-      <button class="naowee-btn naowee-btn--mute" onclick="closeModal()">Cancelar</button>
-      <button class="naowee-btn naowee-btn--loud" id="btnCreate" disabled onclick="createCoordinador()">Crear coordinador</button>
+      <button class="btn-link" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-accent" id="btnCreate" disabled onclick="createCoordinador()">Crear coordinador</button>
     </div>
   </div>
 </div>
@@ -587,42 +413,38 @@ function hideToast() {
   clearTimeout(toastTimer);
 }
 
-/* ═══ SIDEBAR ═══ */
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('collapsed');
-}
-
-function toggleCompMenu() {
-  var nav = document.getElementById('navComp');
-  var sub = document.getElementById('subnavComp');
-  nav.classList.toggle('expanded');
-  sub.classList.toggle('open');
-}
-
-/* ═══ PROFILE SWITCHER ═══ */
-function toggleProfileDD(e){ if(e) e.stopPropagation(); document.getElementById('profileSwitcher').classList.toggle('open'); }
-
-function fadeAndGo(url){document.body.style.transition='opacity .25s ease';document.body.style.opacity='0';setTimeout(()=>{window.location.href=url},260)}
-function switchProfile(p) {
-  document.getElementById('profileSwitcher')?.classList.remove('open');
-  if (p === 'digitador') fadeAndGo('digitador.html');
-  else fadeAndGo('eventos.html');
-}
-
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.profile-switcher')) document.getElementById('profileSwitcher')?.classList.remove('open');
-});
-
 /* ═══ INIT ═══ */
 renderCards(coordinadores);
-
-document.getElementById('btnLogout')?.addEventListener('click', () => {
-  fadeAndGo('../escenarios/escenario-01-login.html');
-});
-
-/* Tooltip al colapsar el sidebar */
-(function(){var sb=document.getElementById('sidebar');if(!sb)return;var tip=document.createElement('div');tip.className='nav-tooltip';document.body.appendChild(tip);function show(el,t){if(!sb.classList.contains('collapsed'))return;tip.textContent=t;var r=el.getBoundingClientRect();tip.style.left=(r.right+12)+'px';tip.style.top=(r.top+r.height/2)+'px';tip.classList.add('is-visible');}function hide(){tip.classList.remove('is-visible');}sb.querySelectorAll('.nav-row').forEach(function(row){var l=row.querySelector('.lbl');if(!l)return;row.addEventListener('mouseenter',function(){show(row,l.textContent.trim());});row.addEventListener('mouseleave',hide);});var chip=document.querySelector('.sb-profile-chip');if(chip){chip.addEventListener('mouseenter',function(){show(chip,'Cambiar perfil');});chip.addEventListener('mouseleave',hide);}})();
 </script>
-<script src="naowee-footer.js"></script>
+
+<div id="demoRoleSwitcherRoot"></div>
+
+<script type="module">
+  import { mountSidebar, mountHeader, mountDemoRoleSwitcher } from './shared/sidebar.js';
+  const roleCode = new URLSearchParams(window.location.search).get('role') || 'ROOT';
+  const currentFile = window.location.pathname.split('/').pop() || 'coordinadores.html';
+  const LEGACY_MAP = {
+    'sorteo': 'sorteo.html',
+    'eventos': 'eventos.html', 'eventos-lista': 'eventos.html',
+    'competencias': 'lista.html', 'competencias-lista': 'lista.html',
+    'competencias-inicio': 'lista.html',
+    'digitadores': 'digitadores.html', 'coordinadores': 'coordinadores.html',
+    'mi-digitacion': 'digitador.html', 'audit-logs': 'auditoria.html'
+  };
+  const { role } = mountSidebar({
+    rootEl: document.getElementById('sidebarRoot'),
+    roleCode,
+    activeId: 'coordinadores',
+    onActiveChange: (activeId) => {
+      const target = LEGACY_MAP[activeId];
+      if (target) { if (target === currentFile) return; window.location.href = target; return; }
+      const isLocal = ['localhost','127.0.0.1'].includes(window.location.hostname);
+      const SHELL_BASE = isLocal ? 'http://localhost:5100' : 'https://naowee-tech.github.io/naowee-test-sidebar-shell';
+      window.location.href = `${SHELL_BASE}/perfil.html?role=${roleCode}&active=${activeId}`;
+    }
+  });
+  mountHeader({ headerEl: document.getElementById('topHeader'), role });
+  mountDemoRoleSwitcher({ rootEl: document.getElementById('demoRoleSwitcherRoot'), currentRoleCode: roleCode });
+</script>
 </body>
 </html>

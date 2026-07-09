@@ -104,8 +104,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .event-avatar{width:56px;height:56px;border-radius:14px;background:var(--orange-bg);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--naranja);flex-shrink:0}
 .event-title{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:6px;display:flex;align-items:center;gap:10px}
 .event-meta{font-size:13px;color:var(--text-secondary)}
-/* .badge-en-curso → .naowee-badge (header + fases) */
-/* .btn-nuevo → .naowee-btn--loud (canónico) */
+.badge-en-curso{display:inline-flex;align-items:center;padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:700;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.btn-nuevo{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 18px;border-radius:var(--radius-lg);font-size:13px;font-weight:700;font-family:var(--font);cursor:pointer;border:none;background:var(--accent);color:#fff;text-decoration:none;white-space:nowrap;transition:opacity .15s}
+.btn-nuevo:hover{opacity:.88}
 
 /* STATS ROW */
 .stats-divider{display:grid;grid-template-columns:repeat(3,1fr);background:#f5f6fa;border-radius:var(--radius-lg);padding:20px 0;margin-top:16px}
@@ -128,52 +129,100 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .fase-name{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:4px}
 .fase-fechas{font-size:11px;color:var(--text-secondary);margin-bottom:6px}
 
-/* TABS → componente canónico .naowee-tabs/.naowee-tab (solo padding + fade) */
-.evt-tabs{padding:6px 24px 0;animation:fadeInUp .4s .15s ease both}
+/* TABS — usa DS oficial (.naowee-tabs / .naowee-tab).
+   Divider edge-to-edge: el border-bottom va en .tabs-bar (block-level,
+   full width) en lugar de en .naowee-tabs (flex, ancho de contenido).
+   Así la línea se extiende hasta los bordes del card de competencias. */
+.tabs-bar{
+  padding:12px 24px 0;
+  border-bottom:1px solid var(--border);
+  animation:fadeInUp .4s .15s ease both;
+}
+.tabs-bar .naowee-tabs{border-bottom:none}
 
 /* COMPETENCIAS TABLE CARD */
 .comp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;animation:fadeInUp .4s .2s ease both}
 .comp-toolbar{display:flex;align-items:center;gap:12px;padding:16px 24px;flex-wrap:wrap}
-/* buscador → componente canónico .naowee-textfield */
-.evt-search{flex:1;min-width:180px;max-width:300px}
-.evt-search .naowee-textfield__input-wrap{height:38px}
-.evt-search .tf-ico{color:var(--text-secondary);flex-shrink:0}
+.search-wrap{position:relative;flex:1;min-width:180px;max-width:300px}
+.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text-secondary)}
+.search-inp{width:100%;height:38px;border:1px solid var(--border-dark);border-radius:var(--radius-md);font-size:13px;font-family:var(--font);color:var(--text-primary);padding:0 12px 0 36px;outline:none;transition:border-color .15s}
+.search-inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(215,64,9,.12)}
+.search-inp::placeholder{color:var(--text-secondary)}
 /* Float dropdown */
-/* filtro → componente canónico .naowee-dropdown; ancho fijo + altura alineada al toolbar (38px) */
-.comp-toolbar .evt-filter{flex:0 0 auto;width:210px}
-.comp-toolbar .evt-filter .naowee-dropdown__trigger{height:38px;min-height:38px}
-.pag-wrap{display:flex;align-items:center;gap:8px;margin-left:auto}
-.pag-label{font-size:12px;color:var(--text-secondary);white-space:nowrap}
-.pag-btn{width:28px;height:28px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text-secondary);transition:all .15s;font-family:var(--font)}
-.pag-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
-.pag-btn:disabled{opacity:.4;cursor:default}
+.filter-dd{position:relative}
+.filter-dd-trigger{display:flex;align-items:center;gap:6px;height:38px;padding:0 12px;border:1px solid var(--border-dark);border-radius:var(--radius-md);background:var(--surface);font-size:13px;font-weight:500;color:var(--text-primary);cursor:pointer;transition:all .15s;white-space:nowrap;user-select:none}
+.filter-dd-trigger:hover{border-color:var(--accent)}
+.filter-dd-trigger.open{border-color:var(--accent);box-shadow:0 0 0 3px rgba(215,64,9,.1)}
+.filter-dd-trigger svg{color:var(--text-secondary);transition:transform .2s;flex-shrink:0}
+.filter-dd-trigger.open svg{transform:rotate(180deg);color:var(--accent)}
+.filter-dd-menu{position:absolute;top:calc(100% + 6px);left:0;min-width:100%;max-height:0;overflow:hidden;opacity:0;background:var(--surface);border:1px solid var(--border-dark);border-radius:var(--radius-md);box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:100;transition:max-height .2s cubic-bezier(.4,0,.2,1),opacity .15s ease}
+.filter-dd-menu.open{max-height:280px;opacity:1;overflow-y:auto}
+.filter-dd-opt{padding:9px 14px;font-size:13px;color:var(--text-primary);cursor:pointer;transition:background .1s;white-space:nowrap}
+.filter-dd-opt:hover{background:#f5f6fa}
+.filter-dd-opt.selected{background:var(--orange-bg);color:var(--accent);font-weight:600}
+/* Pagination DS — wrapper que la empuja al final del toolbar. */
+.comp-toolbar .naowee-pagination{margin-left:auto}
 
-/* TABLE */
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse}
-thead th{font-size:11px;font-weight:600;color:var(--text-secondary);text-align:left;padding:10px 16px;border-bottom:none;background:transparent;white-space:nowrap;letter-spacing:.3px}
-tbody td{font-size:13px;color:var(--text-primary);padding:14px 16px;border-bottom:1px solid var(--border);vertical-align:middle}
+/* TABLE — header gris flotante + bordes redondeados + inset (no edge-to-edge).
+   Las reglas finales de thead th vienen de naowee-tables.css (uppercase + bg
+   gris + font-weight 700) que se carga después con !important. */
+.table-wrap{overflow-x:auto;padding:8px 16px 16px}
+table{width:100%;border-collapse:separate;border-spacing:0;table-layout:auto}
+thead th{padding:12px 12px;white-space:nowrap;border:none;text-align:left}
+thead th:first-child{border-radius:12px 0 0 12px;padding-left:16px}
+thead th:last-child{border-radius:0 12px 12px 0;padding-right:16px}
+tbody td{font-size:13px;color:var(--text-primary);padding:14px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+tbody td:first-child{padding-left:16px}
+tbody td:last-child{padding-right:16px}
 tbody tr:last-child td{border-bottom:none}
 tbody tr{transition:background .12s}
 tbody tr:hover{background:#fafbfd}
 .row-num{font-size:13px;font-weight:700;color:var(--text-secondary);width:30px}
-.comp-name{font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+.comp-name{font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:170px}
 .comp-code{font-size:11px;color:var(--text-secondary);margin-top:1px;display:flex;align-items:center;gap:6px}
 .comp-cat{font-size:11px;color:var(--text-secondary)}
+.badge-sis{display:inline-flex;padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:700;white-space:nowrap;background:#f0f2f5;color:var(--text-secondary)}
 .sis-medal{font-size:11px;color:var(--text-secondary);display:flex;align-items:center;gap:4px;margin-top:3px}
 .deporte-cell{display:flex;align-items:center;gap:6px;white-space:nowrap}
 .deporte-emoji{font-size:14px}
 .deporte-text{font-size:13px;color:var(--text-primary)}
 .modalidad-sub{font-size:11px;color:var(--text-secondary);margin-top:1px}
-.evento-text{font-size:13px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
+.evento-text{font-size:13px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
 .evento-sub{font-size:11px;color:var(--text-secondary)}
-/* .badge-sis/.badge-est → .naowee-badge (ver render JS) */
-.digi-cell{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.badge-est{display:inline-flex;padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:700;white-space:nowrap}
+.badge-est.digitacion{background:#fff3e6;color:var(--naranja)}
+.badge-est.pausa{background:#fff0ee;color:#c04020}
+.badge-est.finalizada{background:var(--green-bg);color:var(--green)}
+.badge-est.asignada{background:#e8f4ff;color:#1f78d1}
+.badge-est.creada{background:#f0f2f5;color:var(--text-secondary)}
+.digi-cell{display:flex;align-items:center;gap:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.digi-cell > span{overflow:hidden;text-overflow:ellipsis;min-width:0}
 .digi-mini{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
 .assign-icon{color:var(--accent);flex-shrink:0}
-.action-btn{width:28px;height:28px;border:none;border-radius:0;background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent);transition:all .15s;flex-shrink:0}
-.action-btn:hover{opacity:.7}
-.action-btn a{display:flex;align-items:center;justify-content:center;text-decoration:none}
+/* Icon button "Ver" — hover con bg pill suave (paridad con naowee-btn--mute
+   del DS: fill quiet sobre fondo translúcido + lift sutil). */
+.action-btn{
+  width:32px;height:32px;
+  border:none;border-radius:var(--radius-md);
+  background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--accent);
+  transition:background .15s ease, transform .15s ease, box-shadow .15s ease;
+  flex-shrink:0;
+}
+.action-btn:hover{
+  background:var(--orange-bg);
+  transform:scale(1.08);
+}
+.action-btn:active{
+  transform:scale(.95);
+  background:#ffe1cf;
+}
+.action-btn:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 3px rgba(215,64,9,.18);
+}
+.action-btn a{display:flex;align-items:center;justify-content:center;text-decoration:none;color:inherit}
 .tab-placeholder{padding:48px 24px;text-align:center;color:var(--text-secondary);font-size:14px}
 .res-grid{display:flex;flex-direction:column;gap:12px;padding:16px 24px 24px}
 .res-card{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--border);border-radius:var(--radius-lg,12px);background:var(--surface,#fff);transition:box-shadow .15s}
@@ -203,57 +252,8 @@ tbody tr:hover{background:#fafbfd}
   .sidebar .nav-row{justify-content:center;padding:0}
   .sidebar .nav-row .icon{margin-left:0}
 }
-
-/* ═══════════ CANÓNICO (paridad Project/IVC + host shell) ═══════════ */
-.sidebar-logo{gap:12px;padding:0 18px}
-.sb-logo-img{height:42px;width:auto;display:block;flex-shrink:0;object-fit:contain}
-.sb-logo-img:first-of-type{margin-left:auto}
-.sb-logo-img:last-of-type{margin-right:auto}
-.logo-sep{width:1px;height:34px;background:var(--border);flex-shrink:0}
-.sidebar{transition:width .36s cubic-bezier(.32,.72,0,1),min-width .36s cubic-bezier(.32,.72,0,1)}
-.sidebar.collapsed .sb-logo-img,.sidebar.collapsed .logo-sep{display:none}
-.sidebar.collapsed .nav-arrow{max-width:0;opacity:0;pointer-events:none;margin:0;overflow:hidden}
-.sidebar.collapsed .nav-row{justify-content:center;padding:0;gap:0}
-.sidebar.collapsed .nav-row .icon{margin-left:0;position:relative;z-index:1}
-.sidebar.collapsed .nav-row .active-bar{display:none}
-.sidebar.collapsed .nav-row:hover{background:transparent}
-.sidebar.collapsed .nav-row.active{background:transparent}
-.sidebar.collapsed .nav-row::before{content:'';position:absolute;left:50%;top:50%;width:40px;height:40px;border-radius:8px;transform:translate(-50%,-50%);background:transparent;pointer-events:none;transition:background .2s cubic-bezier(.32,.72,0,1);z-index:0}
-.sidebar.collapsed .nav-row:hover::before{background:#f5f6fa}
-.sidebar.collapsed .nav-row.active::before{background:#fff3e6}
-.sidebar.collapsed .nav-row.active:hover::before{background:#ffe4cf}
-.nav-tooltip{position:fixed;background:var(--text-primary);color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;font-weight:500;white-space:nowrap;pointer-events:none;z-index:2000;box-shadow:0 4px 14px rgba(40,40,52,.18);opacity:0;transform:translateY(-50%) translateX(-4px);transition:opacity .15s ease,transform .15s ease}
-.nav-tooltip.is-visible{opacity:1;transform:translateY(-50%) translateX(0)}
-.nav-tooltip::before{content:'';position:absolute;right:100%;top:50%;transform:translateY(-50%);border:5px solid transparent;border-right-color:var(--text-primary)}
-.naowee-btn--loud:hover,.naowee-btn--loud:focus-visible{box-shadow:0 6px 16px rgba(215,64,9,.22);outline:none}
-.naowee-btn--loud:active{box-shadow:0 2px 6px rgba(215,64,9,.14)}
-.naowee-btn--loud:disabled,.naowee-btn--loud[disabled]{box-shadow:none}
-.sb-profile{position:relative;margin:0 10px 6px;padding-top:8px;border-top:1px solid var(--border)}
-.sb-profile-chip{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--radius-lg);cursor:pointer;transition:background .15s}
-.sb-profile-chip:hover{background:#f5f6fa}
-.sb-profile-ava{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:#ffe4cf;color:#d74009;flex-shrink:0}
-.sb-profile-meta{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
-.sb-profile-name{font-size:13px;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-profile-role{font-size:11px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-profile-chev{flex-shrink:0;color:var(--text-secondary);transition:transform .2s}
-.sb-profile.open .sb-profile-chev{transform:rotate(180deg)}
-.sb-profile-dd{position:absolute;left:10px;right:10px;bottom:calc(100% + 6px);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:0 -8px 24px rgba(40,40,52,.16);overflow:hidden;opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .2s,transform .2s;z-index:120}
-.sb-profile.open .sb-profile-dd{opacity:1;transform:translateY(0);pointer-events:auto}
-.sb-profile-dd__label{font-size:10px;font-weight:700;letter-spacing:.4px;color:var(--text-secondary);padding:10px 14px 4px;text-transform:uppercase}
-.sb-profile-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;transition:background .12s;color:var(--text-secondary)}
-.sb-profile-opt:hover{background:#f5f6fa}
-.sb-profile-opt.active{background:#fff3e6;color:var(--accent)}
-.sb-profile-opt .po-name{font-size:13px;font-weight:600;color:inherit}
-.sb-profile-opt .po-desc{font-size:11px;color:var(--text-secondary);margin-top:1px}
-.sidebar.collapsed .sb-profile{margin:0;border-top:none}
-.sidebar.collapsed .sb-profile-chip{justify-content:center;padding:8px 0}
-.sidebar.collapsed .sb-profile-meta,.sidebar.collapsed .sb-profile-chev{display:none}
-.sidebar.collapsed .sb-profile-dd{left:6px;width:236px;right:auto}
-.uc-chev{color:var(--text-secondary);transition:transform .2s}
-.profile-switcher.open .profile-dropdown{display:block}
-.profile-switcher.open .uc-chev{transform:rotate(180deg)}
 </style>
-<link rel="stylesheet" href="naowee-footer.css"/>
+<link rel="stylesheet" href="naowee-tables.css"/>
 </head>
 <body>
 <div class="shell">
@@ -264,9 +264,16 @@ tbody tr:hover{background:#fafbfd}
     <button class="burger-btn" onclick="toggleSidebar()">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5.5 12H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round"/><path d="M5.5 16H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round"/><path d="M5.5 8H18.5" stroke="#8788AB" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
-<img src="logos/ministerio.svg" alt="Ministerio del Deporte" class="sb-logo-img"/>
-      <div class="logo-sep"></div>
-      <img src="logos/suid.png" alt="SUID" class="sb-logo-img"/>
+    <svg class="naowee-logo" viewBox="0 0 177 33.22" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M28.11 33.21c-1.25 0-2.42-.48-3.31-1.36a4.67 4.67 0 01-1.37-3.29l.02-16.73-5.92 5.91a1.6 1.6 0 01-1.75.35 1.6 1.6 0 01-.99-1.47V1.6c0-.88.72-1.6 1.6-1.6h8.59c4.3 0 7.8 3.48 7.8 7.76v20.8c0 2.56-2.1 4.65-4.67 4.65zm-3.05-26.85c.2 0 .41.04.61.12.6.25.99.83.99 1.48l-.02 20.6c0 .39.15.76.43 1.03.28.28.64.43 1.04.43.8 0 1.46-.65 1.46-1.46V7.76c0-2.52-2.06-4.57-4.59-4.57H18v9.56l5.92-5.92c.31-.31.72-.47 1.14-.47" fill="#F49C1C"/>
+      <path d="M16.39 33.21H7.8C3.5 33.21 0 29.73 0 25.45V4.65C0 2.09 2.1 0 4.67 0c1.25 0 2.42.49 3.31 1.36.88.88 1.37 2.05 1.36 3.29L9.33 21.38l5.92-5.91c.46-.46 1.15-.6 1.75-.35.6.25.99.83.99 1.47v15.02c0 .88-.72 1.6-1.6 1.6M4.67 3.19c-.81 0-1.47.65-1.47 1.46v20.8c0 2.52 2.06 4.57 4.59 4.57h7V20.46l-5.92 5.92c-.46.46-1.15.6-1.75.35a1.6 1.6 0 01-.99-1.47L6.14 4.65c0-.39-.15-.76-.43-1.03a1.45 1.45 0 00-1.04-.43" fill="#FF7500"/>
+      <path d="M71.59 24.93h-.31c-.6.72-1.32 1.34-2.16 1.86-.84.52-1.93.77-3.25.77-3.95 0-7.12-2.37-7.12-6.5 0-4.68 3.49-6.42 7.78-6.42 1.25 0 2.27.1 3.07.29.81.19 1.47.39 1.99.6v-.58c0-1.01-.4-1.84-1.21-2.49-.8-.66-1.8-.99-2.99-.99-1.77 0-3.26.73-4.48 2.21l-3.7-2.52c2.03-2.53 4.79-3.79 8.29-3.79 2.96 0 5.22.69 6.77 2.07 1.56 1.38 2.34 3.42 2.34 6.13v11.88h-5.02v-2.52zm0-5.69c-.6-.28-1.21-.51-1.85-.68-.64-.17-1.33-.25-2.08-.25-1.22 0-2.16.26-2.82.79-.66.53-1 1.18-1 1.95 0 .78.32 1.39.96 1.86.64.47 1.37.7 2.2.7.67 0 1.3-.12 1.87-.37.57-.24 1.06-.57 1.46-.97.4-.4.71-.86.93-1.39.22-.53.33-1.08.33-1.65" fill="#002B5B"/>
+      <path d="M89.28 7.37c5.06 0 10.12 3.57 10.12 10.1 0 6.52-5.06 10.1-10.12 10.1-5.06 0-10.11-3.58-10.11-10.1 0-6.53 5.05-10.1 10.11-10.1zm0 15.51c2.41 0 5.02-1.67 5.02-5.42 0-3.74-2.61-5.42-5.02-5.42s-5.02 1.68-5.02 5.42c0 3.75 2.61 5.42 5.02 5.42z" fill="#002B5B"/>
+      <path d="M101.96 7.37h5.72l3.15 12.65h.27l3.78-12.65h5.25l3.82 12.65h.27l3.11-12.65h5.64l-6.11 20.2h-5.49l-3.81-12.74h-.27l-3.81 12.74h-5.41l-6.11-20.2z" fill="#002B5B"/>
+      <path d="M154.68 22.38c-.88 1.55-2.07 2.8-3.56 3.75-1.49.95-3.31 1.43-5.47 1.43-5.56 0-10.12-4.24-10.12-10.1 0-5.71 4.23-10.1 9.92-10.1 5.53 0 9.53 4.22 9.53 9.94v.93h-14.36c.33 2.43 2.12 4.65 5.17 4.65 2.27 0 3.81-1.38 4.55-2.95l4.24 2.09.1.36zm-4.63-7.35c-.39-1.92-2.17-3.52-4.59-3.52-2.2 0-4.15 1.44-4.67 3.52h9.26z" fill="#002B5B"/>
+      <path d="M176.69 22.38c-.88 1.55-2.07 2.8-3.56 3.75-1.49.95-3.31 1.43-5.47 1.43-5.56 0-10.11-4.24-10.11-10.1 0-5.71 4.22-10.1 9.92-10.1 5.53 0 9.53 4.22 9.53 9.94v.93h-14.36c.33 2.43 2.12 4.65 5.17 4.65 2.27 0 3.81-1.38 4.55-2.95l4.24 2.09.09.36zm-4.63-7.35c-.39-1.92-2.17-3.52-4.59-3.52-2.2 0-4.14 1.44-4.67 3.52h9.26z" fill="#002B5B"/>
+      <path d="M53.69 27.57c-1.38 0-2.5-1.02-2.5-2.29V15.66c0-2.05-1.82-3.72-4.07-3.72-2.24 0-4.07 1.67-4.07 3.72v9.62c0 1.26-1.12 2.29-2.5 2.29s-2.5-1.02-2.5-2.29V15.66c0-4.57 4.07-8.29 9.07-8.29s9.07 3.72 9.07 8.29v9.62c0 1.26-1.12 2.29-2.5 2.29" fill="#002B5B"/>
+    </svg>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section">DASHBOARD</div>
@@ -284,7 +291,6 @@ tbody tr:hover{background:#fafbfd}
       <a class="sub-row" href="lista.html"><span class="dot" style="background:transparent"></span>Lista de competencias</a>
       <a class="sub-row" href="stepper.html"><span class="dot" style="background:transparent"></span>Nueva competencia</a>
     </div>
-    <div class="nav-row" onclick="window.location.href='sorteo.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polyline points="16 3 21 3 21 8" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="4" y1="20" x2="21" y2="3" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><polyline points="21 16 21 21 16 21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="15" y1="15" x2="21" y2="21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><line x1="4" y1="4" x2="9" y2="9" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Sorteo</span></div>
     <div class="nav-row" onclick="window.location.href='digitadores.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M16 20v-1a4 4 0 00-4-4H6a4 4 0 00-4 4v1" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="#B5B9D4" stroke-width="1.5"/><path d="M22 20v-1a4 4 0 00-4-4" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M15 3a4 4 0 010 8" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Digitadores</span></div>
     <div class="nav-row" onclick="window.location.href='coordinadores.html'"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="16.75" cy="17.75" r="4.25" stroke="#B5B9D4" stroke-width="1.5"/><path d="M18.18 16.91l-1.79 1.78-1.07-1.07" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M10 15H7a4 4 0 00-4 4v1" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><circle cx="11" cy="7" r="4" stroke="#B5B9D4" stroke-width="1.5"/></svg></div><span class="lbl">Coordinadores</span></div>
     <div class="nav-row"><div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 20H5a2 2 0 01-2-2v-2a2 2 0 012-2h16" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M20 17H6" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="7.29" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5"/><ellipse cx="16.72" cy="7" rx="3" ry="3" stroke="#B5B9D4" stroke-width="1.5"/><path d="M10.29 7a2.72 2.72 0 013.43 0" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/><path d="M3 7h1.29M19.72 7H21" stroke="#B5B9D4" stroke-width="1.5" stroke-linecap="round"/></svg></div><span class="lbl">Auditor&iacute;a</span></div>
@@ -298,23 +304,29 @@ tbody tr:hover{background:#fafbfd}
 <div class="main">
   <header class="top-header">
     <div class="profile-switcher" id="profileSwitcher">
-      <div class="user-chip" onclick="toggleProfileDD(event)">
-        <div class="ava"><div class="ava-ring" style="background:#ffe4cf;color:#d74009">CE</div><div class="ava-dot"></div></div>
-        <div class="user-info"><span class="user-name">Coordinador</span><span class="user-role">Coordinador de eventos</span></div>
-        <svg class="uc-chev" width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <div class="profile-current" onclick="toggleProfileDD()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span id="profileLabel">Coordinador de eventos</span>
+        <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
       </div>
       <div class="profile-dropdown" id="profileDropdown">
         <div class="profile-option active" onclick="switchProfile('coordinador')">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z" stroke="currentColor" stroke-width="1.2"/></svg>
           <div><div class="po-name">Coordinador de eventos</div><div class="po-desc">Crear y configurar competencias</div></div>
         </div>
         <div class="profile-option" onclick="switchProfile('digitador')">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h12M2 12h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M3 2h10v12H3z" stroke="currentColor" stroke-width="1.2"/><path d="M5 5h6M5 7.5h6M5 10h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
           <div><div class="po-name">Digitador</div><div class="po-desc">Digitar enfrentamientos asignados</div></div>
         </div>
       </div>
     </div>
+    <div class="user-chip">
+      <div class="ava"><div class="ava-ring">AS</div><div class="ava-dot"></div></div>
+      <div class="user-info"><span class="user-name">Ana Maria S...</span><span class="user-role">Coordinador d...</span></div>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="#282834" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </div>
   </header>
+
   <div class="page">
 
     <!-- BACK NAV -->
@@ -331,42 +343,51 @@ tbody tr:hover{background:#fafbfd}
 
     <!-- TABS (always visible) -->
     <div class="comp-card">
-      <div class="naowee-tabs evt-tabs">
-        <button class="naowee-tab naowee-tab--selected" id="tabComp" onclick="setActiveTab('competencias')">Competencias</button>
-        <button class="naowee-tab" id="tabInst" onclick="setActiveTab('instituciones')">Instituciones</button>
-        <button class="naowee-tab" id="tabDep" onclick="setActiveTab('deportistas')">Deportistas</button>
-        <button class="naowee-tab" id="tabPers" onclick="setActiveTab('personal')">Personal de apoyo</button>
-        <button class="naowee-tab" id="tabRes" onclick="setActiveTab('resultados')">Resultados</button>
+      <div class="tabs-bar">
+        <div class="naowee-tabs" role="tablist" aria-label="Secciones del evento">
+          <button class="naowee-tab naowee-tab--selected" id="tabComp" onclick="setActiveTab('competencias')" role="tab" aria-selected="true">Competencias</button>
+          <button class="naowee-tab" id="tabInst" onclick="setActiveTab('instituciones')" role="tab" aria-selected="false">Instituciones</button>
+          <button class="naowee-tab" id="tabDep" onclick="setActiveTab('deportistas')" role="tab" aria-selected="false">Deportistas</button>
+          <button class="naowee-tab" id="tabPers" onclick="setActiveTab('personal')" role="tab" aria-selected="false">Personal de apoyo</button>
+          <button class="naowee-tab" id="tabRes" onclick="setActiveTab('resultados')" role="tab" aria-selected="false">Resultados</button>
+        </div>
       </div>
 
       <!-- COMPETENCIAS CONTENT -->
       <div id="contentComp">
         <div class="comp-toolbar">
-          <div class="naowee-textfield evt-search">
-            <div class="naowee-textfield__input-wrap">
-              <svg class="tf-ico" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 10.5l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-              <input class="naowee-textfield__input" id="compSearchInp" type="text" placeholder="Buscar competencia" oninput="compPage=1;renderCompetencias()"/>
+          <div class="search-wrap">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10.5 10.5l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <input class="search-inp" id="compSearchInp" type="text" placeholder="Buscar competencia" oninput="compPage=1;renderCompetencias()"/>
+          </div>
+          <div class="filter-dd" id="sistemaDD">
+            <div class="filter-dd-trigger" id="sistemaTrigger" onclick="toggleSistemaDD()">
+              <span id="sistemaLabel">Todos los sistemas</span>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="filter-dd-menu" id="sistemaMenu">
+              <div class="filter-dd-opt selected" onclick="pickSistema('')">Todos los sistemas</div>
+              <div class="filter-dd-opt" onclick="pickSistema('elim')">Eliminación directa</div>
+              <div class="filter-dd-opt" onclick="pickSistema('robin')">Round robin</div>
+              <div class="filter-dd-opt" onclick="pickSistema('final')">Final directa</div>
+              <div class="filter-dd-opt" onclick="pickSistema('grupos')">Fase de grupos</div>
+              <div class="filter-dd-opt" onclick="pickSistema('doble')">Eliminación doble</div>
+              <div class="filter-dd-opt" onclick="pickSistema('multi')">Multi-sistema</div>
             </div>
           </div>
-          <div class="naowee-dropdown evt-filter" id="sistemaDD">
-            <button type="button" class="naowee-dropdown__trigger" id="sistemaTrigger" onclick="toggleSistemaDD()">
-              <span class="naowee-dropdown__value" id="sistemaLabel">Todos los sistemas</span>
-              <span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span>
-            </button>
-            <div class="naowee-dropdown__menu" id="sistemaMenu">
-              <div class="naowee-dropdown__option naowee-dropdown__option--selected" onclick="pickSistema('')">Todos los sistemas</div>
-              <div class="naowee-dropdown__option" onclick="pickSistema('elim')">Eliminación directa</div>
-              <div class="naowee-dropdown__option" onclick="pickSistema('robin')">Round robin</div>
-              <div class="naowee-dropdown__option" onclick="pickSistema('final')">Final directa</div>
-              <div class="naowee-dropdown__option" onclick="pickSistema('grupos')">Fase de grupos</div>
-              <div class="naowee-dropdown__option" onclick="pickSistema('doble')">Eliminación doble</div>
-              <div class="naowee-dropdown__option" onclick="pickSistema('multi')">Multi-sistema</div>
+          <!-- Paginación DS oficial (naowee-pagination--small) -->
+          <div class="naowee-pagination naowee-pagination--small" role="navigation" aria-label="Paginación de competencias">
+            <div class="naowee-pagination__pages">
+              <span class="naowee-pagination__label" id="compPagLabel">P&aacute;gina 1 de 1</span>
             </div>
-          </div>
-          <div class="pag-wrap">
-            <span class="pag-label" id="compPagLabel">P&aacute;gina 1 de 1</span>
-            <button class="pag-btn" id="compBtnPrev" onclick="changeCompPage(-1)" disabled>&#8249;</button>
-            <button class="pag-btn" id="compBtnNext" onclick="changeCompPage(1)">&#8250;</button>
+            <div class="naowee-pagination__controls">
+              <button class="naowee-pagination__btn" id="compBtnPrev" onclick="changeCompPage(-1)" disabled aria-label="P&aacute;gina anterior">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="naowee-pagination__btn" id="compBtnNext" onclick="changeCompPage(1)" aria-label="P&aacute;gina siguiente">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
           </div>
         </div>
         <div class="table-wrap">
@@ -939,12 +960,12 @@ function renderEventHeader(){
         <div>
           <div class="event-title">
             ${EVENT.nombre}
-            <span class="naowee-badge naowee-badge--quiet naowee-badge--small naowee-badge--${({finalizado:'positive',proximo:'neutral','en-curso':'caution'})[cls]||'caution'}">${lbl}</span>
+            <span class="badge-en-curso ${cls}" style="${cls==='finalizado'?'background:var(--green-bg);color:var(--green)':cls==='proximo'?'background:var(--orange-bg);color:var(--naranja)':''}">${lbl}</span>
           </div>
           <div class="event-meta">${EVENT.deporte} &bull; ${EVENT.categorias.join(', ')} &bull; ${EVENT.fechaInicio} &ndash; ${EVENT.fechaFin}</div>
         </div>
       </div>
-      <a href="stepper.html?eventId=${eventId}&eventoNombre=${encodeURIComponent(EVENT.nombre)}" class="naowee-btn naowee-btn--loud">
+      <a href="stepper.html?eventId=${eventId}&eventoNombre=${encodeURIComponent(EVENT.nombre)}" class="btn-nuevo">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         Nuevo enfrentamiento
       </a>
@@ -967,8 +988,8 @@ function renderFases(){
       <div class="fase-circle${isPending?' pending':''}${isDone?' done':''}${isActive?' active':''}">${isDone?'<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>':f.num}</div>
       <div class="fase-name"${isPending?' style="color:var(--text-secondary)"':''}>${f.nombre}</div>
       <div class="fase-fechas">${f.fechas}</div>
-      ${isActive?'<span class="naowee-badge naowee-badge--quiet naowee-badge--small naowee-badge--caution">En curso</span>':''}
-      ${isDone?'<span class="naowee-badge naowee-badge--quiet naowee-badge--small naowee-badge--positive">Completada</span>':''}
+      ${isActive?'<span class="naowee-badge naowee-badge--caution naowee-badge--quiet">En curso</span>':''}
+      ${isDone?'<span class="naowee-badge naowee-badge--positive naowee-badge--quiet">Completada</span>':''}
     </div>`;
     if(i < fases.length - 1){
       const fillPct = isDone ? 100 : isActive ? 50 : 0;
@@ -989,23 +1010,27 @@ let _compSistemaFilter = '';
 const SIS_LABELS_MAP = {'':'Todos los sistemas',elim:'Eliminación directa',robin:'Round robin',final:'Final directa',grupos:'Fase de grupos',doble:'Eliminación doble',multi:'Multi-sistema'};
 
 function toggleSistemaDD(){
-  const dd = document.getElementById('sistemaDD');
-  const isOpen = dd.classList.contains('naowee-dropdown--open');
-  dd.classList.toggle('naowee-dropdown--open');
+  const trigger = document.getElementById('sistemaTrigger');
+  const menu = document.getElementById('sistemaMenu');
+  const isOpen = menu.classList.contains('open');
+  menu.classList.toggle('open');
+  trigger.classList.toggle('open');
   if(!isOpen) document.addEventListener('click',_closeSistemaDD);
 }
 function _closeSistemaDD(e){
   if(!e.target.closest('#sistemaDD')){
-    document.getElementById('sistemaDD').classList.remove('naowee-dropdown--open');
+    document.getElementById('sistemaMenu').classList.remove('open');
+    document.getElementById('sistemaTrigger').classList.remove('open');
     document.removeEventListener('click',_closeSistemaDD);
   }
 }
 function pickSistema(val){
   _compSistemaFilter = val;
   document.getElementById('sistemaLabel').textContent = SIS_LABELS_MAP[val]||'Todos los sistemas';
-  document.getElementById('sistemaDD').classList.remove('naowee-dropdown--open');
-  document.querySelectorAll('#sistemaMenu .naowee-dropdown__option').forEach(o => o.classList.remove('naowee-dropdown__option--selected'));
-  event.target.classList.add('naowee-dropdown__option--selected');
+  document.getElementById('sistemaMenu').classList.remove('open');
+  document.getElementById('sistemaTrigger').classList.remove('open');
+  document.querySelectorAll('#sistemaMenu .filter-dd-opt').forEach(o => o.classList.remove('selected'));
+  event.target.classList.add('selected');
   compPage=1;
   renderCompetencias();
 }
@@ -1046,7 +1071,7 @@ function renderCompetencias() {
         <div class="comp-code">${c.compCode} &nbsp;\u2022&nbsp; <span class="comp-cat">${EVENT.categoria}</span></div>
       </td>
       <td>
-        <span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">${c.sistemaLabel}</span>
+        <span class="badge-sis ${c.sisKey}">${c.sistemaLabel}</span>
         <div class="sis-medal">Sin medallas</div>
       </td>
       <td>
@@ -1057,7 +1082,7 @@ function renderCompetencias() {
         <div class="evento-text">${EVENT.nombre}</div>
         <div class="evento-sub">${c.zona} \u2022 ${c.fase}</div>
       </td>
-      <td><span class="naowee-badge naowee-badge--quiet naowee-badge--small naowee-badge--${({digitacion:'caution',pausa:'neutral',finalizada:'positive',asignada:'informative',creada:'neutral'})[estCls]||'neutral'}">${estLabel}</span></td>
+      <td><span class="badge-est ${estCls}">${estLabel}</span></td>
       <td>${digiHtml}</td>
       <td><div class="action-btn"><a href="detalle.html?id=${c.compCode}&role=coordinador&sport=${c.sportKey}&sis=${c.sisKey}&deporte=${encodeURIComponent(c.deporte)}&nombre=${encodeURIComponent(c.nombre)}&estado=${encodeURIComponent(estLabel)}&estCls=${c.estado}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" stroke="#d74009" stroke-width="1.5"/><circle cx="12" cy="12" r="3" stroke="#d74009" stroke-width="1.5"/></svg></a></div></td>
     </tr>`;
@@ -1089,8 +1114,14 @@ const TAB_LABELS = {
 function setActiveTab(tab) {
   const tabs = ['tabComp','tabInst','tabDep','tabPers','tabRes'];
   const map = {competencias:'tabComp', instituciones:'tabInst', deportistas:'tabDep', personal:'tabPers', resultados:'tabRes'};
-  tabs.forEach(t => document.getElementById(t).classList.remove('naowee-tab--selected'));
-  document.getElementById(map[tab]).classList.add('naowee-tab--selected');
+  tabs.forEach(t => {
+    const el = document.getElementById(t);
+    el.classList.remove('naowee-tab--selected');
+    el.setAttribute('aria-selected', 'false');
+  });
+  const activeEl = document.getElementById(map[tab]);
+  activeEl.classList.add('naowee-tab--selected');
+  activeEl.setAttribute('aria-selected', 'true');
 
   var cComp=document.getElementById('contentComp'), cRes=document.getElementById('contentResultados'), cOther=document.getElementById('contentOther');
   if (tab === 'competencias') {
@@ -1132,11 +1163,13 @@ function toggleCompMenu() {
   sub.classList.toggle('open');
 }
 
-function toggleProfileDD(e){ if(e) e.stopPropagation(); document.getElementById('profileSwitcher').classList.toggle('open'); }
+function toggleProfileDD() {
+  document.getElementById('profileDropdown').classList.toggle('open');
+}
 
 function fadeAndGo(url){document.body.style.transition='opacity .25s ease';document.body.style.opacity='0';setTimeout(()=>{window.location.href=url},260)}
 function switchProfile(p) {
-  document.getElementById('profileSwitcher')?.classList.remove('open');
+  document.getElementById('profileDropdown').classList.remove('open');
   if (p === 'digitador') fadeAndGo('digitador.html');
   else fadeAndGo('eventos.html');
 }
@@ -1182,16 +1215,12 @@ renderFases();
 renderCompetencias();
 
 document.addEventListener('click', function(e) {
-  if (!e.target.closest('.profile-switcher')) document.getElementById('profileSwitcher')?.classList.remove('open');
+  if (!e.target.closest('.profile-switcher')) document.getElementById('profileDropdown').classList.remove('open');
 });
 
 document.getElementById('btnLogout')?.addEventListener('click', () => {
   fadeAndGo('../escenarios/escenario-01-login.html');
 });
-
-/* Tooltip al colapsar el sidebar */
-(function(){var sb=document.getElementById('sidebar');if(!sb)return;var tip=document.createElement('div');tip.className='nav-tooltip';document.body.appendChild(tip);function show(el,t){if(!sb.classList.contains('collapsed'))return;tip.textContent=t;var r=el.getBoundingClientRect();tip.style.left=(r.right+12)+'px';tip.style.top=(r.top+r.height/2)+'px';tip.classList.add('is-visible');}function hide(){tip.classList.remove('is-visible');}sb.querySelectorAll('.nav-row').forEach(function(row){var l=row.querySelector('.lbl');if(!l)return;row.addEventListener('mouseenter',function(){show(row,l.textContent.trim());});row.addEventListener('mouseleave',hide);});var chip=document.querySelector('.sb-profile-chip');if(chip){chip.addEventListener('mouseenter',function(){show(chip,'Cambiar perfil');});chip.addEventListener('mouseleave',hide);}})();
 </script>
-<script src="naowee-footer.js"></script>
 </body>
 </html>
