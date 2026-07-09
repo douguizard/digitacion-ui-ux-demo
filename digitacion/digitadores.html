@@ -67,7 +67,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 
 /* DIGITADORES GRID */
 .digi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.digi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;animation:fadeInUp .4s ease both;transition:box-shadow .15s}
+.digi-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;animation:fadeInUp .4s ease both;transition:box-shadow .15s;display:flex;flex-direction:column}
 .digi-card:hover{box-shadow:var(--shadow-card)}
 .digi-card:nth-child(1){animation-delay:.1s}
 .digi-card:nth-child(2){animation-delay:.15s}
@@ -110,7 +110,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .badge.asignada{background:#f0f1f7;color:var(--text-secondary);border-color:var(--border-dark)}
 
 /* CARD FOOTER */
-.digi-card-footer{display:flex;align-items:center;gap:8px;padding:12px 20px;border-top:1px solid var(--border);color:var(--text-secondary);font-size:13px}
+.digi-card-footer{margin-top:auto;display:flex;align-items:center;gap:8px;padding:12px 20px;border-top:1px solid var(--border);color:var(--text-secondary);font-size:13px}
 
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}

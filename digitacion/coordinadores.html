@@ -61,6 +61,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
   background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);
   overflow:hidden;animation:fadeInUp .4s cubic-bezier(.4,0,.2,1) both;
   transition:box-shadow .2s,transform .2s;
+  display:flex;flex-direction:column;
 }
 .coord-card:nth-child(1){animation-delay:.05s}
 .coord-card:nth-child(2){animation-delay:.1s}
@@ -90,6 +91,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .coord-stat-label{font-size:11px;color:var(--text-secondary);font-weight:500}
 
 .coord-card-footer{
+  margin-top:auto;
   display:flex;align-items:center;gap:8px;padding:12px 20px;
   border-top:1px solid var(--border);
 }
