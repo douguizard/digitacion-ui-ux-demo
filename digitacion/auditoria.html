@@ -37,7 +37,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 
 /* KPI STRIP — stat cards (no existe en DS → override pattern) */
 .aud-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
-.aud-kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:15px 17px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:13px}
+.aud-kpi{background:var(--surface);border-radius:var(--radius-lg);padding:15px 17px;box-shadow:var(--shadow-card);display:flex;align-items:center;gap:13px}
 .aud-kpi__ico{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;flex-shrink:0}
 .aud-kpi__ico svg{width:20px;height:20px}
 .aud-kpi__val{font-size:23px;font-weight:800;color:var(--text-primary);line-height:1}
@@ -54,7 +54,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .naowee-tab--selected .naowee-tab__count{color:var(--accent);background:var(--orange-bg,#fff3e6)}
 /* Celda usuario (avatar + nombre + rol) */
 .aud-user{display:flex;align-items:center;gap:10px;min-width:0}
-.aud-user__ava{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff}
+.aud-user__ava{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-size:11px;font-weight:700}
 .aud-user__name{font-size:13px;font-weight:600;color:var(--text-primary);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .aud-user__role{font-size:11.5px;color:var(--text-secondary)}
 /* Celda acción (badge de tipo + texto) */
@@ -229,7 +229,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
     var t=TIPO[x.tipo]||{v:'neutral',l:x.tipo}, us=USERS[x.u]||{role:'',color:'#646587'};
     return '<tr>'
       +'<td data-label="Cuándo">'+_when(x.d)+'</td>'
-      +'<td data-label="Usuario"><div class="aud-user"><span class="aud-user__ava" style="background:'+us.color+'">'+ini(x.u)+'</span><div style="min-width:0"><div class="aud-user__name">'+esc(x.u)+'</div><div class="aud-user__role">'+esc(us.role)+'</div></div></div></td>'
+      +'<td data-label="Usuario"><div class="aud-user"><span class="aud-user__ava" style="background:color-mix(in srgb, '+us.color+' 16%, #fff);color:'+us.color+'">'+ini(x.u)+'</span><div style="min-width:0"><div class="aud-user__name">'+esc(x.u)+'</div><div class="aud-user__role">'+esc(us.role)+'</div></div></div></td>'
       +'<td data-label="Acción"><div class="aud-action"><span class="naowee-badge naowee-badge--'+t.v+' naowee-badge--quiet naowee-badge--small">'+esc(t.l)+'</span><span class="aud-action__txt">'+x.a+'</span></div></td>'
       +'<td data-label="Módulo"><span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">'+esc(MODL[x.mod]||x.mod)+'</span></td>'
     +'</tr>';
