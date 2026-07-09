@@ -211,6 +211,7 @@ a{text-decoration:none}
             </tbody>
           </table>
         </div>
+        <div id="dashPager" class="naowee-pagination naowee-pagination--small" style="justify-content:flex-end;padding:14px 24px 18px;display:none" role="navigation" aria-label="Paginación del historial"></div>
       </div>
 
     </main>
@@ -385,6 +386,9 @@ const DASH_COMPS = [
   {id:2305,name:'Ciclismo Ruta 50-60 KM Mixto',       sport:'ciclismo',  zona:'Sur',    sistema:'Final directa',status:'en-digitacion', completed:0, total:1},
 ];
 
+var _dashPage = 1;
+var _DASH_PAGE_SIZE = 15;
+
 function renderDashboardTable(){
   const tbody = document.getElementById('dashboardTbody');
   const statusLabels = {'en-digitacion':'En digitación','asignada':'Asignada','en-pausa':'En pausa','finalizada':'Finalizada'};
@@ -392,19 +396,28 @@ function renderDashboardTable(){
   const sistemaClasses = {'Eliminación directa':'elim','Round robin':'robin','Fase de grupos':'grupos','Final directa':'final','Rondas':'rondas'};
   const actionLabels = {'en-digitacion':'Continuar','en-pausa':'Continuar','asignada':'Iniciar','finalizada':'Ver'};
 
+  // Totales sobre TODO el historial (independientes de la paginación)
   let totalAsignaciones=0, totalFinalizadas=0, totalEnfrentamientos=0, totalPendientes=0;
+  DASH_COMPS.forEach(c => {
+    totalAsignaciones++;
+    totalEnfrentamientos += c.total;
+    if(c.status==='finalizada') totalFinalizadas++;
+    else totalPendientes += (c.total - c.completed);
+  });
 
-  tbody.innerHTML = DASH_COMPS.map(c => {
+  // Paginación (cap 15 filas por página)
+  const totRows = DASH_COMPS.length;
+  const pgs = Math.max(1, Math.ceil(totRows / _DASH_PAGE_SIZE));
+  if(_dashPage > pgs) _dashPage = pgs;
+  if(_dashPage < 1) _dashPage = 1;
+  const pageRows = DASH_COMPS.slice((_dashPage-1)*_DASH_PAGE_SIZE, _dashPage*_DASH_PAGE_SIZE);
+
+  tbody.innerHTML = pageRows.map(c => {
     const sp = SPORTS_DB[c.sport];
     const emoji = sp ? sp.emoji : '🏅';
     const label = sp ? sp.label : c.sport;
     const pct = c.total > 0 ? Math.round((c.completed / c.total) * 100) : 0;
     const barColor = 'var(--green)';
-
-    totalAsignaciones++;
-    totalEnfrentamientos += c.total;
-    if(c.status==='finalizada') totalFinalizadas++;
-    else totalPendientes += (c.total - c.completed);
 
     return `<tr>
       <td><div class="comp-name">${c.name}</div><div class="comp-sport">${emoji} ${label} · ${c.zona}</div></td>
@@ -415,11 +428,37 @@ function renderDashboardTable(){
     </tr>`;
   }).join('');
 
-  // Update stat cards
+  // Update stat cards (totales globales)
   document.querySelector('.stat-card.blue .stat-value').textContent = totalAsignaciones;
   document.querySelector('.stat-card.green .stat-value').textContent = totalFinalizadas;
   document.querySelector('.stat-card.purple .stat-value').textContent = totalEnfrentamientos;
   document.querySelector('.stat-card.orange .stat-value').textContent = totalPendientes;
+
+  renderDashPager(pgs);
+}
+
+function renderDashPager(pgs){
+  const pager = document.getElementById('dashPager');
+  if(!pager) return;
+  if(pgs <= 1){ pager.style.display='none'; pager.innerHTML=''; return; }
+  pager.style.display='flex';
+  pager.innerHTML =
+    '<div class="naowee-pagination__pages"><span class="naowee-pagination__label">Página</span>'
+    + '<input class="naowee-pagination__input" value="'+_dashPage+'" onchange="dashGoPage(parseInt(this.value,10))" aria-label="Página actual">'
+    + '<span class="naowee-pagination__total">de <strong>'+pgs+'</strong></span></div>'
+    + '<div class="naowee-pagination__controls">'
+    + '<button class="naowee-pagination__btn" type="button" onclick="dashGoPage('+(_dashPage-1)+')"'+(_dashPage<=1?' disabled':'')+' aria-label="Página anterior"><svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
+    + '<button class="naowee-pagination__btn" type="button" onclick="dashGoPage('+(_dashPage+1)+')"'+(_dashPage>=pgs?' disabled':'')+' aria-label="Página siguiente"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
+    + '</div>';
+}
+
+function dashGoPage(p){
+  if(isNaN(p)) return;
+  const pgs = Math.max(1, Math.ceil(DASH_COMPS.length / _DASH_PAGE_SIZE));
+  _dashPage = Math.min(Math.max(1, p), pgs);
+  renderDashboardTable();
+  const card = document.querySelector('.recent-card');
+  if(card) card.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 renderDashboardTable();
