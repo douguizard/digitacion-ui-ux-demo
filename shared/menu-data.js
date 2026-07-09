@@ -98,8 +98,8 @@ const ITEMS = {
                       ]},
   competencias:     { id: 'competencias',    label: 'Competencias',          icon: 'trophy',   route: '/home/competencias',
                       children: [
-                        { id: 'competencias-inicio', label: 'Inicio',    route: '/home/competencias/inicio' },
-                        { id: 'competencias-lista',  label: 'Listado',   route: '/home/competencias/lista' }
+                        { id: 'competencias-lista',  label: 'Lista de competencias', route: '/home/competencias/lista' },
+                        { id: 'competencias-nueva',  label: 'Nueva competencia',     route: '/home/competencias/nueva' }
                       ]},
   sorteo:           { id: 'sorteo',          label: 'Sorteo',                icon: 'sorteo',   route: '/home/sorteo' },
   cupos:            { id: 'cupos',           label: 'Cupos',                 icon: 'ticket',   route: '/home/quotas' },
@@ -181,20 +181,8 @@ export const MENU_BY_ROLE = {
   ],
 
   ADMIN: [
-    { section: null,                       items: [ITEMS.inicio] },
-    { section: 'EVENTOS',                  items: [ITEMS.eventos, ITEMS.cupos] },
-    { section: 'COMPETENCIAS',             items: [ITEMS.competencias, ITEMS.sorteo] },
-    { section: 'INSCRIPCIONES',            items: [ITEMS.inscripciones] },
-    /* Mi digitación NO aparece para ADMIN — solo para el rol DIGITIZER. */
-    { section: 'DIGITACIÓN',               items: [ITEMS.digitadores, ITEMS.coordinadores] },
-    { section: 'DOCUMENTACIÓN',            items: [ITEMS.documentacion] },
-    { section: 'ESCENARIOS',               items: [ITEMS.sedes, ITEMS.mapaEscenarios] },
-    { section: 'INCENTIVOS',               items: [ITEMS.asignarIncentivos] },
-    { section: 'ACREDITACIÓN',             items: [ITEMS.acreditaciones] },
-    { section: 'REPORTERÍA',               items: [ITEMS.dashboards, ITEMS.reportes] },
-    { section: 'RESULTADOS & RANKING',     items: [ITEMS.resultados, ITEMS.ranking] },
-    { section: 'USUARIOS',                 items: [ITEMS.gestionUsuarios] },
-    { section: null,                       items: [ITEMS.logsActividad] }
+    { section: 'DASHBOARD',                items: [ITEMS.inicio] },
+    { section: 'GESTIÓN',                  items: [ITEMS.competencias, ITEMS.digitadores, ITEMS.coordinadores, ITEMS.logsActividad] }
   ],
 
   USER_MANAGER: [
@@ -209,15 +197,13 @@ export const MENU_BY_ROLE = {
   ],
 
   EVENT_COORDINATOR: [
-    { section: null,                       items: [ITEMS.inicio] },
-    { section: 'EVENTOS',                  items: [ITEMS.eventos] },
-    { section: 'COMPETENCIAS',             items: [ITEMS.competencias, ITEMS.sorteo] },
-    { section: 'RESULTADOS & RANKING',     items: [ITEMS.resultados] }
+    { section: 'DASHBOARD',                items: [ITEMS.inicio] },
+    { section: 'GESTIÓN',                  items: [ITEMS.competencias, ITEMS.sorteo, ITEMS.digitadores, ITEMS.coordinadores, ITEMS.logsActividad] }
   ],
 
   DIGITIZER: [
-    { section: null,                       items: [ITEMS.inicio] },
-    { section: 'DIGITACIÓN',               items: [ITEMS.miDigitacion] }
+    { section: 'DASHBOARD',                items: [ITEMS.inicio] },
+    { section: 'GESTIÓN',                  items: [ITEMS.miDigitacion] }
   ],
 
   DOCUMENTATION_MANAGER: [
