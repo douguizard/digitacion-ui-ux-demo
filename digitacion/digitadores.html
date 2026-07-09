@@ -101,11 +101,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .digi-comp-more:hover{text-decoration:underline}
 
 /* BADGES */
-.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:700;white-space:nowrap;border:1px solid transparent;flex-shrink:0}
-.badge.en-digitacion{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
-.badge.en-pausa{background:var(--orange-bg);color:var(--naranja);border-color:var(--orange-border)}
-.badge.finalizada{background:var(--blue-bg);color:var(--blue-info);border-color:#c5deff}
-.badge.asignada{background:#f0f1f7;color:var(--text-secondary);border-color:var(--border-dark)}
+/* Badges de estado de competencia → .naowee-badge canónico (mapa unificado, generado en JS) */
+.digi-comp-item .naowee-badge{flex-shrink:0}
 
 /* CARD FOOTER */
 .digi-card-footer{margin-top:auto;display:flex;align-items:center;gap:8px;padding:12px 20px;border-top:1px solid var(--border);color:var(--text-secondary);font-size:13px}
@@ -404,10 +401,11 @@ function renderCards(list) {
   }
   noResults.style.display = 'none';
 
+  var ESTADO_VARIANT = {'en-digitacion':'caution','en-pausa':'neutral','finalizada':'positive','asignada':'informative'};
   list.forEach(function(d, i) {
     var compsHtml = '';
     d.comps.forEach(function(c) {
-      compsHtml += '<div class="digi-comp-item"><span class="digi-comp-name">' + c.name + '</span><span class="badge ' + c.status + '">' + c.label + '</span></div>';
+      compsHtml += '<div class="digi-comp-item"><span class="digi-comp-name">' + c.name + '</span><span class="naowee-badge naowee-badge--' + (ESTADO_VARIANT[c.status] || 'neutral') + ' naowee-badge--quiet naowee-badge--small">' + c.label + '</span></div>';
     });
     if (d.moreCount > 0) {
       compsHtml += '<div class="digi-comp-more">+ ' + d.moreCount + ' m\u00e1s</div>';
