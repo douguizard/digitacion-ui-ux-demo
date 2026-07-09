@@ -109,11 +109,7 @@ tbody tr:hover{background:#fafbfd}
 .comp-sport{font-size:11px;color:var(--text-secondary);display:flex;align-items:center;gap:4px;margin-top:2px}
 .badge-sistema{display:inline-flex;padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:600;white-space:nowrap;background:#f0f2f5;color:var(--text-secondary)}
 .badge-sistema.elim,.badge-sistema.robin,.badge-sistema.final,.badge-sistema.grupos,.badge-sistema.rondas{background:#f0f2f5;color:var(--text-secondary)}
-.badge-estado{display:inline-flex;padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:700;white-space:nowrap}
-.badge-estado.digitacion{background:#fff3e6;color:var(--naranja)}
-.badge-estado.pausa{background:#fff0ee;color:#c04020}
-.badge-estado.finalizada{background:var(--green-bg);color:var(--green)}
-.badge-estado.asignada{background:#e8f4ff;color:#1f78d1}
+/* Estado → .naowee-badge canónico (mapa unificado: caution/informative/neutral/positive) */
 .digi-chip{display:flex;align-items:center;gap:8px}
 .digi-chip-ava{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
 .ver-detalle{font-size:12px;font-weight:600;color:var(--accent);cursor:pointer;text-decoration:none;white-space:nowrap}
@@ -389,7 +385,7 @@ var _DASH_PAGE_SIZE = 15;
 function renderDashboardTable(){
   const tbody = document.getElementById('dashboardTbody');
   const statusLabels = {'en-digitacion':'En digitación','asignada':'Asignada','en-pausa':'En pausa','finalizada':'Finalizada'};
-  const statusClasses = {'en-digitacion':'digitacion','asignada':'asignada','en-pausa':'pausa','finalizada':'finalizada'};
+  const estadoVariant = {'en-digitacion':'caution','asignada':'informative','en-pausa':'neutral','finalizada':'positive'};
   const sistemaClasses = {'Eliminación directa':'elim','Round robin':'robin','Fase de grupos':'grupos','Final directa':'final','Rondas':'rondas'};
   const actionLabels = {'en-digitacion':'Continuar','en-pausa':'Continuar','asignada':'Iniciar','finalizada':'Ver'};
 
@@ -420,7 +416,7 @@ function renderDashboardTable(){
       <td><div class="comp-name">${c.name}</div><div class="comp-sport">${emoji} ${label} · ${c.zona}</div></td>
       <td><span class="badge-sistema ${sistemaClasses[c.sistema]||'grupos'}">${c.sistema}</span></td>
       <td><div style="display:flex;align-items:center"><div style="width:48px;height:4px;background:var(--border);border-radius:var(--radius-full)"><div style="height:100%;width:${pct}%;background:${barColor};border-radius:var(--radius-full)"></div></div></div></td>
-      <td><span class="badge-estado ${statusClasses[c.status]}">${statusLabels[c.status]}</span></td>
+      <td><span class="naowee-badge naowee-badge--${estadoVariant[c.status]||'neutral'} naowee-badge--quiet naowee-badge--small">${statusLabels[c.status]}</span></td>
       <td><a class="ver-detalle" href="digitador.html?comp=${c.id}">${actionLabels[c.status]}</a></td>
     </tr>`;
   }).join('');
