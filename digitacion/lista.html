@@ -35,7 +35,7 @@
 /* Sport Pills Section */
 .sport-section{background:var(--surface);border-radius:var(--radius-xl);box-shadow:var(--shadow-card);padding:20px 24px;margin-bottom:24px;position:sticky;top:0;z-index:10;transition:border-radius .15s,box-shadow .15s}
 .sport-section.stuck{border-radius:0 0 16px 16px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.sport-section-header{display:flex;align-items:center;gap:8px;overflow:hidden;transform-origin:left center}
+.sport-section-header{display:flex;align-items:center;gap:8px;overflow:hidden;transform-origin:left center;margin-bottom:14px}
 .sport-section-title{font-size:15px;font-weight:600;color:var(--text-primary)}
 .sport-section-sub{font-size:13px;color:var(--text-secondary)}
 .sport-pills-wrap{position:relative;overflow:hidden}
@@ -57,6 +57,8 @@
 .pill-nav:hover{border-color:var(--accent)}
 .pill-nav.left{left:0}
 .pill-nav.right{right:0}
+/* El variant --small del DS fija gap:0 entre "de N" y las flechas → se ve pegado (peor con 3 dígitos). Restaurar separación. */
+.naowee-pagination--small{gap:12px}
 
 /* Filters Row */
 .filters-row{display:flex;align-items:center;gap:10px;padding:16px 20px}
