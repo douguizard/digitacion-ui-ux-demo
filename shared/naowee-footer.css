@@ -8,8 +8,8 @@
   z-index: 50;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 7px 14px 7px 10px;
+  gap: 8px;
+  padding: 6px 13px 6px 9px;
   background: var(--surface, #fff);
   border: 1px solid var(--border, #e7e9f3);
   border-radius: var(--radius-full, 9999px);
@@ -22,7 +22,7 @@
 
 .naowee-floating-footer__logo {
   width: auto;
-  height: 26px;
+  height: 19px;
   flex-shrink: 0;
   display: block;
 }

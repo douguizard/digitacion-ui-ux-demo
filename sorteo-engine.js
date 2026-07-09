@@ -18,21 +18,66 @@
 
   const BYE = 'Descansa';
 
-  /** Reparte N participantes en M grupos por bloques secuenciales
-   *  (posiciones 1-4 → A, 5-8 → B, …). Distribuye el resto de forma
-   *  equilibrada. Devuelve [[...gA],[...gB], …] (solo equipos reales). */
-  function asignarGrupos(participantes, nGrupos) {
-    const list = participantes.map((p) => (typeof p === 'string' ? p : p.nombre));
-    const n = list.length;
+  /** Fisher-Yates in-place */
+  function _shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+
+  /** Índice de grupo fijo de un participante (regla del sorteo), o -1 si libre.
+   *  Acepta p.grupoFijo como número (0-based) o letra ('A'→0). Fuera de rango → -1. */
+  function fixedGroupIndex(p, nGrupos) {
+    if (!p || typeof p !== 'object') return -1;
+    let gi = p.grupoFijo;
+    if (gi == null || gi === '') return -1;
+    if (typeof gi === 'string') {
+      const s = gi.trim(); if (!s) return -1;
+      gi = s.length === 1 && /[a-zA-Z]/.test(s) ? (s.toUpperCase().charCodeAt(0) - 65) : parseInt(s, 10);
+    }
+    if (typeof gi !== 'number' || !Number.isFinite(gi)) return -1; // NaN/obj/array/bool → libre
+    gi = gi | 0;
+    return (gi >= 0 && gi < Math.max(1, nGrupos | 0)) ? gi : -1;
+  }
+
+  /** Reparte N participantes en M grupos, con soporte de REGLAS (grupoFijo por equipo)
+   *  y sorteo real opcional (opts.shuffle). Sin opts ni reglas se comporta igual que
+   *  antes (bloques secuenciales 1-4→A, 5-8→B…). Los equipos con grupoFijo se colocan
+   *  primero en su grupo (respetando capacidad); el resto llena los cupos restantes
+   *  (barajados si opts.shuffle). Devuelve [[...gA],[...gB], …] (solo equipos reales). */
+  function asignarGrupos(participantes, nGrupos, opts) {
+    opts = opts || {};
     const m = Math.max(1, nGrupos | 0);
+    const items = (participantes || []).map((p) => (typeof p === 'string' ? { nombre: p } : (p || {})));
+    const n = items.length;
     const base = Math.floor(n / m);
     const extra = n % m; // primeros `extra` grupos reciben uno más
+    const sizes = [];
+    for (let g = 0; g < m; g++) sizes.push(base + (g < extra ? 1 : 0));
     const groups = [];
-    let idx = 0;
+    for (let g = 0; g < m; g++) groups.push([]);
+    // 1) colocar equipos FIJADOS por regla (si caben en su grupo)
+    const free = [];
+    items.forEach((it) => {
+      const gi = fixedGroupIndex(it, m);
+      if (gi >= 0 && groups[gi].length < sizes[gi]) groups[gi].push(it.nombre);
+      else free.push(it.nombre); // libre, o grupo fijado ya lleno (overflow → se reparte)
+    });
+    // 2) barajar libres para un sorteo real (opcional)
+    if (opts.shuffle) _shuffle(free);
+    // 3) rellenar cupos restantes grupo por grupo
+    let fi = 0;
     for (let g = 0; g < m; g++) {
-      const size = base + (g < extra ? 1 : 0);
-      groups.push(list.slice(idx, idx + size));
-      idx += size;
+      while (groups[g].length < sizes[g] && fi < free.length) groups[g].push(free[fi++]);
+    }
+    // 4) red de seguridad: si quedara sobrante (invariante de tamaños roto), repartir
+    //    al grupo más pequeño en cada paso para no desbalancear ni volcarlo todo al último.
+    while (fi < free.length) {
+      let g = 0;
+      for (let k = 1; k < m; k++) if (groups[k].length < groups[g].length) g = k;
+      groups[g].push(free[fi++]);
     }
     return groups;
   }
@@ -315,5 +360,5 @@
     };
   }
 
-  global.SorteoEngine = { BYE, asignarGrupos, roundRobin, recalcStandings, faseFinal, toComp, seedOrder, buildBracketFromSeeds, advanceWinner, toCompBracket };
+  global.SorteoEngine = { BYE, asignarGrupos, fixedGroupIndex, roundRobin, recalcStandings, faseFinal, toComp, seedOrder, buildBracketFromSeeds, advanceWinner, toCompBracket };
 })(typeof window !== 'undefined' ? window : globalThis);

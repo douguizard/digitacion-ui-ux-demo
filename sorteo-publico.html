@@ -40,7 +40,13 @@ body{margin:0;font-family:var(--font);background:var(--bg);color:var(--text-prim
 .pubp-list{display:flex;flex-direction:column;gap:8px}
 .pubp-row{display:grid;grid-template-columns:minmax(0,1.6fr) 1fr;gap:12px;align-items:center;padding:11px 14px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface)}
 .pubp-match{font-size:13.5px;font-weight:700;color:var(--text-primary)}
-.pubp-match small{display:block;font-size:11px;font-weight:500;color:var(--text-secondary);margin-top:1px}
+.pubp-match small{display:block;font-size:11px;font-weight:500;color:var(--text-secondary);margin-top:4px}
+/* Equipo dos tonos (paridad con la vista de edición): nombre negro + región·categoría gris */
+.pubp-match__teams{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0}
+.pubp-team{display:flex;flex-direction:column;min-width:0;max-width:100%}
+.pubp-team__name{font-size:13.5px;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.pubp-team__meta{font-size:11px;font-weight:500;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.pubp-vs{font-size:9px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--text-secondary);background:var(--bg-soft,#f1f2f7);border-radius:4px;padding:1px 5px;margin:1px 0}
 .pubp-when{font-size:13px;color:var(--text-primary);text-align:right}
 .pubp-when small{display:block;font-size:11px;color:var(--text-secondary)}
 @media(max-width:620px){.pubp-row{grid-template-columns:1fr}.pubp-when{text-align:left}}
@@ -106,7 +112,8 @@ body{margin:0;font-family:var(--font);background:var(--bg);color:var(--text-prim
   (c.grupos||[]).forEach(function(g){ (g.partidos||[]).forEach(function(p){ if(p.fecha||p.hora||p.escenario) prog.push({t1:p.t1,t2:p.t2,ctx:g.nombre+' · J'+p.jornada,fecha:p.fecha,hora:p.hora,esc:p.escenario}); }); });
   (c.bracket||[]).forEach(function(rd){ (rd.matches||[]).forEach(function(m){ if(m.fecha||m.hora||m.escenario) prog.push({t1:m.t1,t2:m.t2,ctx:rd.round,fecha:m.fecha,hora:m.hora,esc:m.escenario}); }); });
   if(prog.length){
-    var rows=prog.map(function(x){ var when=[fmtFecha(x.fecha),x.hora].filter(Boolean).join(' · '); return '<div class="pubp-row"><div class="pubp-match">'+esc(x.t1||'')+' vs '+esc(x.t2||'')+'<small>'+esc(x.ctx)+'</small></div><div class="pubp-when">'+(when||'Por programar')+'<small>'+esc(x.esc||'Escenario por definir')+'</small></div></div>'; }).join('');
+    var pubTeam=function(name){ var meta=(c&&c.teamMeta&&c.teamMeta[name])||''; return '<span class="pubp-team"><span class="pubp-team__name">'+esc(name||'')+'</span>'+(meta?'<span class="pubp-team__meta">'+esc(meta)+'</span>':'')+'</span>'; };
+    var rows=prog.map(function(x){ var when=[fmtFecha(x.fecha),esc(x.hora)].filter(Boolean).join(' · '); return '<div class="pubp-row"><div class="pubp-match"><div class="pubp-match__teams">'+pubTeam(x.t1)+'<span class="pubp-vs">vs</span>'+pubTeam(x.t2)+'</div><small>'+esc(x.ctx)+'</small></div><div class="pubp-when">'+(when||'Por programar')+'<small>'+esc(x.esc||'Escenario por definir')+'</small></div></div>'; }).join('');
     html+=sec('Programación',ICO.prog,'<div class="pubp-list">'+rows+'</div>');
   }
 
