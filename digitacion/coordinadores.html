@@ -424,7 +424,7 @@ renderCards(coordinadores);
   const roleCode = new URLSearchParams(window.location.search).get('role') || 'ROOT';
   const currentFile = window.location.pathname.split('/').pop() || 'coordinadores.html';
   const LEGACY_MAP = {
-    'sorteo': 'sorteo.html',
+    'inicio': 'dashboard.html', 'sorteo': 'sorteo.html',
     'eventos': 'eventos.html', 'eventos-lista': 'eventos.html',
     'competencias': 'lista.html', 'competencias-lista': 'lista.html',
     'competencias-nueva': 'stepper.html',
@@ -437,7 +437,7 @@ renderCards(coordinadores);
     activeId: 'coordinadores',
     onActiveChange: (activeId) => {
       const target = LEGACY_MAP[activeId];
-      if (target) { if (target === currentFile) return; window.location.href = target; return; }
+      if (target) { if (target === currentFile) return; window.location.href = target + '?role=' + encodeURIComponent(roleCode); return; }
       const isLocal = ['localhost','127.0.0.1'].includes(window.location.hostname);
       const SHELL_BASE = isLocal ? 'http://localhost:5100' : 'https://naowee-tech.github.io/naowee-test-sidebar-shell';
       window.location.href = `${SHELL_BASE}/perfil.html?role=${roleCode}&active=${activeId}`;

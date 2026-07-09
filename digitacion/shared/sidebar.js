@@ -221,15 +221,16 @@ function bindSidebarEvents(rootEl) {
    o saltaba al shell host. Centralizado aquí: una sola fuente de verdad. */
 const DIGI_ROUTES = {
   'eventos': 'eventos.html', 'eventos-lista': 'eventos.html', 'eventos-nuevo': 'eventos.html',
-  'competencias': 'lista.html', 'competencias-inicio': 'lista.html', 'competencias-lista': 'lista.html',
+  'competencias': 'lista.html', 'competencias-inicio': 'lista.html', 'competencias-lista': 'lista.html', 'competencias-nueva': 'stepper.html',
   'sorteo': 'sorteo.html',
   'mi-digitacion': 'digitador.html',
   'digitadores': 'digitadores.html', 'coordinadores': 'coordinadores.html',
+  'audit-logs': 'auditoria.html',
   'resultados': 'eventos.html',   // placeholder hasta F3 (vista pública de resultados)
 };
 export function resolveDigiRoute(activeId, roleCode) {
   let page;
-  if (activeId === 'inicio') page = (roleCode === 'DIGITIZER') ? 'dashboard.html' : 'eventos.html';
+  if (activeId === 'inicio') page = 'dashboard.html';   // Inicio = dashboard del rol (adapta por ?role=)
   else page = DIGI_ROUTES[activeId];
   if (!page) return null;                       // sin página en digitación → host shell
   return page + '?role=' + encodeURIComponent(roleCode);
