@@ -85,9 +85,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .digi-header-info{flex:1;min-width:0}
 .digi-header-name{font-size:14px;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .digi-header-email{font-size:12px;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
-.digi-card-actions{display:flex;gap:4px;flex-shrink:0}
-.digi-card-actions button{width:32px;height:32px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);transition:all .15s}
-.digi-card-actions button:hover{border-color:var(--accent);color:var(--accent);background:#fff8f4}
+.digi-card-actions{display:flex;gap:6px;flex-shrink:0}
 
 /* CARD STATS */
 .digi-card-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding:0 20px 16px;text-align:center}
@@ -178,7 +176,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
         <h1 class="page-title">Gesti&oacute;n de digitadores</h1>
         <p class="page-sub">4 activos de 5 registrados</p>
       </div>
-      <button class="btn btn-accent" onclick="openModal()">
+      <button class="naowee-btn naowee-btn--loud naowee-btn--large" onclick="openModal()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="#fff" stroke-width="1.5"/><line x1="19" y1="8" x2="19" y2="14" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/><line x1="22" y1="11" x2="16" y2="11" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
         Crear digitador
       </button>
@@ -224,13 +222,13 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
       </div>
     </div>
 
-    <!-- SEARCH (DS pill + clear button) -->
-    <div class="search-pill" id="searchPill" data-filled="false" style="max-width:420px;margin-bottom:24px">
-      <svg class="search-pill__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-      <input class="search-pill__input" type="text" id="searchInput" placeholder="Buscar digitador por nombre, email, zona" oninput="onSearchInput()"/>
-      <button class="search-pill__clear" type="button" onclick="clearSearch()" aria-label="Limpiar búsqueda">
-        <svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-      </button>
+    <!-- SEARCH (DS canónico .naowee-searchbox) -->
+    <div class="naowee-searchbox" id="searchPill" style="max-width:420px;margin-bottom:24px">
+      <div class="naowee-searchbox__input-wrap">
+        <span class="naowee-searchbox__icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>
+        <input class="naowee-searchbox__input" type="text" id="searchInput" placeholder="Buscar digitador por nombre, email, zona" oninput="onSearchInput()"/>
+        <button class="naowee-searchbox__clear" type="button" onclick="clearSearch()" aria-label="Limpiar búsqueda"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+      </div>
     </div>
 
     <!-- DIGITADORES GRID -->
@@ -434,8 +432,8 @@ function renderCards(list) {
           '<div class="digi-header-email">' + d.email + '</div>' +
         '</div>' +
         '<div class="digi-card-actions">' +
-          '<button title="Editar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
-          '<button title="Eliminar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-.867 12.142A2 2 0 0116.138 20H7.862a2 2 0 01-1.995-1.858L5 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+          '<button class="naowee-btn naowee-btn--mute naowee-btn--icon naowee-btn--small" title="Editar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+          '<button class="naowee-btn naowee-btn--mute naowee-btn--icon naowee-btn--small" title="Eliminar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-.867 12.142A2 2 0 0116.138 20H7.862a2 2 0 01-1.995-1.858L5 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
         '</div>' +
       '</div>' +
       '<div class="digi-card-stats">' +
@@ -456,13 +454,13 @@ function renderCards(list) {
 // SEARCH FILTER — handlers para el search-pill DS
 function onSearchInput() {
   var input = document.getElementById('searchInput');
-  document.getElementById('searchPill').setAttribute('data-filled', input.value.length > 0 ? 'true' : 'false');
+  document.getElementById('searchPill').classList.toggle('naowee-searchbox--has-value', input.value.length > 0);
   filterCards();
 }
 function clearSearch() {
   var input = document.getElementById('searchInput');
   input.value = '';
-  document.getElementById('searchPill').setAttribute('data-filled', 'false');
+  document.getElementById('searchPill').classList.remove('naowee-searchbox--has-value');
   renderCards(digitadores);
   input.focus();
 }
