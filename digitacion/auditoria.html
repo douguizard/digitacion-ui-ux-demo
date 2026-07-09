@@ -13,10 +13,9 @@
   --naranja:#FF7500; --azul:#002B5B;
   --accent:#d74009;
   --text-primary:#282834; --text-secondary:#646587;
-  --green:#1f8923; --green-bg:#e6f4e7; --green-border:#b7dfb9;
+  --green:#1f8923; --green-bg:#e6f4e7;
   --blue-info:#1f78d1; --blue-bg:#eef5ff;
-  --orange-bg:#fff3e6; --orange-border:#ffbf75;
-  --red-bg:#fff0ee; --red-border:#ffc4bb;
+  --orange-bg:#fff3e6;
   --purple:#7c3aed; --purple-bg:#f3eeff;
   --surface:#ffffff; --bg:#ffffff;
   --border:#e7e9f3; --border-dark:#d0d4e6;
@@ -32,63 +31,57 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .page{padding:28px 32px 96px}
 
 /* PAGE HEADER */
-.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:16px}
+.page-header{margin-bottom:22px}
 .page-title{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:4px}
 .page-sub{font-size:14px;color:var(--text-secondary)}
 
-/* KPI STRIP */
-.audit-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
-.audit-kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 18px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:13px}
-.audit-kpi__ico{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;flex-shrink:0}
-.audit-kpi__ico svg{width:21px;height:21px}
-.audit-kpi__val{font-size:24px;font-weight:800;color:var(--text-primary);line-height:1}
-.audit-kpi__lbl{font-size:12px;color:var(--text-secondary);margin-top:3px;font-weight:500}
+/* KPI STRIP — stat cards (no existe en DS → override pattern) */
+.aud-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.aud-kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:15px 17px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:13px}
+.aud-kpi__ico{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;flex-shrink:0}
+.aud-kpi__ico svg{width:20px;height:20px}
+.aud-kpi__val{font-size:23px;font-weight:800;color:var(--text-primary);line-height:1}
+.aud-kpi__lbl{font-size:12px;color:var(--text-secondary);margin-top:3px;font-weight:500}
 
-/* FILTER BAR */
-.audit-filters{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:20px}
-.audit-search{position:relative;flex:1 1 280px;max-width:360px}
-.audit-search input{
-  width:100%;height:44px;padding:0 14px 0 40px;border:1px solid var(--border-dark);
-  border-radius:var(--radius-md);font-family:var(--font);font-size:13.5px;color:var(--text-primary);
-  background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 16 16'%3E%3Ccircle cx='7' cy='7' r='5' stroke='%23646587' stroke-width='1.3'/%3E%3Cpath d='M11 11l3 3' stroke='%23646587' stroke-width='1.3' stroke-linecap='round'/%3E%3C/svg%3E") 14px center no-repeat;
-  outline:none;transition:border-color .15s,box-shadow .15s;
+/* Scoping mínimo sobre componentes canónicos (.naowee-table-card / --in-card / searchbox / dropdown) */
+.aud-tc .naowee-table-card__toolbar{flex-wrap:wrap}
+.aud-tc .naowee-table-card__toolbar-left{flex:1 1 auto;flex-wrap:wrap;min-width:0;gap:10px}
+.aud-tc .naowee-searchbox{flex:1 1 240px;max-width:340px}
+.aud-tc .aud-dd{flex:0 0 200px;width:200px;min-width:0}
+.aud-tc .aud-dd .naowee-dropdown__menu{max-height:260px;overflow-y:auto}
+@media(max-width:640px){.aud-tc .naowee-searchbox{flex:1 1 100%;max-width:none}.aud-tc .aud-dd{flex:1 1 100%;width:100%}}
+.naowee-tab__count{margin-left:7px;font-size:11px;font-weight:700;color:var(--text-secondary);background:var(--bg-soft,#f1f2f7);border-radius:9999px;padding:1px 7px}
+.naowee-tab--selected .naowee-tab__count{color:var(--accent);background:var(--orange-bg,#fff3e6)}
+/* Celda usuario (avatar + nombre + rol) */
+.aud-user{display:flex;align-items:center;gap:10px;min-width:0}
+.aud-user__ava{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff}
+.aud-user__name{font-size:13px;font-weight:600;color:var(--text-primary);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aud-user__role{font-size:11.5px;color:var(--text-secondary)}
+/* Celda acción (badge de tipo + texto) */
+.aud-action{display:flex;align-items:baseline;gap:9px;min-width:0}
+.aud-action__txt{font-size:13px;color:var(--text-primary);line-height:1.45;min-width:0}
+.aud-action__txt b{font-weight:700}
+.aud-when{white-space:nowrap;color:var(--text-secondary)}
+.aud-when strong{display:block;font-weight:600;color:var(--text-primary);font-size:13px}
+.aud-tc .naowee-table--in-card td{vertical-align:middle}
+.aud-tc .naowee-table--in-card td[data-label="Cuándo"]{white-space:nowrap}
+.aud-tc .naowee-table--in-card td[data-label="Acción"]{white-space:normal}
+
+@media(max-width:900px){.aud-kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){
+  .aud-tc .naowee-table--in-card,.aud-tc .naowee-table--in-card tbody{display:block}
+  .aud-tc .naowee-table--in-card thead{display:none}
+  .aud-tc .naowee-table--in-card tbody tr{display:block;border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+  .aud-tc .naowee-table--in-card tbody tr:hover{background:transparent}
+  .aud-tc .naowee-table--in-card tbody td{display:grid;grid-template-columns:88px 1fr;gap:12px;align-items:center;padding:6px 0!important;border:none}
+  .aud-tc .naowee-table--in-card tbody td::before{content:attr(data-label);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-secondary)}
+  .aud-tc .naowee-table--in-card tbody td[data-label="Acción"]{display:block;padding:2px 0 10px 0!important;margin-bottom:8px;border-bottom:1px solid var(--border)}
+  .aud-tc .naowee-table--in-card tbody td[data-label="Acción"]::before{display:none}
+  .aud-user__name{white-space:normal;overflow:visible;text-overflow:clip}
 }
-.audit-search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(215,64,9,.1)}
-.audit-pills{display:flex;flex-wrap:wrap;gap:7px}
-.audit-pill{padding:8px 14px;border-radius:9999px;border:1px solid var(--border-dark);background:var(--surface);font-size:12.5px;font-weight:600;color:var(--text-secondary);cursor:pointer;transition:background .15s,color .15s,border-color .15s;white-space:nowrap}
-.audit-pill:hover:not(.is-active){border-color:var(--accent);color:var(--accent)}
-.audit-pill.is-active{background:var(--accent);border-color:var(--accent);color:#fff}
-
-/* TIMELINE */
-.audit-timeline{display:flex;flex-direction:column;gap:24px;max-width:820px}
-.audit-day__label{font-size:11.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--text-secondary);margin-bottom:12px;display:flex;align-items:center;gap:12px}
-.audit-day__label::after{content:'';flex:1;height:1px;background:var(--border)}
-.audit-entry{display:flex;gap:14px}
-.audit-entry__rail{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:12px}
-.audit-entry__dot{width:12px;height:12px;border-radius:50%;margin-top:15px;flex-shrink:0;box-shadow:0 0 0 3px var(--surface),0 0 0 4px var(--border)}
-.audit-entry__line{width:2px;flex:1;background:var(--border);margin:5px 0 -5px}
-.audit-entry:last-child .audit-entry__line{display:none}
-.audit-entry__body{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:13px 16px;margin-bottom:14px;min-width:0;transition:border-color .15s,box-shadow .15s}
-.audit-entry__body:hover{box-shadow:var(--shadow-sm);border-color:var(--border-dark)}
-.audit-entry__top{display:flex;align-items:center;gap:10px}
-.audit-entry__avatar{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
-.audit-entry__who{min-width:0}
-.audit-entry__user{font-size:13.5px;font-weight:700;color:var(--text-primary);line-height:1.2}
-.audit-entry__role{font-size:11.5px;color:var(--text-secondary)}
-.audit-entry__time{margin-left:auto;font-size:12px;color:var(--text-secondary);white-space:nowrap;flex-shrink:0}
-.audit-entry__action{font-size:13.5px;color:var(--text-primary);margin-top:9px;line-height:1.5}
-.audit-entry__action b{font-weight:700}
-.audit-entry__mod{margin-top:9px;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.2px;text-transform:uppercase;padding:3px 9px;border-radius:9999px}
-
-/* EMPTY */
-.audit-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:60px 24px;text-align:center;color:var(--text-secondary)}
-.audit-empty__ico{width:46px;height:46px;color:var(--border-dark);margin-bottom:6px}
-.audit-empty__title{font-size:16px;font-weight:700;color:var(--text-primary)}
-.audit-empty__desc{font-size:13px;max-width:320px;line-height:1.5}
-
-@media(max-width:900px){.audit-kpis{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.page{padding:20px 16px 96px}.audit-kpis{grid-template-columns:1fr}.audit-entry__time{margin-left:0}}
+@media(max-width:560px){.page{padding:20px 16px 96px}.aud-kpis{grid-template-columns:1fr}}
 </style>
+<link rel="stylesheet" href="naowee-ds-components.css"/>
 <link rel="stylesheet" href="shared/naowee-footer.css?v=2.1.0"/>
 <script src="shared/naowee-footer.js?v=2.1.0" defer></script>
 </head>
@@ -100,20 +93,26 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
     <main class="page" id="pageContent">
 
       <div class="page-header">
-        <div>
-          <h1 class="page-title">Auditoría</h1>
-          <p class="page-sub">Trazabilidad de las acciones del módulo de Digitación.</p>
+        <h1 class="page-title">Auditoría</h1>
+        <p class="page-sub">Trazabilidad de las acciones del módulo de Digitación.</p>
+      </div>
+
+      <div class="aud-kpis" id="audKpis"></div>
+
+      <div class="naowee-table-card aud-tc">
+        <div class="naowee-tabs naowee-tabs--proportional" id="audTabs"></div>
+        <div class="naowee-table-card__toolbar">
+          <div class="naowee-table-card__toolbar-left">
+            <div class="naowee-searchbox aud-search"><div class="naowee-searchbox__input-wrap"><span class="naowee-searchbox__icon"><svg viewBox="0 0 16 16" width="16" height="16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span><input class="naowee-searchbox__input" id="audSearch" type="text" placeholder="Buscar por usuario, acción o registro…" oninput="audOnSearch(this.value)"><button type="button" class="naowee-searchbox__clear" aria-label="Limpiar búsqueda" onclick="audClearSearch()"><svg viewBox="0 0 16 16" width="14" height="14" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button></div></div>
+            <div class="naowee-dropdown aud-dd" id="ddUser"><button type="button" class="naowee-dropdown__trigger" onclick="audDD('ddUser',event)"><span class="naowee-dropdown__placeholder">Todos los usuarios</span><span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg viewBox="0 0 16 16" width="14" height="14" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button><div class="naowee-dropdown__menu" id="ddUser-menu"></div></div>
+            <div class="naowee-dropdown aud-dd" id="ddTipo"><button type="button" class="naowee-dropdown__trigger" onclick="audDD('ddTipo',event)"><span class="naowee-dropdown__placeholder">Todos los tipos</span><span class="naowee-dropdown__controls"><span class="naowee-dropdown__chevron"><svg viewBox="0 0 16 16" width="14" height="14" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button><div class="naowee-dropdown__menu" id="ddTipo-menu"></div></div>
+            <button class="naowee-btn naowee-btn--mute" id="btnAudClear" onclick="audClearFilters()" disabled>Limpiar</button>
+          </div>
         </div>
+        <div class="naowee-table-card__table-wrap"><table class="naowee-table--in-card"><thead><tr><th>Cuándo</th><th>Usuario</th><th>Acción</th><th>Módulo</th></tr></thead><tbody id="audBody"></tbody></table></div>
+        <div id="audEmpty"></div>
+        <nav class="naowee-pagination naowee-pagination--small aud-pager" id="audPager" aria-label="Paginación de acciones"></nav>
       </div>
-
-      <div class="audit-kpis" id="auditKpis"></div>
-
-      <div class="audit-filters">
-        <div class="audit-search"><input type="text" id="auditSearch" placeholder="Buscar por usuario, acción o registro…" oninput="renderAudit()"></div>
-        <div class="audit-pills" id="auditPills"></div>
-      </div>
-
-      <div class="audit-timeline" id="auditTimeline"></div>
 
     </main>
   </div>
@@ -129,11 +128,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
   const LEGACY_MAP = {
     'inicio': 'dashboard.html', 'sorteo': 'sorteo.html',
     'eventos': 'eventos.html', 'eventos-lista': 'eventos.html',
-    'competencias': 'lista.html', 'competencias-lista': 'lista.html',
-    'competencias-nueva': 'stepper.html',
+    'competencias': 'lista.html', 'competencias-lista': 'lista.html', 'competencias-nueva': 'stepper.html',
     'digitadores': 'digitadores.html', 'coordinadores': 'coordinadores.html',
-    'mi-digitacion': 'digitador.html',
-    'audit-logs': 'auditoria.html'
+    'mi-digitacion': 'digitador.html', 'audit-logs': 'auditoria.html'
   };
   const { role } = mountSidebar({
     rootEl: document.getElementById('sidebarRoot'),
@@ -154,131 +151,155 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 <!-- Trazabilidad (log de actividad) -->
 <script>
 (function(){
-  var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); };
+  var esc = function(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
+  var norm = function(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); };
 
-  /* Tipos de acción → color del punto + verbo */
-  var TYPE = {
-    crear:    { color:'#1f8923' },
-    editar:   { color:'#1f78d1' },
-    finalizar:{ color:'#1f8923' },
-    publicar: { color:'#FF7500' },
-    pausar:   { color:'#d97706' },
-    eliminar: { color:'#da1630' },
-    asignar:  { color:'#7c3aed' },
-    ingresar: { color:'#646587' }
+  /* Categorías (tabs) */
+  var CATS = [
+    { id:'all',          label:'Todas' },
+    { id:'sorteo',       label:'Sorteos' },
+    { id:'programacion', label:'Programación' },
+    { id:'digitacion',   label:'Digitación' },
+    { id:'gestion',      label:'Gestión' }
+  ];
+  /* Tipo de acción → badge canónico (variante feedback) + etiqueta */
+  var TIPO = {
+    creacion:     { v:'positive',    l:'Creación' },
+    edicion:      { v:'informative', l:'Edición' },
+    finalizacion: { v:'positive',    l:'Finalizada' },
+    publicacion:  { v:'caution',     l:'Publicación' },
+    pausa:        { v:'caution',     l:'Pausa' },
+    asignacion:   { v:'informative', l:'Asignación' },
+    ingreso:      { v:'neutral',     l:'Acceso' },
+    baja:         { v:'negative',    l:'Baja' }
   };
-  /* Módulos → color del badge */
-  var MOD = {
-    'Sorteo':        { bg:'#fff3e6', fg:'#d74009' },
-    'Digitación':    { bg:'#fff0ee', fg:'#b3122a' },
-    'Competencias':  { bg:'#eef5ff', fg:'#1f78d1' },
-    'Coordinadores': { bg:'#f3eeff', fg:'#7c3aed' },
-    'Digitadores':   { bg:'#e6f7fb', fg:'#0891b2' },
-    'Eventos':       { bg:'#e6f4e7', fg:'#1f8923' },
-    'Perfiles':      { bg:'#f0f2f5', fg:'#646587' }
-  };
+  /* Módulos → etiqueta del badge (badge neutro; la categoría la da el tab) */
+  var MODL = { sorteo:'Sorteo', digitacion:'Digitación', coordinadores:'Coordinadores', digitadores:'Digitadores', competencias:'Competencias', eventos:'Eventos', perfiles:'Perfiles' };
   var USERS = {
     'Laura Méndez':    { role:'Coordinador de eventos', color:'#FF7500' },
     'Carlos Restrepo': { role:'Digitador',              color:'#d74009' },
     'Andrea Salas':    { role:'Administrador',          color:'#1f8923' }
   };
-  function ini(n){ return n.split(/\s+/).filter(Boolean).slice(0,2).map(function(w){return w[0];}).join('').toUpperCase(); }
+  var ini = function(n){ return n.split(/\s+/).filter(Boolean).slice(0,2).map(function(w){return w[0];}).join('').toUpperCase(); };
 
-  /* Log de actividad (trazabilidad) — orden cronológico descendente */
+  /* Log de actividad (trazabilidad) — cronológico descendente */
   var LOG = [
-    { d:'2026-07-09T15:42', u:'Laura Méndez',    t:'crear',    m:'Sorteo',        a:'creó el sorteo de <b>Baloncesto Sub-20 Femenino</b> con reglas (Colegio San José → Grupo B).' },
-    { d:'2026-07-09T15:10', u:'Carlos Restrepo', t:'finalizar',m:'Digitación',    a:'finalizó la digitación de <b>Actividades Subacuáticas Masculino Sub-20</b>.' },
-    { d:'2026-07-09T14:37', u:'Laura Méndez',    t:'editar',   m:'Sorteo',        a:'asignó fecha, hora y escenario a 6 partidos de <b>Boccia Sub-15 Masculino</b>.' },
-    { d:'2026-07-09T13:58', u:'Andrea Salas',    t:'crear',    m:'Coordinadores', a:'creó el coordinador <b>Jorge Pedraza López</b>.' },
-    { d:'2026-07-09T11:20', u:'Carlos Restrepo', t:'editar',   m:'Digitación',    a:'registró el marcador del partido <b>I.E. La Salle vs Colegio Bolívar</b> (Fútbol Sub-18).' },
-    { d:'2026-07-09T09:05', u:'Andrea Salas',    t:'ingresar', m:'Perfiles',      a:'ingresó al módulo como <b>Administrador</b>.' },
-    { d:'2026-07-08T17:12', u:'Laura Méndez',    t:'publicar', m:'Sorteo',        a:'publicó el resultado del sorteo <b>Voleibol Sub-18 Femenino</b> (2 grupos de 4).' },
-    { d:'2026-07-08T16:40', u:'Andrea Salas',    t:'asignar',  m:'Digitadores',   a:'asignó 4 competencias al digitador <b>Carlos Restrepo</b>.' },
-    { d:'2026-07-08T15:03', u:'Carlos Restrepo', t:'pausar',   m:'Digitación',    a:'pausó la digitación de <b>Arquería Mixto Recurvos Equipos</b>.' },
-    { d:'2026-07-08T11:48', u:'Laura Méndez',    t:'editar',   m:'Competencias',  a:'editó la competencia <b>Atletismo Mixto Velocidad 100m</b> (sistema: final directa).' },
-    { d:'2026-07-08T10:15', u:'Andrea Salas',    t:'editar',   m:'Coordinadores', a:'actualizó el teléfono de contacto de <b>María García Ruiz</b>.' },
-    { d:'2026-07-07T18:22', u:'Carlos Restrepo', t:'finalizar',m:'Digitación',    a:'finalizó la digitación de <b>Ajedrez Integrado Femenino Sub-18</b>.' },
-    { d:'2026-07-07T14:50', u:'Laura Méndez',    t:'crear',    m:'Sorteo',        a:'creó el sorteo de <b>Natación Sub-16 Mixto</b> (eliminación directa, 8 participantes).' },
-    { d:'2026-07-07T12:33', u:'Andrea Salas',    t:'crear',    m:'Eventos',       a:'creó el evento <b>Juegos Departamentales Cundinamarca 2026</b>.' },
-    { d:'2026-07-07T09:41', u:'Carlos Restrepo', t:'ingresar', m:'Perfiles',      a:'ingresó al módulo como <b>Digitador</b>.' },
-    { d:'2026-07-04T16:08', u:'Laura Méndez',    t:'editar',   m:'Sorteo',        a:'re-sorteó los grupos de <b>Tenis de Mesa Sub-20 Masculino</b>.' },
-    { d:'2026-07-04T15:20', u:'Andrea Salas',    t:'eliminar', m:'Digitadores',   a:'desactivó el acceso del digitador <b>Reinaldo Rueda</b>.' },
-    { d:'2026-07-04T11:05', u:'Carlos Restrepo', t:'editar',   m:'Digitación',    a:'corrigió una penalización (tarjeta 🟡) en <b>Balonmano Playa Sub-18</b>.' },
-    { d:'2026-07-04T08:52', u:'Laura Méndez',    t:'publicar', m:'Competencias',  a:'publicó el listado de 355 competencias generadas del evento.' }
+    { d:'2026-07-09T15:42', u:'Laura Méndez',    cat:'sorteo',       tipo:'creacion',     mod:'sorteo',        a:'creó el sorteo de <b>Baloncesto Sub-20 Femenino</b> con reglas (Colegio San José → Grupo B).' },
+    { d:'2026-07-09T15:10', u:'Carlos Restrepo', cat:'digitacion',   tipo:'finalizacion', mod:'digitacion',    a:'finalizó la digitación de <b>Actividades Subacuáticas Masculino Sub-20</b>.' },
+    { d:'2026-07-09T14:37', u:'Laura Méndez',    cat:'programacion', tipo:'edicion',      mod:'sorteo',        a:'asignó fecha, hora y escenario a <b>6 partidos</b> de Boccia Sub-15 Masculino.' },
+    { d:'2026-07-09T13:58', u:'Andrea Salas',    cat:'gestion',      tipo:'creacion',     mod:'coordinadores', a:'creó el coordinador <b>Jorge Pedraza López</b>.' },
+    { d:'2026-07-09T11:20', u:'Carlos Restrepo', cat:'digitacion',   tipo:'edicion',      mod:'digitacion',    a:'registró el marcador del partido <b>I.E. La Salle vs Colegio Bolívar</b> (Fútbol Sub-18).' },
+    { d:'2026-07-09T09:05', u:'Andrea Salas',    cat:'gestion',      tipo:'ingreso',      mod:'perfiles',      a:'ingresó al módulo como <b>Administrador</b>.' },
+    { d:'2026-07-08T17:12', u:'Laura Méndez',    cat:'sorteo',       tipo:'publicacion',  mod:'sorteo',        a:'publicó el resultado del sorteo <b>Voleibol Sub-18 Femenino</b> (2 grupos de 4).' },
+    { d:'2026-07-08T16:40', u:'Andrea Salas',    cat:'gestion',      tipo:'asignacion',   mod:'digitadores',   a:'asignó 4 competencias al digitador <b>Carlos Restrepo</b>.' },
+    { d:'2026-07-08T15:03', u:'Carlos Restrepo', cat:'digitacion',   tipo:'pausa',        mod:'digitacion',    a:'pausó la digitación de <b>Arquería Mixto Recurvos Equipos</b>.' },
+    { d:'2026-07-08T12:26', u:'Laura Méndez',    cat:'programacion', tipo:'edicion',      mod:'sorteo',        a:'editó la programación del partido <b>I.E. La Salle vs Colegio Bolívar</b> → 12 abr, Coliseo El Campín.' },
+    { d:'2026-07-08T11:48', u:'Andrea Salas',    cat:'gestion',      tipo:'edicion',      mod:'competencias',  a:'editó la competencia <b>Atletismo Mixto Velocidad 100m</b> (sistema: final directa).' },
+    { d:'2026-07-08T10:15', u:'Andrea Salas',    cat:'gestion',      tipo:'edicion',      mod:'coordinadores', a:'actualizó el teléfono de contacto de <b>María García Ruiz</b>.' },
+    { d:'2026-07-07T18:22', u:'Carlos Restrepo', cat:'digitacion',   tipo:'finalizacion', mod:'digitacion',    a:'finalizó la digitación de <b>Ajedrez Integrado Femenino Sub-18</b>.' },
+    { d:'2026-07-07T16:03', u:'Laura Méndez',    cat:'programacion', tipo:'creacion',     mod:'sorteo',        a:'generó la programación completa de <b>Ajedrez Integrado Femenino Sub-18</b> (14 partidos).' },
+    { d:'2026-07-07T14:50', u:'Laura Méndez',    cat:'sorteo',       tipo:'creacion',     mod:'sorteo',        a:'creó el sorteo de <b>Natación Sub-16 Mixto</b> (eliminación directa, 8 participantes).' },
+    { d:'2026-07-07T12:33', u:'Andrea Salas',    cat:'gestion',      tipo:'creacion',     mod:'eventos',       a:'creó el evento <b>Juegos Departamentales Cundinamarca 2026</b>.' },
+    { d:'2026-07-07T09:41', u:'Carlos Restrepo', cat:'gestion',      tipo:'ingreso',      mod:'perfiles',      a:'ingresó al módulo como <b>Digitador</b>.' },
+    { d:'2026-07-04T16:08', u:'Laura Méndez',    cat:'sorteo',       tipo:'edicion',      mod:'sorteo',        a:'re-sorteó los grupos de <b>Tenis de Mesa Sub-20 Masculino</b>.' },
+    { d:'2026-07-04T15:20', u:'Andrea Salas',    cat:'gestion',      tipo:'baja',         mod:'digitadores',   a:'desactivó el acceso del digitador <b>Reinaldo Rueda</b>.' },
+    { d:'2026-07-04T11:05', u:'Carlos Restrepo', cat:'digitacion',   tipo:'edicion',      mod:'digitacion',    a:'corrigió una penalización (🟡) en <b>Balonmano Playa Sub-18</b>.' },
+    { d:'2026-07-04T08:52', u:'Andrea Salas',    cat:'gestion',      tipo:'publicacion',  mod:'competencias',  a:'publicó el listado de <b>355 competencias</b> generadas del evento.' }
   ];
 
-  /* Estado de filtros */
-  var _mod = 'Todos';
-  function _mods(){ var s={}; LOG.forEach(function(x){s[x.m]=1;}); return Object.keys(s); }
-
-  function _fmtTime(iso){ var p=iso.split('T'); var hm=(p[1]||'').slice(0,5); return hm; }
+  var _f = { q:'', cat:'all', user:'', tipo:'' };
+  var _page = 1, _SIZE = 8;
   var _MESES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-  function _dayKey(iso){ return iso.slice(0,10); }
-  function _dayLabel(key){
-    var today='2026-07-09', yday='2026-07-08';
-    if(key===today) return 'Hoy';
-    if(key===yday) return 'Ayer';
-    var p=key.split('-'); return parseInt(p[2],10)+' '+_MESES[parseInt(p[1],10)-1]+' '+p[0];
-  }
+  function _when(iso){ var p=iso.split('T'); var d=p[0].split('-'), hm=(p[1]||'').slice(0,5);
+    var lbl; if(p[0]==='2026-07-09')lbl='Hoy'; else if(p[0]==='2026-07-08')lbl='Ayer'; else lbl=parseInt(d[2],10)+' '+_MESES[parseInt(d[1],10)-1];
+    return '<span class="aud-when"><strong>'+lbl+'</strong>'+hm+'</span>'; }
 
-  window.setAuditMod = function(m){ _mod=m; renderAudit(); };
-
-  window.renderAudit = function(){
-    var q=(document.getElementById('auditSearch').value||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-    var rows=LOG.filter(function(x){
-      if(_mod!=='Todos' && x.m!==_mod) return false;
-      if(q){ var hay=(x.u+' '+x.a+' '+x.t+' '+x.m).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); if(hay.indexOf(q)<0) return false; }
+  function _filtered(){
+    var qn=norm(_f.q);
+    return LOG.filter(function(x){
+      if(_f.cat!=='all' && x.cat!==_f.cat) return false;
+      if(_f.user && x.u!==_f.user) return false;
+      if(_f.tipo && x.tipo!==_f.tipo) return false;
+      if(qn){ var hay=norm(x.u+' '+x.a.replace(/<[^>]+>/g,'')+' '+(MODL[x.mod]||'')+' '+((TIPO[x.tipo]||{}).l||'')); if(hay.indexOf(qn)<0) return false; }
       return true;
     });
+  }
 
-    /* KPIs (sobre el total, no el filtro) */
-    var kUsers={}, kMods={}, kToday=0;
-    LOG.forEach(function(x){ kUsers[x.u]=1; kMods[x.m]=1; if(_dayKey(x.d)==='2026-07-09') kToday++; });
+  function _rowHTML(x){
+    var t=TIPO[x.tipo]||{v:'neutral',l:x.tipo}, us=USERS[x.u]||{role:'',color:'#646587'};
+    return '<tr>'
+      +'<td data-label="Cuándo">'+_when(x.d)+'</td>'
+      +'<td data-label="Usuario"><div class="aud-user"><span class="aud-user__ava" style="background:'+us.color+'">'+ini(x.u)+'</span><div style="min-width:0"><div class="aud-user__name">'+esc(x.u)+'</div><div class="aud-user__role">'+esc(us.role)+'</div></div></div></td>'
+      +'<td data-label="Acción"><div class="aud-action"><span class="naowee-badge naowee-badge--'+t.v+' naowee-badge--quiet naowee-badge--small">'+esc(t.l)+'</span><span class="aud-action__txt">'+x.a+'</span></div></td>'
+      +'<td data-label="Módulo"><span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">'+esc(MODL[x.mod]||x.mod)+'</span></td>'
+    +'</tr>';
+  }
+
+  window.audTab = function(cat){ _f.cat=cat; _page=1; render(); };
+  window.audOnSearch = function(v){ _f.q=v; _page=1; var s=document.querySelector('.aud-search'); if(s)s.classList.toggle('naowee-searchbox--has-value',!!(v&&v.length)); render(); };
+  window.audClearSearch = function(){ var i=document.getElementById('audSearch'); if(i)i.value=''; audOnSearch(''); };
+  window.audDD = function(id,e){ if(e)e.stopPropagation(); var w=document.getElementById(id); var open=w.classList.contains('naowee-dropdown--open'); document.querySelectorAll('.naowee-dropdown--open').forEach(function(x){x.classList.remove('naowee-dropdown--open');}); if(!open)w.classList.add('naowee-dropdown--open'); };
+  window.audPick = function(kind,val,label,el){ _f[kind]=val; _page=1; var ddId=(kind==='user')?'ddUser':'ddTipo', w=document.getElementById(ddId);
+    if(w){ w.querySelectorAll('.naowee-dropdown__option').forEach(function(o){o.classList.toggle('naowee-dropdown__option--selected',o===el);}); w.classList.remove('naowee-dropdown--open'); var trg=w.querySelector('.naowee-dropdown__value, .naowee-dropdown__placeholder'); if(trg){ trg.textContent=label; var isAll=!val; trg.classList.toggle('naowee-dropdown__placeholder',isAll); trg.classList.toggle('naowee-dropdown__value',!isAll); } }
+    render(); };
+  window.audClearFilters = function(){ _f={q:'',cat:'all',user:'',tipo:''}; _page=1; var i=document.getElementById('audSearch'); if(i)i.value=''; render(); };
+  window.audGoPage = function(n){ _page=Math.max(1,n||1); render(); };
+  document.addEventListener('click',function(e){ if(!e.target.closest||!e.target.closest('.naowee-dropdown')) document.querySelectorAll('.naowee-dropdown--open').forEach(function(x){x.classList.remove('naowee-dropdown--open');}); });
+
+  function _fillMenu(ddId,kind,allLabel,items){
+    var menu=document.getElementById(ddId+'-menu'); if(!menu)return; var cur=_f[kind];
+    var html='<div class="naowee-dropdown__option'+(!cur?' naowee-dropdown__option--selected':'')+'" onclick="audPick(\''+kind+'\',\'\',\''+allLabel+'\',this)">'+allLabel+'</div>';
+    items.forEach(function(it){ html+='<div class="naowee-dropdown__option'+(cur===it.v?' naowee-dropdown__option--selected':'')+'" onclick="audPick(\''+kind+'\',\''+it.v+'\',\''+esc(it.l).replace(/'/g,"\\'")+'\',this)">'+esc(it.l)+'</div>'; });
+    menu.innerHTML=html;
+  }
+
+  function render(){
+    /* KPIs (sobre el total) */
+    var users={}, mods={}, hoy=0;
+    LOG.forEach(function(x){ users[x.u]=1; mods[x.mod]=1; if(x.d.slice(0,10)==='2026-07-09')hoy++; });
     var kpi=[
       { ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg>', bg:'#fff3e6', fg:'#d74009', val:LOG.length, lbl:'Acciones registradas' },
-      { ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13A4 4 0 0116 11"/></svg>', bg:'#eef5ff', fg:'#1f78d1', val:Object.keys(kUsers).length, lbl:'Usuarios' },
-      { ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>', bg:'#f3eeff', fg:'#7c3aed', val:Object.keys(kMods).length, lbl:'Módulos' },
-      { ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>', bg:'#e6f4e7', fg:'#1f8923', val:kToday, lbl:'Hoy' }
+      { ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13A4 4 0 0116 11"/></svg>', bg:'#eef5ff', fg:'#1f78d1', val:Object.keys(users).length, lbl:'Usuarios' },
+      { ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>', bg:'#f3eeff', fg:'#7c3aed', val:Object.keys(mods).length, lbl:'Módulos' },
+      { ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>', bg:'#e6f4e7', fg:'#1f8923', val:hoy, lbl:'Hoy' }
     ];
-    document.getElementById('auditKpis').innerHTML = kpi.map(function(k){
-      return '<div class="audit-kpi"><span class="audit-kpi__ico" style="background:'+k.bg+';color:'+k.fg+'">'+k.ico+'</span><div><div class="audit-kpi__val">'+k.val+'</div><div class="audit-kpi__lbl">'+k.lbl+'</div></div></div>';
+    document.getElementById('audKpis').innerHTML = kpi.map(function(k){ return '<div class="aud-kpi"><span class="aud-kpi__ico" style="background:'+k.bg+';color:'+k.fg+'">'+k.ico+'</span><div><div class="aud-kpi__val">'+k.val+'</div><div class="aud-kpi__lbl">'+k.lbl+'</div></div></div>'; }).join('');
+
+    /* Tabs por categoría (con conteo) */
+    document.getElementById('audTabs').innerHTML = CATS.map(function(c){
+      var n = (c.id==='all') ? LOG.length : LOG.filter(function(x){return x.cat===c.id;}).length;
+      return '<button type="button" class="naowee-tab'+(_f.cat===c.id?' naowee-tab--selected':'')+'" onclick="audTab(\''+c.id+'\')"><span>'+c.label+'</span><span class="naowee-tab__count">'+n+'</span></button>';
     }).join('');
 
-    /* Pills de módulo */
-    var pills=['Todos'].concat(_mods());
-    document.getElementById('auditPills').innerHTML = pills.map(function(m){
-      return '<button type="button" class="audit-pill'+(m===_mod?' is-active':'')+'" onclick="setAuditMod(\''+m+'\')">'+esc(m)+'</button>';
-    }).join('');
+    /* Filtros: usuario + tipo */
+    _fillMenu('ddUser','user','Todos los usuarios', Object.keys(USERS).map(function(u){return {v:u,l:u};}));
+    _fillMenu('ddTipo','tipo','Todos los tipos', Object.keys(TIPO).map(function(k){return {v:k,l:TIPO[k].l};}));
+    var btn=document.getElementById('btnAudClear'); if(btn) btn.disabled=!(_f.q||_f.cat!=='all'||_f.user||_f.tipo);
 
-    /* Timeline agrupada por día */
-    var tl=document.getElementById('auditTimeline');
-    if(!rows.length){
-      tl.innerHTML='<div class="audit-empty"><span class="audit-empty__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span><div class="audit-empty__title">Sin registros</div><div class="audit-empty__desc">No hay acciones que coincidan con el filtro. Ajusta la búsqueda o el módulo.</div></div>';
-      return;
+    /* Filas paginadas */
+    var rows=_filtered(), tot=rows.length, pgs=Math.max(1,Math.ceil(tot/_SIZE));
+    if(_page>pgs)_page=pgs; if(_page<1)_page=1;
+    var pageRows=rows.slice((_page-1)*_SIZE,_page*_SIZE);
+    var body=document.getElementById('audBody'), empty=document.getElementById('audEmpty'), wrap=document.querySelector('.aud-tc .naowee-table-card__table-wrap');
+    if(!tot){
+      body.innerHTML='';
+      if(wrap)wrap.style.display='none';
+      empty.innerHTML='<div class="naowee-empty-state"><span class="naowee-empty-state__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span><h3 class="naowee-empty-state__title">Sin registros</h3><p class="naowee-empty-state__description">No hay acciones que coincidan con el filtro. Ajusta la búsqueda, el usuario, el tipo o la categoría.</p></div>';
+    } else {
+      if(wrap)wrap.style.display='';
+      empty.innerHTML='';
+      body.innerHTML=pageRows.map(_rowHTML).join('');
     }
-    var groups={}, order=[];
-    rows.forEach(function(x){ var k=_dayKey(x.d); if(!groups[k]){groups[k]=[];order.push(k);} groups[k].push(x); });
-    tl.innerHTML = order.map(function(k){
-      var entries = groups[k].map(function(x){
-        var ty=TYPE[x.t]||{color:'#646587'}; var mo=MOD[x.m]||{bg:'#f0f2f5',fg:'#646587'}; var us=USERS[x.u]||{role:'',color:'#646587'};
-        return '<div class="audit-entry">'
-          +'<div class="audit-entry__rail"><span class="audit-entry__dot" style="background:'+ty.color+'"></span><span class="audit-entry__line"></span></div>'
-          +'<div class="audit-entry__body">'
-            +'<div class="audit-entry__top">'
-              +'<span class="audit-entry__avatar" style="background:'+us.color+'">'+ini(x.u)+'</span>'
-              +'<div class="audit-entry__who"><div class="audit-entry__user">'+esc(x.u)+'</div><div class="audit-entry__role">'+esc(us.role)+'</div></div>'
-              +'<span class="audit-entry__time">'+_fmtTime(x.d)+'</span>'
-            +'</div>'
-            +'<p class="audit-entry__action">'+x.a+'</p>'
-            +'<span class="audit-entry__mod" style="background:'+mo.bg+';color:'+mo.fg+'">'+esc(x.m)+'</span>'
-          +'</div>'
-        +'</div>';
-      }).join('');
-      return '<div class="audit-day"><div class="audit-day__label">'+_dayLabel(k)+'</div><div class="audit-entries">'+entries+'</div></div>';
-    }).join('');
-  };
 
-  renderAudit();
+    /* Paginación */
+    var pager=document.getElementById('audPager');
+    if(pgs>1){
+      pager.style.display='';
+      pager.innerHTML='<div class="naowee-pagination__pages"><span class="naowee-pagination__label">Página</span><input class="naowee-pagination__input" value="'+_page+'" onchange="audGoPage(parseInt(this.value,10))" aria-label="Página actual"><span class="naowee-pagination__total">de <strong>'+pgs+'</strong></span></div><div class="naowee-pagination__controls"><button class="naowee-pagination__btn" type="button" onclick="audGoPage('+(_page-1)+')"'+(_page<=1?' disabled':'')+' aria-label="Anterior"><svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="naowee-pagination__btn" type="button" onclick="audGoPage('+(_page+1)+')"'+(_page>=pgs?' disabled':'')+' aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>';
+    } else { pager.style.display='none'; pager.innerHTML=''; }
+  }
+
+  render();
 })();
 </script>
 </body>
