@@ -30,8 +30,7 @@ const LOGIN_URL = (() => {
    (no los de otros módulos: escenarios, documentación, deportista, etc.),
    agrupados por la lógica de uso del módulo. */
 const DIGITACION_ROLE_GROUPS = [
-  { label: 'Coordinación', codes: ['EVENT_COORDINATOR'] },
-  { label: 'Digitación',   codes: ['DIGITIZER'] },
+  { label: 'Operación', codes: ['EVENT_COORDINATOR', 'DIGITIZER', 'ADMIN'] },
 ];
 const DIGITACION_ROLE_CODES = DIGITACION_ROLE_GROUPS.flatMap((g) => g.codes);
 
@@ -493,11 +492,11 @@ export function mountDemoRoleSwitcher({ rootEl, currentRoleCode }) {
     <div class="demo-role-switcher" id="demoRoleSwitcher">
       <button class="demo-role-switcher__toggle" type="button" id="demoSwitcherToggle">
         <span class="demo-role-switcher__badge">DEMO</span>
-        <span class="demo-role-switcher__lbl">Cambiar usuario simulado</span>
+        <span class="demo-role-switcher__lbl">Cambiar de perfil</span>
         <span class="demo-role-switcher__chev">${getIcon('chevron')}</span>
       </button>
       <div class="demo-role-switcher__panel" role="menu">
-        <div class="demo-role-switcher__panel-label">Perfiles del módulo Digitación</div>
+        <div class="demo-role-switcher__panel-label">Cambiar de perfil (simulado)</div>
         <div class="demo-role-switcher__list">
           ${itemsHtml}
         </div>

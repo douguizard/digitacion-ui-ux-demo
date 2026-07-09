@@ -19,11 +19,11 @@
  */
 export const ROLES = {
   ROOT:                   { code: 'ROOT',                   label: 'Super Admin',           color: '#7c3aed', userName: 'Sofía Rodríguez',  userEmail: 'sofia.rodriguez@mindeporte.gov.co',   assignedRoles: ['ROOT'] },
-  ADMIN:                  { code: 'ADMIN',                  label: 'Admin',                 color: '#1f8923', userName: 'Carlos Méndez',    userEmail: 'carlos.mendez@mindeporte.gov.co',     assignedRoles: ['ADMIN', 'EVENT_MANAGER'] },
+  ADMIN:                  { code: 'ADMIN',                  label: 'Administrador',         color: '#1f8923', userName: 'Andrea Salas',    userEmail: 'andrea.salas@mindeporte.gov.co',     assignedRoles: ['ADMIN', 'EVENT_MANAGER'] },
   USER_MANAGER:           { code: 'USER_MANAGER',           label: 'Gestor de usuarios',    color: '#1f78d1', userName: 'Laura Martínez',   userEmail: 'laura.martinez@mindeporte.gov.co',    assignedRoles: ['USER_MANAGER'] },
   EVENT_MANAGER:          { code: 'EVENT_MANAGER',          label: 'Gestor de eventos',     color: '#FF7500', userName: 'Andrés Gómez',     userEmail: 'andres.gomez@mindeporte.gov.co',      assignedRoles: ['EVENT_MANAGER', 'EVENT_COORDINATOR'] },
-  EVENT_COORDINATOR:      { code: 'EVENT_COORDINATOR',      label: 'Coord. competencias',   color: '#FF7500', userName: 'María Castillo',   userEmail: 'maria.castillo@mindeporte.gov.co',    assignedRoles: ['EVENT_COORDINATOR'] },
-  DIGITIZER:              { code: 'DIGITIZER',              label: 'Digitador',             color: '#d74009', userName: 'Diego Torres',     userEmail: 'diego.torres@mindeporte.gov.co',      assignedRoles: ['DIGITIZER'] },
+  EVENT_COORDINATOR:      { code: 'EVENT_COORDINATOR',      label: 'Coordinador de eventos', color: '#FF7500', userName: 'Laura Méndez',   userEmail: 'laura.mendez@mindeporte.gov.co',    assignedRoles: ['EVENT_COORDINATOR'] },
+  DIGITIZER:              { code: 'DIGITIZER',              label: 'Digitador',             color: '#d74009', userName: 'Carlos Restrepo',     userEmail: 'carlos.restrepo@mindeporte.gov.co',      assignedRoles: ['DIGITIZER'] },
   DOCUMENTATION_MANAGER:  { code: 'DOCUMENTATION_MANAGER',  label: 'Gestor de docs',        color: '#1f78d1', userName: 'Camila Vélez',     userEmail: 'camila.velez@mindeporte.gov.co',      assignedRoles: ['DOCUMENTATION_MANAGER', 'DOCUMENTATION_REVIEWER'] },
   DOCUMENTATION_REVIEWER: { code: 'DOCUMENTATION_REVIEWER', label: 'Revisor de docs',       color: '#1f78d1', userName: 'Felipe Ríos',      userEmail: 'felipe.rios@mindeporte.gov.co',       assignedRoles: ['DOCUMENTATION_REVIEWER'] },
   ATHLETE:                { code: 'ATHLETE',                label: 'Deportista',            color: '#1f8923', userName: 'Valentina Ortiz',  userEmail: 'valentina.ortiz@gmail.com',           assignedRoles: ['ATHLETE'] },
@@ -152,7 +152,7 @@ const ITEMS = {
   administracion:   { id: 'administration',   label: 'Administración',       icon: 'gear',     route: '/home/administration' },
 
   // AUDITORÍA (módulo cross-cutting — roadmap)
-  logsActividad:    { id: 'audit-logs',       label: 'Logs de actividad',    icon: 'audit',    route: '/home/auditoria/logs' }
+  logsActividad:    { id: 'audit-logs',       label: 'Auditoría',            icon: 'audit',    route: '/home/auditoria/logs' }
 };
 
 /* Each role's menu = array of { sectionLabel, items[] }.
@@ -177,7 +177,7 @@ export const MENU_BY_ROLE = {
     { section: 'RESULTADOS & RANKING',     items: [ITEMS.resultados, ITEMS.ranking] },
     { section: 'USUARIOS',                 items: [ITEMS.gestionUsuarios] },
     { section: 'PLATAFORMA',               items: [ITEMS.rolesPermisos, ITEMS.usuariosPlatform, ITEMS.activacionModulos, ITEMS.configInstancia, ITEMS.administracion] },
-    { section: 'AUDITORÍA',                items: [ITEMS.logsActividad] }
+    { section: null,                       items: [ITEMS.logsActividad] }
   ],
 
   ADMIN: [
@@ -194,7 +194,7 @@ export const MENU_BY_ROLE = {
     { section: 'REPORTERÍA',               items: [ITEMS.dashboards, ITEMS.reportes] },
     { section: 'RESULTADOS & RANKING',     items: [ITEMS.resultados, ITEMS.ranking] },
     { section: 'USUARIOS',                 items: [ITEMS.gestionUsuarios] },
-    { section: 'AUDITORÍA',                items: [ITEMS.logsActividad] }
+    { section: null,                       items: [ITEMS.logsActividad] }
   ],
 
   USER_MANAGER: [
