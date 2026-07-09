@@ -139,6 +139,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .wz-field.hidden{display:none}
 .wz-field>label{display:block;font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:7px}
 .wz-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+/* Paso 1: campos deporte/categoría/sexo acotados y justificados a la izquierda */
+#fDeporte,.wz-row--narrow{max-width:40%}
 .wz-pills{display:flex;gap:10px;flex-wrap:wrap}
 .wz-pill{display:flex;align-items:center;gap:9px;padding:13px 18px;border:1px solid var(--border-dark);border-radius:var(--radius-lg);cursor:pointer;background:var(--surface);transition:all .15s;min-width:180px}
 .wz-pill:hover{border-color:var(--accent);background:#fff8f4}
@@ -181,7 +183,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .naowee-dropdown__option:hover{background:#f5f6fa}
 #btnBack{background:transparent;color:var(--accent)}
 #btnBack:hover{background:var(--orange-bg)}
-@media(max-width:640px){.wz-row{grid-template-columns:1fr}.wz-lbl{display:none}.wz-steps{padding:16px}.wz-body{padding:20px 16px}.wz-nav{padding:14px 16px}}
+@media(max-width:640px){.wz-row{grid-template-columns:1fr}.wz-lbl{display:none}.wz-steps{padding:16px}.wz-body{padding:20px 16px}.wz-nav{padding:14px 16px}#fDeporte,.wz-row--narrow{max-width:none}}
 /* ═══════════ CANÓNICO (paridad Project/IVC + host shell) ═══════════ */
 /* Logos Ministerio + SUID en el header del sidebar */
 .sidebar-logo{gap:12px;padding:0 18px}
@@ -672,7 +674,7 @@ body.sorteo-has-footer .page{padding-bottom:96px}
               <div class="naowee-dropdown__menu" id="ddDeporte-menu"></div>
             </div>
           </div>
-          <div class="wz-row">
+          <div class="wz-row wz-row--narrow">
             <div class="wz-field hidden" id="fCategoria">
               <label>Categoría</label>
               <div class="naowee-dropdown" id="ddCategoria">
@@ -956,7 +958,7 @@ function filterDeporteDD(q){ q=(q||'').trim().toLowerCase().normalize('NFD').rep
 function ddToggle(id){ const w=document.getElementById(id); const open=w.classList.contains('naowee-dropdown--open');
   document.querySelectorAll('.naowee-dropdown--open').forEach(x=>x.classList.remove('naowee-dropdown--open'));
   if(!open){ w.classList.add('naowee-dropdown--open');
-    const si=w.querySelector('.dd-search-input'); if(si){ si.value=''; filterDeporteDD(''); setTimeout(function(){try{si.focus();}catch(e){}},30); } } }
+    const si=w.querySelector('.dd-search-input'); if(si){ si.value=''; filterDeporteDD(''); const menu=w.querySelector('.naowee-dropdown__menu'); if(menu)menu.scrollTop=0; setTimeout(function(){try{si.focus({preventScroll:true}); if(menu)menu.scrollTop=0;}catch(e){}},30); } } }
 document.addEventListener('click',e=>{ if(!e.target.closest('.naowee-dropdown')) document.querySelectorAll('.naowee-dropdown--open').forEach(x=>x.classList.remove('naowee-dropdown--open')); });
 function ddSetText(id,label){ const s=document.querySelector('#'+id+' .naowee-dropdown__placeholder, #'+id+' .naowee-dropdown__value'); if(s){s.textContent=label;s.classList.remove('naowee-dropdown__placeholder');s.classList.add('naowee-dropdown__value');} }
 function ddPick(id,el){ const val=el.dataset.value; const w=document.getElementById(id);
