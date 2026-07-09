@@ -363,7 +363,7 @@ tbody tr:hover .row-arrow{color:var(--accent);opacity:1}
       /* Nav clicks: las páginas legacy del repo digitación se
          enrutan a su archivo HTML directo. El resto vuelve al shell. */
       const LEGACY_MAP = {
-        'sorteo': 'sorteo.html',
+        'inicio': 'dashboard.html', 'sorteo': 'sorteo.html',
         'eventos': 'eventos.html',
         'eventos-lista': 'eventos.html',
         'competencias': 'lista.html',
@@ -375,7 +375,7 @@ tbody tr:hover .row-arrow{color:var(--accent);opacity:1}
       const target = LEGACY_MAP[activeId];
       if (target) {
         if (target === currentFile) return; /* ya estamos acá */
-        window.location.href = target;
+        window.location.href = target + '?role=' + encodeURIComponent(roleCode);
         return;
       }
       /* Fallback: shell URL con activeId — soporta sedes, mapa,

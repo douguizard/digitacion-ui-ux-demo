@@ -254,7 +254,7 @@ a{text-decoration:none}
       const target = LEGACY_MAP[activeId];
       if (target) {
         if (target === currentFile) return;
-        window.location.href = target;
+        window.location.href = target + '?role=' + encodeURIComponent(roleCode);
         return;
       }
       const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
