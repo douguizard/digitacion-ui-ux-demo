@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Naowee – Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+<!-- Naowee Design System + shell canónico (paridad con naowee-test-sidebar-shell) -->
+<link rel="stylesheet" href="design-system.css"/>
+<link rel="stylesheet" href="shared/tokens.css?v=2.1.0"/>
+<link rel="stylesheet" href="shared/shell.css?v=2.1.0"/>
+
+<link rel="stylesheet" href="naowee-tables.css"/>
+<link rel="stylesheet" href="shared/naowee-footer.css?v=2.1.0"/>
+<script src="shared/naowee-footer.js?v=2.1.0" defer></script>
+
+<style>
+/* ───────────────────────────────────────────────────────────────
+   TOKENS LOCALES — complementan shared/tokens.css con los specifics
+   de feedback/estado que usa esta página. El shell estructural
+   (sidebar, header, page) lo gobierna shared/shell.css.
+   ─────────────────────────────────────────────────────────────── */
+:root {
+  --font:'Inter',sans-serif;
+  --green:#1f8923; --green-bg:#e6f4e7; --green-border:#b7dfb9;
+  --blue-info:#1f78d1; --blue-bg:#eef5ff;
+  --orange-bg:#fff3e6;
+  --shadow-card:0 0 2px rgba(145,158,171,.2),0 12px 24px -4px rgba(145,158,171,.12);
+}
+
+/* Dashboard Header */
+.dash-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px}
+.dash-title{font-size:24px;font-weight:700;color:var(--text-primary);margin-bottom:4px}
+.dash-sub{font-size:13px;color:var(--text-secondary)}
+.btn-new{display:flex;align-items:center;gap:8px;height:44px;padding:0 20px;border-radius:var(--radius-md);font-size:14px;font-weight:700;font-family:var(--font);cursor:pointer;border:none;background:var(--accent);color:#fff;white-space:nowrap}
+.btn-new:hover{opacity:.9}
+
+/* Stat Cards Row */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:24px}
+.stat-card{background:var(--surface);border-radius:var(--radius-xl);box-shadow:var(--shadow-card);padding:28px 24px;display:flex;align-items:center;justify-content:space-between;border-left:4px solid transparent;position:relative}
+.stat-card.blue{border-left-color:#26d4ff}
+.stat-card.green{border-left-color:#1f8923}
+.stat-card.purple{border-left-color:#9b59b6}
+.stat-card.orange{border-left-color:var(--naranja)}
+.stat-label{font-size:12px;font-weight:600;color:var(--text-primary);letter-spacing:0;margin-bottom:4px}
+.stat-value{font-size:18px;font-weight:700;color:#0f172a;letter-spacing:.2px;margin-bottom:4px}
+.stat-sub{font-size:12px;font-weight:500;color:#64748b}
+.stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stat-icon.blue-bg{background:#cef4ff}
+.stat-icon.green-bg{background:#e6f4e7}
+.stat-icon.purple-bg{background:#f0e6ff}
+.stat-icon.orange-bg{background:#fff3e6}
+
+/* Middle Cards Row */
+.mid-row{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:18px;margin-bottom:24px;align-items:start}
+.mid-card{background:var(--surface);border-radius:var(--radius-xl);border:1px solid var(--border);padding:20px 22px;overflow:hidden}
+.mid-card-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid var(--border)}
+.mid-card-title{font-size:15px;font-weight:700;color:var(--text-primary)}
+/* "Ver todas" y acciones de fila → .naowee-btn--mute --small canónico (hover del DS) */
+
+/* Digitadores List */
+.digi-row{display:flex;align-items:center;gap:10px;padding:8px 0}
+.digi-ava{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.digi-info{flex:1;min-width:0}
+.digi-name{font-size:13px;font-weight:600;color:var(--text-primary)}
+.digi-sub{font-size:11px;color:var(--text-secondary)}
+.digi-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.digi-dot.online{background:var(--green)}
+.digi-dot.offline{background:var(--border-dark)}
+.digi-footer{display:flex;gap:12px;padding-top:10px;margin-top:6px;border-top:1px solid var(--border)}
+.digi-footer span{font-size:12px;font-weight:600}
+.digi-footer .activos{color:var(--green)}
+.digi-footer .inactivos{color:var(--text-secondary)}
+
+/* Por deporte grid */
+.deporte-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.deporte-count{font-size:12px;font-weight:600;color:var(--text-secondary);background:#f5f6fa;padding:2px 10px;border-radius:var(--radius-full)}
+.deporte-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 20px;align-content:start}
+.deporte-item{display:flex;align-items:center;gap:6px;padding:3px 0}
+.deporte-name{font-size:12px;font-weight:500;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;max-width:90px}
+.deporte-val{font-size:12px;font-weight:700;color:var(--text-primary);min-width:18px;text-align:right;flex-shrink:0}
+.deporte-bar{flex:1;height:4px;border-radius:var(--radius-full);background:var(--border);overflow:hidden;min-width:0}
+.deporte-bar-fill{height:100%;border-radius:var(--radius-full);background:var(--blue-info)}
+
+/* Estados */
+.estado-total{font-size:13px;font-weight:700;color:var(--text-primary);text-align:right;margin-bottom:12px}
+.estado-row{display:flex;align-items:center;gap:8px;padding:5px 0}
+.estado-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.estado-label{flex:1;font-size:13px;color:var(--text-primary)}
+.estado-bar{flex:2;height:4px;border-radius:var(--radius-full);background:var(--border);overflow:hidden}
+.estado-bar-fill{height:100%;border-radius:var(--radius-full)}
+.estado-val{font-size:13px;font-weight:700;color:var(--text-primary);min-width:20px;text-align:right}
+
+/* Competencias Recientes Table */
+.recent-card{background:var(--surface);border-radius:var(--radius-xl);border:1px solid var(--border);overflow:hidden}
+.recent-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px}
+.recent-title{font-size:16px;font-weight:700;color:var(--text-primary)}
+.table-wrap{overflow-x:auto;padding:4px 12px 0}
+table{width:100%;border-collapse:separate;border-spacing:0}
+thead th{font-size:12px;font-weight:600;color:var(--text-secondary);text-align:left;padding:12px 20px;background:#f5f6fa;white-space:nowrap;border:none}
+thead th:first-child{border-radius:12px 0 0 12px}
+thead th:last-child{border-radius:0 12px 12px 0}
+tbody td{font-size:13px;color:var(--text-primary);padding:14px 20px;vertical-align:middle;border-bottom:1px solid var(--border)}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#fafbfd}
+.comp-name{font-weight:600;color:var(--text-primary)}
+.comp-sport{font-size:11px;color:var(--text-secondary);display:flex;align-items:center;gap:4px;margin-top:2px}
+.badge-sistema{display:inline-flex;padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:600;white-space:nowrap;background:#f0f2f5;color:var(--text-secondary)}
+.badge-sistema.elim,.badge-sistema.robin,.badge-sistema.final,.badge-sistema.grupos,.badge-sistema.rondas{background:#f0f2f5;color:var(--text-secondary)}
+/* Estado → .naowee-badge canónico (mapa unificado: caution/informative/neutral/positive) */
+.digi-chip{display:flex;align-items:center;gap:8px}
+.digi-chip-ava{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
+a{text-decoration:none}
+.evento-main{font-size:13px;color:var(--text-primary)}
+.evento-sub{font-size:11px;color:var(--text-secondary)}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.page{animation:fadeInUp .4s ease-out}
+
+/* RESPONSIVE — grid de stats/mid colapsa en mobile (paridad eventos.html) */
+@media(max-width:900px){
+  .stat-row{grid-template-columns:1fr 1fr}
+  .mid-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Sidebar montado por shared/sidebar.js -->
+  <aside class="sidebar" id="sidebarRoot"></aside>
+
+  <div class="main">
+    <!-- Header montado por shared/sidebar.js (mountHeader) -->
+    <header class="top-header" id="topHeader"></header>
+
+    <main class="page" id="pageContent">
+
+      <!-- Dashboard Header -->
+      <div class="dash-header">
+        <div>
+          <h1 class="dash-title">Dashboard</h1>
+        </div>
+      </div>
+
+      <!-- Stat Cards — Mi avance como digitador -->
+      <div class="stat-row">
+        <div class="stat-card blue">
+          <div>
+            <div class="stat-label">MIS ASIGNACIONES</div>
+            <div class="stat-value">68</div>
+            <div class="stat-sub">competencias asignadas</div>
+          </div>
+          <div class="stat-icon blue-bg"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" stroke="#26d4ff" stroke-width="1.5" stroke-linecap="round"/><rect x="9" y="3" width="6" height="4" rx="1" stroke="#26d4ff" stroke-width="1.5"/></svg></div>
+        </div>
+        <div class="stat-card green">
+          <div>
+            <div class="stat-label">FINALIZADAS</div>
+            <div class="stat-value">22</div>
+            <div class="stat-sub">resultados enviados</div>
+          </div>
+          <div class="stat-icon green-bg"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="#1f8923" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="#1f8923" stroke-width="1.5"/></svg></div>
+        </div>
+        <div class="stat-card purple">
+          <div>
+            <div class="stat-label">ENFRENTAMIENTOS</div>
+            <div class="stat-value">214</div>
+            <div class="stat-sub">partidos digitados</div>
+          </div>
+          <div class="stat-icon purple-bg"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 20V10M18 20V4M6 20v-4" stroke="#9b59b6" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        </div>
+        <div class="stat-card orange">
+          <div>
+            <div class="stat-label">PENDIENTES</div>
+            <div class="stat-value">46</div>
+            <div class="stat-sub">por completar</div>
+          </div>
+          <div class="stat-icon orange-bg"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#FF7500" stroke-width="1.5"/><path d="M12 7v5l3 3" stroke="#FF7500" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        </div>
+      </div>
+
+      <!-- Historial reciente -->
+      <div class="recent-card">
+        <div class="recent-header">
+          <span class="recent-title">Historial reciente</span>
+          <button class="naowee-btn naowee-btn--mute naowee-btn--small" onclick="window.location.href='digitador.html'"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg> Ver todas</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Competencia</th>
+                <th>Sistema</th>
+                <th>Progreso</th>
+                <th>Estado</th>
+                <th style="text-align:right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="dashboardTbody">
+              <!-- Generated by JS -->
+            </tbody>
+          </table>
+        </div>
+        <div id="dashPager" class="naowee-pagination naowee-pagination--small" style="justify-content:flex-end;padding:14px 24px 18px;display:none" role="navigation" aria-label="Paginación del historial"></div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Demo role switcher (footer flotante — solo sandbox) -->
+<div id="demoRoleSwitcherRoot"></div>
+
+<script src="shared.js"></script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SHELL MOUNT — paridad de chrome (sidebar + header + role switcher)
+     con el shell canónico de naowee-test-sidebar-shell.
+     Rol natural de esta vista: DIGITIZER (es el "Inicio" del digitador).
+     ═══════════════════════════════════════════════════════════════ -->
+<script type="module">
+  import { mountSidebar, mountHeader, mountDemoRoleSwitcher } from './shared/sidebar.js';
+
+  const roleCode = new URLSearchParams(window.location.search).get('role') || 'DIGITIZER';
+  const currentFile = window.location.pathname.split('/').pop() || 'dashboard.html';
+
+  /* Nav clicks: ids que mapean a una página del repo digitación se
+     enrutan directo; el resto vuelve al shell host. */
+  const LEGACY_MAP = {
+    'inicio': 'dashboard.html',
+    'mi-digitacion': 'digitador.html', 'audit-logs': 'auditoria.html',
+    'eventos': 'eventos.html',
+    'eventos-lista': 'eventos.html',
+    'competencias': 'lista.html',
+    'competencias-lista': 'lista.html', 'competencias-nueva': 'stepper.html',
+    'digitadores': 'digitadores.html',
+    'coordinadores': 'coordinadores.html'
+  };
+
+  const { role } = mountSidebar({
+    rootEl: document.getElementById('sidebarRoot'),
+    roleCode,
+    activeId: 'inicio',
+    onActiveChange: (activeId) => {
+      const target = LEGACY_MAP[activeId];
+      if (target) {
+        if (target === currentFile) return;
+        window.location.href = target + '?role=' + encodeURIComponent(roleCode);
+        return;
+      }
+      const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+      const SHELL_BASE = isLocal
+        ? 'http://localhost:5100'
+        : 'https://naowee-tech.github.io/naowee-test-sidebar-shell';
+      window.location.href = `${SHELL_BASE}/perfil.html?role=${roleCode}&active=${activeId}`;
+    }
+  });
+
+  mountHeader({ headerEl: document.getElementById('topHeader'), role });
+  mountDemoRoleSwitcher({ rootEl: document.getElementById('demoRoleSwitcherRoot'), currentRoleCode: roleCode });
+</script>
+
+<script>
+/* ═══ DASHBOARD COMPETITIONS ═══
+   Each entry maps to a real COMPETITIONS id in digitador.html.
+   status/sistema/progress shown here must match what digitador.html shows.
+*/
+const DASH_COMPS = [
+  // AJEDREZ
+  {id:84,  name:'Ajedrez Clásico Individual',         sport:'ajedrez_clasico',         zona:'Centro', sistema:'Round robin',          status:'en-digitacion', completed:3, total:6},
+  {id:86,  name:'Ajedrez Clásico Equipos',            sport:'ajedrez_clasico_equipos', zona:'Centro', sistema:'Fase de grupos',       status:'en-digitacion', completed:2, total:6},
+  {id:87,  name:'Ajedrez Activo Individual',           sport:'ajedrez_activo',          zona:'Norte',  sistema:'Round robin',          status:'en-digitacion', completed:4, total:6},
+  {id:88,  name:'Ajedrez Activo Equipos',              sport:'ajedrez_activo_equipos',  zona:'Norte',  sistema:'Round robin',          status:'asignada',      completed:1, total:6},
+  {id:89,  name:'Ajedrez Blitz Individual',            sport:'ajedrez_blitz',           zona:'Sur',    sistema:'Round robin',          status:'asignada',      completed:0, total:6},
+  {id:90,  name:'Ajedrez Blitz Equipos',               sport:'ajedrez_blitz_equipos',   zona:'Sur',    sistema:'Fase de grupos',       status:'asignada',      completed:0, total:6},
+  {id:2,   name:'Ajedrez Integrado Mixto',             sport:'ajedrez_clasico_equipos', zona:'Centro', sistema:'Round robin',          status:'finalizada',    completed:6, total:6},
+  // BÁDMINTON
+  {id:91,  name:'Bádminton Singles Masc. Mayores',     sport:'badminton_singles',       zona:'Norte',  sistema:'Eliminación directa',  status:'en-digitacion', completed:3, total:4},
+  {id:92,  name:'Bádminton Dobles Fem. Mayores',       sport:'badminton_dobles',        zona:'Norte',  sistema:'Eliminación directa',  status:'en-pausa',      completed:2, total:4},
+  {id:5,   name:'Bádminton Dobles Mixto Mayores',      sport:'b_dminton',               zona:'Centro', sistema:'Eliminación directa',  status:'asignada',      completed:0, total:4},
+  // BALONCESTO + MINI
+  {id:93,  name:'Baloncesto 5×5 Masc. Mayores',       sport:'baloncesto',              zona:'Centro', sistema:'Fase de grupos',        status:'en-digitacion', completed:4, total:6},
+  {id:7,   name:'Baloncesto 5×5 Fem. Mayores',        sport:'baloncesto',              zona:'Centro', sistema:'Fase de grupos',        status:'en-digitacion', completed:1, total:6},
+  {id:94,  name:'Baloncesto 3×3 Masc. Mayores',       sport:'baloncesto_3x3',          zona:'Norte',  sistema:'Eliminación directa',  status:'en-digitacion', completed:2, total:4},
+  {id:8,   name:'Mini Baloncesto Mixto Sub-12',        sport:'baloncesto_3x3',          zona:'Sur',    sistema:'Fase de grupos',        status:'en-digitacion', completed:2, total:6},
+  // HOCKEY
+  {id:40,  name:'Hockey sobre Hielo Masc. Mayores',    sport:'hockey_hielo',            zona:'Norte',  sistema:'Fase de grupos',        status:'en-digitacion', completed:3, total:6},
+  {id:39,  name:'Hockey Césped Fem. Mayores',          sport:'hockey_cesped',           zona:'Centro', sistema:'Fase de grupos',        status:'en-digitacion', completed:4, total:6},
+  {id:38,  name:'Hockey Sala Masc. Sub-20',            sport:'hockey_sala',             zona:'Sur',    sistema:'Eliminación directa',  status:'finalizada',    completed:4, total:4},
+  // BALONMANO
+  {id:1070,name:'Balonmano Pista Masc. Mayores',       sport:'balonmano',               zona:'Centro', sistema:'Eliminación directa',  status:'finalizada',    completed:4, total:4},
+  {id:9,   name:'Balonmano Playa Fem. Mayores',        sport:'balonmano_playa',         zona:'Norte',  sistema:'Fase de grupos',        status:'en-pausa',      completed:3, total:6},
+  // BÉISBOL + MINI
+  {id:1080,name:'Béisbol Tradicional Masc. Mayores',   sport:'b_isbol',                 zona:'Centro', sistema:'Eliminación directa',  status:'en-digitacion', completed:3, total:4},
+  {id:6,   name:'Béisbol 5 Mixto Sub-15',              sport:'beisbol_5',               zona:'Sur',    sistema:'Fase de grupos',        status:'en-digitacion', completed:2, total:6},
+  // SOFTBOL
+  {id:72,  name:'Softbol Fem. Mayores',                sport:'softbol',                 zona:'Centro', sistema:'Eliminación directa',  status:'en-digitacion', completed:2, total:4},
+  // FÚTBOL
+  {id:35,  name:'Fútbol 11 Masc. Mayores',             sport:'f_tbol',                  zona:'Centro', sistema:'Fase de grupos',        status:'en-digitacion', completed:5, total:6},
+  {id:153, name:'Fútbol 7 Fem. Sub-17',                sport:'f_tbol_7',                zona:'Norte',  sistema:'Fase de grupos',        status:'en-digitacion', completed:2, total:6},
+  {id:36,  name:'Fútbol Sala Masc. Sub-20',            sport:'f_tbol_sala',             zona:'Centro', sistema:'Eliminación directa',  status:'en-digitacion', completed:3, total:4},
+  {id:37,  name:'Fútbol Salón Masc. Mayores',          sport:'f_tbol_sal_n',            zona:'Sur',    sistema:'Fase de grupos',        status:'en-digitacion', completed:4, total:6},
+  {id:155, name:'Fútbol Playa Masc. Mayores',          sport:'f_tbol_playa',            zona:'Norte',  sistema:'Eliminación directa',  status:'finalizada',    completed:4, total:4},
+  {id:154, name:'Mini Fútbol Mixto Sub-10',             sport:'f_tbol_7',                zona:'Sur',    sistema:'Fase de grupos',        status:'asignada',      completed:1, total:6},
+  {id:36,  name:'Mini Fútbol Sala Mixto Sub-10',        sport:'f_tbol_sala',             zona:'Sur',    sistema:'Round robin',           status:'asignada',      completed:0, total:6},
+  // RUGBY
+  {id:67,  name:'Rugby XV Masc. Mayores',              sport:'rugby',                   zona:'Centro', sistema:'Fase de grupos',        status:'en-digitacion', completed:3, total:6},
+  {id:6703,name:'Rugby Sevens Fem. Mayores',            sport:'rugby_sevens',            zona:'Norte',  sistema:'Eliminación directa',  status:'en-digitacion', completed:3, total:4},
+  // TENNIS
+  {id:521, name:'Tenis Singles Masc. Mayores',          sport:'tenis_campo',             zona:'Centro', sistema:'Eliminación directa',  status:'en-digitacion', completed:4, total:8},
+  {id:523, name:'Tenis Dobles Fem. Mayores',            sport:'tenis_dobles',            zona:'Norte',  sistema:'Eliminación directa',  status:'en-digitacion', completed:2, total:8},
+  // WATERPOLO
+  {id:82,  name:'Waterpolo Masc. Mayores',             sport:'waterpolo',               zona:'Norte',  sistema:'Fase de grupos',        status:'en-digitacion', completed:4, total:6},
+  {id:831, name:'Waterpolo Playa Mixto',                sport:'waterpolo_playa',         zona:'Norte',  sistema:'Eliminación directa',  status:'asignada',      completed:0, total:4},
+  // VOLEIBOL + MINI
+  {id:81,  name:'Voleibol Fem. Mayores',               sport:'voleibol',                zona:'Norte',  sistema:'Round robin',           status:'en-pausa',      completed:3, total:6},
+  {id:160, name:'Voleibol Masc. Mayores',              sport:'voleibol',                zona:'Centro', sistema:'Fase de grupos',        status:'en-digitacion', completed:5, total:6},
+  {id:161, name:'Mini Voleibol Mixto Sub-12',           sport:'voleibol',                zona:'Sur',    sistema:'Round robin',           status:'asignada',      completed:1, total:6},
+  // BOBSLEIGH
+  {id:1400,name:'Bobsleigh 2-Man Masc. Mayores',       sport:'bobsleigh',               zona:'Norte',  sistema:'Final directa',         status:'finalizada',    completed:1, total:1},
+  // CRICKET
+  {id:27,  name:'Cricket T20 Masc. Mayores',           sport:'cricket_t20',             zona:'Centro', sistema:'Fase de grupos',        status:'en-digitacion', completed:3, total:6},
+  {id:25,  name:'Cricket ODI Fem. Mayores',            sport:'cricket_odi',             zona:'Norte',  sistema:'Round robin',           status:'en-digitacion', completed:2, total:6},
+  // CURLING
+  {id:28,  name:'Curling Mixto Mayores',               sport:'curling',                 zona:'Norte',  sistema:'Round robin',           status:'en-digitacion', completed:4, total:6},
+  {id:29,  name:'Curling Dobles Mixto',                sport:'curling_dobles',          zona:'Norte',  sistema:'Eliminación directa',  status:'asignada',      completed:1, total:4},
+  // DISCO VOLADOR
+  {id:30,  name:'Disco Volador Ultimate Mixto',        sport:'disco_volador',           zona:'Centro', sistema:'Fase de grupos',        status:'en-digitacion', completed:3, total:6},
+  {id:31,  name:'Disco Volador Playa Masc.',           sport:'disco_volador_playa',     zona:'Norte',  sistema:'Eliminación directa',  status:'asignada',      completed:0, total:4},
+  // PÁDEL
+  {id:52,  name:'Pádel Dobles Masc. Mayores',          sport:'padel',                   zona:'Centro', sistema:'Eliminación directa',  status:'en-digitacion', completed:6, total:8},
+  {id:520, name:'Pádel Dobles Fem. Mayores',            sport:'padel',                   zona:'Norte',  sistema:'Eliminación directa',  status:'en-pausa',      completed:3, total:8},
+  // PORRISMO
+  {id:1500,name:'Porrismo Cheer Fem. Mayores',         sport:'porrismo_cheer',          zona:'Centro', sistema:'Final directa',         status:'finalizada',    completed:1, total:1},
+  {id:1502,name:'Porrismo Hip Hop Mixto',              sport:'porrismo_hip_hop',        zona:'Sur',    sistema:'Final directa',         status:'asignada',      completed:0, total:1},
+  {id:1504,name:'Porrismo Pom Fem.',                   sport:'porrismo_pom',            zona:'Norte',  sistema:'Rondas',                status:'en-digitacion', completed:1, total:2},
+  // REMO
+  {id:1600,name:'Remo Single Scull Masc.',             sport:'remo',                    zona:'Norte',  sistema:'Final directa',         status:'finalizada',    completed:1, total:1},
+  {id:1604,name:'Remo Doble Scull Fem.',               sport:'remo_doble_scull',        zona:'Norte',  sistema:'Rondas',                status:'en-digitacion', completed:1, total:2},
+  {id:1605,name:'Remo Cuádruple Scull Masc.',          sport:'remo_cuadruple_scull',    zona:'Centro', sistema:'Final directa',         status:'asignada',      completed:0, total:1},
+  {id:1607,name:'Remo Dos sin Timonel Masc.',          sport:'remo_dos_sin_timonel',    zona:'Norte',  sistema:'Rondas',                status:'en-pausa',      completed:1, total:2},
+  {id:1610,name:'Remo Cuatro sin Timonel Fem.',        sport:'remo_cuatro_sin_timonel', zona:'Centro', sistema:'Final directa',         status:'finalizada',    completed:1, total:1},
+  {id:1611,name:'Remo Ocho con Timonel Masc.',         sport:'remo_ocho_con_timonel',   zona:'Norte',  sistema:'Rondas',                status:'asignada',      completed:0, total:2},
+  // ATLETISMO
+  {id:1057,name:'Atletismo 100m Masc. Mayores',        sport:'atletismo', zona:'Sur',    sistema:'Rondas',       status:'finalizada',    completed:3, total:3},
+  {id:1058,name:'Atletismo 200m Fem. Mayores',         sport:'atletismo', zona:'Sur',    sistema:'Rondas',       status:'en-digitacion', completed:2, total:3},
+  {id:1005,name:'Atletismo 400m Masc. Sub-20',         sport:'atletismo', zona:'Centro', sistema:'Rondas',       status:'en-digitacion', completed:1, total:3},
+  {id:1006,name:'Atletismo 800m Fem. Mayores',         sport:'atletismo', zona:'Sur',    sistema:'Final directa',status:'finalizada',    completed:1, total:1},
+  {id:1007,name:'Atletismo 1500m Masc. Mayores',       sport:'atletismo', zona:'Centro', sistema:'Final directa',status:'asignada',      completed:0, total:1},
+  {id:1012,name:'Atletismo 5000m Masc. Mayores',       sport:'atletismo', zona:'Sur',    sistema:'Final directa',status:'finalizada',    completed:1, total:1},
+  {id:1059,name:'Atletismo 110m Vallas Masc.',         sport:'atletismo', zona:'Centro', sistema:'Rondas',       status:'en-digitacion', completed:2, total:3},
+  {id:1060,name:'Atletismo 400m Vallas Fem.',          sport:'atletismo', zona:'Sur',    sistema:'Rondas',       status:'en-digitacion', completed:1, total:3},
+  {id:1048,name:'Atletismo Salto de Longitud Masc.',   sport:'atletismo', zona:'Centro', sistema:'Final directa',status:'finalizada',    completed:1, total:1},
+  {id:1050,name:'Atletismo Salto Alto Fem.',           sport:'atletismo', zona:'Sur',    sistema:'Final directa',status:'asignada',      completed:0, total:1},
+  {id:1049,name:'Atletismo Triple Salto Masc.',        sport:'atletismo', zona:'Centro', sistema:'Final directa',status:'finalizada',    completed:1, total:1},
+  {id:1051,name:'Atletismo Salto con Garrocha Fem.',   sport:'atletismo', zona:'Sur',    sistema:'Final directa',status:'asignada',      completed:0, total:1},
+  {id:1040,name:'Atletismo Lanzamiento Bala Masc.',    sport:'atletismo', zona:'Centro', sistema:'Final directa',status:'finalizada',    completed:1, total:1},
+  {id:1042,name:'Atletismo Lanzamiento Disco Fem.',    sport:'atletismo', zona:'Sur',    sistema:'Final directa',status:'finalizada',    completed:1, total:1},
+  {id:1044,name:'Atletismo Lanzamiento Jabalina Masc.',sport:'atletismo', zona:'Centro', sistema:'Final directa',status:'asignada',      completed:0, total:1},
+  {id:1046,name:'Atletismo Lanzamiento Martillo Fem.', sport:'atletismo', zona:'Sur',    sistema:'Final directa',status:'asignada',      completed:0, total:1},
+  {id:1024,name:'Atletismo 4×100m Relevos Masc.',     sport:'atletismo', zona:'Centro', sistema:'Final directa',status:'finalizada',    completed:1, total:1},
+  {id:1025,name:'Atletismo 4×400m Relevos Fem.',      sport:'atletismo', zona:'Sur',    sistema:'Final directa',status:'asignada',      completed:0, total:1},
+  {id:1018,name:'Atletismo 3000m Obstáculos Masc.',    sport:'atletismo', zona:'Centro', sistema:'Final directa',status:'finalizada',    completed:1, total:1},
+  {id:1022,name:'Atletismo Marcha 20km Fem.',          sport:'atletismo', zona:'Norte',  sistema:'Final directa',status:'asignada',      completed:0, total:1},
+  {id:1056,name:'Atletismo Decatlón Masc.',            sport:'atletismo', zona:'Centro', sistema:'Final directa',status:'en-digitacion', completed:5, total:10},
+  {id:1054,name:'Atletismo Heptatlón Fem.',            sport:'atletismo', zona:'Sur',    sistema:'Final directa',status:'en-digitacion', completed:5, total:7},
+  {id:1013,name:'Atletismo 10000m Masc. Mayores',      sport:'atletismo', zona:'Norte',  sistema:'Final directa',status:'finalizada',    completed:1, total:1},
+  {id:1029,name:'Atletismo Media Maratón Fem.',        sport:'atletismo', zona:'Norte',  sistema:'Final directa',status:'asignada',      completed:0, total:1},
+  {id:1032,name:'Atletismo Campo Traviesa Masc.',      sport:'atletismo', zona:'Norte',  sistema:'Final directa',status:'finalizada',    completed:1, total:1},
+  // CICLISMO
+  {id:2300,name:'Ciclismo CRI 12-15 KM Masc.',        sport:'ciclismo',  zona:'Centro', sistema:'Rondas',       status:'en-digitacion', completed:0, total:2},
+  {id:2301,name:'Ciclismo CRI 12-15 KM Fem.',         sport:'ciclismo',  zona:'Centro', sistema:'Final directa',status:'en-digitacion', completed:0, total:1},
+  {id:2302,name:'Ciclismo Ruta 50-60 KM Masc.',       sport:'ciclismo',  zona:'Sur',    sistema:'Rondas',       status:'en-digitacion', completed:0, total:2},
+  {id:2303,name:'Ciclismo Ruta 50-60 KM Fem.',        sport:'ciclismo',  zona:'Norte',  sistema:'Final directa',status:'finalizada',    completed:1, total:1},
+  {id:2304,name:'Ciclismo CRI 12-15 KM Mixto',        sport:'ciclismo',  zona:'Oriente',sistema:'Final directa',status:'en-digitacion', completed:0, total:1},
+  {id:2305,name:'Ciclismo Ruta 50-60 KM Mixto',       sport:'ciclismo',  zona:'Sur',    sistema:'Final directa',status:'en-digitacion', completed:0, total:1},
+];
+
+var _dashPage = 1;
+var _DASH_PAGE_SIZE = 15;
+
+function renderDashboardTable(){
+  const tbody = document.getElementById('dashboardTbody');
+  const statusLabels = {'en-digitacion':'En digitación','asignada':'Asignada','en-pausa':'En pausa','finalizada':'Finalizada'};
+  const estadoVariant = {'en-digitacion':'caution','asignada':'informative','en-pausa':'neutral','finalizada':'positive'};
+  const sistemaClasses = {'Eliminación directa':'elim','Round robin':'robin','Fase de grupos':'grupos','Final directa':'final','Rondas':'rondas'};
+  const actionLabels = {'en-digitacion':'Continuar','en-pausa':'Continuar','asignada':'Iniciar','finalizada':'Ver'};
+
+  // Totales sobre TODO el historial (independientes de la paginación)
+  let totalAsignaciones=0, totalFinalizadas=0, totalEnfrentamientos=0, totalPendientes=0;
+  DASH_COMPS.forEach(c => {
+    totalAsignaciones++;
+    totalEnfrentamientos += c.total;
+    if(c.status==='finalizada') totalFinalizadas++;
+    else totalPendientes += (c.total - c.completed);
+  });
+
+  // Paginación (cap 15 filas por página)
+  const totRows = DASH_COMPS.length;
+  const pgs = Math.max(1, Math.ceil(totRows / _DASH_PAGE_SIZE));
+  if(_dashPage > pgs) _dashPage = pgs;
+  if(_dashPage < 1) _dashPage = 1;
+  const pageRows = DASH_COMPS.slice((_dashPage-1)*_DASH_PAGE_SIZE, _dashPage*_DASH_PAGE_SIZE);
+
+  tbody.innerHTML = pageRows.map(c => {
+    const sp = SPORTS_DB[c.sport];
+    const emoji = sp ? sp.emoji : '🏅';
+    const label = sp ? sp.label : c.sport;
+    const pct = c.total > 0 ? Math.round((c.completed / c.total) * 100) : 0;
+    const barColor = 'var(--green)';
+
+    return `<tr>
+      <td><div class="comp-name">${c.name}</div><div class="comp-sport">${emoji} ${label} · ${c.zona}</div></td>
+      <td><span class="badge-sistema ${sistemaClasses[c.sistema]||'grupos'}">${c.sistema}</span></td>
+      <td><div style="display:flex;align-items:center"><div style="width:48px;height:4px;background:var(--border);border-radius:var(--radius-full)"><div style="height:100%;width:${pct}%;background:${barColor};border-radius:var(--radius-full)"></div></div></div></td>
+      <td><span class="naowee-badge naowee-badge--${estadoVariant[c.status]||'neutral'} naowee-badge--quiet naowee-badge--small">${statusLabels[c.status]}</span></td>
+      <td style="text-align:right"><button class="naowee-btn naowee-btn--mute naowee-btn--small" onclick="window.location.href='digitador.html?comp=${c.id}'">${actionLabels[c.status]}</button></td>
+    </tr>`;
+  }).join('');
+
+  // Update stat cards (totales globales)
+  document.querySelector('.stat-card.blue .stat-value').textContent = totalAsignaciones;
+  document.querySelector('.stat-card.green .stat-value').textContent = totalFinalizadas;
+  document.querySelector('.stat-card.purple .stat-value').textContent = totalEnfrentamientos;
+  document.querySelector('.stat-card.orange .stat-value').textContent = totalPendientes;
+
+  renderDashPager(pgs);
+}
+
+function renderDashPager(pgs){
+  const pager = document.getElementById('dashPager');
+  if(!pager) return;
+  if(pgs <= 1){ pager.style.display='none'; pager.innerHTML=''; return; }
+  pager.style.display='flex';
+  pager.innerHTML =
+    '<div class="naowee-pagination__pages"><span class="naowee-pagination__label">Página</span>'
+    + '<input class="naowee-pagination__input" value="'+_dashPage+'" onchange="dashGoPage(parseInt(this.value,10))" aria-label="Página actual">'
+    + '<span class="naowee-pagination__total">de <strong>'+pgs+'</strong></span></div>'
+    + '<div class="naowee-pagination__controls">'
+    + '<button class="naowee-pagination__btn" type="button" onclick="dashGoPage('+(_dashPage-1)+')"'+(_dashPage<=1?' disabled':'')+' aria-label="Página anterior"><svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
+    + '<button class="naowee-pagination__btn" type="button" onclick="dashGoPage('+(_dashPage+1)+')"'+(_dashPage>=pgs?' disabled':'')+' aria-label="Página siguiente"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'
+    + '</div>';
+}
+
+function dashGoPage(p){
+  if(isNaN(p)) return;
+  const pgs = Math.max(1, Math.ceil(DASH_COMPS.length / _DASH_PAGE_SIZE));
+  _dashPage = Math.min(Math.max(1, p), pgs);
+  renderDashboardTable();
+  const card = document.querySelector('.recent-card');
+  if(card) card.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+renderDashboardTable();
+</script>
+</body>
+</html>
