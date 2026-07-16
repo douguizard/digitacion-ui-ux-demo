@@ -925,7 +925,7 @@ body.sorteo-has-footer .page{padding-bottom:96px}
 <script src="shared.js"></script>
 <script src="sorteo-engine.js"></script>
 <script src="sorteo-store.js"></script>
-<script src="competition-render.js"></script>
+<script src="competition-render.js?v=2.1.1"></script>
 <script src="ruleta-wheel.js"></script>
 <script src="shared/naowee-footer.js" defer></script>
 <script>
@@ -1058,6 +1058,12 @@ const _INST_POOL=[
   {n:'I.E. Rafael Uribe de Bucaramanga',r:'Oriente'},{n:'Colegio San Pedro de Cúcuta',r:'Oriente'},{n:'Gimnasio del Llano de Villavicencio',r:'Oriente'},{n:'I.E. Camilo Torres de Yopal',r:'Oriente'},{n:'Colegio La Presentación de Arauca',r:'Oriente'}
 ];
 const _NAMES=_INST_POOL.map(function(p){return p.n;});
+/* Meta de equipo dos tonos (feedback Danna): la delegación es una institución
+   que pertenece a una REGIÓN y un MUNICIPIO. El municipio va embebido en el
+   nombre ("I.E. La Salle de Cartagena"); la región viene de la delegación. */
+function _muniFromName(n){ var p=String(n||'').split(/\s+de\s+/i); return p.length>1?p[p.length-1].trim():''; }
+function _regClean(d){ return String(d||'').replace(/\s*\d+\s*$/,'').trim(); }
+function _teamMetaStr(nombre,delegacion,fallbackReg){ var reg=_regClean(delegacion)||_regClean(fallbackReg); var muni=_muniFromName(nombre); return [reg,muni].filter(Boolean).join(' · '); }
 const _TC=['#d74009','#1f78d1','#1f8923','#7c3aed','#FF7500','#0891b2','#be185d','#65a30d'];
 let _sorteo=null,_assign=null,_drawSeq=[],_ruletaTimers=[],_ruletaDone=false;
 function teamColorLocal(n){ if(window.CompRender&&CompRender.teamColor)return CompRender.teamColor(n); let h=0; for(let i=0;i<n.length;i++)h=n.charCodeAt(i)+((h<<5)-h); return _TC[Math.abs(h)%_TC.length]; }
@@ -1070,7 +1076,7 @@ function showStage(id,opts){ opts=opts||{}; const D={wizardStage:'block',clasifS
   try{ if(!opts.noPush){ if(!_stageHistReady){ history.replaceState({naoweeStage:id},''); _stageHistReady=true; } else if(!(history.state&&history.state.naoweeStage===id)){ history.pushState({naoweeStage:id},''); } } }catch(e){} }
 function _syncSorteoMode(id){ var isProg=(id==='progEditStage'); var crear=document.getElementById('modeCrear'), prog=document.getElementById('modeProg'); if(crear)crear.classList.toggle('is-active',!isProg); if(prog)prog.classList.toggle('is-active',isProg); }
 function setSorteoMode(m){ if(m==='prog'){ openProgEdit(); } else { showStage('wizardStage'); } }
-function genParticipantes(n,tipo){ const out=[]; for(let i=0;i<n;i++){ const p=_INST_POOL[i%_INST_POOL.length]; const wrap=Math.floor(i/_INST_POOL.length); const nombre=p?(p.n+(wrap?(' '+(wrap+1)):'')):((tipo==='individual'?'Deportista ':'Equipo ')+(i+1)); out.push({nombre:nombre, delegacion:(p?(p.r+' '+((i%3)+1)):'')}); } return out; }
+function genParticipantes(n,tipo){ const out=[]; for(let i=0;i<n;i++){ const p=_INST_POOL[i%_INST_POOL.length]; const wrap=Math.floor(i/_INST_POOL.length); const nombre=p?(p.n+(wrap?(' '+(wrap+1)):'')):((tipo==='individual'?'Deportista ':'Equipo ')+(i+1)); out.push({nombre:nombre, delegacion:(p?p.r:'')}); } return out; }
 function buildSorteo(){ const n=Math.max(2, +W.nEquipos||8); const parts=(_clasificados&&_clasificados.length)?_clasificados.map(c=>({nombre:(c.nombre||'').trim(),delegacion:(c.delegacion||'').trim(),grupoFijo:(c.grupoFijo==null?null:c.grupoFijo)})):genParticipantes(n,W.tipo); _sorteo={prueba:{deporteLabel:W.deporteLabel||'Deporte',emoji:W.emoji||'🏆',categoria:W.categoria||'General',sexo:W.sexo||'Mixto',tipo:W.tipo||'conjunto'},config:{nGrupos:(W.tipo==='individual'?1:Math.max(1,+W.nGrupos||2))},participantes:parts}; return _sorteo; }
 /* ── F3a: Clasificados editables ── */
 let _clasificados=[];
@@ -1230,7 +1236,7 @@ var _INSTS=['Colegio San José','I.E. La Salle','Gimnasio Moderno','Colegio Cham
 var _MUNIS={Norte:['Barranquilla','Cartagena','Santa Marta','Valledupar','Montería','Sincelejo'],Centro:['Bogotá','Tunja','Ibagué','Manizales','Pereira','Armenia'],Sur:['Cali','Popayán','Pasto','Neiva','Florencia','Mocoa'],Oriente:['Bucaramanga','Cúcuta','Villavicencio','Yopal','Arauca','Duitama']};
 function _seedComp(dep,sys,nP,fecha,reg,evt,cat,sex,nombre,i){
   var munis=_MUNIS[reg]||['Ciudad'], teamMeta={}, teams=[];
-  for(var t=0;t<nP;t++){ var name=_INSTS[(i*3+t)%_INSTS.length]+' de '+munis[t%munis.length]; teams.push(name); teamMeta[name]=reg+' '+((t%3)+1)+' · '+cat; }
+  for(var t=0;t<nP;t++){ var muni=munis[t%munis.length]; var name=_INSTS[(i*3+t)%_INSTS.length]+' de '+muni; teams.push(name); teamMeta[name]=[reg,muni].filter(Boolean).join(' · '); }
   var ng=(sys.c==='elim')?1:Math.max(1,sys.g||1), per=Math.ceil(nP/ng), grupos=[], mid=0, total=0;
   for(var g=0;g<ng;g++){ var gt=teams.slice(g*per,(g+1)*per), partidos=[];
     for(var a=0;a<gt.length;a++) for(var b=a+1;b<gt.length;b++){ mid++; partidos.push({id:'sm'+i+'-'+mid,t1:gt[a],t2:gt[b],jornada:((a+b)%3)+1,status:'ok'}); }
@@ -1357,7 +1363,7 @@ function _progRenderPager(total,pages){
 function editProg(id){ var rec=_getProgRec(id); if(!rec||!rec.comp)return; showStage('progEditStage'); _progEditId=id; _progMatchPage=1; _pvComp=rec.comp; _progPanelId='progEditBody'; var t=document.getElementById('progEditTitle'),s=document.getElementById('progEditSub'); if(t)t.textContent=(rec.comp.nombre||'Programación'); if(s)s.textContent='Asigna fecha, hora y escenario; guarda para actualizar el sorteo.'; var g=document.getElementById('btnGuardarProg'); if(g)g.style.display=''; var ba=document.getElementById('btnProgBackArrow'); if(ba)ba.style.display=''; var c=document.getElementById('progEditCenefa'); if(c)c.innerHTML=''; document.getElementById('progEditBody').innerHTML=renderPrograma(_pvComp); try{document.querySelector('.page').scrollTo(0,0);}catch(e){} }
 function progEditBack(){ if(_progEditId){ openProgEdit(); } else { var nav=document.getElementById('navProgEdit'); if(nav)nav.classList.remove('active'); showStage('wizardStage'); } }
 function guardarProg(){ if(!_progEditId)return; var rec=_getProgRec(_progEditId); if(rec){ rec.comp=_pvComp; if(!rec._seed&&window.SorteoStore)SorteoStore.save(rec); } var c=document.getElementById('progEditCenefa'); if(c){ c.innerHTML='<div class="sorteo-cenefa sorteo-cenefa--positive" role="status"><div class="sorteo-cenefa__inner"><span class="sorteo-cenefa__icon">'+_ICO_OK+'</span><div class="sorteo-cenefa__body"><div class="sorteo-cenefa__title">Programación guardada</div><p class="sorteo-cenefa__msg">Los cambios de fecha, hora y escenario quedaron guardados en este sorteo.</p></div></div></div>'; try{document.querySelector('.page').scrollTo({top:0,behavior:'smooth'});}catch(e){} } }
-function _attachTeamMeta(comp,sorteo){ if(!comp||comp.teamMeta)return; try{ var parts=(sorteo&&sorteo.participantes)||[], cat=(sorteo&&sorteo.prueba&&sorteo.prueba.categoria)||'', reg=(sorteo&&sorteo.region)||comp.region||'', map={}, any=false; parts.forEach(function(p){ if(p&&typeof p==='object'&&p.nombre){ var d=(p.delegacion||reg||''); var meta=[d,cat].filter(Boolean).join(' · '); if(meta){ map[p.nombre]=meta; any=true; } } }); if(any)comp.teamMeta=map; }catch(e){} }
+function _attachTeamMeta(comp,sorteo){ if(!comp||comp.teamMeta)return; try{ var parts=(sorteo&&sorteo.participantes)||[], reg=(sorteo&&sorteo.region)||comp.region||'', map={}, any=false; parts.forEach(function(p){ if(p&&typeof p==='object'&&p.nombre){ var meta=_teamMetaStr(p.nombre,p.delegacion,reg); if(meta){ map[p.nombre]=meta; any=true; } } }); if(any)comp.teamMeta=map; }catch(e){} }
 function showPreview(comp){ _pvComp=comp||SorteoEngine.toComp(_sorteo); _sorteo.resultado=_pvComp; _attachTeamMeta(_pvComp,_sorteo); _progPanelId='previewPanel'; showStage('previewStage'); const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=false;b.textContent='Confirmar sorteo';} var _pc=document.getElementById('previewCenefa'); if(_pc)_pc.innerHTML='';
   var _isTrans=(W.modo==='transcrip'); var _bb=document.getElementById('btnPreviewBack'); if(_bb){ _bb.innerHTML=_isTrans?'← Volver a la transcripción':'← Parámetros'; _bb.onclick=_isTrans?backTranscrip:backToWizard; } var _rs=document.getElementById('btnResortear'); if(_rs)_rs.style.display=_isTrans?'none':''; var _st=document.querySelector('#previewStage .sorteo-title'); if(_st)_st.textContent=_isTrans?'Resultado de la transcripción':'Resultado del sorteo'; var _ss=document.querySelector('#previewStage .sorteo-sub'); if(_ss)_ss.textContent=_isTrans?'Estos son los grupos/llaves que transcribiste. Revisa y confírmalos para publicar.':'Revisa el resultado y confírmalo para publicarlo.'; var isElim=_pvComp.sisCls==='elim'; _activeTabs=isElim?_PV_TABS_ELIM:_PV_TABS; var sub=isElim?((_pvComp.sistema||'Eliminación directa')+' · '+((_sorteo&&_sorteo.participantes)?_sorteo.participantes.length:0)+' participantes'):((_pvComp.sistema||'')+' · '+(_pvComp.grupos?_pvComp.grupos.length:0)+' grupos · '+(_pvComp.jornadasCount||0)+' jornadas'); document.getElementById('previewHead').innerHTML='<div class="pv-head"><span class="pv-emoji">'+(_pvComp.emoji||'🏆')+'</span><div><div class="pv-title">'+(_pvComp.nombre||'Sorteo')+'</div><div class="pv-sub">'+sub+'</div></div></div>'; _pvTab=_activeTabs[0].id; renderPvTabs(); }
 function renderPvTabs(){ const tb=document.getElementById('previewTabs'); if(tb) tb.innerHTML=_activeTabs.map(function(t){return '<button class="naowee-tab'+(t.id===_pvTab?' naowee-tab--selected':'')+'" onclick="switchPvTab(\''+t.id+'\')">'+(t.icon||'')+'<span>'+t.label+'</span></button>';}).join(''); const tab=_activeTabs.find(function(t){return t.id===_pvTab;}); const p=document.getElementById('previewPanel'); if(p&&tab) p.innerHTML=tab.render(_pvComp); }

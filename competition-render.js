@@ -52,6 +52,15 @@
     return /^\s*\d+\s*[°ºoO]\s+/.test(name) || /por definir/i.test(name);
   }
 
+  /* Metadato del equipo (dos tonos): nombre = institución arriba,
+     comp.teamMeta[name] = "Región · Municipio" abajo (en gris). Si no
+     hay meta → sin subtexto (NUNCA repetir el nombre). Feedback Danna. */
+  function _teamMeta(comp, name){ return (comp && comp.teamMeta && comp.teamMeta[name]) || ''; }
+  function _subLine(cls, comp, name){
+    var meta = _teamMeta(comp, name);
+    return meta ? '<div class="'+cls+'">'+esc(meta)+'</div>' : '';
+  }
+
   /* ───────────────────────────────────────────────
      renderStandings(grupo) → htmlString
      Tabla de posiciones de un grupo (clases .standings-*).
@@ -76,7 +85,7 @@
   }
 
   /* Una match-card READ-ONLY (sin botón Digitar). Maneja bye. */
-  function _matchCard(m){
+  function _matchCard(m, comp){
     /* bye → t2 'Descansa' */
     var isBye = m.status==='bye' || /descansa/i.test(m.t2||'');
     if(isBye){
@@ -92,9 +101,9 @@
       : '<div class="match-vs">VS</div>';
     var statusTxt = m.status==='done' ? 'Finalizado' : 'Pendiente';
     return '<div class="match-card">'
-      + '<div class="match-team"><div class="team-avatar" style="background:'+c1+';color:#fff">'+esc(teamInit(m.t1))+'</div><div><div class="team-name">'+esc(m.t1)+'</div><div class="team-sub">'+esc(m.t1)+'</div></div></div>'
+      + '<div class="match-team"><div class="team-avatar" style="background:'+c1+';color:#fff">'+esc(teamInit(m.t1))+'</div><div><div class="team-name">'+esc(m.t1)+'</div>'+_subLine('team-sub',comp,m.t1)+'</div></div>'
       + '<div class="match-center">'+center+'<div class="match-status">'+statusTxt+'</div></div>'
-      + '<div class="match-team right"><div><div class="team-name">'+esc(m.t2)+'</div><div class="team-sub">'+esc(m.t2)+'</div></div><div class="team-avatar" style="background:'+c2+';color:#fff">'+esc(teamInit(m.t2))+'</div></div>'
+      + '<div class="match-team right"><div><div class="team-name">'+esc(m.t2)+'</div>'+_subLine('team-sub',comp,m.t2)+'</div><div class="team-avatar" style="background:'+c2+';color:#fff">'+esc(teamInit(m.t2))+'</div></div>'
       + '</div>';
   }
 
@@ -132,12 +141,12 @@
         jornadas.forEach(function(j){
           html += '<div class="cr-jornada-label">Jornada '+esc(j)+'</div>';
           partidos.filter(function(p){return p.jornada===j;}).forEach(function(m){
-            html += _matchCard(m);
+            html += _matchCard(m, comp);
           });
         });
       } else if(partidos.length){
         /* Sin metadato de jornada → lista plana */
-        partidos.forEach(function(m){ html += _matchCard(m); });
+        partidos.forEach(function(m){ html += _matchCard(m, comp); });
       }
 
       html += '</div>';
@@ -147,7 +156,7 @@
 
   /* Nodo de bracket READ-ONLY (sin onclick / registrar).
      Portado de _renderBracketNode eliminando la barra "Registrar". */
-  function _renderBracketNode(m, isTercer, roundName){
+  function _renderBracketNode(m, isTercer, roundName, comp){
     var cls = m.status==='done'?'finalizado':m.status==='pending'?'pending':'';
     var tercerCls = isTercer?'tercer-puesto':'';
     var isDone = m.status==='done';
@@ -169,7 +178,7 @@
       var t1Emoji = isDone && isFinal ? (t1Won ? '🏆' : '🥈') : (t1Won ? _winEmoji(true) : '');
       h += '<div class="bracket-team-row '+rowCls1+'">'
         + '<div class="bracket-initial" '+(!isDone?'style="background:'+c1+';color:#fff"':'')+'>'+esc(teamInit(m.t1))+'</div>'
-        + '<div class="bracket-tname-wrap"><div class="bracket-tname">'+esc(m.t1)+'</div><div class="bracket-tsub">'+esc(m.t1)+'</div></div>'
+        + '<div class="bracket-tname-wrap"><div class="bracket-tname">'+esc(m.t1)+'</div>'+_subLine('bracket-tsub',comp,m.t1)+'</div>'
         + '<div class="bracket-score-wrap">'
         + (t1Emoji?'<span class="bracket-trophy">'+t1Emoji+'</span>':'')
         + '<span class="bracket-score '+(m.s1==null?'pending-score':'')+'">'+(m.s1!=null?esc(m.s1):'-')+'</span>'
@@ -183,7 +192,7 @@
       var t2Emoji = isDone && isFinal ? (t2Won ? '🏆' : '🥈') : (t2Won ? _winEmoji(true) : '');
       h += '<div class="bracket-team-row '+rowCls2+'">'
         + '<div class="bracket-initial" '+(!isDone?'style="background:'+c2+';color:#fff"':'')+'>'+esc(teamInit(m.t2))+'</div>'
-        + '<div class="bracket-tname-wrap"><div class="bracket-tname">'+esc(m.t2)+'</div><div class="bracket-tsub">'+esc(m.t2)+'</div></div>'
+        + '<div class="bracket-tname-wrap"><div class="bracket-tname">'+esc(m.t2)+'</div>'+_subLine('bracket-tsub',comp,m.t2)+'</div>'
         + '<div class="bracket-score-wrap">'
         + (t2Emoji?'<span class="bracket-trophy">'+t2Emoji+'</span>':'')
         + '<span class="bracket-score '+(m.s2==null?'pending-score':'')+'">'+(m.s2!=null?esc(m.s2):'-')+'</span>'
@@ -240,12 +249,12 @@
     mainRounds.forEach(function(round,ri){
       if(ri>0) html += '<div class="bracket-svg-col"></div>';
       html += '<div class="bracket-col">';
-      (round.matches||[]).forEach(function(m){ html += _renderBracketNode(m, false, round.round); });
+      (round.matches||[]).forEach(function(m){ html += _renderBracketNode(m, false, round.round, comp); });
       html += '</div>';
     });
     if(tercerRound){
       html += '<div class="bracket-svg-col"></div><div class="bracket-col">';
-      (tercerRound.matches||[]).forEach(function(m){ html += _renderBracketNode(m, true, tercerRound.round); });
+      (tercerRound.matches||[]).forEach(function(m){ html += _renderBracketNode(m, true, tercerRound.round, comp); });
       html += '</div>';
     }
     html += '</div></div>';

@@ -17,7 +17,7 @@
   'use strict';
 
   var MODULE_NAME = 'Digitación';
-  var MODULE_VERSION = 'v2.1.0';
+  var MODULE_VERSION = 'v2.1.1';
   var REPO = 'naowee-tech/naowee-test-digitacion';
   var RELEASE_URL = 'https://github.com/' + REPO + '/releases/tag/' + MODULE_VERSION;
   var LOGO_SRC = 'shared/logos/naowee.svg';
