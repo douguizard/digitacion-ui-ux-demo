@@ -262,8 +262,8 @@ body{font-family:var(--font);background:var(--surface);color:var(--text-primary)
 }
 </style>
 <link rel="stylesheet" href="naowee-tables.css"/>
-<link rel="stylesheet" href="shared/naowee-footer.css?v=2.1.0"/>
-<script src="shared/naowee-footer.js?v=2.1.0" defer></script>
+<link rel="stylesheet" href="shared/naowee-footer.css?v=2.1.1"/>
+<script src="shared/naowee-footer.js?v=2.1.1" defer></script>
 </head>
 <body>
 <div class="shell">
@@ -319,6 +319,9 @@ body{font-family:var(--font);background:var(--surface);color:var(--text-primary)
 TEAM_COLORS = ['#2c5f9b','#e67e22','#9b59b6','#1f8923','#e74c3c','#3498db','#f39c12','#1abc9c','#e91e63','#00bcd4'];
 function teamColor(name){ let h=0; for(let i=0;i<name.length;i++) h=name.charCodeAt(i)+((h<<5)-h); return TEAM_COLORS[Math.abs(h)%TEAM_COLORS.length]; }
 function teamInit(name){ return name.split(' ').filter(w=>w.length>1).map(w=>w[0]).join('').substring(0,2).toUpperCase()||name[0]; }
+/* Subtexto dos tonos (feedback Danna): institución arriba, "Región · Municipio"
+   abajo desde comp.teamMeta. Sin meta → sin subtexto (NUNCA repetir el nombre). */
+function teamSub(cls,name){ const mt=(comp&&comp.teamMeta&&comp.teamMeta[name])||''; return mt?`<div class="${cls}">${mt}</div>`:''; }
 
 const COMPETITIONS = [
   {
@@ -955,7 +958,7 @@ function _renderBracketNode(m, isTercer, roundName){
     const t1Emoji = isDone && isFinal ? (t1Won ? '🏆' : '🥈') : (t1Won ? _winEmoji(true) : '');
     h += `<div class="bracket-team-row ${rowCls}">
       <div class="bracket-initial" ${!isDone?`style="background:${c1};color:#fff"`:''}>${teamInit(m.t1)}</div>
-      <div class="bracket-tname-wrap"><div class="bracket-tname">${m.t1}</div><div class="bracket-tsub">${m.t1}</div></div>
+      <div class="bracket-tname-wrap"><div class="bracket-tname">${m.t1}</div>${teamSub('bracket-tsub',m.t1)}</div>
       <div class="bracket-score-wrap">
         ${t1Emoji?`<span class="bracket-trophy">${t1Emoji}</span>`:''}
         <span class="bracket-score ${m.s1===null?'pending-score':''}">${m.s1!==null?m.s1:'-'}</span>
@@ -970,7 +973,7 @@ function _renderBracketNode(m, isTercer, roundName){
     const t2Emoji = isDone && isFinal ? (t2Won ? '🏆' : '🥈') : (t2Won ? _winEmoji(true) : '');
     h += `<div class="bracket-team-row ${rowCls}">
       <div class="bracket-initial" ${!isDone?`style="background:${c2};color:#fff"`:''}>${teamInit(m.t2)}</div>
-      <div class="bracket-tname-wrap"><div class="bracket-tname">${m.t2}</div><div class="bracket-tsub">${m.t2}</div></div>
+      <div class="bracket-tname-wrap"><div class="bracket-tname">${m.t2}</div>${teamSub('bracket-tsub',m.t2)}</div>
       <div class="bracket-score-wrap">
         ${t2Emoji?`<span class="bracket-trophy">${t2Emoji}</span>`:''}
         <span class="bracket-score ${m.s2===null?'pending-score':''}">${m.s2!==null?m.s2:'-'}</span>
@@ -1113,12 +1116,12 @@ function renderRobinView(el){
   filtered.forEach(m => {
     const c1 = teamColor(m.t1), c2 = teamColor(m.t2);
     html += `<div class="match-card">
-      <div class="match-team"><div class="team-avatar" style="background:${c1};color:#fff">${teamInit(m.t1)}</div><div><div class="team-name">${m.t1}</div><div class="team-sub">${m.t1}</div></div></div>
+      <div class="match-team"><div class="team-avatar" style="background:${c1};color:#fff">${teamInit(m.t1)}</div><div><div class="team-name">${m.t1}</div>${teamSub('team-sub',m.t1)}</div></div>
       <div class="match-center">
         ${m.status==='done'?`<div class="match-score">${m.s1} - ${m.s2}</div>`:'<div class="match-vs">VS</div>'}
         <div class="match-status">${m.status==='done'?'Finalizado':'Pendiente'}</div>
       </div>
-      <div class="match-team right"><div><div class="team-name">${m.t2}</div><div class="team-sub">${m.t2}</div></div><div class="team-avatar" style="background:${c2};color:#fff">${teamInit(m.t2)}</div></div>
+      <div class="match-team right"><div><div class="team-name">${m.t2}</div>${teamSub('team-sub',m.t2)}</div><div class="team-avatar" style="background:${c2};color:#fff">${teamInit(m.t2)}</div></div>
       ${m.status==='pending' && comp.estCls!=='finalizada'?`<div class="match-actions"><button class="btn-digitar" onclick="openDigitar('${m.t1.replace(/'/g,"\\'")}','${m.t2.replace(/'/g,"\\'")}','Jornada ${m.jornada}')">Digitar</button></div>`:''}
     </div>`;
   });
@@ -1234,12 +1237,12 @@ function renderGruposView(el){
   grupo.partidos.forEach(m => {
     const c1 = teamColor(m.t1), c2 = teamColor(m.t2);
     html += `<div class="match-card">
-      <div class="match-team"><div class="team-avatar" style="background:${c1};color:#fff">${teamInit(m.t1)}</div><div><div class="team-name">${m.t1}</div><div class="team-sub">${m.t1}</div></div></div>
+      <div class="match-team"><div class="team-avatar" style="background:${c1};color:#fff">${teamInit(m.t1)}</div><div><div class="team-name">${m.t1}</div>${teamSub('team-sub',m.t1)}</div></div>
       <div class="match-center">
         ${m.status==='done'?`<div class="match-score">${m.s1} - ${m.s2}</div>`:'<div class="match-vs">VS</div>'}
         <div class="match-status">${m.status==='done'?'Finalizado':'Pendiente'}</div>
       </div>
-      <div class="match-team right"><div><div class="team-name">${m.t2}</div><div class="team-sub">${m.t2}</div></div><div class="team-avatar" style="background:${c2};color:#fff">${teamInit(m.t2)}</div></div>
+      <div class="match-team right"><div><div class="team-name">${m.t2}</div>${teamSub('team-sub',m.t2)}</div><div class="team-avatar" style="background:${c2};color:#fff">${teamInit(m.t2)}</div></div>
       ${m.status==='pending' && comp.estCls!=='finalizada'?`<div class="match-actions"><button class="btn-digitar" onclick="openDigitar('${m.t1.replace(/'/g,"\\'")}','${m.t2.replace(/'/g,"\\'")}','${grupo.nombre}')">Digitar</button></div>`:''}
     </div>`;
   });
@@ -1250,7 +1253,7 @@ function renderGruposView(el){
     const posCls = i===0?'':i===1?'pos2':i===2?'pos3':'pos3';
     html += `<tr>
       <td><span class="standings-pos ${posCls}">${i+1}</span></td>
-      <td><div class="standings-team"><div class="team-avatar" style="background:${teamColor(t.equipo)};color:#fff;width:28px;height:28px;font-size:10px">${teamInit(t.equipo)}</div><div><div class="standings-team-name">${t.equipo}</div><div class="standings-team-sub">${t.equipo}</div></div></div></td>
+      <td><div class="standings-team"><div class="team-avatar" style="background:${teamColor(t.equipo)};color:#fff;width:28px;height:28px;font-size:10px">${teamInit(t.equipo)}</div><div><div class="standings-team-name">${t.equipo}</div>${teamSub('standings-team-sub',t.equipo)}</div></div></td>
       <td>${t.pj}</td><td>${t.pg}</td><td>${t.pp}</td><td class="standings-pts">${t.pts}</td>
     </tr>`;
   });
@@ -1303,7 +1306,7 @@ function renderPosiciones(el){
       const posCls = i===0?'':i===1?'pos2':i===2?'pos3':'pos3';
       html += `<tr>
         <td><span class="standings-pos ${posCls}">${i+1}</span></td>
-        <td><div class="standings-team"><div class="team-avatar" style="background:${teamColor(t.equipo)};color:#fff;width:28px;height:28px;font-size:10px">${teamInit(t.equipo)}</div><div><div class="standings-team-name">${t.equipo}</div><div class="standings-team-sub">${t.equipo}</div></div></div></td>
+        <td><div class="standings-team"><div class="team-avatar" style="background:${teamColor(t.equipo)};color:#fff;width:28px;height:28px;font-size:10px">${teamInit(t.equipo)}</div><div><div class="standings-team-name">${t.equipo}</div>${teamSub('standings-team-sub',t.equipo)}</div></div></td>
         <td>${t.pj}</td><td>${t.pg}</td><td>${t.pp}</td><td class="standings-pts">${t.pts}</td>
       </tr>`;
     });
@@ -1318,7 +1321,7 @@ function renderPosiciones(el){
         const posCls = i===0?'':i===1?'pos2':'pos3';
         html += `<tr>
           <td><span class="standings-pos ${posCls}">${i+1}</span></td>
-          <td><div class="standings-team"><div class="team-avatar" style="background:${teamColor(t.equipo)};color:#fff;width:28px;height:28px;font-size:10px">${teamInit(t.equipo)}</div><div><div class="standings-team-name">${t.equipo}</div><div class="standings-team-sub">${t.equipo}</div></div></div></td>
+          <td><div class="standings-team"><div class="team-avatar" style="background:${teamColor(t.equipo)};color:#fff;width:28px;height:28px;font-size:10px">${teamInit(t.equipo)}</div><div><div class="standings-team-name">${t.equipo}</div>${teamSub('standings-team-sub',t.equipo)}</div></div></td>
           <td>${t.pj}</td><td>${t.pg}</td><td>${t.pp}</td><td class="standings-pts">${t.pts}</td>
         </tr>`;
       });
