@@ -184,6 +184,8 @@
       '.tt-launch:hover{box-shadow:0 16px 38px -10px rgba(215,64,9,.6);}' +
       '.tt-panel{position:fixed;right:18px;bottom:66px;z-index:8001;width:320px;max-height:72vh;overflow:auto;background:#fff;border:1px solid var(--border,#e7e9f3);border-radius:16px;box-shadow:0 20px 50px -14px rgba(28,26,20,.4);padding:8px;display:none;font-family:Inter,sans-serif;}' +
       '.tt-panel.open{display:block;}' +
+      '.tt-launch.tt--raised{bottom:64px;}' +
+      '.tt-panel.tt--raised{bottom:112px;}' +
       '.tt-panel-h{font-size:12.5px;font-weight:800;color:#282834;padding:8px 10px 2px;}' +
       '.tt-panel-sub{font-size:11px;color:#646587;padding:0 10px 8px;line-height:1.4;}' +
       '.tt-grp{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#9aa3af;padding:12px 10px 4px;}' +
@@ -215,6 +217,17 @@
     });
     p.innerHTML = html;
     document.body.appendChild(b); document.body.appendChild(p);
+    // El footer flotante (naowee-footer.js, defer) monta después: sube el
+    // lanzador/panel por encima para no pisar el pill de versión.
+    (function raiseAboveFooter() {
+      var tries = 0;
+      (function check() {
+        if (document.querySelector('.naowee-floating-footer, .t-verpill')) {
+          b.classList.add('tt--raised'); p.classList.add('tt--raised'); return;
+        }
+        if (tries++ < 12) setTimeout(check, 200);
+      })();
+    })();
     p.querySelectorAll('.tt-item').forEach(function (it) {
       it.onclick = function (e) { e.stopPropagation(); togglePanel(false); start(it.dataset.hu); };
     });
