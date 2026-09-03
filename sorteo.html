@@ -362,8 +362,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .prog-comp .naowee-table__cell-primary{max-width:280px}   /* DS trunca a 200px; esta columna es más ancha */
 .prog-actioncell{white-space:nowrap}
 .prog-tc .naowee-table--in-card td[data-label="Fecha"]{white-space:nowrap}
-.prog-tc .prog-toolbar-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:0 0 auto;margin-left:auto}
-.prog-tc .prog-pager{justify-content:flex-end}
+.prog-tc .prog-pager{justify-content:flex-end;margin-bottom:-10px}
+.prog-tc .naowee-table-card__toolbar{align-items:center}
+.prog-tc #btnProgClear{flex:0 0 auto;margin-left:auto}
 @media(max-width:820px){
   .prog-tc .naowee-table--in-card tbody td{white-space:normal}
   .prog-tc .naowee-table-card__toolbar,.prog-tc .naowee-table-card__toolbar-left{flex-wrap:wrap}
@@ -1319,15 +1320,13 @@ function renderProgEditList(){
   var all=_progAll();
   if(!all.length){ el.innerHTML='<div class="naowee-empty-state"><span class="naowee-empty-state__icon">'+_ICO_PEMPTY+'</span><h3 class="naowee-empty-state__title">Aún no hay sorteos publicados</h3><p class="naowee-empty-state__description">Confirma un sorteo y aquí podrás asignarle fecha, hora y escenario a sus partidos.</p></div>'; return; }
   el.innerHTML='<div class="prog-edit-list"><div class="naowee-table-card prog-tc">'
+    +'<nav class="naowee-pagination naowee-pagination--small prog-pager" id="progPager" aria-label="Paginación de programaciones"></nav>'
     +'<div class="naowee-table-card__toolbar">'
       +'<div class="naowee-table-card__toolbar-left">'
         +'<div class="naowee-searchbox naowee-searchbox--medium prog-search"><div class="naowee-searchbox__input-wrap"><span class="naowee-searchbox__icon">'+_ICO_PSEARCH+'</span><input class="naowee-searchbox__input" id="progSearchInput" type="text" placeholder="Buscar competencia o deporte…" oninput="progOnSearch(this.value)"><button type="button" class="naowee-searchbox__clear" aria-label="Limpiar búsqueda" onclick="progClearSearch()">'+_ICO_PCLR+'</button></div></div>'
         +_progFilterDD('ddFRegion','Todas las regiones')+_progFilterDD('ddFDeporte','Todos los deportes')+_progFilterDD('ddFFecha','Todas las fechas')
       +'</div>'
-      +'<div class="prog-toolbar-right">'
-        +'<nav class="naowee-pagination naowee-pagination--small prog-pager" id="progPager" aria-label="Paginación de programaciones"></nav>'
-        +'<button class="naowee-btn naowee-btn--mute naowee-btn--small" id="btnProgClear" onclick="progClearFilters()" disabled>Limpiar</button>'
-      +'</div>'
+      +'<button class="naowee-btn naowee-btn--mute naowee-btn--small" id="btnProgClear" onclick="progClearFilters()" disabled>Limpiar</button>'
     +'</div>'
     +'<div id="progBodyMount"></div>'
   +'</div></div>';
