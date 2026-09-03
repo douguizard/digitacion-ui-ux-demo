@@ -633,7 +633,7 @@ body.sorteo-has-footer .page{padding-bottom:96px}
   </template>
   <div class="page">
 
-    <div id="wizardStage" class="stage">
+    <div id="wizardStage" class="stage" style="display:none">
     <div class="sorteo-head">
       <div>
         <h1 class="sorteo-title">Sorteo de equipos</h1>
@@ -914,7 +914,7 @@ body.sorteo-has-footer .page{padding-bottom:96px}
         </div>
         <div class="ph-actions">
           <button class="naowee-btn naowee-btn--mute" id="btnGuardarProg" onclick="guardarProg()" style="display:none">Guardar programación</button>
-          <button class="naowee-btn naowee-btn--loud naowee-btn--large" onclick="showStage('wizardStage')"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg> Crear sorteo</button>
+          <button class="naowee-btn naowee-btn--loud naowee-btn--large" onclick="openCrearSorteo()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg> Crear sorteo</button>
         </div>
       </div>
       <div id="progEditWrap"><div id="progEditBody"></div></div>
@@ -1413,7 +1413,10 @@ function showPreview(comp){ _pvComp=comp||SorteoEngine.toComp(_sorteo); _sorteo.
   var _isTrans=(W.modo==='transcrip'); var _bb=document.getElementById('btnPreviewBack'); if(_bb){ _bb.innerHTML=_isTrans?'← Volver a la transcripción':'← Parámetros'; _bb.onclick=_isTrans?backTranscrip:backToWizard; } var _rs=document.getElementById('btnResortear'); if(_rs)_rs.style.display=_isTrans?'none':''; var _st=document.querySelector('#previewStage .sorteo-title'); if(_st)_st.textContent=_isTrans?'Resultado de la transcripción':'Resultado del sorteo'; var _ss=document.querySelector('#previewStage .sorteo-sub'); if(_ss)_ss.textContent=_isTrans?'Estos son los grupos/llaves que transcribiste. Revisa y confírmalos para publicar.':'Revisa el resultado y confírmalo para publicarlo.'; var isElim=_pvComp.sisCls==='elim'; _activeTabs=isElim?_PV_TABS_ELIM:_PV_TABS; var sub=isElim?((_pvComp.sistema||'Eliminación directa')+' · '+((_sorteo&&_sorteo.participantes)?_sorteo.participantes.length:0)+' participantes'):((_pvComp.sistema||'')+' · '+(_pvComp.grupos?_pvComp.grupos.length:0)+' grupos · '+(_pvComp.jornadasCount||0)+' jornadas'); document.getElementById('previewHead').innerHTML='<div class="pv-head"><span class="pv-emoji">'+(_pvComp.emoji||'🏆')+'</span><div><div class="pv-title">'+(_pvComp.nombre||'Sorteo')+'</div><div class="pv-sub">'+sub+'</div></div></div>'; _pvTab=_activeTabs[0].id; renderPvTabs(); }
 function renderPvTabs(){ const tb=document.getElementById('previewTabs'); if(tb) tb.innerHTML=_activeTabs.map(function(t){return '<button class="naowee-tab'+(t.id===_pvTab?' naowee-tab--selected':'')+'" onclick="switchPvTab(\''+t.id+'\')">'+(t.icon||'')+'<span>'+t.label+'</span></button>';}).join(''); const tab=_activeTabs.find(function(t){return t.id===_pvTab;}); const p=document.getElementById('previewPanel'); if(p&&tab) p.innerHTML=tab.render(_pvComp); }
 function switchPvTab(id){ if(id===_pvTab) return; const oi=_activeTabs.findIndex(function(t){return t.id===_pvTab;}), ni=_activeTabs.findIndex(function(t){return t.id===id;}); _pvTab=id; renderPvTabs(); const p=document.getElementById('previewPanel'); if(p){ p.style.animation='none'; void p.offsetWidth; p.style.animation=(ni>oi?'tabSlideR':'tabSlideL')+' .28s cubic-bezier(.32,.72,0,1)'; } }
-function backToWizard(){ _ruletaTimers.forEach(t=>{clearTimeout(t);clearInterval(t);}); _ruletaTimers=[]; showStage('wizardStage'); }
+/* Ir a crear: limpia el activo de "Editar programación" en el sub-nav, que
+   openProgEdit() enciende al abrir el listado (ahora es el aterrizaje). */
+function openCrearSorteo(){ var nav=document.getElementById('navProgEdit'); if(nav)nav.classList.remove('active'); showStage('wizardStage'); }
+function backToWizard(){ _ruletaTimers.forEach(t=>{clearTimeout(t);clearInterval(t);}); _ruletaTimers=[]; openCrearSorteo(); }
 function reSortear(){ if(W.modo==='transcrip') startTranscrip(); else if(W.modo==='manual') startManual(); else startRuleta(); }
 function confirmSorteo(){ const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=true;b.textContent='Sorteo confirmado';}
   var _savedId=null;
@@ -1525,10 +1528,14 @@ function confirmTranscrip(){ if(_tFmt==='bracket'){ if(_tComp) showPreview(_tCom
 document.addEventListener('click',function(e){ if(!e.target||!e.target.closest||!e.target.closest('.naowee-dropdown')) document.querySelectorAll('.naowee-dropdown--open').forEach(function(d){d.classList.remove('naowee-dropdown--open');}); });
 
 /* ── Back/forward del navegador ⇄ stages in-page ──
-   Seed del stage base (wizardStage = el visible al cargar) para que el primer showStage
-   empuje una entrada nueva y el BACK regrese al wizard, no fuera de la página. */
+   El stage base lo siembra el propio showStage() en su primera llamada
+   (_stageHistReady), así que el aterrizaje de abajo deja el historial correcto. */
 window.addEventListener('popstate',function(e){ var st=(e&&e.state&&e.state.naoweeStage); if(st){ showStage(st,{noPush:true}); } });
-try{ history.replaceState({naoweeStage:'wizardStage'},''); _stageHistReady=true; }catch(e){}
+
+/* ── Aterrizaje del módulo ──
+   Sorteo abre en el LISTADO de sorteos creados, no en el wizard: primero se ve
+   lo que ya existe y desde ahí se crea con "Crear sorteo". */
+openProgEdit();
 </script>
 
 <!-- Demo role switcher (footer flotante — solo sandbox) -->
