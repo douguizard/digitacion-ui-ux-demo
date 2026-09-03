@@ -1378,7 +1378,7 @@ function _progFilter(all){
 function _progRowHTML(r){
   var c=r.comp||{}, ms=_progMatches(c), done=ms.filter(function(x){return x.m.fecha;}).length, tot=ms.length;
   var pc=(tot===0||done===0)?'neutral':(done>=tot?'positive':'caution');
-  var prog='<span class="naowee-badge naowee-badge--'+pc+' naowee-badge--quiet naowee-badge--large">'+done+'/'+tot+'</span>';
+  var prog='<span class="naowee-badge naowee-badge--'+pc+' naowee-badge--quiet">'+done+'/'+tot+'</span>';
   var sub=((r.prueba&&r.prueba.categoria)||'')+((r.prueba&&r.prueba.sexo)?(' · '+r.prueba.sexo):'');
   return '<tr>'
     +'<td data-label="Competencia" class="naowee-table__cell-name"><div class="prog-comp"><span class="prog-comp__emoji">'+((r.prueba&&r.prueba.emoji)||c.emoji||'🏆')+'</span><span class="prog-comp__txt"><span class="naowee-table__cell-primary">'+tEsc(c.nombre||'Sorteo')+'</span>'+(sub?'<span class="naowee-table__cell-sub">'+tEsc(sub)+'</span>':'')+'</span></div></td>'
