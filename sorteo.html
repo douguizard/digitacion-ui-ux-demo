@@ -352,15 +352,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 /* Scoping mínimo sobre componentes canónicos (.naowee-table-card / --in-card / empty-state / searchbox) */
 .prog-tc .naowee-table-card__toolbar{flex-wrap:nowrap}
 .prog-tc .naowee-table-card__toolbar-left{flex:1 1 auto;flex-wrap:nowrap;min-width:0;justify-content:flex-start;gap:12px}
-.prog-tc .prog-search{flex:0 1 200px;min-width:150px;max-width:none;width:auto}
+.prog-tc .prog-search{flex:0 1 264px;min-width:224px;max-width:none;width:auto}
 .prog-tc .prog-filter-dd{flex:0 1 200px;min-width:150px;width:auto}
 .prog-tc #btnProgClear{flex:0 0 auto}
 /* Celda de competencia (emoji + nombre + cat·sexo) dentro de la tabla canónica */
 .prog-comp{display:flex;align-items:center;gap:11px;min-width:0}
-.prog-comp__emoji{width:38px;height:38px;flex:0 0 38px;border-radius:10px;background:var(--bg-soft,#f5f6fa);display:grid;place-items:center;font-size:19px}
+.prog-comp__emoji{width:32px;height:32px;flex:0 0 32px;border-radius:9px;background:var(--bg-soft,#f5f6fa);display:grid;place-items:center;font-size:19px}
 .prog-comp__txt{display:flex;flex-direction:column;min-width:0}
-.prog-comp__name{font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:280px}
-.prog-comp__sub{font-size:11.5px;color:var(--text-secondary);margin-top:1px}
+.prog-comp .naowee-table__cell-primary{max-width:280px}   /* DS trunca a 200px; esta columna es más ancha */
 .prog-actioncell{white-space:nowrap}
 .prog-tc .naowee-table--in-card td[data-label="Fecha"]{white-space:nowrap}
 .prog-tc .prog-pager{justify-content:flex-end}
@@ -379,7 +378,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
   .prog-tc .naowee-table--in-card tbody td>.naowee-badge{justify-self:start}
   .prog-tc .naowee-table--in-card tbody td[data-label="Competencia"]{display:block;padding:0 0 10px 0!important;margin-bottom:8px;border-bottom:1px solid var(--border)}
   .prog-tc .naowee-table--in-card tbody td[data-label="Competencia"]::before{display:none}
-  .prog-tc .prog-comp__name{white-space:normal;max-width:none}
+  .prog-tc .prog-comp .naowee-table__cell-primary{white-space:normal;max-width:none}
   .prog-tc .prog-actioncell{display:block!important;padding-top:10px!important}
   .prog-tc .prog-actioncell::before{display:none}
   .prog-tc .prog-actioncell .naowee-btn{width:100%;justify-content:center}
@@ -1382,7 +1381,7 @@ function _progRowHTML(r){
   var prog='<span class="naowee-badge naowee-badge--'+pc+' naowee-badge--quiet naowee-badge--small">'+done+'/'+tot+'</span>';
   var sub=((r.prueba&&r.prueba.categoria)||'')+((r.prueba&&r.prueba.sexo)?(' · '+r.prueba.sexo):'');
   return '<tr>'
-    +'<td data-label="Competencia"><div class="prog-comp"><span class="prog-comp__emoji">'+((r.prueba&&r.prueba.emoji)||c.emoji||'🏆')+'</span><span class="prog-comp__txt"><span class="prog-comp__name">'+tEsc(c.nombre||'Sorteo')+'</span>'+(sub?'<span class="prog-comp__sub">'+tEsc(sub)+'</span>':'')+'</span></div></td>'
+    +'<td data-label="Competencia" class="naowee-table__cell-name"><div class="prog-comp"><span class="prog-comp__emoji">'+((r.prueba&&r.prueba.emoji)||c.emoji||'🏆')+'</span><span class="prog-comp__txt"><span class="naowee-table__cell-primary">'+tEsc(c.nombre||'Sorteo')+'</span>'+(sub?'<span class="naowee-table__cell-sub">'+tEsc(sub)+'</span>':'')+'</span></div></td>'
     +'<td data-label="Deporte" class="naowee-table__cell-muted">'+tEsc((r.prueba&&r.prueba.deporteLabel)||'—')+'</td>'
     +'<td data-label="Región"><span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--small">'+tEsc(r.region||'—')+'</span></td>'
     +'<td data-label="Fecha" class="naowee-table__cell-muted">'+tEsc(_fmtFechaHuman(r.fecha)||'—')+'</td>'
