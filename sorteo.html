@@ -909,7 +909,7 @@ body.sorteo-has-footer .page{padding-bottom:96px}
         <div class="ph-titlewrap">
           <button class="naowee-btn naowee-btn--icon naowee-btn--mute ph-back" id="btnProgBackArrow" onclick="progEditBack()" style="display:none" aria-label="Volver a la lista" title="Volver a la lista"><svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <div>
-            <h1 class="sorteo-title" id="progEditTitle">Editar programación</h1>
+            <h1 class="sorteo-title" id="progEditTitle">Lista de sorteos</h1>
             <p class="sorteo-sub" id="progEditSub">Selecciona un sorteo publicado para asignar fecha, hora y escenario a sus partidos.</p>
           </div>
         </div>
@@ -1268,7 +1268,7 @@ function progSetHora(id,h,e){ if(e)e.stopPropagation(); var m=_findMatchAny(_pvC
 document.addEventListener('click',function(e){ if(e.target&&e.target.closest&&(e.target.closest('#progDatePop')||e.target.closest('.prog-datefield')))return; dpClose(); });
 window.addEventListener('resize',dpClose);
 /* ── F5: editar programación de un sorteo publicado (desde el menú) ── */
-function openProgEdit(){ _progEditId=null; _progPanelId='previewPanel'; showStage('progEditStage'); var t=document.getElementById('progEditTitle'),s=document.getElementById('progEditSub'); if(t)t.textContent='Editar programación'; if(s)s.textContent='Selecciona un sorteo publicado para asignar fecha, hora y escenario a sus partidos.'; var g=document.getElementById('btnGuardarProg'); if(g)g.style.display='none'; var ba=document.getElementById('btnProgBackArrow'); if(ba)ba.style.display='none'; var c=document.getElementById('progEditCenefa'); if(c)c.innerHTML=''; var nav=document.getElementById('navProgEdit'); if(nav)nav.classList.add('active'); renderProgEditList(); }
+function openProgEdit(){ _progEditId=null; _progPanelId='previewPanel'; showStage('progEditStage'); var t=document.getElementById('progEditTitle'),s=document.getElementById('progEditSub'); if(t)t.textContent='Lista de sorteos'; if(s)s.textContent='Selecciona un sorteo publicado para asignar fecha, hora y escenario a sus partidos.'; var g=document.getElementById('btnGuardarProg'); if(g)g.style.display='none'; var ba=document.getElementById('btnProgBackArrow'); if(ba)ba.style.display='none'; var c=document.getElementById('progEditCenefa'); if(c)c.innerHTML=''; var nav=document.getElementById('navProgEdit'); if(nav)nav.classList.add('active'); renderProgEditList(); }
 /* ── F5: lista escalable de programaciones (filtros región/deporte/fecha + paginación) ── */
 var _PROG_PAGE_SIZE=10, _progPage=1, _progFilters={q:'',region:'',deporte:'',fecha:''};
 function _progNorm(s){ return (s==null?'':String(s)).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
