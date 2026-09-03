@@ -708,6 +708,8 @@ body.sorteo-has-footer .page{padding-bottom:96px}
               </div>
             </div>
           </div>
+          <!-- RN-SORTEO-UNICO: aviso de prueba ya sorteada (accionable 1.1) -->
+          <div id="dupWarn"></div>
         </div>
 
         <!-- PASO 2 -->
@@ -982,7 +984,49 @@ function resetDD(id,ph){ const s=document.querySelector('#'+id+' .naowee-dropdow
 function selDeporte(key){ const sp=key&&typeof SPORTS_DB!=='undefined'?SPORTS_DB[key]:null;
   W.deporteKey=key; W.deporteLabel=sp?sp.label:''; W.emoji=sp?(sp.emoji||'🏅'):'';
   document.getElementById('fCategoria').classList.toggle('hidden',!key); document.getElementById('fSexo').classList.toggle('hidden',!key); refreshStep1(); }
-function refreshStep1(){ const ok=W.tipo&&W.deporteKey&&W.categoria&&W.sexo; if(W.step===1) document.getElementById('btnNext').disabled=!ok; }
+/* ═══ RN-SORTEO-UNICO (accionable 1.1) ═════════════════════════════
+   Una prueba —deporte + categoría + sexo— admite UN solo sorteo.
+   Reusa SorteoStore.pruebaId, que ya deriva ese id estable, y busca
+   sobre _progAll() (sorteos guardados + sembrados, sin los ANULADOS).
+   ══════════════════════════════════════════════════════════════════ */
+var _dupRec=null;
+function _sorteoExistente(){
+  if(!(W.deporteLabel&&W.categoria&&W.sexo)||!window.SorteoStore) return null;
+  var target=SorteoStore.pruebaId({prueba:{deporteLabel:W.deporteLabel,categoria:W.categoria,sexo:W.sexo}});
+  var all=_progAll();
+  for(var i=0;i<all.length;i++){
+    var r=all[i];
+    if(!r||r.estado==='ANULADO') continue;
+    if(SorteoStore.pruebaId(r)===target) return r;
+  }
+  return null;
+}
+function _renderDupWarn(rec){
+  var box=document.getElementById('dupWarn'); if(!box) return;
+  if(!rec){ box.innerHTML=''; return; }
+  var pr=rec.prueba||{}, nombre=[pr.deporteLabel,pr.categoria,pr.sexo].filter(Boolean).join(' · ');
+  box.innerHTML='<div class="naowee-message naowee-message--caution" style="width:100%;margin-top:14px">'
+    +'<div class="naowee-message__header"><span class="naowee-message__icon">'+_TICON.caution+'</span>'
+    +'<span class="naowee-message__title">Ya creaste este sorteo</span></div>'
+    +'<p class="naowee-message__text"><b>'+tEsc(nombre)+'</b> ya tiene un sorteo publicado, así que no se puede volver a sortear. '
+    +'¿Deseas editarlo o reprogramarlo?</p>'
+    +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">'
+    +'<button type="button" class="naowee-btn naowee-btn--loud naowee-btn--small" onclick="dupReprogramar()">Reprogramar horarios</button>'
+    +'<button type="button" class="naowee-btn naowee-btn--quiet naowee-btn--small" onclick="dupOtraPrueba()">Elegir otra prueba</button>'
+    +'</div></div>';
+}
+function dupReprogramar(){ if(_dupRec) editProg(_dupRec.id); }
+function dupOtraPrueba(){
+  W.categoria=''; W.sexo='';
+  resetDD('ddCategoria','Categoría…'); resetDD('ddSexo','Sexo…');
+  refreshStep1();
+}
+function refreshStep1(){
+  const ok=W.tipo&&W.deporteKey&&W.categoria&&W.sexo;
+  _dupRec = ok ? _sorteoExistente() : null;
+  _renderDupWarn(_dupRec);
+  if(W.step===1) document.getElementById('btnNext').disabled=!ok||!!_dupRec;
+}
 function stepAdjust(id,delta,min,max){ const el=document.getElementById(id); let v=(+el.value||0)+delta; v=Math.max(min,Math.min(max,v)); el.value=v; el.dispatchEvent(new Event('input')); }
 function recalcCfg(){
   if(W.tipo==='conjunto'){ W.sistema='Fase de grupos · todos contra todos';
