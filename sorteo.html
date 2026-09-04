@@ -1613,8 +1613,8 @@ openProgEdit();
 
 <!-- Shell compartido: mismo sidebar/header/demo-switcher que lista.html (activeId 'sorteo') -->
 <script type="module">
-  import { mountSidebar, mountHeader, mountDemoRoleSwitcher } from './shared/sidebar.js';
-  const roleCode = new URLSearchParams(window.location.search).get('role') || 'ROOT';
+  import { mountSidebar, mountHeader, mountDemoRoleSwitcher, resolveRoleCode } from './shared/sidebar.js';
+  const roleCode = resolveRoleCode();
   /* Basename SIN extension: si el servidor usa URLs limpias (/sorteo en vez de
      /sorteo.html) la comparacion contra LEGACY_MAP fallaba y onActiveChange
      —que corre en CADA montaje, no solo al hacer clic— redirigia en bucle. */

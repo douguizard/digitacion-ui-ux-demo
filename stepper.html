@@ -4563,8 +4563,8 @@ window.addEventListener('load', function(){
      Rol natural de esta vista: ROOT (wizard crear competencia).
      ═══════════════════════════════════════════════════════════ -->
 <script type="module">
-  import { mountSidebar, mountHeader, mountDemoRoleSwitcher } from './shared/sidebar.js';
-  const roleCode = new URLSearchParams(window.location.search).get('role') || 'ROOT';
+  import { mountSidebar, mountHeader, mountDemoRoleSwitcher, resolveRoleCode } from './shared/sidebar.js';
+  const roleCode = resolveRoleCode();
   const currentFile = window.location.pathname.split('/').pop() || 'stepper.html';
   const LEGACY_MAP = {
     'inicio': 'dashboard.html', 'sorteo': 'sorteo.html',

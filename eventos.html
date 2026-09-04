@@ -341,14 +341,15 @@ tbody tr:hover .row-arrow{color:var(--accent);opacity:1}
   import {
     mountSidebar,
     mountHeader,
-    mountDemoRoleSwitcher
+    mountDemoRoleSwitcher,
+    resolveRoleCode
   } from './shared/sidebar.js';
 
   /* Standalone defaults: ROOT con eventos-lista activo.
      Permite override vía ?role=XXX en la URL para QA cross-role.
      (getRoleFromQuery del shell defaultea a ATHLETE — acá queremos
      ROOT como rol natural para una página administrativa.) */
-  const roleCode = new URLSearchParams(window.location.search).get('role') || 'ROOT';
+  const roleCode = resolveRoleCode();
 
   const { role } = mountSidebar({
     rootEl: document.getElementById('sidebarRoot'),

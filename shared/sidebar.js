@@ -37,6 +37,26 @@ const DIGITACION_ROLE_CODES = DIGITACION_ROLE_GROUPS.flatMap((g) => g.codes);
 /* Vista de inicio por rol dentro de la demo standalone. Al cambiar de
    usuario simulado se navega a la página propia del rol con ?role=, en vez
    de a perfil.html (que pertenece al host sidebar-shell y daría 404). */
+/* ── Rol activo: URL primero, memoria de sesion despues ──────────────────────
+   El rol viaja en ?role=. Si por cualquier motivo el query se pierde —un
+   redirect que no lo propaga, un enlace pegado a medias, alguien editando la
+   URL— el default de las paginas era 'ROOT' = Super Admin: la demo escalaba
+   sola al rol MAS privilegiado y sin avisar, mostrando un menu que no
+   correspondia. Aqui recordamos el ultimo rol visto en la sesion, para que la
+   identidad no cambie a espaldas de quien navega. El default de arranque en
+   frio sigue siendo ROOT (abrir una pagina suelta sin historial). */
+const ROLE_KEY = 'naowee-digitacion-role';
+export function resolveRoleCode(fallback) {
+  const deLaUrl = new URLSearchParams(window.location.search).get('role');
+  if (deLaUrl) {
+    try { sessionStorage.setItem(ROLE_KEY, deLaUrl); } catch (e) {}
+    return deLaUrl;
+  }
+  let recordado = null;
+  try { recordado = sessionStorage.getItem(ROLE_KEY); } catch (e) {}
+  return recordado || fallback || 'ROOT';
+}
+
 const DIGITACION_HOME = {
   ROOT: 'lista.html', ADMIN: 'lista.html',
   EVENT_COORDINATOR: 'lista.html', DIGITIZER: 'dashboard.html',

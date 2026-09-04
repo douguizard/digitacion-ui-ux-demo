@@ -1215,8 +1215,8 @@ function hideToast(){
 }
 </script>
 <script type="module">
-  import { mountSidebar, mountHeader, mountDemoRoleSwitcher } from './shared/sidebar.js';
-  const roleCode = new URLSearchParams(window.location.search).get('role') || 'ROOT';
+  import { mountSidebar, mountHeader, mountDemoRoleSwitcher, resolveRoleCode } from './shared/sidebar.js';
+  const roleCode = resolveRoleCode();
   const currentFile = window.location.pathname.split('/').pop() || 'lista.html';
   const LEGACY_MAP = {
     'inicio': 'dashboard.html', 'sorteo': 'sorteo.html',
