@@ -752,7 +752,7 @@ body.sorteo-has-footer .page{padding-bottom:96px}
                 <label>N.º de equipos clasificados</label>
                 <div class="naowee-input-stepper"><div class="naowee-input-stepper__content"><div class="naowee-input-stepper__input">
                   <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inEquipos',-1,2,32)"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-                  <div class="naowee-input-stepper__value"><input type="number" class="naowee-input-stepper__value-input" id="inEquipos" value="8" min="2" max="32" oninput="W.nEquipos=+this.value||0;recalcCfg()"><span class="naowee-input-stepper__value-comp">equipos</span></div>
+                  <div class="naowee-input-stepper__value"><input type="number" class="naowee-input-stepper__value-input" id="inEquipos" value="8" min="2" max="32" oninput="W.nEquipos=+this.value||0;recalcCfg()" onblur="cfgClampInput(this)"><span class="naowee-input-stepper__value-comp">equipos</span></div>
                   <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inEquipos',1,2,32)"><svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
                 </div></div></div>
               </div>
@@ -760,7 +760,7 @@ body.sorteo-has-footer .page{padding-bottom:96px}
                 <label>N.º de grupos</label>
                 <div class="naowee-input-stepper"><div class="naowee-input-stepper__content"><div class="naowee-input-stepper__input">
                   <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inGrupos',-1)"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-                  <div class="naowee-input-stepper__value"><input type="number" class="naowee-input-stepper__value-input" id="inGrupos" value="2" min="1" max="8" oninput="W.nGrupos=+this.value||1;recalcCfg()"><span class="naowee-input-stepper__value-comp">grupos</span></div>
+                  <div class="naowee-input-stepper__value"><input type="number" class="naowee-input-stepper__value-input" id="inGrupos" value="2" min="1" max="8" oninput="W.nGrupos=+this.value||1;recalcCfg()" onblur="cfgClampInput(this)"><span class="naowee-input-stepper__value-comp">grupos</span></div>
                   <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inGrupos',1)"><svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
                 </div></div></div>
               </div>
@@ -772,7 +772,7 @@ body.sorteo-has-footer .page{padding-bottom:96px}
               <label>N.º de participantes</label>
               <div class="naowee-input-stepper"><div class="naowee-input-stepper__content"><div class="naowee-input-stepper__input">
                 <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inPart',-1,2,64)"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
-                <div class="naowee-input-stepper__value"><input type="number" class="naowee-input-stepper__value-input" id="inPart" value="8" min="2" max="64" oninput="W.nEquipos=+this.value||0;recalcCfg()"><span class="naowee-input-stepper__value-comp">deportistas</span></div>
+                <div class="naowee-input-stepper__value"><input type="number" class="naowee-input-stepper__value-input" id="inPart" value="8" min="2" max="64" oninput="W.nEquipos=+this.value||0;recalcCfg()" onblur="cfgClampInput(this)"><span class="naowee-input-stepper__value-comp">deportistas</span></div>
                 <button type="button" class="naowee-input-stepper__btn" onclick="stepAdjust('inPart',1,2,64)"><svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
               </div></div></div>
             </div>
@@ -1104,6 +1104,24 @@ function recalcCfg(){
   }
   document.getElementById('sistemaTxt').textContent=W.sistema;
   _cfgSyncNext();
+}
+/* Ajuste al SOLTAR el campo, no en cada tecla: mientras escribes puedes quedar
+   fuera de rango y leer el mensaje que explica por que, pero al salir del campo
+   el valor entra al rango solo. Rechazar teclas haria sentir el input averiado
+   y no enseñaria la regla. */
+function _cfgClampUno(el){
+  if(!el) return;
+  const min=(el.min!==''?+el.min:-Infinity), max=(el.max!==''?+el.max:Infinity);
+  const v=+el.value, valido=isFinite(v)?v:min;
+  const ajustado=Math.max(min,Math.min(max,valido));
+  if(el.value===''||ajustado!==v){ el.value=ajustado; el.dispatchEvent(new Event('input')); }
+}
+function cfgClampInput(el){
+  _cfgClampUno(el);
+  /* Bajar los equipos reduce el tope de grupos, asi que el otro campo puede
+     quedar fuera de rango sin haberlo tocado: se ajusta tambien. */
+  const ig=document.getElementById('inGrupos');
+  if(ig && el!==ig) _cfgClampUno(ig);
 }
 /* El paso 2 solo avanza si la configuracion produce una competencia jugable. */
 function _cfgSyncNext(){ if(W.step!==2)return; const b=document.getElementById('btnNext'); if(b) b.disabled=(W.cfgOk===false); }
