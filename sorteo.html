@@ -309,6 +309,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 #progEditStage{flex:1;display:flex;flex-direction:column}
 #progEditStage .sorteo-head{max-width:var(--sorteo-maxw);width:100%}
 #progEditWrap{max-width:var(--sorteo-maxw);margin:0 auto;width:100%}
+/* Modo detalle (un sorteo abierto desde la lista): misma tarjeta y mismo
+   ritmo interno que el resultado del sorteo. En modo lista no se aplica,
+   para no meter una tarjeta dentro de la table-card del listado. */
+#progEditWrap.is-detalle{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden}
+#progEditWrap.is-detalle .naowee-tabs{padding:0 14px}
+#progEditWrap.is-detalle #progEditBody{padding:22px 26px}
 #transcripStage .sorteo-head{max-width:var(--sorteo-maxw);width:100%}
 .transcrip-wrap{max-width:var(--sorteo-maxw);margin:0 auto 28px;width:100%;display:flex;flex-direction:column;gap:18px}
 .transcrip-fmt{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
@@ -892,7 +898,13 @@ body.sorteo-has-footer .page{padding-bottom:96px}
           <button class="naowee-btn naowee-btn--loud" onclick="openCrearSorteo()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg> Crear sorteo</button>
         </div>
       </div>
-      <div id="progEditWrap"><div id="progEditBody"></div></div>
+      <div id="progEditWrap">
+        <!-- Mismo juego de tabs del resultado: al entrar a un sorteo ya publicado
+             desde la lista antes solo se montaba la Programación, dejando grupos,
+             posiciones y fase final inalcanzables. -->
+        <div class="naowee-tabs naowee-tabs--proportional" id="progEditTabs" style="display:none"></div>
+        <div id="progEditBody"></div>
+      </div>
     </div>
 
   </div>
@@ -1253,13 +1265,31 @@ function finishRuleta(){ if(_ruletaDone)return; _ruletaDone=true; document.getEl
 const _PV_TABS=[
   {id:'grupos',label:'Grupos y calendario',icon:'<svg viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 6.5h12M5 1.5v3M11 1.5v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>',render:function(c){return (window.CompRender&&CompRender.renderGrupos)?CompRender.renderGrupos(c):'';}},
   {id:'posiciones',label:'Posiciones',icon:'<svg viewBox="0 0 16 16" fill="none"><path d="M3 13.5V8M8 13.5V2.5M13 13.5V6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',render:function(c){return (c.grupos||[]).map(function(g){return CompRender.renderStandings(g);}).join('');}},
-  {id:'final',label:'Fase final',icon:'<svg viewBox="0 0 16 16" fill="none"><path d="M4.5 2.5h7v3a3.5 3.5 0 01-7 0v-3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M4.5 3.5h-2v1a2 2 0 002 2M11.5 3.5h2v1a2 2 0 01-2 2M6.5 13h3M8 9v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>',render:function(c){return c.bracket?(CompRender.renderBracket(c)+CompRender.renderMedalleria(c)):'<p style="color:var(--text-secondary);text-align:center;padding:36px">Un solo grupo: sin fase final cruzada.</p>';}}
+  {id:'final',label:'Fase final',icon:'<svg viewBox="0 0 16 16" fill="none"><path d="M4.5 2.5h7v3a3.5 3.5 0 01-7 0v-3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M4.5 3.5h-2v1a2 2 0 002 2M11.5 3.5h2v1a2 2 0 01-2 2M6.5 13h3M8 9v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>',render:function(c){
+    if(c.bracket) return CompRender.renderBracket(c)+CompRender.renderMedalleria(c);
+    /* Decia "Un solo grupo" tambien con varios grupos, que es falso: lo que pasa
+       es que ese sorteo no tiene fase final generada. */
+    var _ng=(c.grupos||[]).length;
+    return '<div class="cr-empty" style="text-align:center;padding:36px 0">'+(_ng<2
+      ? 'Con un solo grupo no hay fase final cruzada: el campeón sale de la tabla de posiciones.'
+      : 'Este sorteo todavía no tiene fase final generada.')+'</div>';
+  }}
 ];
 const _PV_TABS_ELIM=[
   {id:'llave',label:'Llave de eliminación',icon:'<svg viewBox="0 0 16 16" fill="none"><path d="M2 3.5h3.5v4H9M2 12.5h3.5v-4M9 6.5h2.5v3H14M11.5 8H14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>',render:function(c){return CompRender.renderBracket(c);}},
   {id:'medalleria',label:'Medallería',icon:'<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="10" r="3.5" stroke="currentColor" stroke-width="1.3"/><path d="M6 6.6L4.5 2h3L9 5.2M10 6.6L11.5 2h-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>',render:function(c){return CompRender.renderMedalleria(c);}}
 ];
 let _pvComp=null,_pvTab='grupos',_activeTabs=_PV_TABS;
+/* El juego de tabs se elige por lo que el sorteo CONTIENE, no por su etiqueta
+   sisCls. Hay sorteos marcados 'elim' cuyo contenido es un round-robin en un
+   solo grupo: con el juego de eliminacion sus partidos quedaban inalcanzables,
+   porque ese juego no tiene "Grupos y calendario". Solo un comp con llave y sin
+   grupos usa el juego de eliminacion. */
+function _tabsFor(comp){
+  var grupos=((comp&&comp.grupos)||[]).length>0;
+  return (comp&&comp.bracket&&!grupos)?_PV_TABS_ELIM:_PV_TABS;
+}
+function _primeraTab(tabs){ return tabs[0].id; }
 /* ── F5: Programación (fecha/hora/escenario por partido) ── */
 var ESCENARIOS=['Coliseo El Campín','Polideportivo El Salitre','Coliseo Cubierto Norte','Estadio La Independencia','Cancha Auxiliar 1','Cancha Auxiliar 2'];
 var _PROG_TAB={id:'programa',label:'Programación',icon:'<svg viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 6.5h12M5 1.5v3M11 1.5v3M5.5 9.5h2M5.5 11.5h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>',render:function(c){return renderPrograma(c);}};
@@ -1323,7 +1353,11 @@ function progSetHora(id,h,e){ if(e)e.stopPropagation(); var m=_findMatchAny(_pvC
 document.addEventListener('click',function(e){ if(e.target&&e.target.closest&&(e.target.closest('#progDatePop')||e.target.closest('.prog-datefield')))return; dpClose(); });
 window.addEventListener('resize',dpClose);
 /* ── F5: editar programación de un sorteo publicado (desde el menú) ── */
-function openProgEdit(){ _progEditId=null; _progPanelId='previewPanel'; showStage('progEditStage'); var t=document.getElementById('progEditTitle'),s=document.getElementById('progEditSub'); if(t)t.textContent='Lista de sorteos'; if(s)s.textContent='Todos los sorteos creados. Entra a uno para editarlo o programar sus partidos.'; var g=document.getElementById('btnGuardarProg'); if(g)g.style.display='none'; var ba=document.getElementById('btnProgBackArrow'); if(ba)ba.style.display='none'; var c=document.getElementById('progEditCenefa'); if(c)c.innerHTML=''; var nav=document.getElementById('navProgEdit'); if(nav)nav.classList.add('active'); renderProgEditList(); }
+function openProgEdit(){ _progEditId=null; _progPanelId='previewPanel'; showStage('progEditStage');
+  /* La lista no es un resultado: sin barra de tabs y sin la tarjeta del detalle,
+     que si no quedaria una table-card dentro de otra tarjeta. */
+  var _tb=document.getElementById('progEditTabs'); if(_tb)_tb.style.display='none';
+  var _wr=document.getElementById('progEditWrap'); if(_wr)_wr.classList.remove('is-detalle'); var t=document.getElementById('progEditTitle'),s=document.getElementById('progEditSub'); if(t)t.textContent='Lista de sorteos'; if(s)s.textContent='Todos los sorteos creados. Entra a uno para editarlo o programar sus partidos.'; var g=document.getElementById('btnGuardarProg'); if(g)g.style.display='none'; var ba=document.getElementById('btnProgBackArrow'); if(ba)ba.style.display='none'; var c=document.getElementById('progEditCenefa'); if(c)c.innerHTML=''; var nav=document.getElementById('navProgEdit'); if(nav)nav.classList.add('active'); renderProgEditList(); }
 /* ── F5: lista escalable de programaciones (filtros región/deporte/fecha + paginación) ── */
 var _PROG_PAGE_SIZE=10, _progPage=1, _progFilters={q:'',region:'',deporte:'',fecha:''};
 function _progNorm(s){ return (s==null?'':String(s)).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
@@ -1355,10 +1389,32 @@ function _buildProgSeed(){
   for(var i=0;i<36;i++){
     var dep=DEP[i%DEP.length], reg=REG[i%REG.length], evt=EVT[(i*3)%EVT.length], cat=CAT[(i*2)%CAT.length], sex=SEX[i%SEX.length], sys=SYS[i%SYS.length], nP=NP[i%NP.length];
     var month=6+(i%3), day=1+((i*7)%27), fecha='2026-'+('0'+month).slice(-2)+'-'+('0'+day).slice(-2);
-    var nombre=dep.l+' '+cat+' '+sex, comp=_seedComp(dep,sys,nP,fecha,reg,evt,cat,sex,nombre,i);
+    var nombre=dep.l+' '+cat+' '+sex, comp=_seedTabla(_seedComp(dep,sys,nP,fecha,reg,evt,cat,sex,nombre,i));
     out.push({ id:'seed-'+(i+1)+'-'+_progNorm(dep.l).replace(/[^a-z0-9]+/g,'-'), _seed:true,_enriched:true, prueba:{deporteLabel:dep.l,emoji:dep.e,categoria:cat,sexo:sex,tipo:(sys.c==='elim'?'individual':'conjunto')}, comp:comp, region:reg, evento:evt, fecha:fecha, estado:'PUBLICADO', origen:'sorteo', ts:(Date.parse(fecha+'T08:00:00')||0) });
   }
   return out;
+}
+/* Los comps sembrados solo traen grupos y partidos. Sin `tabla`, la pestaña
+   Posiciones mostraba "Sin tabla de posiciones." una vez por grupo — invisible
+   mientras las tabs eran inalcanzables desde la lista. Se deriva con el motor,
+   igual que en un sorteo real: queda en ceros porque no se ha jugado nada. */
+function _seedTabla(comp){
+  (comp.grupos||[]).forEach(function(g){
+    /* Tampoco traen `equipos`: se derivan de los rivales de sus partidos. Eso
+       ademas enciende el roster de fichas de la pestaña Grupos, que renderGrupos
+       solo pinta si el grupo tiene equipos. */
+    if(!g.equipos||!g.equipos.length){
+      var vistos=[];
+      (g.partidos||[]).forEach(function(m){
+        [m.t1,m.t2].forEach(function(t){
+          if(t && !/descansa/i.test(String(t)) && vistos.indexOf(t)<0) vistos.push(t);
+        });
+      });
+      g.equipos=vistos;
+    }
+    if(!g.tabla||!g.tabla.length){ try{ g.tabla=SorteoEngine.recalcStandings(g); }catch(e){} }
+  });
+  return comp;
 }
 var _PROG_SEED=_buildProgSeed(), _PROG_SEED_MAP={}; _PROG_SEED.forEach(function(r){_PROG_SEED_MAP[r.id]=r;});
 function _progAll(){ var real=(window.SorteoStore)?SorteoStore.list().filter(function(r){return r.estado!=='ANULADO';}):[]; real.forEach(_enrichProgRec); return real.concat(_PROG_SEED); }
@@ -1462,14 +1518,36 @@ function _progRenderPager(total,pages){
     +'<div class="naowee-pagination__controls"><button class="naowee-pagination__btn" type="button" onclick="progGoPage('+(_progPage-1)+')"'+(_progPage<=1?' disabled':'')+' aria-label="Página anterior"><svg viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="naowee-pagination__btn" type="button" onclick="progGoPage('+(_progPage+1)+')"'+(_progPage>=pages?' disabled':'')+' aria-label="Página siguiente"><svg viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>';
   var inp=document.getElementById('progPageInput'); if(inp){ inp.addEventListener('change',function(){progGoPage(parseInt(this.value,10)||1);}); inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){this.blur();progGoPage(parseInt(this.value,10)||1);} }); }
 }
-function editProg(id){ var rec=_getProgRec(id); if(!rec||!rec.comp)return; showStage('progEditStage'); _progEditId=id; _progMatchPage=1; _pvComp=rec.comp; _progPanelId='progEditBody'; var t=document.getElementById('progEditTitle'),s=document.getElementById('progEditSub'); if(t)t.textContent=(rec.comp.nombre||'Programación'); if(s)s.textContent='Asigna fecha, hora y escenario; guarda para actualizar el sorteo.'; var g=document.getElementById('btnGuardarProg'); if(g)g.style.display=''; var ba=document.getElementById('btnProgBackArrow'); if(ba)ba.style.display=''; var c=document.getElementById('progEditCenefa'); if(c)c.innerHTML=''; document.getElementById('progEditBody').innerHTML=renderPrograma(_pvComp); try{document.querySelector('.page').scrollTo(0,0);}catch(e){} }
+function editProg(id){ var rec=_getProgRec(id); if(!rec||!rec.comp)return; showStage('progEditStage'); _progEditId=id; _progMatchPage=1; _pvComp=rec.comp; _progPanelId='progEditBody';
+  var t=document.getElementById('progEditTitle'),s=document.getElementById('progEditSub'); if(t)t.textContent=(rec.comp.nombre||'Programación'); if(s)s.textContent=_progEditSub(_pvComp);
+  var g=document.getElementById('btnGuardarProg'); if(g)g.style.display=''; var ba=document.getElementById('btnProgBackArrow'); if(ba)ba.style.display=''; var c=document.getElementById('progEditCenefa'); if(c)c.innerHTML='';
+  /* Todo el resultado queda accesible, no solo la programación: mismo juego de
+     tabs que el preview, montado en este stage. Arranca en Programación porque
+     entrar desde la lista es para programar partidos. */
+  _pvMount={tabs:'progEditTabs',panel:'progEditBody'};
+  _activeTabs=_tabsFor(_pvComp);
+  _pvTab='programa';
+  var tabs=document.getElementById('progEditTabs'); if(tabs)tabs.style.display='';
+  var wrap=document.getElementById('progEditWrap'); if(wrap)wrap.classList.add('is-detalle');
+  renderPvTabs();
+  try{document.querySelector('.page').scrollTo(0,0);}catch(e){} }
+/* Subtítulo del detalle: dice de qué competencia se trata y cuántos partidos
+   llevan fecha, que es lo que se viene a hacer aquí. */
+function _progEditSub(comp){
+  var ms=_progMatches(comp), con=ms.filter(function(x){return x.m.fecha;}).length;
+  var meta=(comp.sistema||'')+((comp.grupos&&comp.grupos.length)?(' · '+comp.grupos.length+' grupos'):'');
+  return meta+' · '+con+' de '+ms.length+' partidos con fecha. Asigna fecha, hora y escenario; guarda para actualizar el sorteo.';
+}
 function progEditBack(){ if(_progEditId){ openProgEdit(); } else { var nav=document.getElementById('navProgEdit'); if(nav)nav.classList.remove('active'); showStage('wizardStage'); } }
 function guardarProg(){ if(!_progEditId)return; var rec=_getProgRec(_progEditId); if(rec){ rec.comp=_pvComp; if(!rec._seed&&window.SorteoStore)SorteoStore.save(rec); } var c=document.getElementById('progEditCenefa'); if(c){ c.innerHTML='<div class="sorteo-cenefa sorteo-cenefa--positive" role="status"><div class="sorteo-cenefa__inner"><span class="sorteo-cenefa__icon">'+_ICO_OK+'</span><div class="sorteo-cenefa__body"><div class="sorteo-cenefa__title">Programación guardada</div><p class="sorteo-cenefa__msg">Los cambios de fecha, hora y escenario quedaron guardados en este sorteo.</p></div></div></div>'; try{document.querySelector('.page').scrollTo({top:0,behavior:'smooth'});}catch(e){} } }
 function _attachTeamMeta(comp,sorteo){ if(!comp||comp.teamMeta)return; try{ var parts=(sorteo&&sorteo.participantes)||[], reg=(sorteo&&sorteo.region)||comp.region||'', map={}, any=false; parts.forEach(function(p){ if(p&&typeof p==='object'&&p.nombre){ var meta=_teamMetaStr(p.nombre,p.delegacion,reg); if(meta){ map[p.nombre]=meta; any=true; } } }); if(any)comp.teamMeta=map; }catch(e){} }
-function showPreview(comp){ _pvComp=comp||SorteoEngine.toComp(_sorteo); _sorteo.resultado=_pvComp; _attachTeamMeta(_pvComp,_sorteo); _progPanelId='previewPanel'; showStage('previewStage'); const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=false;b.textContent='Confirmar sorteo';} var _pc=document.getElementById('previewCenefa'); if(_pc)_pc.innerHTML='';
-  var _isTrans=(W.modo==='transcrip'); var _bb=document.getElementById('btnPreviewBack'); if(_bb){ _bb.innerHTML=_isTrans?'← Volver a la transcripción':'← Parámetros'; _bb.onclick=_isTrans?backTranscrip:backToWizard; } var _rs=document.getElementById('btnResortear'); if(_rs)_rs.style.display=_isTrans?'none':''; var _st=document.querySelector('#previewStage .sorteo-title'); if(_st)_st.textContent=_isTrans?'Resultado de la transcripción':'Resultado del sorteo'; var _ss=document.querySelector('#previewStage .sorteo-sub'); if(_ss)_ss.textContent=_isTrans?'Estos son los grupos/llaves que transcribiste. Revisa y confírmalos para publicar.':'Revisa el resultado y confírmalo para publicarlo.'; var isElim=_pvComp.sisCls==='elim'; _activeTabs=isElim?_PV_TABS_ELIM:_PV_TABS; var sub=isElim?((_pvComp.sistema||'Eliminación directa')+' · '+((_sorteo&&_sorteo.participantes)?_sorteo.participantes.length:0)+' participantes'):((_pvComp.sistema||'')+' · '+(_pvComp.grupos?_pvComp.grupos.length:0)+' grupos · '+(_pvComp.jornadasCount||0)+' jornadas'); document.getElementById('previewHead').innerHTML='<div class="pv-head"><span class="pv-emoji">'+(_pvComp.emoji||'🏆')+'</span><div><div class="pv-title">'+(_pvComp.nombre||'Sorteo')+'</div><div class="pv-sub">'+sub+'</div></div></div>'; _pvTab=_activeTabs[0].id; renderPvTabs(); }
-function renderPvTabs(){ const tb=document.getElementById('previewTabs'); if(tb) tb.innerHTML=_activeTabs.map(function(t){return '<button class="naowee-tab'+(t.id===_pvTab?' naowee-tab--selected':'')+'" onclick="switchPvTab(\''+t.id+'\')">'+(t.icon||'')+'<span>'+t.label+'</span></button>';}).join(''); const tab=_activeTabs.find(function(t){return t.id===_pvTab;}); const p=document.getElementById('previewPanel'); if(p&&tab) p.innerHTML=tab.render(_pvComp); }
-function switchPvTab(id){ if(id===_pvTab) return; const oi=_activeTabs.findIndex(function(t){return t.id===_pvTab;}), ni=_activeTabs.findIndex(function(t){return t.id===id;}); _pvTab=id; renderPvTabs(); const p=document.getElementById('previewPanel'); if(p){ p.style.animation='none'; void p.offsetWidth; p.style.animation=(ni>oi?'tabSlideR':'tabSlideL')+' .28s cubic-bezier(.32,.72,0,1)'; } }
+function showPreview(comp){ _pvComp=comp||SorteoEngine.toComp(_sorteo); _sorteo.resultado=_pvComp; _attachTeamMeta(_pvComp,_sorteo); _progPanelId='previewPanel'; _pvMount={tabs:'previewTabs',panel:'previewPanel'}; showStage('previewStage'); const b=document.getElementById('btnConfirmSorteo'); if(b){b.disabled=false;b.textContent='Confirmar sorteo';} var _pc=document.getElementById('previewCenefa'); if(_pc)_pc.innerHTML='';
+  var _isTrans=(W.modo==='transcrip'); var _bb=document.getElementById('btnPreviewBack'); if(_bb){ _bb.innerHTML=_isTrans?'← Volver a la transcripción':'← Parámetros'; _bb.onclick=_isTrans?backTranscrip:backToWizard; } var _rs=document.getElementById('btnResortear'); if(_rs)_rs.style.display=_isTrans?'none':''; var _st=document.querySelector('#previewStage .sorteo-title'); if(_st)_st.textContent=_isTrans?'Resultado de la transcripción':'Resultado del sorteo'; var _ss=document.querySelector('#previewStage .sorteo-sub'); if(_ss)_ss.textContent=_isTrans?'Estos son los grupos/llaves que transcribiste. Revisa y confírmalos para publicar.':'Revisa el resultado y confírmalo para publicarlo.'; var isElim=_pvComp.sisCls==='elim'; _activeTabs=_tabsFor(_pvComp); var sub=isElim?((_pvComp.sistema||'Eliminación directa')+' · '+((_sorteo&&_sorteo.participantes)?_sorteo.participantes.length:0)+' participantes'):((_pvComp.sistema||'')+' · '+(_pvComp.grupos?_pvComp.grupos.length:0)+' grupos · '+(_pvComp.jornadasCount||0)+' jornadas'); document.getElementById('previewHead').innerHTML='<div class="pv-head"><span class="pv-emoji">'+(_pvComp.emoji||'🏆')+'</span><div><div class="pv-title">'+(_pvComp.nombre||'Sorteo')+'</div><div class="pv-sub">'+sub+'</div></div></div>'; _pvTab=_activeTabs[0].id; renderPvTabs(); }
+/* Punto de montaje de las tabs: el mismo juego sirve para el resultado recién
+   sorteado (previewStage) y para un sorteo abierto desde la lista. */
+let _pvMount={tabs:'previewTabs',panel:'previewPanel'};
+function renderPvTabs(){ const tb=document.getElementById(_pvMount.tabs); if(tb) tb.innerHTML=_activeTabs.map(function(t){return '<button class="naowee-tab'+(t.id===_pvTab?' naowee-tab--selected':'')+'" onclick="switchPvTab(\''+t.id+'\')">'+(t.icon||'')+'<span>'+t.label+'</span></button>';}).join(''); const tab=_activeTabs.find(function(t){return t.id===_pvTab;}); const p=document.getElementById(_pvMount.panel); if(p&&tab) p.innerHTML=tab.render(_pvComp); }
+function switchPvTab(id){ if(id===_pvTab) return; const oi=_activeTabs.findIndex(function(t){return t.id===_pvTab;}), ni=_activeTabs.findIndex(function(t){return t.id===id;}); _pvTab=id; renderPvTabs(); const p=document.getElementById(_pvMount.panel); if(p){ p.style.animation='none'; void p.offsetWidth; p.style.animation=(ni>oi?'tabSlideR':'tabSlideL')+' .28s cubic-bezier(.32,.72,0,1)'; } }
 /* Ir a crear: limpia el activo de "Lista de sorteos" en el sub-nav, que
    openProgEdit() enciende al abrir el listado (ahora es el aterrizaje). */
 function openCrearSorteo(){ var nav=document.getElementById('navProgEdit'); if(nav)nav.classList.remove('active'); showStage('wizardStage'); }
