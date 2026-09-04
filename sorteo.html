@@ -112,6 +112,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .sum2-emoji{width:54px;height:54px;border-radius:var(--radius-lg);background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
 .sum2-title{font-size:19px;font-weight:800;color:var(--text-primary)}
 .sum2-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+/* --on-fill del DS asume un fondo saturado; el hero es crema (#fff6ef, ~4% de blanco),
+   asi que el pill blanco necesita el hairline para leerse como pieza (igual que .sum2-emoji). */
+.sum2-chips .naowee-badge--on-fill{border:1px solid var(--border)}
 .sum2-chip{font-size:11.5px;font-weight:600;color:var(--text-secondary);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-full);padding:3px 10px}
 .sum2-chip--accent{background:#fff3e6;border-color:var(--orange-border,#ffbf75);color:var(--accent)}
 .sum2-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px}
@@ -1050,7 +1053,7 @@ function buildSummary(){ const conj=W.tipo==='conjunto';
         <div class="sum2-emoji">${W.emoji||'🏅'}</div>
         <div class="sum2-hero-txt">
           <div class="sum2-title">${W.deporteLabel}</div>
-          <div class="sum2-chips"><span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--large">${W.categoria}</span><span class="naowee-badge naowee-badge--neutral naowee-badge--quiet naowee-badge--large">${W.sexo}</span><span class="naowee-badge naowee-badge--brand naowee-badge--quiet naowee-badge--large">${conj?'De conjunto':'Individual'}</span><span class="naowee-badge naowee-badge--brand naowee-badge--quiet naowee-badge--large">${W.modo==='manual'?'Ruleta manual':'Automático'}</span></div>
+          <div class="sum2-chips"><span class="naowee-badge naowee-badge--on-fill naowee-badge--large">${W.categoria}</span><span class="naowee-badge naowee-badge--on-fill naowee-badge--large">${W.sexo}</span><span class="naowee-badge naowee-badge--brand naowee-badge--quiet naowee-badge--large">${conj?'De conjunto':'Individual'}</span><span class="naowee-badge naowee-badge--brand naowee-badge--quiet naowee-badge--large">${W.modo==='manual'?'Ruleta manual':'Automático'}</span></div>
         </div>
       </div>
       <div class="sum2-grid">
