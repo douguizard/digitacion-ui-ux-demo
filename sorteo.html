@@ -512,7 +512,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .clasif-alerts{padding:0 16px 14px}
 .clasif-head{display:flex;align-items:center;gap:9px;padding:13px 16px;background:var(--bg-soft,#f5f6fa);border-bottom:1px solid var(--border);font-size:14px;font-weight:700;color:var(--text-primary)}
 .clasif-head .cr-stand-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex-shrink:0}
-.clasif-head #btnAddClasif{margin-left:auto}
 .clasif-list{padding:12px 16px 14px;display:flex;flex-direction:column;gap:10px}
 .clasif-row{display:flex;align-items:center;gap:10px}
 .clasif-pos{width:24px;height:24px;border-radius:50%;background:var(--bg-soft,#f5f6fa);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
@@ -529,9 +528,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 .clasif-combo-opt:hover{background:var(--orange-bg,#fff3e6);color:var(--accent)}
 .clasif-combo-empty{padding:9px 12px;font-size:12.5px;color:var(--text-secondary)}
 .clasif-tf--sub{flex:.85}
-.clasif-del{flex-shrink:0;color:#da1630}
-.clasif-del:hover:not(:disabled){background:var(--red-bg,#fff0ee);color:#b3122a}
-.clasif-del:disabled{color:var(--border-dark);cursor:not-allowed}
 /* Reglas del sorteo: pills de grupo fijo por equipo (— libre · A · B …) */
 .clasif-grupo{display:inline-flex;gap:3px;flex-shrink:0}
 .clasif-gp{width:26px;height:30px;border:1px solid var(--border-dark);background:var(--surface);border-radius:var(--radius-sm);font-size:12px;font-weight:700;color:var(--text-secondary);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background .12s,color .12s,border-color .12s}
@@ -764,14 +760,14 @@ body.sorteo-has-footer .page{padding-bottom:96px}
       <div class="sorteo-head">
         <div>
           <h1 class="sorteo-title">Clasificados</h1>
-          <p class="sorteo-sub">Ingresa los participantes del sorteo. Puedes agregar, editar o quitar antes de sortear.</p>
+          <p class="sorteo-sub">Nombra a los participantes del sorteo. La cantidad la fijaste en <b>Parámetros</b>; para cambiarla, vuelve allá.</p>
         </div>
         <button class="naowee-btn naowee-btn--mute" onclick="backToWizard()"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 5h5M11 5h3M2 11h3M9 11h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="5" r="1.8" stroke="currentColor" stroke-width="1.5"/><circle cx="7" cy="11" r="1.8" stroke="currentColor" stroke-width="1.5"/></svg> Parámetros</button>
       </div>
       <div class="clasif-panel">
-        <div class="clasif-head"><span class="cr-stand-dot"></span><span id="clasifTitle">Equipos clasificados</span><span class="naowee-badge naowee-badge--neutral naowee-badge--quiet" id="clasifCount">0</span><button class="naowee-btn naowee-btn--mute naowee-btn--small" id="btnAddClasif" onclick="addClasif()"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2.5v9M2.5 7h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg> Agregar</button></div>
+        <div class="clasif-head"><span class="cr-stand-dot"></span><span id="clasifTitle">Equipos clasificados</span><span class="naowee-badge naowee-badge--neutral naowee-badge--quiet" id="clasifCount">0</span></div>
         <div id="clasifList" class="clasif-list"></div>
-        <p class="clasif-note">* El <b>nombre</b> es obligatorio; la <b>delegación / regional</b> es opcional. Serán los participantes que entren al sorteo.</p>
+        <p class="clasif-note">* El <b>nombre</b> es obligatorio; la <b>delegación / regional</b> es opcional. Serán los participantes que entren al sorteo. Para agregar o quitar cupos, vuelve a <b>Parámetros</b>.</p>
         <div id="clasifDerived"></div>
         <div class="wz-nav clasif-foot">
           <button class="naowee-btn naowee-btn--mute" onclick="backToWizard()">Atrás</button>
@@ -1168,13 +1164,31 @@ function setSorteoMode(m){ if(m==='prog'){ openProgEdit(); } else { showStage('w
 function genParticipantes(n,tipo){ const out=[]; for(let i=0;i<n;i++){ const p=_INST_POOL[i%_INST_POOL.length]; const wrap=Math.floor(i/_INST_POOL.length); const nombre=p?(p.n+(wrap?(' '+(wrap+1)):'')):((tipo==='individual'?'Deportista ':'Equipo ')+(i+1)); out.push({nombre:nombre, delegacion:(p?p.r:'')}); } return out; }
 function buildSorteo(){ const n=Math.max(2, +W.nEquipos||8); const parts=(_clasificados&&_clasificados.length)?_clasificados.map(c=>({nombre:(c.nombre||'').trim(),delegacion:(c.delegacion||'').trim(),grupoFijo:(c.grupoFijo==null?null:c.grupoFijo)})):genParticipantes(n,W.tipo); _sorteo={prueba:{deporteLabel:W.deporteLabel||'Deporte',emoji:W.emoji||'🏆',categoria:W.categoria||'General',sexo:W.sexo||'Mixto',tipo:W.tipo||'conjunto'},config:{nGrupos:(W.tipo==='individual'?1:Math.max(1,+W.nGrupos||2))},participantes:parts}; return _sorteo; }
 /* ── F3a: Clasificados editables ── */
-let _clasificados=[];
-function startClasificados(){ const n=Math.max(2,+W.nEquipos||8); if(!_clasificados.length||_clasificados.length!==n){ _clasificados=genParticipantes(n,W.tipo).map(p=>({nombre:p.nombre,delegacion:p.delegacion||''})); } showStage('clasifStage'); document.getElementById('clasifTitle').textContent=(W.tipo==='individual'?'Deportistas clasificados':'Equipos clasificados'); renderClasifList(); }
+let _clasificados=[], _clasifTipo=null;
+/* La cantidad la manda Parametros, no esta pantalla. Al volver con otro numero
+   se CONSERVA lo ya escrito: se recortan los sobrantes o se agregan cupos al
+   final. Antes se regeneraba la lista entera, asi que cambiar la cantidad
+   borraba todos los nombres tecleados — y ahora ese es el unico camino para
+   agregar o quitar un cupo. */
+function _clasifResize(n){
+  const cambioDeTipo = (_clasifTipo !== W.tipo);
+  _clasifTipo = W.tipo;
+  if(!_clasificados.length || cambioDeTipo){
+    _clasificados = genParticipantes(n,W.tipo).map(p=>({nombre:p.nombre,delegacion:p.delegacion||''}));
+    return;
+  }
+  if(_clasificados.length > n){ _clasificados = _clasificados.slice(0,n); return; }
+  if(_clasificados.length < n){
+    genParticipantes(n,W.tipo).slice(_clasificados.length)
+      .forEach(p=>_clasificados.push({nombre:p.nombre,delegacion:p.delegacion||''}));
+  }
+}
+function startClasificados(){ const n=Math.max(2,+W.nEquipos||8); _clasifResize(n); showStage('clasifStage'); document.getElementById('clasifTitle').textContent=(W.tipo==='individual'?'Deportistas clasificados':'Equipos clasificados'); renderClasifList(); }
 function renderClasifList(){ const el=document.getElementById('clasifList'); if(!el)return; const ph=W.tipo==='individual'?'Nombre del deportista':'Nombre del equipo'; el.innerHTML=_clasificados.map(function(c,i){ const nm=(c.nombre||'').replace(/"/g,'&quot;'), dg=(c.delegacion||'').replace(/"/g,'&quot;'); return '<div class="clasif-row"><span class="clasif-pos">'+(i+1)+'</span>'
   +'<div class="clasif-combo clasif-tf"><div class="naowee-textfield naowee-textfield--small"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input clasif-combo-inp" value="'+nm+'" placeholder="'+ph+'" autocomplete="off" oninput="clasifInput('+i+',this.value)" onfocus="clasifShow('+i+')"><button type="button" class="clasif-combo-chev" onclick="clasifToggle('+i+',event)" tabindex="-1" aria-label="Ver participantes"><svg viewBox="0 0 16 16" width="14" height="14" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div><div class="clasif-combo-menu" id="clasifMenu'+i+'"></div></div>'
   +'<div class="naowee-textfield naowee-textfield--small clasif-tf clasif-tf--sub"><div class="naowee-textfield__input-wrap"><input class="naowee-textfield__input" value="'+dg+'" placeholder="Delegación / regional (opcional)" oninput="syncClasif('+i+',\'delegacion\',this.value)"></div></div>'
   +_grupoPillsHTML(i)
-  +'<button class="naowee-btn naowee-btn--mute naowee-btn--small clasif-del" title="Quitar" onclick="removeClasif('+i+')"'+(_clasificados.length<=2?' disabled':'')+'><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M6.2 4.5V3.3a1 1 0 011-1h1.6a1 1 0 011 1v1.2M5.2 4.5l.4 8a1 1 0 001 .95h2.8a1 1 0 001-.95l.4-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>'; }).join(''); document.getElementById('clasifCount').textContent=_clasificados.length; validateClasif(); renderClasifDerived(); }
+  +'</div>'; }).join(''); document.getElementById('clasifCount').textContent=_clasificados.length; validateClasif(); renderClasifDerived(); }
 /* ── Reglas del sorteo: fijar un equipo a un grupo (grupoFijo). Pills por fila, solo en fase de grupos ── */
 function _clasifNGrupos(){ return (W.tipo==='individual')?0:Math.max(1,+W.nGrupos||1); }
 function _grupoPillsHTML(i){ var ng=_clasifNGrupos(); if(ng<2) return ''; var cur=(_clasificados[i]&&_clasificados[i].grupoFijo); if(cur!=null&&(cur|0)>=ng) cur=null;
@@ -1199,8 +1213,6 @@ function clasifPick(i,name,e){ if(e)e.preventDefault(); if(_clasificados[i])_cla
 function _closeClasifCombos(){ document.querySelectorAll('.clasif-combo.open').forEach(function(c){c.classList.remove('open');}); }
 document.addEventListener('click',function(e){ if(!e.target||!e.target.closest||!e.target.closest('.clasif-combo')) _closeClasifCombos(); });
 window.addEventListener('scroll',_closeClasifCombos,true);
-function addClasif(){ _clasificados.push({nombre:'',delegacion:''}); renderClasifList(); const rows=document.querySelectorAll('#clasifList .clasif-row'); const last=rows[rows.length-1]; if(last){ const inp=last.querySelector('.naowee-textfield__input'); if(inp) inp.focus(); } }
-function removeClasif(i){ if(_clasificados.length<=2)return; _clasificados.splice(i,1); renderClasifList(); }
 function validateClasif(){ const ok=_clasificados.length>=2&&_clasificados.every(function(c){return (c.nombre||'').trim();}); const b=document.getElementById('btnClasifNext'); if(b)b.disabled=!ok; return ok; }
 /* ── Panel derivado de Clasificados (reparto/llave en vivo + alertas, según el conteo real) ── */
 var _CD_ICO={ trofeo:'<svg viewBox="0 0 16 16" fill="none"><path d="M4.5 2.5h7v3a3.5 3.5 0 01-7 0v-3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M4.5 3.5h-2v1a2 2 0 002 2M11.5 3.5h2v1a2 2 0 01-2 2M6.5 13h3M8 9v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>', grid:'<svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="2.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>', bracket:'<svg viewBox="0 0 16 16" fill="none"><path d="M2 3.5h3.5v3H9M2 12.5h3.5v-3M9 5h2.5v3H14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>' };
@@ -1227,7 +1239,7 @@ function renderClasifDerived(){ var el=document.getElementById('clasifDerived');
     else if(byes>0) alerts+=_cdMsg('informative','Cuadro con descansos',byes+' participante(s) avanzan directo en la primera ronda (descanso/bye) porque '+n+' no es potencia de 2.');
   }
   el.innerHTML='<div class="clasif-summary"><div class="clasif-summary__stats">'+stats+'</div>'+rules+'</div>'+(alerts?'<div class="clasif-alerts">'+alerts+'</div>':''); }
-function continueSorteo(){ if(!validateClasif())return; W.nEquipos=_clasificados.length; if(W.modo==='manual') startManual(); else if(W.modo==='transcrip') startTranscrip(); else startRuleta(); }
+function continueSorteo(){ if(!validateClasif())return; if(W.modo==='manual') startManual(); else if(W.modo==='transcrip') startTranscrip(); else startRuleta(); }
 function startRuleta(){ buildSorteo(); _assign=SorteoEngine.asignarGrupos(_sorteo.participantes,_sorteo.config.nGrupos,{shuffle:true}); _sorteo.manualGroups=_assign; _ruletaDone=false; showStage('ruletaStage'); document.getElementById('ruletaSub').textContent='Asignando participantes a los grupos…'; document.getElementById('ruletaNav').style.display='none'; document.getElementById('btnSkip').style.display=''; renderRuletaGrupos(_assign,[]); buildDrawSeq(); runRuletaAnim(0); }
 function buildDrawSeq(){ _drawSeq=[]; const maxLen=Math.max(0,..._assign.map(g=>g.length)); for(let pos=0;pos<maxLen;pos++)for(let g=0;g<_assign.length;g++){ if(_assign[g][pos]!=null)_drawSeq.push({name:_assign[g][pos],g,pos}); } }
 function renderRuletaGrupos(assign,filled){ const set=new Set(filled); const el=document.getElementById('ruletaGrupos'); el.innerHTML=assign.map((teams,gi)=>{ const L=String.fromCharCode(65+gi); const slots=teams.map(t=>{ const on=set.has(t); return `<div class="rg-slot${on?' filled':''}">`+(on?`<span class="rg-ava" style="background:${teamColorLocal(t)}">${teamInitLocal(t)}</span><span class="rg-name">${t}</span>`:`<span class="rg-name" style="color:var(--text-muted)">—</span>`)+`</div>`; }).join(''); return `<div class="rg-card"><div class="rg-head"><span class="rg-dot"></span>Grupo ${L}<span style="margin-left:auto;font-size:12px;font-weight:600;color:var(--text-secondary)">${teams.length} eq</span></div><div class="rg-body">${slots}</div></div>`; }).join(''); }
