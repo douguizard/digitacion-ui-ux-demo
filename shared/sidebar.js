@@ -239,11 +239,15 @@ export function resolveDigiRoute(activeId, roleCode) {
 function navigateToActive(activeId) {
   const role = _state.role;
   const roleCode = role ? role.code : 'ATHLETE';
-  const currentFile = window.location.pathname.split('/').pop() || '';
+  /* Basename sin extensión: con URLs limpias (/sorteo) el pathname no trae
+     '.html' y la comparación fallaba, redirigiendo a la página en la que ya
+     estabas. */
+  const baseName = (ruta) => (ruta.split('/').pop() || '').replace(/\.html$/, '');
+  const currentFile = baseName(window.location.pathname);
   const url = resolveDigiRoute(activeId, roleCode);
 
   if (url) {
-    if (url.split('?')[0] === currentFile) return;   // ya estás en esa página
+    if (baseName(url.split('?')[0]) === currentFile) return;   // ya estás en esa página
     window.location.href = url;                       // navegación full, rol preservado
     return;
   }

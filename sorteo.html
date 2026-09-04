@@ -1553,7 +1553,11 @@ openProgEdit();
 <script type="module">
   import { mountSidebar, mountHeader, mountDemoRoleSwitcher } from './shared/sidebar.js';
   const roleCode = new URLSearchParams(window.location.search).get('role') || 'ROOT';
-  const currentFile = window.location.pathname.split('/').pop() || 'sorteo.html';
+  /* Basename SIN extension: si el servidor usa URLs limpias (/sorteo en vez de
+     /sorteo.html) la comparacion contra LEGACY_MAP fallaba y onActiveChange
+     —que corre en CADA montaje, no solo al hacer clic— redirigia en bucle. */
+  const baseName = (ruta) => (ruta.split('/').pop() || '').replace(/\.html$/, '');
+  const currentFile = baseName(window.location.pathname) || 'sorteo';
   const LEGACY_MAP = {
     'inicio': 'dashboard.html', 'sorteo': 'sorteo.html',
     'eventos': 'eventos.html', 'eventos-lista': 'eventos.html',
@@ -1567,7 +1571,7 @@ openProgEdit();
     activeId: 'sorteo',
     onActiveChange: (activeId) => {
       const target = LEGACY_MAP[activeId];
-      if (target) { if (target === currentFile) return; window.location.href = target + '?role=' + encodeURIComponent(roleCode); return; }
+      if (target) { if (baseName(target) === currentFile) return; window.location.href = target + '?role=' + encodeURIComponent(roleCode); return; }
       const isLocal = ['localhost','127.0.0.1'].includes(window.location.hostname);
       const SHELL_BASE = isLocal ? 'http://localhost:5100' : 'https://naowee-tech.github.io/naowee-test-sidebar-shell';
       window.location.href = `${SHELL_BASE}/perfil.html?role=${roleCode}&active=${activeId}`;
