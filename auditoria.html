@@ -124,8 +124,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text-primary);font
 
 <!-- Shell canónico (sidebar/header/demo-switcher compartidos) -->
 <script type="module">
-  import { mountSidebar, mountHeader, mountDemoRoleSwitcher } from './shared/sidebar.js';
-  const roleCode = new URLSearchParams(window.location.search).get('role') || 'ADMIN';
+  import { mountSidebar, mountHeader, mountDemoRoleSwitcher, resolveRoleCode } from './shared/sidebar.js';
+  /* resolveRoleCode() y no leer solo la URL: ademas de mirar ?role= LEE y ESCRIBE
+     el rol en sessionStorage. Sin eso, entrar aqui sin el parametro caia al
+     fallback quemado ('ADMIN') y el header mostraba a otra persona por mucho que
+     hubieras cambiado de perfil — y al no escribirlo, el rol se perdia al salir. */
+  const roleCode = resolveRoleCode('ADMIN');
   /* Normaliza quitando el .html de AMBOS lados. Con URL limpia (/lista, que es
      como sirven el server local y GitHub Pages) el pathname no trae extension,
      asi que comparar contra 'x.html' nunca coincidia y onActiveChange disparaba
