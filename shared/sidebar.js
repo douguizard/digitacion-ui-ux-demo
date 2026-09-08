@@ -59,7 +59,10 @@ export function resolveRoleCode(fallback) {
 
 const DIGITACION_HOME = {
   ROOT: 'lista.html', ADMIN: 'lista.html',
-  EVENT_COORDINATOR: 'lista.html', DIGITIZER: 'dashboard.html',
+  /* El coordinador aterriza en su Inicio (dashboard), no en Competencias: al
+     cambiar de perfil se caia en lista.html y su panel de inicio quedaba
+     inalcanzable desde el switcher — habia que pulsar "Inicio" a mano. */
+  EVENT_COORDINATOR: 'dashboard.html', DIGITIZER: 'dashboard.html',
 };
 function digitacionRoleHref(code) {
   return `${DIGITACION_HOME[code] || 'lista.html'}?role=${code}`;
