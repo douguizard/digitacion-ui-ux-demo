@@ -28,7 +28,6 @@
   var CENTER = VIEWBOX / 2;          // 100
   var RADIUS = 96;                   // radio del disco
   var LABEL_RADIUS = 62;             // radio donde se coloca el texto
-  var CHECK_RADIUS = 58;             // radio donde se coloca el ✓
   var MAX_LABEL_CHARS = 12;          // truncado del label
 
   // Estado interno del módulo (singleton)
@@ -136,21 +135,7 @@
     state.svg = svg;
     svg.style.transform = 'rotate(' + state.rotation + 'deg)';
 
-    // <defs> con un gradiente radial por sector (más claro al centro)
-    var defs = el('defs');
-    for (var d = 0; d < n; d++) {
-      var base = items[d].color || '#888888';
-      var grad = el('radialGradient', {
-        id: 'rw-grad-' + d,
-        cx: '50%', cy: '50%', r: '75%',
-        fx: '50%', fy: '50%'
-      });
-      grad.appendChild(el('stop', { offset: '0%', 'stop-color': lighten(base, 0.42) }));
-      grad.appendChild(el('stop', { offset: '55%', 'stop-color': lighten(base, 0.12) }));
-      grad.appendChild(el('stop', { offset: '100%', 'stop-color': base }));
-      defs.appendChild(grad);
-    }
-    svg.appendChild(defs);
+    // Sectores planos: el degradado radial ensuciaba los tonos de marca.
 
     var sweep = n > 0 ? 360 / n : 360;
 
@@ -166,7 +151,7 @@
       var path = el('path', {
         'class': 'ruleta__wedge-path',
         d: wedgePath(CENTER, CENTER, RADIUS, start, end),
-        fill: 'url(#rw-grad-' + i + ')'
+        fill: items[i].color || '#888888'
       });
       g.appendChild(path);
 
@@ -195,23 +180,19 @@
       label.textContent = truncate(items[i].label);
       g.appendChild(label);
 
-      // Check ✓ (oculto hasta que el sector se marca usado)
-      var cp = polar(CENTER, CENTER, CHECK_RADIUS, mid);
-      var check = el('text', {
-        'class': 'ruleta__check',
-        x: cp.x.toFixed(2),
-        y: cp.y.toFixed(2),
-        'font-size': n <= 8 ? 16 : 12,
-        'text-anchor': 'middle',
-        'dominant-baseline': 'middle'
-      });
-      check.textContent = '✓';
-      g.appendChild(check);
-
       if (state.used[i]) g.classList.add('is-used');
 
       svg.appendChild(g);
       state.wedgeEls[i] = g;
+    }
+
+    // Remate: punto blanco en el extremo de cada division.
+    for (var b = 0; b < n; b++) {
+      var bp = polar(CENTER, CENTER, RADIUS - 3.5, b * sweep);
+      svg.appendChild(el('circle', {
+        'class': 'ruleta__spoke-dot',
+        cx: bp.x.toFixed(2), cy: bp.y.toFixed(2), r: 2.4
+      }));
     }
 
     root.appendChild(svg);

@@ -73,7 +73,9 @@
     var html = '<div class="cr-stand-card"><div class="cr-stand-head"><span class="cr-stand-dot"></span>'+esc(grupo.nombre)+'</div>';
     html += '<table class="standings-table"><thead><tr><th>Pos</th><th>Equipo</th><th>PJ</th><th>PG</th><th>PP</th><th>Pts</th></tr></thead><tbody>';
     grupo.tabla.forEach(function(t,i){
-      var posCls = i===0?'':i===1?'pos2':'pos3';
+      /* Podio: 1 oro, 2 plata, 3 ocre, 4+ gris. Antes eran solo tres tramos
+         (1 naranja de marca, 2 azul, 3+ gris), que no leia como podio. */
+      var posCls = i===0?'pos1':i===1?'pos2':i===2?'pos3':'pos4';
       html += '<tr>'
         + '<td><span class="standings-pos '+posCls+'">'+(i+1)+'</span></td>'
         + '<td><div class="standings-team"><div class="team-avatar" style="background:'+teamColor(t.equipo)+';color:#fff;width:28px;height:28px;font-size:10px">'+esc(teamInit(t.equipo))+'</div><div><div class="standings-team-name">'+esc(t.equipo)+'</div></div></div></td>'
