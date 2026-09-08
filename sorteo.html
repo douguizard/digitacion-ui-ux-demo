@@ -16,7 +16,11 @@
   --naranja:#FF7500; --azul:#002B5B;
   /* Ancho máximo del contenido del módulo: todas las pantallas comparten el
      mismo que el listado (mismo tope que .page-inner en la demo de Eventos). */
-  --sorteo-maxw:1180px;
+  /* Sorteo era la unica vista topada (1180px); el resto —dashboard, lista…—
+     es fluida y llena el ancho de .page. Se iguala por consistencia. El
+     token se mantiene: los 23 usos son max-width, y volver a topar es
+     cambiar solo esta linea. */
+  --sorteo-maxw:none;
   --text-primary:#282834; --text-secondary:#646587; --text-muted:#9ca0b8;
   --accent:#d74009;
   --green:#1f8923; --green-bg:#e6f4e7; --green-border:#b7dfb9;
