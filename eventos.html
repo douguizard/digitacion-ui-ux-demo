@@ -359,7 +359,12 @@ tbody tr:hover .row-arrow{color:var(--accent);opacity:1}
       /* mountSidebar dispara este callback en la carga inicial con
          el activeId pasado. Si el destino mapea a esta misma página
          (eventos.html), retornamos para evitar reload loop. */
-      const currentFile = window.location.pathname.split('/').pop() || 'eventos.html';
+      /* Normaliza quitando el .html de AMBOS lados. Con URL limpia (/lista, que es
+         como sirven el server local y GitHub Pages) el pathname no trae extension,
+         asi que comparar contra 'x.html' nunca coincidia y onActiveChange disparaba
+         una navegacion extra al aterrizar: recarga completa y flash blanco. */
+      const baseName = (ruta) => (ruta.split('/').pop() || '').replace(/\.html$/, '');
+      const currentFile = baseName(window.location.pathname) || 'eventos';
 
       /* Nav clicks: las páginas legacy del repo digitación se
          enrutan a su archivo HTML directo. El resto vuelve al shell. */
@@ -375,7 +380,7 @@ tbody tr:hover .row-arrow{color:var(--accent);opacity:1}
       };
       const target = LEGACY_MAP[activeId];
       if (target) {
-        if (target === currentFile) return; /* ya estamos acá */
+        if (baseName(target) === currentFile) return; /* ya estamos acá */
         window.location.href = target + '?role=' + encodeURIComponent(roleCode);
         return;
       }
