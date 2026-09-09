@@ -65,7 +65,9 @@
   };
 
   // Posiciona la demo en el previewStage con un resultado de sorteo demo.
-  function gotoPreview(comp) { call('buildSorteo'); var f = G('showPreview'); if (f) { try { f(comp); } catch (e) {} } }
+  // setModo('sorteo') primero: showPreview oculta #btnResortear cuando el modo
+  // es 'transcrip', y HU-06 lo deja pegado. Sin esto HU-08 se queda sin target.
+  function gotoPreview(comp) { call('setModo', 'sorteo'); call('buildSorteo'); var f = G('showPreview'); if (f) { try { f(comp); } catch (e) {} } }
   // Posiciona la demo en el stage de sorteo en vivo (modo manual = estable, no auto-avanza).
   function gotoSorteoVivo() { call('selTipo', 'conjunto'); call('setModo', 'manual'); call('startClasificados'); call('continueSorteo'); }
   function gotoTranscrip() { call('selTipo', 'conjunto'); call('setModo', 'transcrip'); call('startClasificados'); call('continueSorteo'); }
@@ -80,7 +82,7 @@
         { pre: function () { call('backToWizard'); call('selTipo', 'conjunto'); call('goStep', 1); }, sel: '#panel1 .wz-pills', body: 'Elige el <b>tipo de deporte</b>: de conjunto (grupos) o individual (llaves).' },
         { sel: '#fDeporte, #ddDeporte', body: 'Selecciona <b>deporte, categoría y sexo</b>. Cada prueba (deporte + categoría + sexo) es un sorteo independiente.' },
         { pre: function () { call('goStep', 2); }, sel: '#inEquipos', body: 'Define el <b>N.º de equipos clasificados</b> y el <b>N.º de grupos</b>.' },
-        { sel: '#repartoChip, #sistemaTxt', body: 'El <b>sistema de competencia</b> se deriva del número de equipos (todos contra todos), no del deporte. Si son impares, se genera un <b>“by”/descanso</b>.' },
+        { sel: '#sistemaTxt', body: 'El <b>sistema de competencia</b> se deriva del número de equipos (todos contra todos), no del deporte. Si son impares, se genera un <b>“by”/descanso</b>.' },
         { sel: '#modoSeg', body: 'Elige el <b>modo</b>: Automático, Manual o Transcripción de un sorteo externo.' },
         { pre: function () { call('goStep', 3); }, sel: '#summaryBox', body: 'Revisa el <b>resumen de confirmación</b> con todos los parámetros antes de ejecutar el sorteo.' }
       ]
@@ -92,7 +94,7 @@
       steps: [
         { pre: function () { call('selTipo', 'conjunto'); call('startClasificados'); }, sel: '#clasifList', body: 'El sistema <b>carga los equipos clasificados</b> de la etapa previa (regional, departamental…) para esta prueba.' },
         { sel: '#clasifList .clasif-row', body: 'Cada equipo muestra el <b>detalle de su delegación</b>: institución + región y municipio.' },
-        { sel: '#btnAddClasif', body: 'Puedes <b>ajustar manualmente</b>: agregar, editar o quitar (ej: un equipo que no completó el proceso, o deportes sin etapa previa).' },
+        { sel: '.clasif-combo', body: 'Puedes <b>ajustar manualmente</b> quién ocupa cada cupo, y <b>fijar un equipo a un grupo</b> con las pastillas A/B/C. La <b>cantidad</b> de cupos la manda <b>Parámetros</b>: para cambiarla se vuelve a ese paso.' },
         { sel: '#btnClasifNext', body: 'Confirma la lista para continuar. Una vez iniciado el sorteo, <b>queda bloqueada</b> para edición.' }
       ]
     },
