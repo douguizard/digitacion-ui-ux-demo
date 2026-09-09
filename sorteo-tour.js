@@ -69,6 +69,24 @@
   // es 'transcrip', y HU-06 lo deja pegado. Sin esto HU-08 se queda sin target.
   function gotoPreview(comp) { call('setModo', 'auto'); call('buildSorteo'); var f = G('showPreview'); if (f) { try { f(comp); } catch (e) {} } }
   // Posiciona la demo en el stage de sorteo en vivo (modo manual = estable, no auto-avanza).
+  // El wizard nace sin prueba y selTipo() la resetea, asi que al saltar al
+  // paso 3 el resumen salia con el emoji de reserva, titulo vacio y dos
+  // badges vacios. Se siembra por los dropdowns reales (ddPick, lo mismo que
+  // hace el usuario) la misma prueba que ya usan las HU de preview:
+  // Futbol - Sub-18 - Masculino. Verificado que no choca con RN-SORTEO-UNICO.
+  function _opt(scope, val) {
+    return document.querySelector(scope + ' .naowee-dropdown__option[data-value="' + val + '"]')
+        || document.querySelector(scope + ' .naowee-dropdown__option');
+  }
+  function seedPrueba() {
+    var pick = G('ddPick'); if (!pick) return;
+    // el deporte primero: es quien destapa categoria y sexo
+    [['#ddDeporte-menu', 'f_tbol', 'ddDeporte'],
+     ['#ddCategoria', 'Sub-18', 'ddCategoria'],
+     ['#ddSexo', 'Masculino', 'ddSexo']].forEach(function (t) {
+      var el = _opt(t[0], t[1]); if (el) { try { pick(t[2], el); } catch (e) {} }
+    });
+  }
   function gotoSorteoVivo() { call('selTipo', 'conjunto'); call('setModo', 'manual'); call('startClasificados'); call('continueSorteo'); }
   function gotoTranscrip() { call('selTipo', 'conjunto'); call('setModo', 'transcrip'); call('startClasificados'); call('continueSorteo'); }
 
@@ -80,7 +98,7 @@
       purpose: 'Parametrizar la prueba (deporte, categoría y sexo), el número de equipos, la cantidad de grupos y el sistema de competencia, para ejecutar el sorteo con la configuración correcta. Solo el administrador configura y ejecuta.',
       steps: [
         { pre: function () { call('backToWizard'); call('selTipo', 'conjunto'); call('goStep', 1); }, sel: '#panel1 .wz-pills', body: 'Elige el <b>tipo de deporte</b>: de conjunto (grupos) o individual (llaves).' },
-        { sel: '#fDeporte, #ddDeporte', body: 'Selecciona <b>deporte, categoría y sexo</b>. Cada prueba (deporte + categoría + sexo) es un sorteo independiente.' },
+        { pre: seedPrueba, sel: '#fDeporte, #ddDeporte', body: 'Selecciona <b>deporte, categoría y sexo</b>. Cada prueba (deporte + categoría + sexo) es un sorteo independiente.' },
         { pre: function () { call('goStep', 2); }, sel: '#inEquipos', body: 'Define el <b>N.º de equipos clasificados</b> y el <b>N.º de grupos</b>.' },
         { sel: '#sistemaTxt', body: 'El <b>sistema de competencia</b> se deriva del número de equipos (todos contra todos), no del deporte. Si son impares, se genera un <b>“by”/descanso</b>.' },
         { sel: '#modoSeg', body: 'Elige el <b>modo</b>: <b>Automático</b>, <b>Manual</b> o <b>Ya sorteado</b> (el sorteo lo hizo un ente externo y aquí solo se registra).' },
