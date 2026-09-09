@@ -434,9 +434,14 @@ renderCards(coordinadores);
 <div id="demoRoleSwitcherRoot"></div>
 
 <script type="module">
-  import { mountSidebar, mountHeader, mountDemoRoleSwitcher } from './shared/sidebar.js';
-  const roleCode = new URLSearchParams(window.location.search).get('role') || 'ROOT';
-  const currentFile = window.location.pathname.split('/').pop() || 'coordinadores.html';
+  import { mountSidebar, mountHeader, mountDemoRoleSwitcher, resolveRoleCode } from './shared/sidebar.js';
+  const roleCode = resolveRoleCode();
+  /* Normaliza quitando el .html de AMBOS lados. Con URL limpia (/lista, que es
+     como sirven el server local y GitHub Pages) el pathname no trae extension,
+     asi que comparar contra 'x.html' nunca coincidia y onActiveChange disparaba
+     una navegacion extra al aterrizar: recarga completa y flash blanco. */
+  const baseName = (ruta) => (ruta.split('/').pop() || '').replace(/\.html$/, '');
+  const currentFile = baseName(window.location.pathname) || 'coordinadores';
   const LEGACY_MAP = {
     'inicio': 'dashboard.html', 'sorteo': 'sorteo.html',
     'eventos': 'eventos.html', 'eventos-lista': 'eventos.html',
@@ -451,7 +456,7 @@ renderCards(coordinadores);
     activeId: 'coordinadores',
     onActiveChange: (activeId) => {
       const target = LEGACY_MAP[activeId];
-      if (target) { if (target === currentFile) return; window.location.href = target + '?role=' + encodeURIComponent(roleCode); return; }
+      if (target) { if (baseName(target) === currentFile) return; window.location.href = target + '?role=' + encodeURIComponent(roleCode); return; }
       const isLocal = ['localhost','127.0.0.1'].includes(window.location.hostname);
       const SHELL_BASE = isLocal ? 'http://localhost:5100' : 'https://naowee-tech.github.io/naowee-test-sidebar-shell';
       window.location.href = `${SHELL_BASE}/perfil.html?role=${roleCode}&active=${activeId}`;
