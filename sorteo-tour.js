@@ -65,9 +65,9 @@
   };
 
   // Posiciona la demo en el previewStage con un resultado de sorteo demo.
-  // setModo('sorteo') primero: showPreview oculta #btnResortear cuando el modo
+  // setModo('auto') primero: showPreview oculta #btnResortear cuando el modo
   // es 'transcrip', y HU-06 lo deja pegado. Sin esto HU-08 se queda sin target.
-  function gotoPreview(comp) { call('setModo', 'sorteo'); call('buildSorteo'); var f = G('showPreview'); if (f) { try { f(comp); } catch (e) {} } }
+  function gotoPreview(comp) { call('setModo', 'auto'); call('buildSorteo'); var f = G('showPreview'); if (f) { try { f(comp); } catch (e) {} } }
   // Posiciona la demo en el stage de sorteo en vivo (modo manual = estable, no auto-avanza).
   function gotoSorteoVivo() { call('selTipo', 'conjunto'); call('setModo', 'manual'); call('startClasificados'); call('continueSorteo'); }
   function gotoTranscrip() { call('selTipo', 'conjunto'); call('setModo', 'transcrip'); call('startClasificados'); call('continueSorteo'); }
@@ -83,7 +83,7 @@
         { sel: '#fDeporte, #ddDeporte', body: 'Selecciona <b>deporte, categoría y sexo</b>. Cada prueba (deporte + categoría + sexo) es un sorteo independiente.' },
         { pre: function () { call('goStep', 2); }, sel: '#inEquipos', body: 'Define el <b>N.º de equipos clasificados</b> y el <b>N.º de grupos</b>.' },
         { sel: '#sistemaTxt', body: 'El <b>sistema de competencia</b> se deriva del número de equipos (todos contra todos), no del deporte. Si son impares, se genera un <b>“by”/descanso</b>.' },
-        { sel: '#modoSeg', body: 'Elige el <b>modo</b>: Automático, Manual o Transcripción de un sorteo externo.' },
+        { sel: '#modoSeg', body: 'Elige el <b>modo</b>: <b>Automático</b>, <b>Manual</b> o <b>Ya sorteado</b> (el sorteo lo hizo un ente externo y aquí solo se registra).' },
         { pre: function () { call('goStep', 3); }, sel: '#summaryBox', body: 'Revisa el <b>resumen de confirmación</b> con todos los parámetros antes de ejecutar el sorteo.' }
       ]
     },
@@ -113,7 +113,7 @@
       title: 'Transcripción de sorteo externo',
       purpose: 'Transcribir y publicar el resultado de un sorteo realizado por un ente externo (federación u otro organizador), en formato de grupos o de llave de eliminación directa.',
       steps: [
-        { pre: gotoTranscrip, sel: '#tFmtSeg', body: 'Elige el <b>formato</b> del sorteo externo: <b>Grupos</b> o <b>Llave</b> (eliminación directa).' },
+        { pre: gotoTranscrip, sel: '#tFmtSeg', body: 'Esta HU es el modo que en pantalla se llama <b>“Ya sorteado”</b>. Elige el <b>formato</b> del sorteo externo: <b>Grupos</b> o <b>Llave</b> (eliminación directa).' },
         { sel: '#tBody', body: 'Registra los <b>grupos y sus enfrentamientos</b>, o el <b>bracket completo</b> por ronda (octavos, cuartos, semifinal, final).' },
         { sel: '#btnTranscrip', body: 'Conforma. Queda visible en la <b>página pública</b> igual que un sorteo interno, con su misma trazabilidad.' }
       ]
@@ -141,7 +141,7 @@
       purpose: 'Publicar de inmediato los grupos, enfrentamientos y llaves en la página pública del evento al confirmar el sorteo, para consulta en tiempo real.',
       steps: [
         { pre: function () { gotoPreview(DEMO_GRUPOS); }, sel: '#btnConfirmSorteo', body: 'Al <b>confirmar</b>, los grupos, enfrentamientos y llaves quedan visibles de inmediato en la <b>página pública</b>, sin pasos extra de publicación.' },
-        { sel: '#previewHead', body: 'La <b>vista pública</b> muestra por prueba: deporte, categoría y sexo; los grupos con sus equipos; y los enfrentamientos por fecha. Hora y escenario se pueden dejar en “por definir” y actualizar luego.' }
+        { sel: '#previewHead', body: 'La <b>vista pública</b> muestra por prueba: deporte, categoría y sexo; los grupos con sus equipos; y los enfrentamientos por fecha. La <b>hora</b> se puede dejar vacía y el <b>escenario</b> en <b>“Sin asignar”</b>, y completarse luego desde <b>Programación</b>.' }
       ]
     },
     'HU-08': {
