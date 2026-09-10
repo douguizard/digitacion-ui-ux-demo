@@ -96,30 +96,15 @@
   pointer-events: none;
 }
 
-/* Sector usado: atenuado + check */
-.ruleta__wedge.is-used {
-  opacity: .35;
-}
-
-.ruleta__check {
-  font-family: 'Inter', system-ui, sans-serif;
-  font-weight: 800;
-  fill: #ffffff;
-  paint-order: stroke;
-  stroke: rgba(0, 0, 0, .25);
-  stroke-width: 3px;
-  stroke-linejoin: round;
-  opacity: 0;
-  transform-box: fill-box;
-  transform-origin: center;
-  transform: scale(.4);
-  transition: opacity .3s ease, transform .35s cubic-bezier(.4, 0, .2, 1);
-}
-
-.ruleta__wedge.is-used .ruleta__check {
-  opacity: 1;
-  transform: scale(1);
-}
+/* Sector usado: gris plano (disabled), con el texto muy atenuado.
+   Se probaron dos alternativas peores:
+     · opacity:.35 sobre el grupo -> lavaba tambien el texto.
+     · velo gris con mix-blend-mode -> el resultado dependia del tono de abajo
+       (con `darken` el navy no cambiaba y el naranja viraba a oliva; con
+       `color` salian tres grises distintos porque conserva la luminosidad).
+   Un unico gris opaco es lo unico que se lee igual en los tres tonos. */
+.ruleta__wedge.is-used .ruleta__wedge-path { fill: #cbcfd8; }
+.ruleta__wedge.is-used .ruleta__wedge-label { fill: #9aa0ad; }
 
 /* Pulso/glow del ganador al aterrizar (solo opacity, en un overlay) */
 .ruleta__winner-glow {
@@ -215,8 +200,5 @@
   }
   .ruleta__winner-glow.is-firing {
     animation: none !important;
-  }
-  .ruleta__check {
-    transition: none !important;
   }
 }

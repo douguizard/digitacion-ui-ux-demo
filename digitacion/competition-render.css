@@ -67,9 +67,20 @@
 .standings-table th{padding:10px 12px;text-align:left;font-weight:500;color:var(--text-secondary);font-size:11px;letter-spacing:.3px;border-bottom:2px solid var(--border)}
 .standings-table td{padding:10px 12px;border-bottom:1px solid var(--border)}
 .standings-table th:not(:first-child):not(:nth-child(2)),.standings-table td:not(:first-child):not(:nth-child(2)){text-align:center}
-.standings-pos{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;background:var(--accent)}
-.standings-pos.pos2{background:var(--blue-info)}
-.standings-pos.pos3{background:var(--text-secondary)}
+/* Podio. El numero va en OSCURO, no en blanco: el oro y la plata son claros por
+   naturaleza y con texto blanco se quedaban en 2.4-3.0:1. Oscurecerlos hasta que
+   el blanco funcionara los convertia en marron oliva y gris sucio, dejaban de
+   leerse como medallas. Con texto oscuro los cuatro pasan AA (4.6-6.6:1) y cada
+   color se mantiene fiel. */
+.standings-pos{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text-primary);background:var(--text-secondary)}
+/* Tonos apagados. Ojo al apagarlos: bajando solo la luminosidad, oro y ocre
+   convergian (distancia RGB 24) y plata y gris tambien (19) — cuatro medallas
+   que dejaban de distinguirse. Se separan por TONO: oro amarillo, ocre naranja,
+   plata azulada y gris neutro mas claro. Distancia minima resultante 47. */
+.standings-pos.pos1{background:#f1e7a4}   /* oro   11.58:1 */
+.standings-pos.pos2{background:#c9d6e6}   /* plata  9.87:1 */
+.standings-pos.pos3{background:#efbc95}   /* ocre   8.52:1 */
+.standings-pos.pos4{background:#eceef1}   /* gris  12.52:1 */
 .standings-team{display:flex;align-items:center;gap:8px}
 .standings-team-name{font-weight:500;color:var(--text-primary)}
 .standings-team-sub{font-size:11px;color:var(--text-secondary)}

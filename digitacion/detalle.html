@@ -261,8 +261,10 @@ body{font-family:var(--font);background:var(--surface);color:var(--text-primary)
   .medal-grid{grid-template-columns:1fr}
 }
 </style>
+<link rel="stylesheet" href="embed-mode.css"/>
 <link rel="stylesheet" href="naowee-tables.css"/>
 <link rel="stylesheet" href="shared/naowee-footer.css?v=2.1.1"/>
+<script src="embed-mode.js"></script>
 <script src="shared/naowee-footer.js?v=2.1.1" defer></script>
 </head>
 <body>
@@ -2091,9 +2093,14 @@ function hideReabrirToast(){
 
 </script>
 <script type="module">
-  import { mountSidebar, mountHeader, mountDemoRoleSwitcher } from './shared/sidebar.js';
-  const roleCode = new URLSearchParams(window.location.search).get('role') || 'ROOT';
-  const currentFile = window.location.pathname.split('/').pop() || 'detalle.html';
+  import { mountSidebar, mountHeader, mountDemoRoleSwitcher, resolveRoleCode } from './shared/sidebar.js';
+  const roleCode = resolveRoleCode();
+  /* Normaliza quitando el .html de AMBOS lados. Con URL limpia (/lista, que es
+     como sirven el server local y GitHub Pages) el pathname no trae extension,
+     asi que comparar contra 'x.html' nunca coincidia y onActiveChange disparaba
+     una navegacion extra al aterrizar: recarga completa y flash blanco. */
+  const baseName = (ruta) => (ruta.split('/').pop() || '').replace(/\.html$/, '');
+  const currentFile = baseName(window.location.pathname) || 'detalle';
   const LEGACY_MAP = {
     'inicio': 'dashboard.html', 'sorteo': 'sorteo.html',
     'eventos': 'eventos.html', 'eventos-lista': 'eventos.html',
@@ -2111,7 +2118,7 @@ function hideReabrirToast(){
       const target = LEGACY_MAP[activeId];
       /* detalle.html es sub-página de competencias-lista; el activeId 'competencias-lista'
          no debe redirigir mientras estemos en detalle — solo si el usuario navega explícitamente */
-      if (target) { if (target === currentFile) return; if (!sidebarMounted && target === 'lista.html') return; window.location.href = target + '?role=' + encodeURIComponent(roleCode); return; }
+      if (target) { if (baseName(target) === currentFile) return; if (!sidebarMounted && target === 'lista.html') return; window.location.href = target + '?role=' + encodeURIComponent(roleCode); return; }
       const isLocal = ['localhost','127.0.0.1'].includes(window.location.hostname);
       const SHELL_BASE = isLocal ? 'http://localhost:5100' : 'https://naowee-tech.github.io/naowee-test-sidebar-shell';
       window.location.href = `${SHELL_BASE}/perfil.html?role=${roleCode}&active=${activeId}`;
