@@ -1904,6 +1904,55 @@ let searchQuery = '';
 })();
 
 /* ═══════════════════════════════════════════════════════════
+   DEMO: WHITELIST DE DEPORTES VISIBLES EN EL DIGITADOR
+   Solo se muestran competencias de estos deportes (y todas sus
+   pruebas/variantes). El resto se oculta del perfil del digitador.
+═══════════════════════════════════════════════════════════ */
+const DEMO_ALLOWED_SPORTS = new Set([
+  /* Ajedrez Integrado (todas las modalidades) */
+  'ajedrez_clasico','ajedrez_clasico_equipos',
+  'ajedrez_activo','ajedrez_activo_equipos',
+  'ajedrez_blitz','ajedrez_blitz_equipos',
+  'ajedrez_integrado',
+  /* Atletismo y Para Atletismo */
+  'atletismo','para_atletismo',
+  /* Bádminton */
+  'b_dminton','badminton_singles','badminton_dobles',
+  /* Baloncesto */
+  'baloncesto','baloncesto_3x3','mini_baloncesto',
+  /* Balonmano */
+  'balonmano',
+  /* Boccia (todas las categorías) */
+  'boccia','boccia_bc1','boccia_bc2','boccia_bc3','boccia_bc4',
+  'boccia_bc3_parejas','boccia_bc4_parejas',
+  /* Boxeo */
+  'boxeo',
+  /* Ciclismo */
+  'ciclismo',
+  /* Fútbol / Fútbol Sala / Fútbol Salón */
+  'f_tbol','f_tbol_sala','f_tbol_sal_n','mini_f_tbol_sala',
+  /* Artes marciales */
+  'judo','karate_do','taekwondo',
+  /* Levantamiento de Pesas */
+  'levantamiento_de_pesas',
+  /* Natación y Para Natación */
+  'nataci_n','para_nataci_n',
+  /* Patinaje */
+  'patinaje',
+  /* Tenis de Mesa */
+  'tenis_mesa','tenis_mesa_dobles','tenis_mesa_equipos',
+  /* Voleibol */
+  'voleibol','mini_voleibol',
+]);
+(function filterCompetitionsByAllowedSports(){
+  for(let i = COMPETITIONS.length - 1; i >= 0; i--){
+    if(!DEMO_ALLOWED_SPORTS.has(COMPETITIONS[i].sport)){
+      COMPETITIONS.splice(i, 1);
+    }
+  }
+})();
+
+/* ═══════════════════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════════════════ */
 function init(){

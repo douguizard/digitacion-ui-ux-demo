@@ -1,0 +1,537 @@
+{
+  "communities": {
+    "0": [
+      "scoring_modal",
+      "scoring_modal_addscoringpoints",
+      "scoring_modal_adjustgamestat",
+      "scoring_modal_atlsegkey",
+      "scoring_modal_comb_point_tables",
+      "scoring_modal_combdeducciones",
+      "scoring_modal_combinado_events",
+      "scoring_modal_cursortostart",
+      "scoring_modal_dqlog",
+      "scoring_modal_flashdqhint",
+      "scoring_modal_formattimemask",
+      "scoring_modal_hidedigitoast",
+      "scoring_modal_incidentlog",
+      "scoring_modal_inlinepenaltylog",
+      "scoring_modal_inningsstate",
+      "scoring_modal_lane_colors",
+      "scoring_modal_lt_colors",
+      "scoring_modal_ltsegkey",
+      "scoring_modal_penalddstate",
+      "scoring_modal_penaltylog",
+      "scoring_modal_podiumclasses",
+      "scoring_modal_podiumlabels",
+      "scoring_modal_recalcextratimeparticipants",
+      "scoring_modal_recalcmarca",
+      "scoring_modal_rondadqmap",
+      "scoring_modal_rondamatches",
+      "scoring_modal_rondascores",
+      "scoring_modal_selectdqinfraction",
+      "scoring_modal_selecttiebreakcriterion",
+      "scoring_modal_setactivescoreinput",
+      "scoring_modal_setscounterstate",
+      "scoring_modal_sportpenalizaciones",
+      "scoring_modal_stepinningserr",
+      "scoring_modal_switchcombevent",
+      "scoring_modal_switchdqronda",
+      "scoring_modal_switchjudgeparticipant",
+      "scoring_modal_switchmodaltab",
+      "scoring_modal_syncinningserr",
+      "scoring_modal_toggleaction",
+      "scoring_modal_toggledescal",
+      "scoring_modal_toggledqdd",
+      "scoring_modal_togglepenaldd",
+      "scoring_modal_togglestatitem",
+      "scoring_modal_togglestatparticipant"
+    ],
+    "1": [
+      "scoring_modal_addbballpenales",
+      "scoring_modal_addbballprorroga",
+      "scoring_modal_applyinlinepenalty",
+      "scoring_modal_bballaddpoints",
+      "scoring_modal_buildbasketballgrid",
+      "scoring_modal_buildbballpanelcontent",
+      "scoring_modal_buildbballsummary",
+      "scoring_modal_buildbballteamrow",
+      "scoring_modal_checkautowin",
+      "scoring_modal_onbballscoreinput",
+      "scoring_modal_recalctotals",
+      "scoring_modal_renderinlinepenaltylog",
+      "scoring_modal_showpenaltydqalert",
+      "scoring_modal_switchbballtab",
+      "scoring_modal_syncbballhiddeninputs",
+      "scoring_modal_tennisaddgame",
+      "scoring_modal_tennisaddpoint",
+      "scoring_modal_tennisdirectgameinput",
+      "scoring_modal_tennisgamechange",
+      "scoring_modal_tennispointlabel",
+      "scoring_modal_tennisrecalctotals",
+      "scoring_modal_tennisswitchset",
+      "scoring_modal_tennisundogame",
+      "scoring_modal_tenniswingame",
+      "scoring_modal_tenniswinset",
+      "scoring_modal_undoinlinepenalty",
+      "scoring_modal_updatetennisui"
+    ],
+    "2": [
+      "scoring_modal_applydqscore",
+      "scoring_modal_buildrondaparticipantssection",
+      "scoring_modal_buildrondatable",
+      "scoring_modal_checkrondacompletion",
+      "scoring_modal_closescoringmodal",
+      "scoring_modal_gettiedparticipants",
+      "scoring_modal_ltrecalcranks",
+      "scoring_modal_ltseginput",
+      "scoring_modal_ltshowdesempate",
+      "scoring_modal_recalcrondaresults",
+      "scoring_modal_removedqentry",
+      "scoring_modal_renderdqsummary",
+      "scoring_modal_resolvecomp",
+      "scoring_modal_revertdqscore",
+      "scoring_modal_savecurrentrondascores",
+      "scoring_modal_saveresult",
+      "scoring_modal_saverondapartial",
+      "scoring_modal_selectdueloutcome",
+      "scoring_modal_selectoutcome",
+      "scoring_modal_showdigitoast",
+      "scoring_modal_switchronda",
+      "scoring_modal_toggledqplayer",
+      "scoring_modal_toggleextratime",
+      "scoring_modal_updateacumulado"
+    ],
+    "3": [
+      "scoring_modal_buildcategorizedpenalizaciones",
+      "scoring_modal_buildcombatgrid",
+      "scoring_modal_builddescalificacionestab",
+      "scoring_modal_buildestadisticastab",
+      "scoring_modal_buildincidentlogtab",
+      "scoring_modal_buildinlinepenaltysection",
+      "scoring_modal_buildinningsgrid",
+      "scoring_modal_buildjudgessection",
+      "scoring_modal_buildpenalizacionestab",
+      "scoring_modal_buildscoringbuttons",
+      "scoring_modal_buildsetscountergrid",
+      "scoring_modal_buildsetsgrid",
+      "scoring_modal_buildspecialactionsonly",
+      "scoring_modal_buildtennisgrid",
+      "scoring_modal_buildtimesgrid",
+      "scoring_modal_buildvsheader",
+      "scoring_modal_getactivedescalificaciones",
+      "scoring_modal_openscoringmodal",
+      "scoring_modal_openscoringmodalreadonly",
+      "scoring_modal_resolveatletismosubmodalidad",
+      "shared",
+      "shared_gametimer",
+      "shared_inputvalidation",
+      "shared_sports_db"
+    ],
+    "4": [
+      "acta_mvp_coordinador_role",
+      "acta_mvp_digitador_role",
+      "acta_mvp_stepper_wizard",
+      "component",
+      "coordinadores",
+      "dashboard",
+      "design_system_css",
+      "detalle",
+      "digitacion_component",
+      "digitacion_component_bracketmatch",
+      "digitacion_component_digitacioncomponent",
+      "digitacion_component_digitacioncomponent_setfaseinicial",
+      "digitacion_component_team",
+      "digitador",
+      "digitadores",
+      "evento_detalle",
+      "eventos",
+      "lista",
+      "playground",
+      "scoring_modal_css"
+    ],
+    "5": [
+      "scoring_modal_applyvictoriadirecta",
+      "scoring_modal_atlfieldblur",
+      "scoring_modal_atlfieldinput",
+      "scoring_modal_atlparsetime",
+      "scoring_modal_atlrecalccarreras",
+      "scoring_modal_atlrecalcfield",
+      "scoring_modal_atlseginput",
+      "scoring_modal_atltimeblur",
+      "scoring_modal_atltimeinput",
+      "scoring_modal_atltogglenulo",
+      "scoring_modal_checksaveready",
+      "scoring_modal_ondirectscoreedit",
+      "scoring_modal_recalcsets",
+      "scoring_modal_selecttiebreakwinner",
+      "scoring_modal_selecttiebreakwinnerteam",
+      "scoring_modal_selectvsoutcome",
+      "scoring_modal_selectwinner",
+      "scoring_modal_toggleconfirm"
+    ],
+    "6": [
+      "scoring_modal_addjudogoldenscore",
+      "scoring_modal_addjudoshido",
+      "scoring_modal_buildjudogrid",
+      "scoring_modal_buildjudopanelcontent",
+      "scoring_modal_buildjudosummary",
+      "scoring_modal_buildjudoteamrow",
+      "scoring_modal_buildshidodots",
+      "scoring_modal_buildwazadots",
+      "scoring_modal_judoaddippon",
+      "scoring_modal_judoaddwazaari",
+      "scoring_modal_judorefreshui",
+      "scoring_modal_judosetwinbanner",
+      "scoring_modal_judosynchiddeninputs",
+      "scoring_modal_judoundowazaari",
+      "scoring_modal_removejudoshido",
+      "scoring_modal_switchjudotab"
+    ],
+    "7": [
+      "acta_mvp_basketball_grid",
+      "acta_mvp_combate_scoring",
+      "acta_mvp_competition_states",
+      "acta_mvp_digitacion_epic",
+      "acta_mvp_jueces_scoring",
+      "acta_mvp_marca_scoring",
+      "acta_mvp_scoring_routing",
+      "acta_mvp_sets_counter",
+      "acta_mvp_sports_db",
+      "changelog_v2",
+      "naowee_suid",
+      "readme",
+      "readme_escenarios_repo",
+      "readme_handoff_repo",
+      "readme_parametrizacion_repo"
+    ],
+    "8": [
+      "scoring_modal_addincident",
+      "scoring_modal_pickincidenttarget",
+      "scoring_modal_pickincidenttype",
+      "scoring_modal_positionincidentmenu",
+      "scoring_modal_removeincident",
+      "scoring_modal_renderincidentlog",
+      "scoring_modal_resetincidentmenupos",
+      "scoring_modal_selectincidentpairing",
+      "scoring_modal_selectincidentronda",
+      "scoring_modal_selectincidenttarget",
+      "scoring_modal_selectincidenttype",
+      "scoring_modal_toggleincidentdd",
+      "scoring_modal_updateaddincidentbtn"
+    ],
+    "9": [
+      "scoring_modal_applytarjetaroja",
+      "scoring_modal_getsettarget",
+      "scoring_modal_issetwon",
+      "scoring_modal_onsetscoreinput",
+      "scoring_modal_recalcsetscountertotals",
+      "scoring_modal_rendertarjetalog",
+      "scoring_modal_setscorechange",
+      "scoring_modal_showtarjetatoast",
+      "scoring_modal_switchsettab",
+      "scoring_modal_undotarjetaroja",
+      "scoring_modal_updatesetstatus",
+      "scoring_modal_updatesettabscores"
+    ],
+    "10": [
+      "scoring_modal_adddqmarca",
+      "scoring_modal_registerdqdd",
+      "scoring_modal_removedqddentry",
+      "scoring_modal_renderdqddlog",
+      "scoring_modal_selectdqmarcatarget",
+      "scoring_modal_selectdqmarcatype",
+      "scoring_modal_syncdescalcrossitems",
+      "scoring_modal_syncdescaltowinner",
+      "scoring_modal_toggledescalparticipant",
+      "scoring_modal_updateadddqmarcabtn"
+    ],
+    "11": [
+      "scoring_modal_combcalcpoints",
+      "scoring_modal_combdeduccion",
+      "scoring_modal_combmaskdistance",
+      "scoring_modal_combmaskminsec",
+      "scoring_modal_combmaskseconds",
+      "scoring_modal_combparsevalue",
+      "scoring_modal_combrecalc",
+      "scoring_modal_combvalueblur",
+      "scoring_modal_combvalueinput"
+    ],
+    "12": [
+      "scoring_modal_buildatletismocampo",
+      "scoring_modal_buildatletismocarreras",
+      "scoring_modal_buildatletismocombinados",
+      "scoring_modal_buildatletismomarca",
+      "scoring_modal_buildlanetiminggrid",
+      "scoring_modal_buildmarcasection",
+      "scoring_modal_combevent"
+    ],
+    "13": [
+      "concept_competencia_wizard",
+      "preview_bracket",
+      "stepper_groups_grid",
+      "stepper_step2_sistema",
+      "stepper_step3_configuracion",
+      "stepper_step4_enfrentamiento"
+    ],
+    "14": [
+      "scoring_modal_adjustjudgededuction",
+      "scoring_modal_adjustjudgescore",
+      "scoring_modal_applyjudgededuction",
+      "scoring_modal_onjudgeinput",
+      "scoring_modal_recalcjudges",
+      "scoring_modal_resetjudgedeductions"
+    ],
+    "15": [
+      "concept_inter_font",
+      "concept_naowee_design_tokens",
+      "preview",
+      "stepper",
+      "stepper_design_system_css"
+    ],
+    "16": [
+      "index",
+      "index_fs",
+      "index_http",
+      "index_path",
+      "index_url"
+    ],
+    "17": [
+      "scoring_modal_addpenalty",
+      "scoring_modal_pickpenaltarget",
+      "scoring_modal_pickpenaltype",
+      "scoring_modal_updatepenalregisterbtn"
+    ],
+    "18": [
+      "scoring_modal_closealldesempatedd",
+      "scoring_modal_toggledesempatedd",
+      "scoring_modal_togglepodiumdesempate"
+    ],
+    "19": [
+      "scoring_modal_pickdesempatecrit",
+      "scoring_modal_pickdesempatewinner",
+      "scoring_modal_syncdesempatenote"
+    ],
+    "20": [
+      "scoring_modal_pickdqtarget",
+      "scoring_modal_pickdqtype",
+      "scoring_modal_updatedqddregisterbtn"
+    ],
+    "21": [
+      "preview_sidebar",
+      "stepper_sidebar"
+    ],
+    "22": [
+      "preview_stepper_component",
+      "stepper_stepper_component"
+    ],
+    "23": [
+      "preview_top_header",
+      "stepper_top_header"
+    ],
+    "24": [
+      "scoring_modal_addextrainning",
+      "scoring_modal_recalcinnings"
+    ],
+    "25": [
+      "scoring_modal_adjustcounter",
+      "scoring_modal_updatepenaltylog"
+    ],
+    "26": [
+      "sports_db",
+      "sports_db_sports_db"
+    ],
+    "27": [
+      "sports_db_compact",
+      "sports_db_compact_sports_db"
+    ],
+    "28": [
+      "sports_db_final",
+      "sports_db_final_sports_db"
+    ],
+    "29": [
+      "playground_naowee_icons"
+    ],
+    "30": [
+      "stepper_modality_pills"
+    ]
+  },
+  "cohesion": {
+    "0": 0.045454545454545456,
+    "1": 0.10826210826210826,
+    "2": 0.13405797101449277,
+    "3": 0.10869565217391304,
+    "4": 0.12105263157894737,
+    "5": 0.13071895424836602,
+    "6": 0.16666666666666666,
+    "7": 0.14285714285714285,
+    "8": 0.1794871794871795,
+    "9": 0.2727272727272727,
+    "10": 0.2222222222222222,
+    "11": 0.2222222222222222,
+    "12": 0.2857142857142857,
+    "13": 0.3333333333333333,
+    "14": 0.3333333333333333,
+    "15": 0.6,
+    "16": 0.4,
+    "17": 0.5,
+    "18": 0.6666666666666666,
+    "19": 0.6666666666666666,
+    "20": 0.6666666666666666,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0,
+    "25": 1.0,
+    "26": 1.0,
+    "27": 1.0,
+    "28": 1.0,
+    "29": 1.0,
+    "30": 1.0
+  },
+  "gods": [
+    {
+      "id": "scoring_modal_openscoringmodal",
+      "label": "openScoringModal()",
+      "degree": 25
+    },
+    {
+      "id": "scoring_modal_checksaveready",
+      "label": "checkSaveReady()",
+      "degree": 24
+    },
+    {
+      "id": "scoring_modal_resolvecomp",
+      "label": "_resolveComp()",
+      "degree": 13
+    },
+    {
+      "id": "scoring_modal_judorefreshui",
+      "label": "_judoRefreshUI()",
+      "degree": 12
+    },
+    {
+      "id": "scoring_modal_updateacumulado",
+      "label": "updateAcumulado()",
+      "degree": 9
+    },
+    {
+      "id": "scoring_modal_updatetennisui",
+      "label": "_updateTennisUI()",
+      "degree": 9
+    },
+    {
+      "id": "scoring_modal_setscorechange",
+      "label": "setScoreChange()",
+      "degree": 9
+    },
+    {
+      "id": "design_system_css",
+      "label": "Design System CSS",
+      "degree": 9
+    },
+    {
+      "id": "scoring_modal_undoinlinepenalty",
+      "label": "undoInlinePenalty()",
+      "degree": 8
+    },
+    {
+      "id": "acta_mvp_scoring_routing",
+      "label": "Scoring Type Routing Map",
+      "degree": 7
+    }
+  ],
+  "surprises": [
+    {
+      "source": "Preview Sidebar Component",
+      "target": "Stepper Sidebar Component",
+      "source_files": [
+        "preview.html",
+        "stepper.html"
+      ],
+      "confidence": "INFERRED",
+      "relation": "semantically_similar_to",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; semantically similar concepts with no structural link"
+    },
+    {
+      "source": "Preview Top Header",
+      "target": "Stepper Top Header",
+      "source_files": [
+        "preview.html",
+        "stepper.html"
+      ],
+      "confidence": "INFERRED",
+      "relation": "semantically_similar_to",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; semantically similar concepts with no structural link"
+    },
+    {
+      "source": "Preview Stepper UI",
+      "target": "Stepper Multi-Step UI",
+      "source_files": [
+        "preview.html",
+        "stepper.html"
+      ],
+      "confidence": "INFERRED",
+      "relation": "semantically_similar_to",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; semantically similar concepts with no structural link"
+    },
+    {
+      "source": "Handoff Engines Repo",
+      "target": "Scoring Type Routing Map",
+      "source_files": [
+        "README.md",
+        "ACTA-MVP.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "conceptually_related_to",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `Handoff Engines Repo` unexpectedly reaches hub `Scoring Type Routing Map`"
+    },
+    {
+      "source": "openScoringModal()",
+      "target": "GameTimer",
+      "source_files": [
+        "scoring-modal.js",
+        "shared.js"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "connects across different repos/directories; peripheral node `GameTimer` unexpectedly reaches hub `openScoringModal()`"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `openScoringModal()` connect `Scoring Modal Builders` to `Scoring Modal Utilities`, `Basketball Scoring UI`, `Round Results & Tiebreakers`, `Judo Scoring UI`, `Athletics Grid Builders`?",
+      "why": "High betweenness centrality (0.024) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `Team`, `BracketMatch`, `http` to the rest of the system?",
+      "why": "54 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Scoring Modal Utilities` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.045454545454545456 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Basketball Scoring UI` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.10826210826210826 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Round Results & Tiebreakers` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.13405797101449277 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Scoring Modal Builders` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.10869565217391304 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Digitacion App Shell` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.12105263157894737 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

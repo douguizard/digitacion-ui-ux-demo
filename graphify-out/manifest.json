@@ -1,0 +1,122 @@
+{
+  "digitacion.component.ts": {
+    "mtime": 1776270532.559992,
+    "ast_hash": "3efff68d2d36e9766461e535190d665e",
+    "semantic_hash": "3efff68d2d36e9766461e535190d665e"
+  },
+  "index.js": {
+    "mtime": 1776270532.5588114,
+    "ast_hash": "68fe087f8f517e87b602e9393ee3ff32",
+    "semantic_hash": "68fe087f8f517e87b602e9393ee3ff32"
+  },
+  "scoring-modal.js": {
+    "mtime": 1776270532.5690665,
+    "ast_hash": "0a5dc8bcf77021a9904042011c55c2eb",
+    "semantic_hash": "0a5dc8bcf77021a9904042011c55c2eb"
+  },
+  "shared.js": {
+    "mtime": 1776270532.5655632,
+    "ast_hash": "5ce48f858dafb68075b5b5acd18a9351",
+    "semantic_hash": "5ce48f858dafb68075b5b5acd18a9351"
+  },
+  "sports_data.json": {
+    "mtime": 1776270532.5632637,
+    "ast_hash": "8a215b0682600147450882d801c2b78a",
+    "semantic_hash": "8a215b0682600147450882d801c2b78a"
+  },
+  "sports_db.js": {
+    "mtime": 1776270532.5660627,
+    "ast_hash": "c5294087edf145692d141473e7a98714",
+    "semantic_hash": "c5294087edf145692d141473e7a98714"
+  },
+  "sports_db_compact.js": {
+    "mtime": 1776270532.5604262,
+    "ast_hash": "e002d0875107ed92c72baeac45b3f496",
+    "semantic_hash": "e002d0875107ed92c72baeac45b3f496"
+  },
+  "sports_db_final.js": {
+    "mtime": 1776270532.555527,
+    "ast_hash": "a940fc170ff94e8b61141ea3b7fc7c3d",
+    "semantic_hash": "a940fc170ff94e8b61141ea3b7fc7c3d"
+  },
+  "sports_db_generated.json": {
+    "mtime": 1776270532.5549579,
+    "ast_hash": "615025a4f17346195ef980ce52f01578",
+    "semantic_hash": "615025a4f17346195ef980ce52f01578"
+  },
+  "ACTA-MVP.md": {
+    "mtime": 1776270532.572196,
+    "ast_hash": "6828f4436503130381d4d6a8d1bc1ec0",
+    "semantic_hash": ""
+  },
+  "CHANGELOG.md": {
+    "mtime": 1776270565.9941244,
+    "ast_hash": "a378d4398430f2be082f7d355c1fb5ce",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1776270558.570702,
+    "ast_hash": "fffd40f489c522cb14370d3ede046f35",
+    "semantic_hash": ""
+  },
+  "coordinadores.html": {
+    "mtime": 1776270532.5636127,
+    "ast_hash": "d8c32d9cfc956a7dcce94c1be69d2df7",
+    "semantic_hash": ""
+  },
+  "dashboard.html": {
+    "mtime": 1776270532.559644,
+    "ast_hash": "aaa660ffd800a811cde3e7a81272429f",
+    "semantic_hash": ""
+  },
+  "detalle.html": {
+    "mtime": 1776270532.5592866,
+    "ast_hash": "660d463ce91699a26868bbb74eb7d19c",
+    "semantic_hash": ""
+  },
+  "digitacion.component.html": {
+    "mtime": 1776270532.564916,
+    "ast_hash": "5a103e9c067a6b55a35ef72e8a8a148e",
+    "semantic_hash": ""
+  },
+  "digitador.html": {
+    "mtime": 1776281353.032167,
+    "ast_hash": "6706264dcaad4e5025dcad9e8a483253",
+    "semantic_hash": ""
+  },
+  "digitadores.html": {
+    "mtime": 1776270532.5621583,
+    "ast_hash": "265d0bde71753470a6f54935ab4bc68d",
+    "semantic_hash": ""
+  },
+  "evento-detalle.html": {
+    "mtime": 1776270532.5616891,
+    "ast_hash": "83dcce2a958bfbffe76740ee5de5b656",
+    "semantic_hash": ""
+  },
+  "eventos.html": {
+    "mtime": 1776270532.5577016,
+    "ast_hash": "7555a52b1cbefbe54b1bfac69f81b549",
+    "semantic_hash": ""
+  },
+  "lista.html": {
+    "mtime": 1776270532.55653,
+    "ast_hash": "4338ceee77740f2c924d15d705b21943",
+    "semantic_hash": ""
+  },
+  "playground.html": {
+    "mtime": 1776270532.5672526,
+    "ast_hash": "cd1a86a71a6ccc9826f55b9443507ffa",
+    "semantic_hash": ""
+  },
+  "preview.html": {
+    "mtime": 1776270532.5573006,
+    "ast_hash": "df6b5486a7c942940ce30be3c2c11c98",
+    "semantic_hash": ""
+  },
+  "stepper.html": {
+    "mtime": 1776270532.558321,
+    "ast_hash": "2480167e52d1c4acfd1593a1ad439e66",
+    "semantic_hash": ""
+  }
+}
