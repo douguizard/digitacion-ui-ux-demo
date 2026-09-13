@@ -1,0 +1,237 @@
+{
+  "competition-render.js": {
+    "mtime": 1781802205.0383408,
+    "ast_hash": "776f29ce4a3dd375349ebb69c0a77e63",
+    "semantic_hash": "776f29ce4a3dd375349ebb69c0a77e63"
+  },
+  "digitacion.component.ts": {
+    "mtime": 1777394290.3956296,
+    "ast_hash": "3efff68d2d36e9766461e535190d665e",
+    "semantic_hash": "3efff68d2d36e9766461e535190d665e"
+  },
+  "embed-mode.js": {
+    "mtime": 1778514836.0180056,
+    "ast_hash": "323d64c87ea7258f651e736bf194eecb",
+    "semantic_hash": "323d64c87ea7258f651e736bf194eecb"
+  },
+  "index.js": {
+    "mtime": 1777394290.396753,
+    "ast_hash": "68fe087f8f517e87b602e9393ee3ff32",
+    "semantic_hash": "68fe087f8f517e87b602e9393ee3ff32"
+  },
+  "naowee-footer.js": {
+    "mtime": 1781813766.4513152,
+    "ast_hash": "fd2fa047b033a8936cd5935e02d97b67",
+    "semantic_hash": "fd2fa047b033a8936cd5935e02d97b67"
+  },
+  "ruleta-wheel.js": {
+    "mtime": 1781715247.6780207,
+    "ast_hash": "5a74d0edb1d51c4b44ab2d2cb0c3c213",
+    "semantic_hash": "5a74d0edb1d51c4b44ab2d2cb0c3c213"
+  },
+  "scoring-modal.js": {
+    "mtime": 1777394290.3981974,
+    "ast_hash": "0a5dc8bcf77021a9904042011c55c2eb",
+    "semantic_hash": "0a5dc8bcf77021a9904042011c55c2eb"
+  },
+  "shared.js": {
+    "mtime": 1777394290.3984807,
+    "ast_hash": "5ce48f858dafb68075b5b5acd18a9351",
+    "semantic_hash": "5ce48f858dafb68075b5b5acd18a9351"
+  },
+  "shared/menu-data.js": {
+    "mtime": 1783604448.2566938,
+    "ast_hash": "ee59d2c9cbd2d704ad2dfdf512199c6e",
+    "semantic_hash": "ee59d2c9cbd2d704ad2dfdf512199c6e"
+  },
+  "shared/naowee-footer.js": {
+    "mtime": 1781278762.3532646,
+    "ast_hash": "2204af310fb1b0798872ad68358a0bdb",
+    "semantic_hash": "2204af310fb1b0798872ad68358a0bdb"
+  },
+  "shared/sidebar.js": {
+    "mtime": 1783605542.1255238,
+    "ast_hash": "d6f7d740d593d9e4a84cfeaa39f99673",
+    "semantic_hash": "d6f7d740d593d9e4a84cfeaa39f99673"
+  },
+  "sorteo-engine.js": {
+    "mtime": 1783544448.506363,
+    "ast_hash": "717e053da8ee86f48886505c05829cdd",
+    "semantic_hash": "717e053da8ee86f48886505c05829cdd"
+  },
+  "sorteo-store.js": {
+    "mtime": 1781790625.0311007,
+    "ast_hash": "55b41a8dd92c5ab4e433911df81ef31d",
+    "semantic_hash": "55b41a8dd92c5ab4e433911df81ef31d"
+  },
+  "sports_data.json": {
+    "mtime": 1777394290.3994756,
+    "ast_hash": "8a215b0682600147450882d801c2b78a",
+    "semantic_hash": "8a215b0682600147450882d801c2b78a"
+  },
+  "sports_db.js": {
+    "mtime": 1777394290.3998442,
+    "ast_hash": "c5294087edf145692d141473e7a98714",
+    "semantic_hash": "c5294087edf145692d141473e7a98714"
+  },
+  "sports_db_compact.js": {
+    "mtime": 1777394290.4000325,
+    "ast_hash": "e002d0875107ed92c72baeac45b3f496",
+    "semantic_hash": "e002d0875107ed92c72baeac45b3f496"
+  },
+  "sports_db_final.js": {
+    "mtime": 1777394290.4002078,
+    "ast_hash": "a940fc170ff94e8b61141ea3b7fc7c3d",
+    "semantic_hash": "a940fc170ff94e8b61141ea3b7fc7c3d"
+  },
+  "sports_db_generated.json": {
+    "mtime": 1777394290.4003315,
+    "ast_hash": "615025a4f17346195ef980ce52f01578",
+    "semantic_hash": "615025a4f17346195ef980ce52f01578"
+  },
+  "ACTA-MVP.md": {
+    "mtime": 1777394290.3937926,
+    "ast_hash": "6828f4436503130381d4d6a8d1bc1ec0",
+    "semantic_hash": ""
+  },
+  "CANONICALIZACION-DIGITACION.md": {
+    "mtime": 1782135542.704139,
+    "ast_hash": "d607417923a7fcda5f514812c0f8f193",
+    "semantic_hash": ""
+  },
+  "CHANGELOG.md": {
+    "mtime": 1781279347.9932742,
+    "ast_hash": "afc5831f24792cb601f27e90a689421c",
+    "semantic_hash": ""
+  },
+  "ITERACION-RULETA-DIAGNOSTICO.md": {
+    "mtime": 1781279358.221587,
+    "ast_hash": "621a9c060f1e2ef11459223e63a87853",
+    "semantic_hash": ""
+  },
+  "PLAN-PROTOTIPO-SORTEO-v2.2.0.md": {
+    "mtime": 1781632011.7803686,
+    "ast_hash": "3abfb5bcf0fa9aca74964f08050007ff",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1777394290.3940048,
+    "ast_hash": "675b2a14a40fb7a6a8ac07ae37dd488b",
+    "semantic_hash": ""
+  },
+  "auditoria.html": {
+    "mtime": 1783608659.4749293,
+    "ast_hash": "c879b46ae805a7ab3ea852227ccf6f60",
+    "semantic_hash": ""
+  },
+  "coordinadores.html": {
+    "mtime": 1783609717.0481458,
+    "ast_hash": "bd85d22f26ee14f2051ada108403b3af",
+    "semantic_hash": ""
+  },
+  "dashboard.html": {
+    "mtime": 1783612166.3866737,
+    "ast_hash": "c0d778029697d532e787ff74f8347718",
+    "semantic_hash": ""
+  },
+  "detalle.html": {
+    "mtime": 1783605155.3543487,
+    "ast_hash": "1fe5f8463b51efb3e3d2b29a94a1e497",
+    "semantic_hash": ""
+  },
+  "digitacion.component.html": {
+    "mtime": 1777394290.3952973,
+    "ast_hash": "5a103e9c067a6b55a35ef72e8a8a148e",
+    "semantic_hash": ""
+  },
+  "digitador.html": {
+    "mtime": 1783605155.301613,
+    "ast_hash": "f52580071a92eb01f5a4c3e71aa05108",
+    "semantic_hash": ""
+  },
+  "digitadores.html": {
+    "mtime": 1783616572.6185577,
+    "ast_hash": "0878bffcbeb1463ce707b566cf1a47ff",
+    "semantic_hash": ""
+  },
+  "evento-detalle.html": {
+    "mtime": 1781791967.974014,
+    "ast_hash": "58193619c90708229baa67a532979f2a",
+    "semantic_hash": ""
+  },
+  "eventos.html": {
+    "mtime": 1783605155.3373022,
+    "ast_hash": "ee32c833a80222472ae5f0c83be31f04",
+    "semantic_hash": ""
+  },
+  "index.html": {
+    "mtime": 1777394290.396676,
+    "ast_hash": "3cb731b6387b38fe92335cad02dabdbd",
+    "semantic_hash": ""
+  },
+  "lista.html": {
+    "mtime": 1783608329.108562,
+    "ast_hash": "3e189e81e1d84b52a02c818de10f56bf",
+    "semantic_hash": ""
+  },
+  "playground.html": {
+    "mtime": 1778000337.0210838,
+    "ast_hash": "3254a6383e9f7b15bc83accd83969ff1",
+    "semantic_hash": ""
+  },
+  "preview.html": {
+    "mtime": 1783605155.342979,
+    "ast_hash": "ff49c440298037de6954106f8ec1400b",
+    "semantic_hash": ""
+  },
+  "sorteo-publico.html": {
+    "mtime": 1783542241.3169322,
+    "ast_hash": "0db979f5a0e7de21e673ff7f5cd328b9",
+    "semantic_hash": ""
+  },
+  "sorteo.html": {
+    "mtime": 1783614952.9208837,
+    "ast_hash": "b0ab433bfe9aa2d72c0b3b2ae258648c",
+    "semantic_hash": ""
+  },
+  "stepper.html": {
+    "mtime": 1783605155.3660069,
+    "ast_hash": "ce11551018e37e1f707daf6d342626c3",
+    "semantic_hash": ""
+  },
+  "logos/ministerio.svg": {
+    "mtime": 1781695456.4267588,
+    "ast_hash": "4897fc3eca85dc6e9eb8240828c89e6d",
+    "semantic_hash": ""
+  },
+  "logos/suid.png": {
+    "mtime": 1781695456.4272974,
+    "ast_hash": "10e22c4791daa8fb4d7a7361086243a1",
+    "semantic_hash": ""
+  },
+  "naowee.svg": {
+    "mtime": 1781813766.4519565,
+    "ast_hash": "02ce3d9d7699e989b8d1c624a93c53e5",
+    "semantic_hash": ""
+  },
+  "shared/logos/colombia.svg": {
+    "mtime": 1778516612.0574014,
+    "ast_hash": "fbedd35c8fb324a58542b163c8679594",
+    "semantic_hash": ""
+  },
+  "shared/logos/ministerio.svg": {
+    "mtime": 1778516612.0577824,
+    "ast_hash": "4897fc3eca85dc6e9eb8240828c89e6d",
+    "semantic_hash": ""
+  },
+  "shared/logos/naowee.svg": {
+    "mtime": 1778516612.0581515,
+    "ast_hash": "02ce3d9d7699e989b8d1c624a93c53e5",
+    "semantic_hash": ""
+  },
+  "shared/logos/suid.png": {
+    "mtime": 1778516612.0587847,
+    "ast_hash": "10e22c4791daa8fb4d7a7361086243a1",
+    "semantic_hash": ""
+  }
+}
